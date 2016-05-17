@@ -1,0 +1,99 @@
+<resources>
+    <string-array name="subjects_lists_0" translatable="false">
+        <item>@string/error_noaddress</item>
+    </string-array>
+
+    <string-array name="subjects_lists_1" translatable="false">
+        <item>@string/subject_italian</item>
+        <item>@string/subject_math</item>
+        <item>@string/subject_science</item>
+        <item>@string/subject_english</item>
+        <item>@string/subject_history</item>
+        <item>@string/subject_fil</item>
+        <item>@string/subject_ped</item>
+        <item>@string/subject_irc</item>
+        <item>@string/subject_arts</item>
+        <item>@string/subject_physics</item>
+        <item>@string/subject_latin</item>
+    </string-array>
+
+    <string-array name="subjects_lists_2" translatable="false">
+        <item>@string/subject_italian</item>
+        <item>@string/subject_math</item>
+        <item>@string/subject_science</item>
+        <item>@string/subject_english</item>
+        <item>@string/subject_history</item>
+        <item>@string/subject_fil</item>
+        <item>@string/subject_it</item>
+        <item>@string/subject_ped</item>
+        <item>@string/subject_irc</item>
+        <item>@string/subject_arts</item>
+        <item>@string/subject_physics</item>
+    </string-array>
+
+    <string-array name="subjects_lists_3" translatable="false">
+        <item>@string/subject_italian</item>
+        <item>@string/subject_math</item>
+        <item>@string/subject_science</item>
+        <item>@string/subject_english</item>
+        <item>@string/subject_history</item>
+        <item>@string/subject_fil</item>
+        <item>@string/subject_ped</item>
+        <item>@string/subject_irc</item>
+        <item>@string/subject_arts</item>
+        <item>@string/subject_physics</item>
+        <item>@string/subject_latin</item>
+        <item>@string/subject_spanish</item>
+        <item>@string/subject_french</item>
+        <item>@string/subject_german</item>
+    </string-array>
+
+    <string-array name="subjects_lists_4" translatable="false">
+        <item>@string/subject_italian</item>
+        <item>@string/subject_math</item>
+        <item>@string/subject_science</item>
+        <item>@string/subject_english</item>
+        <item>@string/subject_history</item>
+        <item>@string/subject_fil</item>
+        <item>@string/subject_ped</item>
+        <item>@string/subject_irc</item>
+        <item>@string/subject_arts</item>
+        <item>@string/subject_physics</item>
+        <item>@string/subject_latin</item>
+        <item>@string/subject_human</item>
+        <item>@string/subject_economy</item>
+    </string-array>
+
+    <string-array name="subjects_lists_5" translatable="false">
+        <item>@string/subject_italian</item>
+        <item>@string/subject_math</item>
+        <item>@string/subject_science</item>
+        <item>@string/subject_english</item>
+        <item>@string/subject_history</item>
+        <item>@string/subject_fil</item>
+        <item>@string/subject_ped</item>
+        <item>@string/subject_irc</item>
+        <item>@string/subject_arts</item>
+        <item>@string/subject_physics</item>
+        <item>@string/subject_latin</item>
+        <item>@string/subject_spanish</item>
+        <item>@string/subject_human</item>
+        <item>@string/subject_economy</item>
+    </string-array>
+
+    <string-array name="pref_entryvalues_address" translatable="false">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+    <string-array name="pref_entries_address" translatable="false">
+        <item>@string/pref_address_1</item>
+        <item>@string/pref_address_2</item>
+        <item>@string/pref_address_3</item>
+        <item>@string/pref_address_4</item>
+        <item>@string/pref_address_5</item>
+    </string-array>
+</resources>

@@ -1,0 +1,21 @@
+<resources>
+    <!-- URL -->
+    <string name="url_home" translatable="false">http://www.liceoarzignano.it</string>
+    <string name="url_news_student" translatable="false">http://www.liceoarzignano.it/circolari/appcircolaripub/ricerca.php?numero=0</string>
+    <string name="url_news_teacher" translatable="false">http://www.liceoarzignano.it/circolari/index.php</string>
+    <string name="url_reg_student" translatable="false">https://davinci-vi-sito.registroelettronico.com</string>
+    <string name="url_reg_teacher" translatable="false">https://81.174.32.167:30443/registro</string>
+    <string name="url_moodle" translatable="false">https://81.174.32.167:30443/moodle</string>
+    <string name="url_copybook" translatable="false">https://81.174.32.167:30443/quaderno</string>
+    <string name="url_teacherzone" translatable="false">http://www.liceoarzignano.it/docenti/docenti.php?sed=1</string>
+
+    <!-- Address -->
+    <string name="pref_address_1" translatable="false">Scientifico</string>
+    <string name="pref_address_2" translatable="false">Scientifico Scienze Applicate</string>
+    <string name="pref_address_3" translatable="false">Linguistico</string>
+    <string name="pref_address_4" translatable="false">Scienze Umane</string>
+    <string name="pref_address_5" translatable="false">Scienze Umane Economico-Sociale</string>
+
+    <!-- Update APP_VERSION in MainActivity.java and the build.gradle file too when this is changed -->
+    <string name="pref_app_version_summary" translatable="false">Liceo 1.0.10</string>
+</resources>

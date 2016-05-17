@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_header"
+    android:layout_width="320dp"
+    android:layout_height="180dp"
+    android:background="@drawable/banner"
+    android:gravity="bottom"
+    android:padding="16dp"
+    android:orientation="vertical"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+    <ImageView
+        android:id="@+id/address_logo"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:contentDescription="@string/accessibility_drawer"
+        />
+
+    <TextView
+        android:id="@+id/username_drawer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:singleLine="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/school_name"
+        android:textColor="@color/white"/>
+
+</LinearLayout>

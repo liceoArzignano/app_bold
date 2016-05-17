@@ -1,0 +1,236 @@
+<resources>
+    <string name="app_name">Liceo</string>
+
+    <string name="saved">Salvato</string>
+    <string name="deleted">Rimosso</string>
+
+    <!-- Navigation drawer -->
+    <string name="school_name">Liceo L. Da Vinci</string>
+    <string name="navigation_drawer_open">Apri navigation drawer</string>
+    <string name="navigation_drawer_close">Chiudi navigation drawer</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_mymarks">Voti</string>
+    <string name="nav_events">Eventi</string>
+    <string name="nav_links">Collegamenti</string>
+    <string name="nav_site">Sito</string>
+    <string name="nav_news">Circolari</string>
+    <string name="nav_register">Registro</string>
+    <string name="nav_moodle">Moodle</string>
+    <string name="nav_copybook">Quaderno</string>
+    <string name="nav_teacherzone">Area docenti</string>
+    <string name="nav_help">Guida</string>
+    <string name="nav_settings">Impostazioni</string>
+    <string name="nav_safe">Safe</string>
+    <string name="nav_luck">Selettore casuale</string>
+    <string name="nav_tasks">Agenda settimanale</string>
+
+    <!-- Home -->
+    <string name="welcome">Benvenuto</string>
+    <string name="welcome_content">Benvenuto al Liceo.
+        Scorri dal bordo sinistro per aprire una pagina.</string>
+    <string name="upcoming_events">Prossimi eventi</string>
+    <string name="more_event_single">E un altro evento</string>
+    <string name="more_event_multiple_1">E altri</string>
+    <string name="more_event_multiple_2">eventi</string>
+    <string name="suggestions">Suggerimenti</string>
+    <string name="suggestion_safe">Utilizza Safe per conservare le tue password di scuola in un solo posto!</string>
+    <string name="suggestion_safe_pwd">Qualcuno conosce la tua password di Safe? Puoi cambiarla semplicemente accedendo a Safe</string>
+    <string name="suggestion_avg">Vorresti sapere che voto dovresti prendere per avere la sufficienza in una materia? Vai in Voti, Media, scegli la materia e clicca sull\'icona bianca in alto per saperlo!</string>
+    <string name="suggestion_tut">Vorresti rivedere il tutorial iniziale? Apri Guida dal menu laterale</string>
+    <string name="suggestion_edit_event">Evento posticipato? Nessun problema, puoi modificarlo con premendo dal visualizzatore evento</string>
+    <string name="suggestion_mark_helper">Ricordati di scrivere anche l\'argomento delle verifiche nelle note dei voti</string>
+    <string name="suggestion_get_touch">Hai bisogno di contattare l\'istituto? Dalle impostazioni potrai scrivere un\'email o telefonare alla segreteria</string>
+    <string name="suggestion_address">Non trovi una materia nella lista? Controlla l\'indirizzo nelle impostazioni</string>
+    <string name="suggestion_suggestions">I suggerimenti ti infastidiscono? Disattivali dalle impostazioni</string>
+
+    <!-- Updated Dialog -->
+    <string name="dialog_first_title">Benvenuto!</string>
+    <string name="dialog_first_content">Per assicurarti che tutto funzioni
+        configura l\'app in base alle tue esigenze.</string>
+    <string name="dialog_first_positive">Configura subito</string>
+    <string name="dialog_first_negative">Non ora</string>
+    <string name="dialog_updated_title">L\'app \u00E8 stata aggiornata!</string>
+    <string name="dialog_updated_content">
+        \u2022 Nuovo: Colori aggiornati per Android 6.0+.\n
+        \u2022 Nuovo: Agenda settimanale.\n
+        \u2022 Nuovo: Aggiornata schermata vista voti e medie.\n
+        \u2022 Nuovo: Selettore numeri casuale.\n
+        \u2022 Miglioramenti prestazioni
+    </string>
+
+    <!-- Manager -->
+    <string name="title_activity_manager">Editor</string>
+    <string name="update_mark">Modifica voto</string>
+    <string name="update_event">Modifica evento</string>
+    <string name="hint_student">Studente</string>
+    <string name="hint_event">Evento</string>
+    <string name="hint_notes">Note</string>
+    <string name="current_date">Data:</string>
+    <string name="current_mark">Voto:</string>
+    <string name="manager_invalid">Impossibile salvare. Ricontrolla i valori</string>
+    <string name="select_subject">Seleziona materia</string>
+    <string name="selected_subject">Materia:</string>
+    <string name="event_kind">Categoria:</string>
+    <string name="event_spinner_test">Compito</string>
+    <string name="event_spinner_school">A scuola</string>
+    <string name="event_spinner_bday">Compleanno</string>
+    <string name="event_spinner_hang_out">Colloquio</string>
+    <string name="event_spinner_other">Altro</string>
+
+    <!-- My marks -->
+    <string name="title_activity_mark_list">I miei voti</string>
+    <string name="title_filter">Voti di</string>
+    <string name="title_filter_end"> </string>
+    <string name="title_fragment_marks">Voti</string>
+    <string name="title_fragments_avg">Media</string>
+    <string name="title_fragments_avgs">Medie</string>
+    <string name="hint_title">La tua media in</string>
+    <string name="hint_title_end">\u00E8</string>
+    <string name="hint_content_common">Per avere la sufficienza in</string>
+    <string name="hint_content_under">il prossimo voto pu\u00F2 essere</string>
+    <string name="hint_content_above">il prossimo voto deve essere</string>
+    <string name="hint_content_common_end">o superiore</string>
+
+    <!-- Viewer -->
+    <string name="title_activity_mark_view">Vista voto</string>
+    <string name="markview_share">Condividi</string>
+    <string name="markview_remove">Rimuovi</string>
+    <string name="markview_more">Altri voti di</string>
+    <string name="markview_more_end"> </string>
+    <string name="markview_notes">Note</string>
+    <string name="markview_value">Valore</string>
+    <string name="markview_share_start">Ho preso</string>
+    <string name="markview_share_end">in</string>
+    <string name="markview_share_start_teacher">ha preso</string>
+    <string name="markview_share_end_teacher">in un compito (</string>
+    <string name="eventview_share">il</string>
+
+    <!-- My events -->
+    <string name="title_activity_event_list">I miei eventi</string>
+
+    <!-- Welcome -->
+    <string name="slide0_title">Benvenuto</string>
+    <string name="slide0_message">Benvenuto al Liceo L. Da Vinci. Ora, ti verr\u00E0 spiegato come utilizzare quest\'app. Scorri per cominciare.</string>
+    <string name="slide1_title">Menu laterale</string>
+    <string name="slide1_message">Scorrendo dal bordo sinistro del tuo dispositivo, aprirai il menu laterale, dal quale accederai alle varie sezioni dell\'app.</string>
+    <string name="slide2_title">Voti</string>
+    <string name="slide2_message">Gestisci i tuoi voti. Puoi aggiungere tutti i voti che vuoi e vedere le medie in tempo reale.</string>
+    <string name="slide3_title">Eventi</string>
+    <string name="slide3_message">Potrai registrare vari eventi quali verifiche, compleanni e quan\'t altro.</string>
+    <string name="slide4_title">Sito</string>
+    <string name="slide4_message">Dal menu laterale potrai accedere ai siti della scuola, quali registro, circolari e quant\'altro.</string>
+    <string name="slide5_title">Safe</string>
+    <string name="slide5_message">Troppe password? Con Safe dovrai ricordarne solamente una perch\u00E9 potrai salvare tutte le altre in un unico posto.</string>
+    <string name="slide6_title">Docente?</string>
+    <string name="slide6_message">Anche i docenti possono utilizzare quest\'app, attiva la relativa opzione dalle impostazioni e l\'app si adatter\u00E0.</string>
+    <string name="slide7_title">Fatto</string>
+    <string name="slide7_message">Complimenti! Hai imparato ad utilizzare l\'app, fanne buon uso!</string>
+
+    <!-- Subjects -->
+    <string name="subject_italian">Italiano</string>
+    <string name="subject_math">Matematica</string>
+    <string name="subject_science">Scienze</string>
+    <string name="subject_english">Inglese</string>
+    <string name="subject_history">Storia</string>
+    <string name="subject_fil">Filosofia</string>
+    <string name="subject_it">Informatica</string>
+    <string name="subject_ped">Educazione fisica</string>
+    <string name="subject_irc">Religione</string>
+    <string name="subject_arts">Disegno e Storia dell\'arte</string>
+    <string name="subject_physics">Fisica</string>
+    <string name="subject_latin">Latino</string>
+    <string name="subject_spanish">Spagnolo</string>
+    <string name="subject_french">Francese</string>
+    <string name="subject_german">Tedesco</string>
+    <string name="subject_human">Scienze umane</string>
+    <string name="subject_economy">Economia</string>
+
+    <!-- Average -->
+    <string name="error_noaddress">Per utilizzare questa funzione devi impostare un indirizzo nelle impostazioni</string>
+    <string name="error_noteacher">I docenti non possono visualizzare le medie</string>
+
+    <!-- Settings -->
+    <string name="title_activity_settings">Impostazioni</string>
+    <string name="pref_general">Preferenze</string>
+    <string name="pref_isTeacher_title">Modalit\u00E0 docente</string>
+    <string name="pref_teacher_summary">Sei un docente</string>
+    <string name="pref_student_summary">Sei uno studente</string>
+    <string name="pref_address_title">Indirizzo</string>
+    <string name="pref_address_dialog">Seleziona un indirizzo</string>
+    <string name="pref_suggestion_title">Suggerimenti</string>
+    <string name="pref_suggestion_summary">Mostra suggerimenti per poter utilizzare l\'app meglio</string>
+    <string name="pref_metrics_title">Invia statistiche</string>
+    <string name="pref_metrics_summary">Contribuisci a migliorare l\'app consentento l\'invio di statistiche anonime</string>
+    <string name="pref_metrics_summary_forced">Stai utilizzando una versione beta. Non puoi disattivare l\'invio delle statistiche</string>
+    <string name="pref_info">Informazioni</string>
+    <string name="pref_app_version_title">Versione app</string>
+    <string name="pref_dev_info">Sviluppata da Joey</string>
+    <string name="pref_getintouch">Contatti</string>
+    <string name="pref_mail_title">Email</string>
+    <string name="pref_mail_summary">Invia un\'email al liceo</string>
+    <string name="pref_phone_title">Telefono</string>
+    <string name="pref_phone_summary">Telefona alla segreteria didattica</string>
+    <string name="pref_facebook_title">Facebook</string>
+    <string name="pref_facebook_summary">Aggiungi un nuovo amico su Facebook</string>
+    <string name="pref_instagram_title">Instagram</string>
+    <string name="pref_instagram_summary">Seguici per vedere le nostre foto</string>
+    <string name="pref_changelog">Ultimi cambiamenti</string>
+    <string name="pref_username">Nome utente</string>
+    <string name="pref_username_dialog_title">Imposta nome utente</string>
+    <string name="pref_username_dialog_msg">Scrivi qui il tuo nome utente</string>
+    <string name="pref_drop_marks_title">Elimina voti</string>
+    <string name="pref_drop_marks_summary">Cancella tutti i voti perch\u00E9 \u00E8 iniziato un nuovo quadrimestre</string>
+    <string name="pref_drop_marks_dialog_title">Elimina voti</string>
+    <string name="pref_drop_marks_dialog_message">Stai cancellando tutti i tuoi voti. Dovresti far questo solo quando \u00E8 iniziato un nuovo quadrimestre. <b>Non potrai annulare quest\'azione</b>.\nVuoi procedere?</string>
+    <string name="pref_drop_marks_toast">Tutti i voti sono stati cancellati!</string>
+
+    <!-- Safe -->
+    <string name="title_activity_safe">Safe</string>
+    <string name="safe_dialog_first_title">Benvenuto in Safe</string>
+    <string name="safe_dialog_first_content">Devi impostare una password per accedere a questa sezione. Assicurati di ricordarti la password o non potrai più venire qui!</string>
+    <string name="safe_dialog_password_input_hint">Password alfanumerica</string>
+    <string name="safe_dialog_title">Safe LogIn</string>
+    <string name="safe_dialog_content">Per accedere a questa sezione devi inserire la tua password</string>
+    <string name="safe_security_issue_xposed">Impossibile utilizzare Safe.\nNon puoi utilizzare questa sezione mentre Xposed \u00E8 installato per motivi di sicurezza.\nDisinstallalo.</string>
+    <string name="safe_username">ID utente</string>
+    <string name="safe_reg_pwd">Password Registro</string>
+    <string name="safe_pc_pwd">Password account PC</string>
+    <string name="safe_internet_pwd">Password internet</string>
+    <string name="safe_info_title">Informazioni sulla sicurezza</string>
+    <string name="safe_info_content">Tutte i tuoi dati vengono criptati e decriptati utilizzando l\'algoritmo AES con chiave a 128-bit. Questo significa che sono salvati in un formato che solo quest\'app pu\u00F2 comprendere. Ogni volta che apri questa sezione i tuoi dati vengono decriptati e avviene un\'operazione inversa quando li salvi. Ecco perch\u00E9 ci vuole cos\u00EC tanto tempo.</string>
+    <string name="safe_reset_title">Reimposta password</string>
+    <string name="safe_reset_content">Vuoi remipostare la password? Se lo farai anche gli altri dati qui salvati saranno eliminati!\nVoi procedere?</string>
+    <string name="safe_encrypting">Criptazione dati\u2026</string>
+    <string name="safe_decrypting">Decriptazione dati\u2026</string>
+    <string name="safe_first_load">Inizializzazione dati\u2026</string>
+    <string name="safe_setup_checking_password">Verifica password\u2026</string>
+    <string name="safe_nomatch">La password non corrisponde.</string>
+
+    <!-- Tasks -->
+    <string name="title_activity_tasks">Agenda settimanale</string>
+    <string name="week_day_1">Lunedi</string>
+    <string name="week_day_2">Martedi</string>
+    <string name="week_day_3">Mercoledi</string>
+    <string name="week_day_4">Giovedi</string>
+    <string name="week_day_5">Venerdi</string>
+    <string name="week_day_6">Sabato</string>
+    <string name="tasks_nothing">Tocca per impostare un valore</string>
+    <string name="tasks_update_title_dialog">Aggiorna agenda</string>
+    <string name="tasks_update_content_dialog">Scrivi il nuovo valore</string>
+    <string name="tasks_update_hint_student">Materia\u2026</string>
+    <string name="tasks_update_hint_teacher">Classe\u2026</string>
+
+    <!-- Luck -->
+    <string name="title_activity_luck">Selezione casuale</string>
+    <string name="luck_max">Valore massimo</string>
+    <string name="luck_num">Numero di valori</string>
+    <string name="luck_text_base">Valori selezionati:</string>
+
+    <!-- Accessibility -->
+    <string name="accessibility_drawer">Intestazione</string>
+    <string name="accessibility_welcome">Immagine di benvenuto</string>
+    <string name="accessibility_event_icon">Icona evento</string>
+    <string name="accessibility_safe_icon">Immagine status di Safe</string>
+    <string name="accessibility_safe_show">Icona Mostra / Nascondi</string>
+    <string name="accessibility_manager">Immagine d\'intestazione</string>
+</resources>

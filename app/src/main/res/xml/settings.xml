@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/pref_general">
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:disableDependentsState="true"
+            android:key="isTeacher_key"
+            android:summaryOff="@string/pref_student_summary"
+            android:summaryOn="@string/pref_teacher_summary"
+            android:title="@string/pref_isTeacher_title" />
+
+        <ListPreference
+            android:dependency="isTeacher_key"
+            android:dialogTitle="@string/pref_address_dialog"
+            android:entries="@array/pref_entries_address"
+            android:entryValues="@array/pref_entryvalues_address"
+            android:key="address_key"
+            android:summary="%s"
+            android:title="@string/pref_address_title" />
+
+        <EditTextPreference
+            android:key="username_key"
+            android:title="@string/pref_username"
+            android:dialogTitle="@string/pref_username_dialog_title"
+            android:dialogMessage="@string/pref_username_dialog_msg" />
+
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="showSuggestions_key"
+            android:summary="@string/pref_suggestion_summary"
+            android:title="@string/pref_suggestion_title" />
+
+        <Preference
+            android:key="drop_marks_key"
+            android:dependency="isTeacher_key"
+            android:title="@string/pref_drop_marks_title"
+            android:summary="@string/pref_drop_marks_summary" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="analytics_key"
+            android:summary="@string/pref_metrics_summary"
+            android:title="@string/pref_metrics_title" />
+
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_info">
+
+        <Preference
+            android:key="changelog_key"
+            android:summary="@string/pref_app_version_summary"
+            android:title="@string/pref_app_version_title" />
+
+        <Preference android:title="@string/pref_dev_info" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_getintouch">
+
+        <PreferenceScreen
+            android:summary="@string/pref_mail_summary"
+            android:title="@string/pref_mail_title">
+            <intent
+                android:action="android.intent.action.SENDTO"
+                android:data="mailto:viis00200v@istruzione.it" />
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:summary="@string/pref_phone_summary"
+            android:title="@string/pref_phone_title">
+            <intent
+                android:action="android.intent.action.DIAL"
+                android:data="tel:0444676125" />
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:summary="@string/pref_facebook_summary"
+            android:title="@string/pref_facebook_title">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://www.facebook.com/liceoarzignano" />
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:summary="@string/pref_instagram_summary"
+            android:title="@string/pref_instagram_title">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://www.instagram.com/liceoarzignano" />
+        </PreferenceScreen>
+
+    </PreferenceCategory>
+</PreferenceScreen>

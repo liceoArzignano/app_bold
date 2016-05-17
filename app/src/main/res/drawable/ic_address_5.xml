@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="@color/address_5" />
+        </shape>
+    </item>
+    <item
+        android:drawable="@drawable/ic_address_src_5"
+        android:bottom="16dp"
+        android:right="16dp"
+        android:left="16dp"
+        android:top="16dp"/>
+</layer-list>

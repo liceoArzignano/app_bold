@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="it.liceoarzignano.bold">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:fullBackupContent="@xml/backup"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:supportsRtl="false"
+        android:theme="@style/AppTheme">
+
+        <!-- Main -->
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Intro -->
+        <activity
+            android:name=".IntroActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!-- Marks -->
+        <activity
+            android:name=".marks.MarkListActivity"
+            android:label="@string/title_activity_mark_list"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.MarksTheme" />
+
+        <!-- Events -->
+        <activity
+            android:name=".events.EventListActivity"
+            android:label="@string/title_activity_event_list"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!-- Editor -->
+        <activity
+            android:name=".ManagerActivity"
+            android:label="@string/title_activity_manager"
+            android:parentActivityName=".marks.MarkListActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+
+        <!-- Viewer -->
+        <activity
+            android:name=".ViewerActivity"
+            android:label="@string/title_activity_mark_view"
+            android:parentActivityName=".marks.MarkListActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!-- Settings -->
+        <activity
+            android:name=".settings.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.SettingsTheme" />
+
+        <!-- Safe -->
+        <activity
+            android:name=".safe.SafeActivity"
+            android:label="@string/title_activity_safe"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!-- Task -->
+        <activity
+            android:name=".tasks.TasksActivity"
+            android:label="@string/title_activity_tasks"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <!-- Luck -->
+        <activity
+            android:name=".LuckActivity"
+            android:label="@string/title_activity_luck"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="it.liceoarzignano.bold.MainActivity" />
+        </activity>
+
+    </application>
+
+</manifest>

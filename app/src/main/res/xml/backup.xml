@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<full-backup-content>
+    <!-- Shared preferences -->
+    <include domain="sharedpref" path="AppVersionKey.xml" />
+    <include domain="sharedpref" path="IntroPrefs.xml" />
+    <include domain="sharedpref" path="com.google.android.gms.analytics.prefs.xml" />
+    <include domain="sharedpref" path="com.google.android.gms.measurement.prefs.xml" />
+    <include domain="sharedpref" path="it.liceoarzignano.bold_preferences.xml" />
+
+    <!-- Databases -->
+    <include domain="database" path="Event" />
+    <include domain="database" path="Event-journal" />
+    <include domain="database" path="Mark" />
+    <include domain="database" path="Mark-journal" />
+    <include domain="database" path="google_analytics_v4.db" />
+    <include domain="database" path="google_analytics_v4.db-journal" />
+    <include domain="database" path="google_app_measurement.db" />
+    <include domain="database" path="google_app_measurement.db-journal" />
+
+</full-backup-content>
