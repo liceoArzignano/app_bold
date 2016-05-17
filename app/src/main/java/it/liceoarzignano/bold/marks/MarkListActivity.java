@@ -43,7 +43,6 @@ public class MarkListActivity extends AppCompatActivity {
         viewIntent.putExtra("id", id);
 
         fContext.startActivity(viewIntent);
-
     }
 
     /**
@@ -148,6 +147,17 @@ public class MarkListActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         refreshList(getApplicationContext());
+    }
+
+    @Override
+    public void onBackPressed() {
+        // If showing single mark view, roll back to the "all" view
+        if (filter != null) {
+            Intent backIntent = new Intent(this, MarkListActivity.class);
+            startActivity(backIntent);
+
+        }
+        finish();
     }
 
     /**
