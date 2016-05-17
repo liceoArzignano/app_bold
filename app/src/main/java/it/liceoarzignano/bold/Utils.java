@@ -10,7 +10,7 @@ public class Utils {
     private static SharedPreferences preferences;
 
     /**
-     * Description:
+     
      * animate fab with delay
      *
      * @param show: boolean show / hide state
@@ -30,7 +30,7 @@ public class Utils {
     }
 
     /**
-     * Description:
+     
      * Force enable Google Analytics Tracker
      * if overlay requires it (used for test builds)
      *
@@ -45,7 +45,7 @@ public class Utils {
     }
 
     /**
-     * Description:
+     
      * SharedPreferences getters
      *
      * @param context: used to access SharedPreferences
@@ -78,8 +78,8 @@ public class Utils {
     }
 
     public static String appVersionKey(Context context) {
-        preferences = context.getSharedPreferences("AppVersionKey", Context.MODE_PRIVATE);
-        return preferences.getString("AppVersionKey", "0");
+        preferences = context.getSharedPreferences("HomePrefs", Context.MODE_PRIVATE);
+        return preferences.getString("appVersionKey", "0");
     }
 
     public static String userNameKey(Context context) {

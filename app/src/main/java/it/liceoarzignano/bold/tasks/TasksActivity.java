@@ -23,9 +23,7 @@ public class TasksActivity extends AppCompatActivity {
 
 
     private static Context fContext;
-    private Calendar calendar = Calendar.getInstance();
-
-    private DatabaseConnection databaseConnection;
+    private final Calendar calendar = Calendar.getInstance();
 
     private ArrayList<Integer> ids;
 
@@ -53,8 +51,6 @@ public class TasksActivity extends AppCompatActivity {
         mButton3 = (Button) findViewById(R.id.button3);
         mButton4 = (Button) findViewById(R.id.button4);
         mButton5 = (Button) findViewById(R.id.button5);
-
-        databaseConnection = DatabaseConnection.getInstance(fContext);
 
         ids = new ArrayList<>();
 

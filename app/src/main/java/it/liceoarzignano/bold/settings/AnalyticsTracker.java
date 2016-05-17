@@ -18,7 +18,6 @@ public class AnalyticsTracker {
     }
 
     /**
-     * Description:
      * Fire analytics Tracker
      *
      * @param context: used to initialize sInstance
@@ -30,7 +29,6 @@ public class AnalyticsTracker {
     }
 
     /**
-     * Description:
      * Get instance for the Tracker
      *
      * @return instance
@@ -44,7 +42,6 @@ public class AnalyticsTracker {
     }
 
     /**
-     * Description:
      * Initialize Tracker
      *
      * @return initialized Tracker
@@ -54,7 +51,6 @@ public class AnalyticsTracker {
     }
 
     /**
-     * Description:
      * Send an event to Google Analytics
      *
      * @param action:  event action name
@@ -73,7 +69,6 @@ public class AnalyticsTracker {
     }
 
     /**
-     * Description:
      * Load Tracker preferences from the xml config file
      *
      * @return Tracker with preferences

@@ -80,17 +80,6 @@
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
 
-        <!-- Luck -->
-        <activity
-            android:name=".LuckActivity"
-            android:label="@string/title_activity_luck"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="it.liceoarzignano.bold.MainActivity" />
-        </activity>
-
     </application>
 
 </manifest>

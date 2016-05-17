@@ -43,8 +43,8 @@ public class IntroActivity extends AppIntro2 {
 
     @Override
     public void onDonePressed() {
-        SharedPreferences.Editor editor = getSharedPreferences(MainActivity.INTRO_PREF, MODE_PRIVATE).edit();
-        editor.putBoolean(MainActivity.PREF_KEY_INTRO, true).apply();
+        SharedPreferences.Editor editor = getSharedPreferences("HomePrefs", MODE_PRIVATE).edit();
+        editor.putBoolean("introKey", true).apply();
         Intent i = new Intent(IntroActivity.this, MainActivity.class);
         startActivity(i);
         finish();

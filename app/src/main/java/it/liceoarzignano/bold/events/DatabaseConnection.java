@@ -53,7 +53,6 @@ public class DatabaseConnection extends SQLiteOpenHelper {
     }
 
     /**
-     * Description:
      * Event getter by id
      *
      * @param id: id of the event we're looking for
@@ -82,7 +81,6 @@ public class DatabaseConnection extends SQLiteOpenHelper {
     }
 
     /**
-     * Description:
      * Change event values without loosing id
      *
      * @param updatedEvent: new event with old id
@@ -104,7 +102,6 @@ public class DatabaseConnection extends SQLiteOpenHelper {
     }
 
     /**
-     * Description:
      * Add a new event with a new id
      *
      * @param event: new event
@@ -122,7 +119,6 @@ public class DatabaseConnection extends SQLiteOpenHelper {
     }
 
     /**
-     * Description:
      * Remove an event from the database
      *
      * @param eventToDelete: event to be deleted from database
@@ -147,7 +143,6 @@ public class DatabaseConnection extends SQLiteOpenHelper {
     }
 
     /**
-     * Description
      * Get the event row id
      *
      * @param event: event we're looking for
@@ -166,7 +161,6 @@ public class DatabaseConnection extends SQLiteOpenHelper {
 
 
     /**
-     * Description:
      * Get all the events in the database
      *
      * @return return a ListArray of all the Events
@@ -194,7 +188,6 @@ public class DatabaseConnection extends SQLiteOpenHelper {
     }
 
     /**
-     * Description:
      * set right NEXT_ROW_ID_NUMBER when adding an event
      */
     private void setupNextRowIdNumber() {

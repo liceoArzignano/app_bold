@@ -21,7 +21,6 @@
     <string name="nav_help">Guida</string>
     <string name="nav_settings">Impostazioni</string>
     <string name="nav_safe">Safe</string>
-    <string name="nav_luck">Selettore casuale</string>
     <string name="nav_tasks">Agenda settimanale</string>
 
     <!-- Home -->
@@ -219,12 +218,6 @@
     <string name="tasks_update_content_dialog">Scrivi il nuovo valore</string>
     <string name="tasks_update_hint_student">Materia\u2026</string>
     <string name="tasks_update_hint_teacher">Classe\u2026</string>
-
-    <!-- Luck -->
-    <string name="title_activity_luck">Selezione casuale</string>
-    <string name="luck_max">Valore massimo</string>
-    <string name="luck_num">Numero di valori</string>
-    <string name="luck_text_base">Valori selezionati:</string>
 
     <!-- Accessibility -->
     <string name="accessibility_drawer">Intestazione</string>

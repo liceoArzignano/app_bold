@@ -56,36 +56,6 @@ public class DatabaseConnection extends SQLiteOpenHelper {
     }
 
     /**
-     * Description:
-     * Task getter by id
-     *
-     * @param id: id of the task we're looking for
-     * @return task with the id we asked
-     */
-    public Task getTask(int id) {
-        Task task = null;
-
-        String selection = KEY_ID + "=?";
-        String[] selectionArgs = new String[]{String.valueOf(id)};
-        String limit = String.valueOf(1);
-        SQLiteDatabase database = getReadableDatabase();
-        Cursor cursor = database.query(
-                TABLE_TASKS, null, selection, selectionArgs, null, null, null, limit);
-
-        if (cursor.moveToFirst()) {
-            task = new Task(
-                    Integer.parseInt(cursor.getString(cursor.getColumnIndex(KEY_ID))),
-                    cursor.getString(cursor.getColumnIndex(KEY_TITLE)),
-                    Integer.parseInt(cursor.getString(cursor.getColumnIndex(KEY_DAY))),
-                    Integer.parseInt(cursor.getString(cursor.getColumnIndex(KEY_STAGE))));
-        }
-        cursor.close();
-        database.close();
-        return task;
-    }
-
-    /**
-     * Description:
      * Change task values without loosing id
      *
      * @param updatedTask: new task with old id
@@ -107,7 +77,6 @@ public class DatabaseConnection extends SQLiteOpenHelper {
     }
 
     /**
-     * Description:
      * Add a new task with a new id
      *
      * @param task: new task
@@ -125,32 +94,6 @@ public class DatabaseConnection extends SQLiteOpenHelper {
     }
 
     /**
-     * Description:
-     * Remove an task from the database
-     *
-     * @param taskToDelete: task to be deleted from database
-     */
-    public void deleteTask(Task taskToDelete) {
-        if (taskToDelete.getId() == -1) {
-            int taskId = findTaskRowId(taskToDelete);
-
-            if (taskId == -1) {
-                return;
-            } else {
-                taskToDelete.setId(taskId);
-            }
-        }
-
-        String whereClause = KEY_ID + "=?";
-        String[] whereArgs = new String[]{
-                String.valueOf(taskToDelete.getId())
-        };
-        SQLiteDatabase database = getWritableDatabase();
-        database.delete(TABLE_TASKS, whereClause, whereArgs);
-    }
-
-    /**
-     * Description
      * Get the task row id
      *
      * @param task: task we're looking for
@@ -169,7 +112,6 @@ public class DatabaseConnection extends SQLiteOpenHelper {
 
 
     /**
-     * Description:
      * Get all the tasks in the database
      *
      * @return return a ListArray of all the Tasks
@@ -197,7 +139,6 @@ public class DatabaseConnection extends SQLiteOpenHelper {
     }
 
     /**
-     * Description:
      * Get all the tasks in the database
      *
      * @return return a ListArray of all the Tasks
@@ -225,23 +166,7 @@ public class DatabaseConnection extends SQLiteOpenHelper {
         return tasks;
     }
 
-    public Task getTaskByPosition(int day, int stage) {
-        List<Task> tasks = getAllTasks();
-
-        for (Task taskInList : tasks) {
-            if (taskInList.getDay() == day &&
-                    taskInList.getStage() == stage) {
-                return taskInList;
-            } else {
-                taskInList.getStage();
-            }
-        }
-
-        return new Task(Resources.getSystem().getString(R.string.tasks_nothing), 0, 0);
-    }
-
     /**
-     * Description:
      * set right NEXT_ROW_ID_NUMBER when adding an task
      */
     private void setupNextRowIdNumber() {

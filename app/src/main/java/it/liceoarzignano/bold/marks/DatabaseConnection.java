@@ -52,7 +52,6 @@ public class DatabaseConnection extends SQLiteOpenHelper {
     }
 
     /**
-     * Description:
      * Mark getter by id
      *
      * @param id: id of the mark we're looking for
@@ -82,7 +81,6 @@ public class DatabaseConnection extends SQLiteOpenHelper {
     }
 
     /**
-     * Description:
      * Change mark values without loosing id
      *
      * @param updatedMark: new mark with old id
@@ -104,7 +102,6 @@ public class DatabaseConnection extends SQLiteOpenHelper {
     }
 
     /**
-     * Description:
      * Add a new mark with a new id
      *
      * @param mark: new mark
@@ -122,7 +119,6 @@ public class DatabaseConnection extends SQLiteOpenHelper {
     }
 
     /**
-     * Description:
      * Remove a mark from the database
      *
      * @param markToDelete: mark to be deleted from database
@@ -147,7 +143,6 @@ public class DatabaseConnection extends SQLiteOpenHelper {
     }
 
     /**
-     * Description
      * Get the mark row id
      *
      * @param mark: mark we're looking for
@@ -165,7 +160,6 @@ public class DatabaseConnection extends SQLiteOpenHelper {
     }
 
     /**
-     * Description:
      * Get all the marks in the database
      *
      * @return return a ListArray of all the marks
@@ -192,7 +186,6 @@ public class DatabaseConnection extends SQLiteOpenHelper {
     }
 
     /**
-     * Description:
      * Get a ListArray of all the marks with a defined title.
      *
      * @param filter: title-filter for ListArray
@@ -224,7 +217,6 @@ public class DatabaseConnection extends SQLiteOpenHelper {
     }
 
     /**
-     * Description:
      * set right NEXT_ROW_ID_NUMBER when adding a mark
      */
     private void setupNextRowIdNumber() {
@@ -238,7 +230,6 @@ public class DatabaseConnection extends SQLiteOpenHelper {
     }
 
     /**
-     * Description:
      * get the average value of all the marks that match
      * a filter
      *
@@ -262,7 +253,6 @@ public class DatabaseConnection extends SQLiteOpenHelper {
     }
 
     /**
-     * Description:
      * get the next mark we should get to have an
      * average major or equal 6.0
      *

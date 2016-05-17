@@ -3,7 +3,7 @@ apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion "23.0.3"
 
 
     applicationVariants.all { variant ->
@@ -21,7 +21,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0.9"
+        versionName "1.0.10"
         vectorDrawables.useSupportLibrary = true
     }
 

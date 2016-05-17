@@ -18,12 +18,7 @@ public class MarksListFragment extends Fragment {
 
     }
 
-    public static ListView getMarksListView() {
-        return mMarksListView;
-    }
-
     /**
-     * Description:
      * Update the ListView content
      *
      * @param context: needed to reload database data

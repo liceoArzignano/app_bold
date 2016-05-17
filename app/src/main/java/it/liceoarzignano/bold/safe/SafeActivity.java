@@ -140,7 +140,6 @@ public class SafeActivity extends AppCompatActivity {
     }
 
     /**
-     * Description:
      * Xposed can inject code by hacking the runtime, if xposed is installed
      * do not allow user to open this activity for security reasons
      *
@@ -163,7 +162,6 @@ public class SafeActivity extends AppCompatActivity {
     }
 
     /**
-     * Description:
      * Ask password as soon as the activity starts.
      * It's used both for first time setup and
      * normal access
@@ -217,7 +215,6 @@ public class SafeActivity extends AppCompatActivity {
     }
 
     /**
-     * Description:
      * Fire encryption stuffs
      */
     private void setupEncryption() {
@@ -225,7 +222,6 @@ public class SafeActivity extends AppCompatActivity {
     }
 
     /**
-     * Description:
      * Encrypt a given string
      *
      * @param s: string to be encrypted
@@ -236,7 +232,6 @@ public class SafeActivity extends AppCompatActivity {
     }
 
     /**
-     * Description:
      * Decrypt a string
      *
      * @param s: string to be decrypted
@@ -247,7 +242,7 @@ public class SafeActivity extends AppCompatActivity {
     }
 
     /**
-     * Description:
+     
      * Check if password is right and update UI
      */
     private void validateLogin() {
@@ -266,7 +261,6 @@ public class SafeActivity extends AppCompatActivity {
     }
 
     /**
-     * Description:
      * Password is fine, let's decrypt other
      * data and setup up the UI to be show and edit stored
      * data
@@ -356,7 +350,6 @@ public class SafeActivity extends AppCompatActivity {
     }
 
     /**
-     * Description:
      * Reset the safe data when user wants to change the password
      */
     private void safeReset() {

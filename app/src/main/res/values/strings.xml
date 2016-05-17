@@ -21,7 +21,6 @@
     <string name="nav_help">Help</string>
     <string name="nav_settings">Settings</string>
     <string name="nav_safe">Safe</string>
-    <string name="nav_luck">Random picker</string>
     <string name="nav_tasks">Weekly tasks</string>
 
     <!-- Home -->
@@ -41,6 +40,7 @@
     <string name="suggestion_mark_helper">Write the topic of the test in the mark to manage marks better.</string>
     <string name="suggestion_get_touch">Need to get in touch with the school? You can call or send an email from the settings</string>
     <string name="suggestion_address">You can\'t find a subject int the list? Check the address in the settings</string>
+    <string name="suggestion_tasks">You\'re not good at remembering school schedule? Write it down in the task list</string>
     <string name="suggestion_suggestions">Suggestions annoy you? Turn them off from the settings</string>
 
     <!-- Updated Dialog -->
@@ -206,14 +206,6 @@
     <string name="safe_setup_checking_password"><b>Checking password\u2026</b></string>
     <string name="safe_nomatch"><b>Password does not match.</b></string>
 
-    <!-- Accessibility -->
-    <string name="accessibility_drawer">Header</string>
-    <string name="accessibility_welcome">Welcome picture</string>
-    <string name="accessibility_event_icon">Event icon</string>
-    <string name="accessibility_safe_icon">Safe status icon</string>
-    <string name="accessibility_safe_show">Show / Hide icon</string>
-    <string name="accessibility_manager">Header picture</string>
-
     <!-- Tasks -->
     <string name="title_activity_tasks">Tasks</string>
     <string name="week_day_1">Monday</string>
@@ -228,10 +220,11 @@
     <string name="tasks_update_hint_student">Subject\u2026</string>
     <string name="tasks_update_hint_teacher">Class\u2026</string>
 
-    <!-- Luck -->
-    <string name="title_activity_luck">LuckActivity</string>
-    <string name="luck_max">Max value</string>
-    <string name="luck_num">Number of values</string>
-    <string name="luck_text_base">Picked values:</string>
-
+    <!-- Accessibility -->
+    <string name="accessibility_drawer">Header</string>
+    <string name="accessibility_welcome">Welcome picture</string>
+    <string name="accessibility_event_icon">Event icon</string>
+    <string name="accessibility_safe_icon">Safe status icon</string>
+    <string name="accessibility_safe_show">Show / Hide icon</string>
+    <string name="accessibility_manager">Header picture</string>
 </resources>

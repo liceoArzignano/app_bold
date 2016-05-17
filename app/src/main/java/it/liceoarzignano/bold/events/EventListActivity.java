@@ -20,7 +20,6 @@ public class EventListActivity extends AppCompatActivity {
     private static Context fContext;
 
     /**
-     * Description:
      * Update the ListView content
      *
      * @param context: needed to reload database data
@@ -32,7 +31,6 @@ public class EventListActivity extends AppCompatActivity {
     }
 
     /**
-     * Description:
      * Fire ViewerActivity and pass the selected event data
      *
      * @param id: event id

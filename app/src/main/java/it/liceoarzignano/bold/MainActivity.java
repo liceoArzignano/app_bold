@@ -50,27 +50,36 @@ import it.liceoarzignano.bold.tasks.TasksActivity;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static final String INTRO_PREF = "IntroPrefs";
-    public static final String PREF_KEY_INTRO = "IntroPrefKey";
     private static final String APP_VERSION = "1.0.10";
-    private static final String APP_VERSION_KEY = "AppVersionKey";
-    private final Calendar c = Calendar.getInstance();
+
+    // Header
     private TextView mUserName;
     private static ImageView mAddressLogo;
+
+    // Chrome custom tabs
     private CustomTabsClient mClient;
     private CustomTabsSession mCustomTabsSession;
     private CustomTabsIntent customTabsIntent;
     private String mUrl;
+
+    // Welcome card
     private CardView mWelcomeCard;
+
+    // Upcoming card
     private View mUpcomingCardSeparatorView;
     private CardView mUpcomingCard;
-    private TextView mTitle1, mTitle2, mTitle3;
-    private TextView mSec1, mSec2, mSec3;
-    private LinearLayout mLLayout1, mLLayout2, mLLayout3;
+    private TextView     mUpcomingTitle1,  mUpcomingTitle2,  mUpcomingTitle3;
+    private TextView     mUpcomingDate1,   mUpcomingDate2,   mUpcomingDate3;
+    private LinearLayout mUpcomingLayout1, mUpcomingLayout2, mUpcomingLayout3;
     private Button mMoreEventsButton;
+
+    // Suggestions card
+    private View mSuggestionCardSeparatorView;
     private CardView mSuggestionCard;
     private TextView mSuggestionText;
-    private View mSuggestionCardSeparatorView;
+
+    private final Calendar c = Calendar.getInstance();
+
     private boolean showUpcomingCard;
     private boolean showSuggestionCard;
 
@@ -103,11 +112,10 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        assert drawer != null;
+
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        assert navigationView != null;
         navigationView.setNavigationItemSelectedListener(this);
         View mHeaderView = navigationView.getHeaderView(0);
         mUserName = (TextView) mHeaderView.findViewById(R.id.username_drawer);
@@ -120,15 +128,15 @@ public class MainActivity extends AppCompatActivity
 
         // Events Card
         mUpcomingCardSeparatorView = findViewById(R.id.upcomingCardSeparatorView);
-        mLLayout1 = (LinearLayout) findViewById(R.id.upcomingLayout1);
-        mLLayout2 = (LinearLayout) findViewById(R.id.upcomingLayout2);
-        mLLayout3 = (LinearLayout) findViewById(R.id.upcomingLayout3);
-        mTitle1 = (TextView) findViewById(R.id.proactive_title_1);
-        mTitle2 = (TextView) findViewById(R.id.proactive_title_2);
-        mTitle3 = (TextView) findViewById(R.id.proactive_title_3);
-        mSec1 = (TextView) findViewById(R.id.proactive_sec_1);
-        mSec2 = (TextView) findViewById(R.id.proactive_sec_2);
-        mSec3 = (TextView) findViewById(R.id.proactive_sec_3);
+        mUpcomingLayout1 = (LinearLayout) findViewById(R.id.upcomingLayout1);
+        mUpcomingLayout2 = (LinearLayout) findViewById(R.id.upcomingLayout2);
+        mUpcomingLayout3 = (LinearLayout) findViewById(R.id.upcomingLayout3);
+        mUpcomingTitle1 = (TextView) findViewById(R.id.proactive_title_1);
+        mUpcomingTitle2 = (TextView) findViewById(R.id.proactive_title_2);
+        mUpcomingTitle3 = (TextView) findViewById(R.id.proactive_title_3);
+        mUpcomingDate1 = (TextView) findViewById(R.id.proactive_sec_1);
+        mUpcomingDate2 = (TextView) findViewById(R.id.proactive_sec_2);
+        mUpcomingDate3 = (TextView) findViewById(R.id.proactive_sec_3);
         mMoreEventsButton = (Button) findViewById(R.id.more_events_button);
         mMoreEventsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -249,10 +257,6 @@ public class MainActivity extends AppCompatActivity
                 Intent safeIntent = new Intent(MainActivity.this, SafeActivity.class);
                 startActivity(safeIntent);
                 break;
-            case R.id.nav_luck:
-                Intent luckIntent = new Intent(MainActivity.this, LuckActivity.class);
-                startActivity(luckIntent);
-                break;
             case R.id.nav_tasks:
                 Intent taskIntent = new Intent(MainActivity.this, TasksActivity.class);
                 startActivity(taskIntent);
@@ -265,7 +269,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     * Description:
      * Open a chrome custom tab with the selected url and send
      * an Analytics event.
      * If there's no chrome / chromium 46+ it will
@@ -307,7 +310,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     * Description:
      * Show the first 3 events in the following 7 days in
      * a card with their titles and dates.
      * If there are more events a flat button will tell
@@ -318,9 +320,9 @@ public class MainActivity extends AppCompatActivity
         int c = 0;
         List<Event> events
                 = new DatabaseConnection(getApplicationContext()).getAllEvents();
-        mLLayout1.setVisibility(View.GONE);
-        mLLayout2.setVisibility(View.GONE);
-        mLLayout3.setVisibility(View.GONE);
+        mUpcomingLayout1.setVisibility(View.GONE);
+        mUpcomingLayout2.setVisibility(View.GONE);
+        mUpcomingLayout3.setVisibility(View.GONE);
         showUpcomingCard = false;
 
         for (Event eventInList : events) {
@@ -328,21 +330,21 @@ public class MainActivity extends AppCompatActivity
                 switch (i) {
                     case 0:
                         showUpcomingCard = true;
-                        mTitle1.setText(eventInList.getTitle());
-                        mSec1.setText(eventInList.getValue());
-                        mLLayout1.setVisibility(View.VISIBLE);
+                        mUpcomingTitle1.setText(eventInList.getTitle());
+                        mUpcomingDate1.setText(eventInList.getValue());
+                        mUpcomingLayout1.setVisibility(View.VISIBLE);
                         i++;
                         break;
                     case 1:
-                        mTitle2.setText(eventInList.getTitle());
-                        mSec2.setText(eventInList.getValue());
-                        mLLayout2.setVisibility(View.VISIBLE);
+                        mUpcomingTitle2.setText(eventInList.getTitle());
+                        mUpcomingDate2.setText(eventInList.getValue());
+                        mUpcomingLayout2.setVisibility(View.VISIBLE);
                         i++;
                         break;
                     case 2:
-                        mTitle3.setText(eventInList.getTitle());
-                        mSec3.setText(eventInList.getValue());
-                        mLLayout3.setVisibility(View.VISIBLE);
+                        mUpcomingTitle3.setText(eventInList.getTitle());
+                        mUpcomingDate3.setText(eventInList.getValue());
+                        mUpcomingLayout3.setVisibility(View.VISIBLE);
                         i++;
                         break;
                 }
@@ -360,7 +362,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     * Description:
      * Check if stringDate is one of the next 7 days
      *
      * @param stringDate: string date from event database
@@ -385,7 +386,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     * Description:
      * Show and set up suggestions card
      * if user enabled it from settings
      */
@@ -399,7 +399,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     * Description:
      * Get random suggestion text to be shown in
      * the suggestions card
      *
@@ -414,24 +413,23 @@ public class MainActivity extends AppCompatActivity
             case 2:
                 return getString(R.string.suggestion_avg);
             case 3:
-                return getString(R.string.suggestion_avg);
+                return getString(R.string.suggestion_tut);
             case 4:
-                return getString(R.string.suggestion_address);
-            case 5:
                 return getString(R.string.suggestion_edit_event);
+            case 5:
+                return getString(R.string.suggestion_mark_helper);
             case 6:
                 return getString(R.string.suggestion_get_touch);
             case 7:
-                return getString(R.string.suggestion_mark_helper);
+                return getString(R.string.suggestion_address);
             case 8:
-                return getString(R.string.suggestion_tut);
+                return getString(R.string.suggestion_tasks);
             default:
                 return getString(R.string.suggestion_suggestions);
         }
     }
 
     /**
-     * Description:
      * Show cards with delay so
      * animated LinearLayout will make
      * a nice enter effect
@@ -468,15 +466,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     * Description:
      * Show the intro / tutorial activity
      * if it's the first time we fire the app
      *
      * @param force: if true shows the intro even if the user has already seen it
      */
     private void showIntroIfNeeded(boolean force) {
-        SharedPreferences prefs = getSharedPreferences(INTRO_PREF, MODE_PRIVATE);
-        if (!prefs.getBoolean(PREF_KEY_INTRO, false) || force) {
+        SharedPreferences prefs = getSharedPreferences("HomePrefs", MODE_PRIVATE);
+        if (!prefs.getBoolean("introKey", false) || force) {
             Intent i = new Intent(MainActivity.this, IntroActivity.class);
             startActivity(i);
             finish();
@@ -484,22 +481,21 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     * Description:
      * Show welcome / changelog dialog
      * when the app is installed / updated
      *
      * @param context: used to get SharedPreferences
      */
     private void showWelcomeIfNeeded(Context context) {
-        SharedPreferences prefs = getSharedPreferences(INTRO_PREF, MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("HomePrefs", MODE_PRIVATE);
 
-        if (!prefs.getBoolean(PREF_KEY_INTRO, false)) {
+        if (!prefs.getBoolean("introKey", false)) {
             // If we're showing intro, don't display dialog
             return;
         }
 
         final SharedPreferences.Editor editor =
-                getSharedPreferences(APP_VERSION_KEY, MODE_PRIVATE).edit();
+                getSharedPreferences("HomePrefs", MODE_PRIVATE).edit();
 
         switch (Utils.appVersionKey(this)) {
             case APP_VERSION:
@@ -513,8 +509,9 @@ public class MainActivity extends AppCompatActivity
                         .canceledOnTouchOutside(false)
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                editor.putString(APP_VERSION_KEY, APP_VERSION).apply();
+                            public void onClick(@NonNull MaterialDialog dialog,
+                                                @NonNull DialogAction which) {
+                                editor.putString("appVersionKey", APP_VERSION).apply();
                                 Intent settingsIntent = new Intent(MainActivity.this,
                                         SettingsActivity.class);
                                 startActivity(settingsIntent);
@@ -531,8 +528,9 @@ public class MainActivity extends AppCompatActivity
                         .canceledOnTouchOutside(false)
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                editor.putString(APP_VERSION_KEY, APP_VERSION).apply();
+                            public void onClick(@NonNull MaterialDialog dialog,
+                                                @NonNull DialogAction which) {
+                                editor.putString("appVersionKey", APP_VERSION).apply();
                             }
                         })
                         .show();
@@ -541,7 +539,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     * Description:
      * Update navigation header
      * according to user settings
      */

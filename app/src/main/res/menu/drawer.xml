@@ -53,10 +53,6 @@
             android:id="@+id/nav_safe"
             android:icon="@drawable/ic_safe"
             android:title="@string/nav_safe" />
-        <item
-            android:id="@+id/nav_luck"
-            android:icon="@drawable/ic_random"
-            android:title="@string/nav_luck" />
     </group>
     <group
         android:id="@+id/nav_prefs"

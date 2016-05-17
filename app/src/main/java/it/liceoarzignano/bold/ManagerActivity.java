@@ -194,7 +194,7 @@ public class ManagerActivity extends AppCompatActivity
     }
 
     /**
-     * Description:
+     
      * Parse intent data to set up the UI
      */
     private void setupFromIntent() {
@@ -287,7 +287,7 @@ public class ManagerActivity extends AppCompatActivity
     }
 
     /**
-     * Description:
+     
      * Save the mark / event using data collected from the various
      * UI components
      *
@@ -354,7 +354,7 @@ public class ManagerActivity extends AppCompatActivity
     }
 
     /**
-     * Description:
+     
      * Convert calendar dialog results to a string that will be
      * saved in the events database.
      * Format: yyyy-mm-dd

@@ -31,7 +31,6 @@ public class MarkListActivity extends AppCompatActivity {
     private TabLayout tabLayout;
 
     /**
-     * Description:
      * Fire ViewerActivity and pass the selected mark data
      *
      * @param id: mark id
@@ -48,7 +47,6 @@ public class MarkListActivity extends AppCompatActivity {
     }
 
     /**
-     * Description:
      * Update the ListView content
      *
      * @param context: needed to reload database data
@@ -62,7 +60,6 @@ public class MarkListActivity extends AppCompatActivity {
     }
 
     /**
-     * Description:
      * Restart this activity with a filter for the ListView content
      *
      * @param filter: title filter
@@ -75,7 +72,6 @@ public class MarkListActivity extends AppCompatActivity {
     }
 
     /**
-     * Description:
      * Initialize the viewpager and add the needed fragments
      *
      * @param viewPager: the viewpager we're going to play with
@@ -155,7 +151,6 @@ public class MarkListActivity extends AppCompatActivity {
     }
 
     /**
-     * Description:
      * Check if user defined a valid address (or is a teacher)
      *
      * @param fromMenu: inform if it's been called from the fab (false) or a menu icon (true)
