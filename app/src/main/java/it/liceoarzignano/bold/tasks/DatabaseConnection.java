@@ -2,15 +2,12 @@ package it.liceoarzignano.bold.tasks;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import it.liceoarzignano.bold.R;
 
 public class DatabaseConnection extends SQLiteOpenHelper {
 
@@ -91,23 +88,6 @@ public class DatabaseConnection extends SQLiteOpenHelper {
         database.insert(TABLE_TASKS, null, contentValues);
         NEXT_ROW_ID_NUMBER++;
         database.close();
-    }
-
-    /**
-     * Get the task row id
-     *
-     * @param task: task we're looking for
-     * @return int with row id
-     */
-    private int findTaskRowId(Task task) {
-        List<Task> tasks = getAllTasks();
-
-        for (Task taskInList : tasks) {
-            if (taskInList.equals(task)) {
-                return taskInList.getId();
-            }
-        }
-        return -1;
     }
 
 

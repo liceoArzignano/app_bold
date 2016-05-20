@@ -18,14 +18,7 @@
     <color name="card_background_default">#fefefe</color>
     <color name="text_secondary">#333333</color>
 
-    <color name="slide0_color">#D32F2F</color>
-    <color name="slide1_color">#7B1FA2</color>
-    <color name="slide2_color">#1976D2</color>
-    <color name="slide3_color">#00796B</color>
-    <color name="slide4_color">#689F38</color>
-    <color name="slide5_color">#FBC02D</color>
-    <color name="slide6_color">#F57C00</color>
-    <color name="slide7_color">#5D4037</color>
+    <color name="slide_color">@color/colorPrimary</color>
 
     <color name="address_1">@color/yellow</color>
     <color name="address_2">#2196F3</color>

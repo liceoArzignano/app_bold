@@ -71,7 +71,8 @@ public class EventListActivity extends AppCompatActivity {
         });
 
         refreshList(fContext);
-        Utils.animFab(true, fab);
+        Utils.animFabIntro(this, fab, getString(R.string.intro_fab_event),
+                getString(R.string.intro_gotit), "eventKey");
     }
 
     @Override

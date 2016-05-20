@@ -28,6 +28,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import it.liceoarzignano.bold.R;
+import it.liceoarzignano.bold.Utils;
 
 public class SafeActivity extends AppCompatActivity {
 
@@ -317,7 +318,8 @@ public class SafeActivity extends AppCompatActivity {
             }
         });
 
-        mFab.show();
+        Utils.animFabIntro(this, mFab,
+                getString(R.string.intro_fab_save_safe), getString(R.string.intro_gotit), "safeKey");
 
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -99,11 +99,6 @@ public class TasksActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

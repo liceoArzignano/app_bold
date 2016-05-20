@@ -51,6 +51,7 @@ import it.liceoarzignano.bold.safe.SafeActivity;
 import it.liceoarzignano.bold.settings.AnalyticsTracker;
 import it.liceoarzignano.bold.settings.SettingsActivity;
 import it.liceoarzignano.bold.tasks.TasksActivity;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -59,37 +60,180 @@ public class MainActivity extends AppCompatActivity
 
     private static Resources res;
     private static Context sContext;
-
-    // Header
-    private TextView mUserName;
     private static ImageView mAddressLogo;
-
+    private final Calendar c = Calendar.getInstance();
+    // Header
+    private Toolbar toolbar;
+    private TextView mUserName;
     // Chrome custom tabs
     private CustomTabsClient mClient;
     private CustomTabsSession mCustomTabsSession;
     private CustomTabsIntent customTabsIntent;
     private String mUrl;
-
     // Welcome card
     private CardView mWelcomeCard;
-
     // Upcoming card
     private View mUpcomingCardSeparatorView;
     private CardView mUpcomingCard;
-    private TextView     mUpcomingTitle1,  mUpcomingTitle2,  mUpcomingTitle3;
-    private TextView     mUpcomingDate1,   mUpcomingDate2,   mUpcomingDate3;
+    private TextView mUpcomingTitle1, mUpcomingTitle2, mUpcomingTitle3;
+    private TextView mUpcomingDate1, mUpcomingDate2, mUpcomingDate3;
     private LinearLayout mUpcomingLayout1, mUpcomingLayout2, mUpcomingLayout3;
     private Button mMoreEventsButton;
-
     // Suggestions card
     private View mSuggestionCardSeparatorView;
     private CardView mSuggestionCard;
     private TextView mSuggestionText;
-
-    private final Calendar c = Calendar.getInstance();
-
     private boolean showUpcomingCard;
     private boolean showSuggestionCard;
+
+    /**
+     * @return content for notification
+     */
+    public static String getTomorrowInfo() {
+        Calendar today = Calendar.getInstance();
+        String content = null;
+        int icon;
+        int test = 0;
+        int atSchool = 0;
+        int birthday = 0;
+        int hangout = 0;
+        int other = 0;
+
+        List<Event> events = new DatabaseConnection(sContext).getAllEvents();
+        List<Event> tomorrowEvents = new ArrayList<>();
+
+        // Create tomorrow events list
+        for (Event event : events) {
+            if (Utils.rightDate(today.get(Calendar.YEAR), today.get(Calendar.MONTH) + 1,
+                    today.get(Calendar.DAY_OF_MONTH) + 1).equals(event.getValue())) {
+                tomorrowEvents.add(event);
+            }
+        }
+
+        if (tomorrowEvents.size() == 0) {
+            return null;
+        }
+
+        // Get data
+        for (Event event : tomorrowEvents) {
+            icon = event.getIcon();
+            switch (icon) {
+                case 0:
+                    test++;
+                    break;
+                case 1:
+                    atSchool++;
+                    break;
+                case 2:
+                    birthday++;
+                    break;
+            }
+            if (Utils.isTeacher(sContext)) {
+                switch (icon) {
+                    case 3:
+                        hangout++;
+                        break;
+                    case 4:
+                        other++;
+                        break;
+                }
+            } else {
+                if (icon == 3) {
+                    other++;
+                }
+            }
+        }
+
+        // Test
+        if (test > 0) {
+            // First element
+            content = res.getQuantityString(R.plurals.notification_message_first, test, test)
+                    + " " + res.getQuantityString(R.plurals.notification_test, test, test);
+        }
+
+        // School
+        if (atSchool > 0) {
+            if (test == 0) {
+                // First element
+                content = res.getQuantityString(R.plurals.notification_message_first,
+                        atSchool, atSchool) + " ";
+            } else {
+                if (birthday == 0 && hangout == 0 && other == 0) {
+                    // Last of us
+                    content += " " + String.format(
+                            res.getString(R.string.notification_message_last), atSchool);
+                } else {
+                    // Just another one
+                    content += String.format(res.getString(R.string.notification_message_half),
+                            atSchool);
+                }
+            }
+            content += " " + res.getQuantityString(R.plurals.notification_school,
+                    atSchool, atSchool);
+        }
+
+        // Birthday
+        if (birthday > 0) {
+            if (test == 0 && atSchool == 0) {
+                // First element
+                content = res.getQuantityString(R.plurals.notification_message_first,
+                        birthday, birthday) + " ";
+            } else {
+                if (hangout == 0 && other == 0) {
+                    // Last of us
+                    content += " " + String.format(res.getString(R.string.notification_message_last),
+                            birthday);
+                } else {
+                    // Just another one
+                    content += String.format(res.getString(R.string.notification_message_half),
+                            birthday);
+                }
+            }
+            content += " " + res.getQuantityString(R.plurals.notification_birthday,
+                    birthday, birthday);
+        }
+
+        // Hangout
+        if (hangout > 0 && Utils.isTeacher(sContext)) {
+            if (test == 0 && atSchool == 0 && birthday == 0) {
+                // First element
+                content = res.getQuantityString(R.plurals.notification_message_first,
+                        hangout, hangout) + " ";
+            } else {
+                if (other == 0) {
+                    // Last of us
+                    content += " " + String.format(res.getString(R.string.notification_message_last),
+                            hangout);
+                } else {
+                    // Just another one
+                    content += String.format(res.getString(R.string.notification_message_half),
+                            atSchool);
+                }
+            }
+            content += " " + res.getQuantityString(R.plurals.notification_meeting,
+                    hangout, hangout);
+        }
+
+        // Other
+        if (other > 0) {
+            if (test == 0 && atSchool == 0 && birthday == 0 && hangout == 0) {
+                // First element
+                content = res.getQuantityString(R.plurals.notification_message_first,
+                        other, other);
+                content += " ";
+            } else {
+                // Last of us
+                content += String.format(res.getString(R.string.notification_message_last),
+                        other);
+            }
+            content += " " + res.getQuantityString(R.plurals.notification_other,
+                    other, other);
+        }
+
+        content += " " + res.getString(R.string.notification_message_end);
+
+        return content;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,17 +260,18 @@ public class MainActivity extends AppCompatActivity
 
         // UI
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // Navigation drawer
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-
+        //noinspection ConstantConditions
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        //noinspection ConstantConditions
         navigationView.setNavigationItemSelectedListener(this);
         View mHeaderView = navigationView.getHeaderView(0);
         mUserName = (TextView) mHeaderView.findViewById(R.id.username_drawer);
@@ -135,9 +280,9 @@ public class MainActivity extends AppCompatActivity
 
         // Welcome Card
         mWelcomeCard = (CardView) findViewById(R.id.card_1);
-        mUpcomingCard = (CardView) findViewById(R.id.upcomingCard);
 
         // Events Card
+        mUpcomingCard = (CardView) findViewById(R.id.upcomingCard);
         mUpcomingCardSeparatorView = findViewById(R.id.upcomingCardSeparatorView);
         mUpcomingLayout1 = (LinearLayout) findViewById(R.id.upcomingLayout1);
         mUpcomingLayout2 = (LinearLayout) findViewById(R.id.upcomingLayout2);
@@ -421,7 +566,7 @@ public class MainActivity extends AppCompatActivity
      */
     private String getSuggestion() {
         Random random = new Random();
-        switch (random.nextInt(9) + 1) {
+        switch (random.nextInt(10) + 1) {
             case 1:
                 return getString(Utils.hasSafe(this) ?
                         R.string.suggestion_safe_pwd : R.string.suggestion_safe);
@@ -439,8 +584,10 @@ public class MainActivity extends AppCompatActivity
                 return getString(R.string.suggestion_address);
             case 8:
                 return getString(R.string.suggestion_tasks);
-            default:
+            case 9:
                 return getString(R.string.suggestion_suggestions);
+            default:
+                return getString(R.string.suggestion_notification);
         }
     }
 
@@ -514,8 +661,12 @@ public class MainActivity extends AppCompatActivity
 
         switch (Utils.appVersionKey(this)) {
             case APP_VERSION:
-                return;
+                break;
             case "0":
+                // Used for feature discovery
+                final String today = Utils.rightDate(c.get(Calendar.YEAR), c.get(Calendar.MONTH),
+                        c.get(Calendar.DAY_OF_MONTH));
+
                 new MaterialDialog.Builder(context)
                         .title(getString(R.string.dialog_first_title))
                         .content(getString(R.string.dialog_first_content))
@@ -527,6 +678,7 @@ public class MainActivity extends AppCompatActivity
                             public void onClick(@NonNull MaterialDialog dialog,
                                                 @NonNull DialogAction which) {
                                 editor.putString("appVersionKey", APP_VERSION).apply();
+                                editor.putString("initialDayKey", today).apply();
                                 Intent settingsIntent = new Intent(MainActivity.this,
                                         SettingsActivity.class);
                                 startActivity(settingsIntent);
@@ -551,6 +703,15 @@ public class MainActivity extends AppCompatActivity
                         .show();
                 break;
         }
+
+        new MaterialShowcaseView.Builder(this)
+                .setTarget(toolbar.getChildAt(1))
+                .setContentText(getString(R.string.intro_drawer))
+                .setDelay(20)
+                .singleUse("drawerIntro")
+                .setDismissOnTargetTouch(true)
+                .setDismissText(getString(R.string.intro_gotit))
+                .show();
     }
 
     /**
@@ -585,7 +746,6 @@ public class MainActivity extends AppCompatActivity
 
     /**
      * Create notification that will be fired later
-     *
      */
     private void makeEventNotification() {
         Calendar calendar = Calendar.getInstance();
@@ -606,148 +766,9 @@ public class MainActivity extends AppCompatActivity
         }
 
         Intent intent = new Intent(MainActivity.this, AlarmService.class);
-        AlarmManager alarmManager = (AlarmManager) this.getSystemService(this.ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager) this.getSystemService(ALARM_SERVICE);
         PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, 0);
         alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
-    }
-
-
-    /**
-     *
-     * @return content for notification
-     */
-    public static String getTomorrowInfo() {
-        Calendar today = Calendar.getInstance();
-        String content = null;
-        int icon;
-        int test = 0;
-        int atSchool = 0;
-        int birthday = 0;
-        int hangout = 0;
-        int other = 0;
-
-        List<Event> events = new DatabaseConnection(sContext).getAllEvents();
-        List<Event> tomorrowEvents = new ArrayList<>();
-
-        // Create tomorrow events list
-        for (Event event : events) {
-            if (Utils.rightDate(today.get(Calendar.YEAR), today.get(Calendar.MONTH) + 1,
-                    today.get(Calendar.DAY_OF_MONTH) + 1).equals(event.getValue())) {
-                tomorrowEvents.add(event);
-            }
-        }
-
-        if (tomorrowEvents.size() == 0) {
-            return null;
-        }
-
-        // Get data
-        for (Event event : tomorrowEvents) {
-            icon = event.getIcon();
-            switch (icon) {
-                case 0: test++; break;
-                case 1: atSchool++; break;
-                case 2: birthday++; break;
-            }
-            if (Utils.isTeacher(sContext)) {
-                switch (icon) {
-                    case 3: hangout++; break;
-                    case 4: other++; break;
-                }
-            } else {
-                if (icon == 3) {
-                    other++;
-                }
-            }
-        }
-
-        // Test
-        if (test > 0) {
-            // First element
-            content = res.getQuantityString(R.plurals.notification_message_first, test, test)
-                    + " " + res.getQuantityString(R.plurals.notification_test, test, test);
-        }
-
-        // School
-        if (atSchool > 0) {
-            if (test == 0) {
-                // First element
-                content = res.getQuantityString(R.plurals.notification_message_first,
-                        atSchool, atSchool) + " ";
-            } else {
-                if (birthday == 0 && hangout == 0 && other == 0) {
-                    // Last of us
-                    content += " " + String.format(
-                            res.getString(R.string.notification_message_last), atSchool);
-                } else {
-                    // Just another one
-                    content += String.format(res.getString(R.string.notification_message_half),
-                            atSchool);
-                }
-            }
-            content += " " + res.getQuantityString(R.plurals.notification_school,
-                    atSchool, atSchool);
-        }
-
-        // Birthday
-        if (birthday > 0) {
-            if (test == 0 && atSchool == 0) {
-                // First element
-                content = res.getQuantityString(R.plurals.notification_message_first,
-                        birthday, birthday) + " ";
-            } else {
-                if (hangout == 0 && other == 0) {
-                    // Last of us
-                    content += " " + String.format(res.getString(R.string.notification_message_last),
-                            birthday);
-                } else {
-                    // Just another one
-                    content += String.format(res.getString(R.string.notification_message_half),
-                            birthday);
-                }
-            }
-            content += " " + res.getQuantityString(R.plurals.notification_birthday,
-                    birthday, birthday);
-        }
-
-        // Hangout
-        if (hangout > 0 && Utils.isTeacher(sContext)) {
-            if (test == 0 && atSchool == 0 && birthday == 0) {
-                // First element
-                content = res.getQuantityString(R.plurals.notification_message_first,
-                        hangout, hangout) + " ";
-            } else {
-                if (other == 0) {
-                    // Last of us
-                    content += " " + String.format(res.getString(R.string.notification_message_last),
-                            hangout);
-                } else {
-                    // Just another one
-                    content += String.format(res.getString(R.string.notification_message_half),
-                            atSchool);
-                }
-            }
-            content += " " + res.getQuantityString(R.plurals.notification_meeting,
-                    hangout, hangout);
-        }
-
-        // Other
-        if (other > 0) {
-            if (test == 0 && atSchool == 0 && birthday == 0 && hangout == 0) {
-                // First element
-                content = res.getQuantityString(R.plurals.notification_message_first,
-                        other, other);
-                content += " ";
-            } else {
-                // Last of us
-                content += String.format(res.getString(R.string.notification_message_last),
-                        other);
-            }
-            content += " " + res.getQuantityString(R.plurals.notification_other,
-                    other, other);
-        }
-
-        return content;
     }
 
 }

@@ -62,11 +62,6 @@ public class AverageListFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstance) {
-        super.onCreate(savedInstance);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstance) {
         Context context = container.getContext();

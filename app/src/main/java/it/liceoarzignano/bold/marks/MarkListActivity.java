@@ -127,7 +127,9 @@ public class MarkListActivity extends AppCompatActivity {
         });
 
         if (filter == null) {
-            Utils.animFab(true, fab);
+            Utils.animFabIntro(this, fab,
+                    getString(R.string.intro_fab_mark), getString(R.string.intro_gotit),
+                    "markListIntro");
         } else {
             String title = getString(R.string.title_filter) + " " + filter
                     + " " + getString(R.string.title_filter_end);

@@ -1,6 +1,6 @@
 package it.liceoarzignano.bold.tasks;
 
-public class Task {
+class Task {
 
     private int id;
     private String title;
@@ -24,7 +24,7 @@ public class Task {
         return id;
     }
 
-    public void setId(int id) {
+    private void setId(int id) {
         this.id = id;
     }
 

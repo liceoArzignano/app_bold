@@ -41,6 +41,7 @@
     <string name="suggestion_get_touch">Hai bisogno di contattare l\'istituto? Dalle impostazioni potrai scrivere un\'email o telefonare alla segreteria</string>
     <string name="suggestion_address">Non trovi una materia nella lista? Controlla l\'indirizzo nelle impostazioni</string>
     <string name="suggestion_suggestions">I suggerimenti ti infastidiscono? Disattivali dalle impostazioni</string>
+    <string name="suggestion_notification">Se domani si verificheranno degli eventi, l\'app te lo dir\u00E0 il giorno prima</string>
 
     <!-- Updated Dialog -->
     <string name="dialog_first_title">Benvenuto!</string>
@@ -107,22 +108,20 @@
     <string name="title_activity_event_list">I miei eventi</string>
 
     <!-- Welcome -->
-    <string name="slide0_title">Benvenuto</string>
-    <string name="slide0_message">Benvenuto al Liceo L. Da Vinci. Ora, ti verr\u00E0 spiegato come utilizzare quest\'app. Scorri per cominciare.</string>
-    <string name="slide1_title">Menu laterale</string>
-    <string name="slide1_message">Scorrendo dal bordo sinistro del tuo dispositivo, aprirai il menu laterale, dal quale accederai alle varie sezioni dell\'app.</string>
-    <string name="slide2_title">Voti</string>
-    <string name="slide2_message">Gestisci i tuoi voti. Puoi aggiungere tutti i voti che vuoi e vedere le medie in tempo reale.</string>
-    <string name="slide3_title">Eventi</string>
-    <string name="slide3_message">Potrai registrare vari eventi quali verifiche, compleanni e quan\'t altro.</string>
-    <string name="slide4_title">Sito</string>
-    <string name="slide4_message">Dal menu laterale potrai accedere ai siti della scuola, quali registro, circolari e quant\'altro.</string>
-    <string name="slide5_title">Safe</string>
-    <string name="slide5_message">Troppe password? Con Safe dovrai ricordarne solamente una perch\u00E9 potrai salvare tutte le altre in un unico posto.</string>
-    <string name="slide6_title">Docente?</string>
-    <string name="slide6_message">Anche i docenti possono utilizzare quest\'app, attiva la relativa opzione dalle impostazioni e l\'app si adatter\u00E0.</string>
-    <string name="slide7_title">Fatto</string>
-    <string name="slide7_message">Complimenti! Hai imparato ad utilizzare l\'app, fanne buon uso!</string>
+    <string name="slide0_title">I tuoi contenuti</string>
+    <string name="slide0_message">Gestisci i tuoi voti, le date delle verifiche e molto altro</string>
+    <string name="slide1_title">Safe</string>
+    <string name="slide1_message">Con Safe, potrai registrare in modo sicuro tutte le password della scuola</string>
+    <string name="slide2_title">Docente?</string>
+    <string name="slide2_message">Anche i docenti possono utilizzare quest\'app. Attivando l\'apposita opzione l\'app di adatter\u00E0</string>
+    <string name="intro_drawer">Scorri da qui per navigare nelle varie sezioni dell\'app</string>
+    <string name="intro_fab_mark">Clicca qui per aggiungere un nuovo voto</string>
+    <string name="intro_fab_event">Clicca qui per creare un nuovo evento</string>
+    <string name="intro_fab_save_mark_student">Scegli la materia, seleziona il voto con lo slider e poi salva premendo questo pulsante</string>
+    <string name="intro_fab_save_mark_teacher">Scrivi il nome dello studente, seleziona il voto con lo slider e poi salva premendo questo pulsante</string>
+    <string name="intro_fab_save_event">Scrivi il nome dell\'evento, seleziona la categoria e la data. Poi premi questo pulsante per salvare</string>
+    <string name="intro_fab_save_safe">Puoi registrare i tuoi dati qui. Per vedere ci\u00F2 che \u00E8 scritto, clicca sull\'occhio. Quando hai finito, ricordati di salvare premendo qui</string>
+    <string name="intro_gotit">OK, capito</string>
 
     <!-- Subjects -->
     <string name="subject_italian">Italiano</string>
@@ -234,7 +233,7 @@
     </plurals>
     <string name="notification_message_half">, %1$d</string>
     <string name="notification_message_last">" e %1$d"</string>
-    <string name="notification_message">domani</string>
+    <string name="notification_message_end">domani</string>
     <plurals name="notification_test">
         <item quantity="one">compito</item>
         <item quantity="other">compiti</item>

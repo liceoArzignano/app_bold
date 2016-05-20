@@ -25,6 +25,7 @@ public class AlarmService extends IntentService {
         PendingIntent pendingIntent = PendingIntent.getActivity(this.getApplicationContext(),
                 0, notifIntent, 0);
 
+        //noinspection AccessStaticViaInstance
         NotificationManager mManager = (NotificationManager) getSystemService(this
                 .getApplicationContext().NOTIFICATION_SERVICE);
 
@@ -41,10 +42,5 @@ public class AlarmService extends IntentService {
         if (message != null) {
             mManager.notify(21, mBuilder.build());
         }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
     }
 }

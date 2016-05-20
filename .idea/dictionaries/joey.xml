@@ -21,6 +21,7 @@
       <w>eventview</w>
       <w>frtw</w>
       <w>getintouch</w>
+      <w>gotit</w>
       <w>instagram</w>
       <w>istruzione</w>
       <w>lastest</w>
@@ -30,6 +31,7 @@
       <w>listview</w>
       <w>mailto</w>
       <w>markview</w>
+      <w>materialshowcase</w>
       <w>mobilesdk</w>
       <w>moodle</w>
       <w>mymarks</w>
@@ -38,6 +40,8 @@
       <w>noaddress</w>
       <w>nomatch</w>
       <w>noteacher</w>
+      <w>notif</w>
+      <w>notificationtime</w>
       <w>numero</w>
       <w>pacakge</w>
       <w>registroelettronico</w>
@@ -46,6 +50,7 @@
       <w>scientifico</w>
       <w>scienze</w>
       <w>sharedpref</w>
+      <w>sharedprefs</w>
       <w>signin</w>
       <w>sito</w>
       <w>sociale</w>

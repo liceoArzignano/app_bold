@@ -1,9 +1,7 @@
 package it.liceoarzignano.bold;
 
-import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -36,7 +34,6 @@ import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.events.EventListActivity;
 import it.liceoarzignano.bold.marks.Mark;
 import it.liceoarzignano.bold.marks.MarkListActivity;
-import it.liceoarzignano.bold.events.AlarmService;
 
 public class ManagerActivity extends AppCompatActivity
         implements AdapterView.OnItemSelectedListener {
@@ -52,7 +49,6 @@ public class ManagerActivity extends AppCompatActivity
     private TextView mMarkPreview;
     private SeekBar mMarkSeekBar;
     private Button mDatePicker;
-    private FloatingActionButton fab;
     private Toolbar toolbar;
     private Context context;
 
@@ -111,7 +107,7 @@ public class ManagerActivity extends AppCompatActivity
         mMarkPreview = (TextView) findViewById(R.id.mark_preview);
         mMarkSeekBar = (SeekBar) findViewById(R.id.mark_seek);
         mDatePicker = (Button) findViewById(R.id.datepicker_button);
-        fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         context = this;
 
         callingIntent = getIntent();
@@ -194,7 +190,12 @@ public class ManagerActivity extends AppCompatActivity
             }
         });
 
-        Utils.animFab(true, fab);
+        Utils.animFabIntro(this, fab,
+                isMark ? getString(Utils.isTeacher(this) ?
+                        R.string.intro_fab_save_mark_teacher :
+                        R.string.intro_fab_save_mark_student) :
+                        getString(R.string.intro_fab_save_event),
+                getString(R.string.intro_gotit), isMark ? "markKey" : "eventKey");
     }
 
     /**

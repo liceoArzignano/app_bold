@@ -1,16 +1,24 @@
 package it.liceoarzignano.bold;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+
+@SuppressWarnings("SameParameterValue")
 public class Utils {
     private static SharedPreferences preferences;
 
     /**
-     
      * animate fab with delay
      *
      * @param show: boolean show / hide state
@@ -30,7 +38,34 @@ public class Utils {
     }
 
     /**
-     
+     * Animate fab and showcase it
+     * @param context: used to create materialshowcase
+     * @param fab: fab that will be animated and exposed
+     * @param text: showcase text
+     * @param dismiss: dismiss showcase text
+     * @param key: showcase key to show it only the first time
+     */
+    public static void animFabIntro(final Activity context,
+                                    final FloatingActionButton fab,
+                                    final String text, final String dismiss, final String key) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                fab.show();
+                new MaterialShowcaseView.Builder(context)
+                        .setTarget(fab)
+                        .setContentText(text)
+                        .setDelay(20)
+                        .singleUse(key)
+                        .setDismissOnTargetTouch(true)
+                        .setDismissText(dismiss)
+                        .show();
+            }
+        }, 500);
+
+    }
+
+    /**
      * Force enable Google Analytics Tracker
      * if overlay requires it (used for test builds)
      *
@@ -42,6 +77,16 @@ public class Utils {
             SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
             editor.putBoolean("analytics_key", true).apply();
         }
+    }
+
+    /**
+     * Getter for HomePrefs' initialDayKey
+     * @param context: used to get sharedprefs
+     * @return the date of the day the first usage happened
+     */
+    private static String getFirstUsageDate(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences("HomePrefs", Context.MODE_PRIVATE);
+        return prefs.getString("initialDayKey", "2000-01-01");
     }
 
     /**
@@ -69,7 +114,39 @@ public class Utils {
     }
 
     /**
-     
+     * Use for adaptive feature discovery
+     * TODO: implement ^^^^
+     * @param context: used to call getFirstUsageDate(Context)
+     * @param today: today date (will be confronted)
+     * @return true if user has been using this for more than one week
+     */
+    public static boolean hasUsedForMoreThanOneWeek(Context context, String today) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ITALIAN);
+        String first = getFirstUsageDate(context);
+
+        if (first.equals("2000-01-01")) {
+            return false;
+        }
+
+        try {
+            Date date = format.parse(today);
+            Calendar c = Calendar.getInstance();
+            Calendar d = Calendar.getInstance();
+            d.setTimeInMillis(date.getTime());
+            date = format.parse(first);
+            c.setTimeInMillis(date.getTime());
+
+            int diff = d.get(Calendar.DAY_OF_YEAR) - c.get(Calendar.DAY_OF_YEAR);
+
+            return c.get(Calendar.YEAR) == d.get(Calendar.YEAR) && diff > 7;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    /**
      * SharedPreferences getters
      *
      * @param context: used to access SharedPreferences
