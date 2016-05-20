@@ -23,7 +23,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -56,7 +55,7 @@ import it.liceoarzignano.bold.tasks.TasksActivity;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String APP_VERSION = "1.0.10";
+    private static final String APP_VERSION = "1.0.11";
 
     private static Resources res;
     private static Context sContext;

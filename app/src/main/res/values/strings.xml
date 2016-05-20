@@ -51,11 +51,10 @@
     <string name="dialog_first_positive">Configure now</string>
     <string name="dialog_updated_title">App has been updated</string>
     <string name="dialog_updated_content">
-        \u2022 New: Updated colors for Android 6.0+.\n
-        \u2022 New: Tasks.\n
-        \u2022 New: Updated marks and average UI.\n
-        \u2022 New: Random number selector.\n
-        \u2022 Performance improvements
+        \u2022 New: Events notifications.\n
+        \u2022 Removed: Random selector.\n
+        \u2022 Performance improvements on older devices.\n
+        \u2022 Bug fix.
     </string>
 
     <!-- Manager -->

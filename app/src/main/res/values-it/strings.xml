@@ -50,11 +50,10 @@
     <string name="dialog_first_negative">Non ora</string>
     <string name="dialog_updated_title">L\'app \u00E8 stata aggiornata!</string>
     <string name="dialog_updated_content">
-        \u2022 Nuovo: Colori aggiornati per Android 6.0+.\n
-        \u2022 Nuovo: Agenda settimanale.\n
-        \u2022 Nuovo: Aggiornata schermata vista voti e medie.\n
-        \u2022 Nuovo: Selettore numeri casuale.\n
-        \u2022 Miglioramenti prestazioni
+        \u2022 Nuovo: Notifiche eventi.\n
+        \u2022 Rimosso: Selettore numeri casuali.\n
+        \u2022 Miglioramenti performances su dispositivi datati.\n
+        \u2022 Bug fix.
     </string>
 
     <!-- Manager -->

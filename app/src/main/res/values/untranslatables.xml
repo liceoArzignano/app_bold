@@ -16,6 +16,6 @@
     <string name="pref_address_4" translatable="false">Scienze Umane</string>
     <string name="pref_address_5" translatable="false">Scienze Umane Economico-Sociale</string>
 
-    <!-- Update APP_VERSION in MainActivity.java and the build.gradle file too when this is changed -->
-    <string name="pref_app_version_summary" translatable="false">Liceo 1.0.10</string>
+    <!-- Update APP_VERSION in MainActivity.java, the build.gradle file and strings.xml too when this is changed -->
+    <string name="pref_app_version_summary" translatable="false">Liceo 1.0.11</string>
 </resources>
