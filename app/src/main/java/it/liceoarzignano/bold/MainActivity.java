@@ -1,9 +1,12 @@
 package it.liceoarzignano.bold;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,6 +23,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -32,12 +36,14 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
+import it.liceoarzignano.bold.events.AlarmService;
 import it.liceoarzignano.bold.events.DatabaseConnection;
 import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.events.EventListActivity;
@@ -51,6 +57,9 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String APP_VERSION = "1.0.10";
+
+    private static Resources res;
+    private static Context sContext;
 
     // Header
     private TextView mUserName;
@@ -87,14 +96,17 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        res = getResources();
+        sContext = getApplicationContext();
+
         // Google Analytics
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Utils.enableTrackerIfOverlayRequests(getApplicationContext(),
+                Utils.enableTrackerIfOverlayRequests(sContext,
                         getResources().getBoolean(R.bool.force_tracker));
-                if (Utils.trackerEnabled(getApplicationContext())) {
-                    AnalyticsTracker.initializeTracker(getApplicationContext());
+                if (Utils.trackerEnabled(sContext)) {
+                    AnalyticsTracker.initializeTracker(sContext);
                     AnalyticsTracker.getInstance().get();
                 }
             }
@@ -147,6 +159,10 @@ public class MainActivity extends AppCompatActivity
         });
         upcomingEvents();
 
+        if (Utils.hasNotification(sContext)) {
+            makeEventNotification();
+        }
+
         // Suggestions Card
         mSuggestionCardSeparatorView = findViewById(R.id.suggestionSeparatorView);
         mSuggestionCard = (CardView) findViewById(R.id.suggestionCard);
@@ -173,7 +189,7 @@ public class MainActivity extends AppCompatActivity
                     }
                 };
 
-        CustomTabsClient.bindCustomTabsService(getApplicationContext(), "com.android.chrome",
+        CustomTabsClient.bindCustomTabsService(sContext, "com.android.chrome",
                 mCustomTabsServiceConnection);
 
         customTabsIntent = new CustomTabsIntent.Builder(mCustomTabsSession)
@@ -278,7 +294,7 @@ public class MainActivity extends AppCompatActivity
      */
     private void showWebViewUI(int index) {
         if (Utils.trackerEnabled(this)) {
-            AnalyticsTracker.trackEvent("WebPage: " + index, getApplicationContext());
+            AnalyticsTracker.trackEvent("WebPage: " + index, sContext);
         }
 
         switch (index) {
@@ -319,7 +335,7 @@ public class MainActivity extends AppCompatActivity
         int i = 0;
         int c = 0;
         List<Event> events
-                = new DatabaseConnection(getApplicationContext()).getAllEvents();
+                = new DatabaseConnection(sContext).getAllEvents();
         mUpcomingLayout1.setVisibility(View.GONE);
         mUpcomingLayout2.setVisibility(View.GONE);
         mUpcomingLayout3.setVisibility(View.GONE);
@@ -444,7 +460,7 @@ public class MainActivity extends AppCompatActivity
             public void run() {
                 mWelcomeCard.setVisibility(View.VISIBLE);
             }
-        }, 100);
+        }, 50);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -453,7 +469,7 @@ public class MainActivity extends AppCompatActivity
                     mUpcomingCardSeparatorView.setVisibility(View.VISIBLE);
                 }
             }
-        }, 200);
+        }, 70);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -462,7 +478,7 @@ public class MainActivity extends AppCompatActivity
                     mSuggestionCardSeparatorView.setVisibility(View.VISIBLE);
                 }
             }
-        }, 300);
+        }, 90);
     }
 
     /**
@@ -568,5 +584,171 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Create notification that will be fired later
+     *
+     */
+    private void makeEventNotification() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, c.get(Calendar.YEAR));
+        calendar.set(Calendar.MONTH, c.get(Calendar.MONTH));
+        calendar.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH) + 1);
+
+        switch (Utils.getNotificationTime(sContext)) {
+            case "0":
+                calendar.set(Calendar.HOUR_OF_DAY, 6);
+                break;
+            case "1":
+                calendar.set(Calendar.HOUR_OF_DAY, 15);
+                break;
+            case "2":
+                calendar.set(Calendar.HOUR_OF_DAY, 21);
+                break;
+        }
+
+        Intent intent = new Intent(MainActivity.this, AlarmService.class);
+        AlarmManager alarmManager = (AlarmManager) this.getSystemService(this.ALARM_SERVICE);
+        PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, 0);
+        alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+    }
+
+
+    /**
+     *
+     * @return content for notification
+     */
+    public static String getTomorrowInfo() {
+        Calendar today = Calendar.getInstance();
+        String content = null;
+        int icon;
+        int test = 0;
+        int atSchool = 0;
+        int birthday = 0;
+        int hangout = 0;
+        int other = 0;
+
+        List<Event> events = new DatabaseConnection(sContext).getAllEvents();
+        List<Event> tomorrowEvents = new ArrayList<>();
+
+        // Create tomorrow events list
+        for (Event event : events) {
+            if (Utils.rightDate(today.get(Calendar.YEAR), today.get(Calendar.MONTH) + 1,
+                    today.get(Calendar.DAY_OF_MONTH) + 1).equals(event.getValue())) {
+                tomorrowEvents.add(event);
+            }
+        }
+
+        if (tomorrowEvents.size() == 0) {
+            return null;
+        }
+
+        // Get data
+        for (Event event : tomorrowEvents) {
+            icon = event.getIcon();
+            switch (icon) {
+                case 0: test++; break;
+                case 1: atSchool++; break;
+                case 2: birthday++; break;
+            }
+            if (Utils.isTeacher(sContext)) {
+                switch (icon) {
+                    case 3: hangout++; break;
+                    case 4: other++; break;
+                }
+            } else {
+                if (icon == 3) {
+                    other++;
+                }
+            }
+        }
+
+        // Test
+        if (test > 0) {
+            // First element
+            content = res.getQuantityString(R.plurals.notification_message_first, test, test)
+                    + " " + res.getQuantityString(R.plurals.notification_test, test, test);
+        }
+
+        // School
+        if (atSchool > 0) {
+            if (test == 0) {
+                // First element
+                content = res.getQuantityString(R.plurals.notification_message_first,
+                        atSchool, atSchool) + " ";
+            } else {
+                if (birthday == 0 && hangout == 0 && other == 0) {
+                    // Last of us
+                    content += " " + String.format(
+                            res.getString(R.string.notification_message_last), atSchool);
+                } else {
+                    // Just another one
+                    content += String.format(res.getString(R.string.notification_message_half),
+                            atSchool);
+                }
+            }
+            content += " " + res.getQuantityString(R.plurals.notification_school,
+                    atSchool, atSchool);
+        }
+
+        // Birthday
+        if (birthday > 0) {
+            if (test == 0 && atSchool == 0) {
+                // First element
+                content = res.getQuantityString(R.plurals.notification_message_first,
+                        birthday, birthday) + " ";
+            } else {
+                if (hangout == 0 && other == 0) {
+                    // Last of us
+                    content += " " + String.format(res.getString(R.string.notification_message_last),
+                            birthday);
+                } else {
+                    // Just another one
+                    content += String.format(res.getString(R.string.notification_message_half),
+                            birthday);
+                }
+            }
+            content += " " + res.getQuantityString(R.plurals.notification_birthday,
+                    birthday, birthday);
+        }
+
+        // Hangout
+        if (hangout > 0 && Utils.isTeacher(sContext)) {
+            if (test == 0 && atSchool == 0 && birthday == 0) {
+                // First element
+                content = res.getQuantityString(R.plurals.notification_message_first,
+                        hangout, hangout) + " ";
+            } else {
+                if (other == 0) {
+                    // Last of us
+                    content += " " + String.format(res.getString(R.string.notification_message_last),
+                            hangout);
+                } else {
+                    // Just another one
+                    content += String.format(res.getString(R.string.notification_message_half),
+                            atSchool);
+                }
+            }
+            content += " " + res.getQuantityString(R.plurals.notification_meeting,
+                    hangout, hangout);
+        }
+
+        // Other
+        if (other > 0) {
+            if (test == 0 && atSchool == 0 && birthday == 0 && hangout == 0) {
+                // First element
+                content = res.getQuantityString(R.plurals.notification_message_first,
+                        other, other);
+                content += " ";
+            } else {
+                // Last of us
+                content += String.format(res.getString(R.string.notification_message_last),
+                        other);
+            }
+            content += " " + res.getQuantityString(R.plurals.notification_other,
+                    other, other);
+        }
+
+        return content;
+    }
 
 }

@@ -183,6 +183,14 @@
     <string name="pref_drop_marks_dialog_title">Clear all marks</string>
     <string name="pref_drop_marks_dialog_message">You\'re going to erase all your saved marks. You should do this only when a new school period begins. You <b>cannot</b> undo this action.\nDo you still want to proceed?</string>
     <string name="pref_drop_marks_toast">All the marks have been erased!</string>
+    <string name="pref_notif">Notifications</string>
+    <string name="pref_notification_title">Show events notifications</string>
+    <string name="pref_notification_summary">Get notification about tomorrow events</string>
+    <string name="pref_notification_time_title">Notification appearance time</string>
+    <string name="pref_notification_time_dialog_title">Choose when the notification should appear</string>
+    <string name="pref_notification_time_morning">In the morning</string>
+    <string name="pref_notification_time_afternoon">In the afternoon</string>
+    <string name="pref_notification_time_evening">In the evening</string>
 
     <!-- Safe -->
     <string name="title_activity_safe">Safe</string>
@@ -219,6 +227,36 @@
     <string name="tasks_update_content_dialog">Write the new task</string>
     <string name="tasks_update_hint_student">Subject\u2026</string>
     <string name="tasks_update_hint_teacher">Class\u2026</string>
+
+    <!-- Notification -->
+    <string name="notification_title">Upcoming events</string>
+    <plurals name="notification_message_first">
+        <item quantity="one">There is one</item>
+        <item quantity="other">There are %d</item>
+    </plurals>
+    <string name="notification_message_half">, %1$d</string>
+    <string name="notification_message_last">" and %1$d"</string>
+    <string name="notification_message">tomorrow</string>
+    <plurals name="notification_test">
+        <item quantity="one">test</item>
+        <item quantity="other">tests</item>
+    </plurals>
+    <plurals name="notification_school">
+        <item quantity="one">event at school</item>
+        <item quantity="other">events at school</item>
+    </plurals>
+    <plurals name="notification_birthday">
+        <item quantity="one">birthday</item>
+        <item quantity="other">birthdays</item>
+    </plurals>
+    <plurals name="notification_meeting">
+        <item quantity="one">meeting</item>
+        <item quantity="other">meetings</item>
+    </plurals>
+    <plurals name="notification_other">
+        <item quantity="one">event</item>
+        <item quantity="other">events</item>
+    </plurals>
 
     <!-- Accessibility -->
     <string name="accessibility_drawer">Header</string>

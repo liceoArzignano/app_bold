@@ -182,6 +182,14 @@
     <string name="pref_drop_marks_dialog_title">Elimina voti</string>
     <string name="pref_drop_marks_dialog_message">Stai cancellando tutti i tuoi voti. Dovresti far questo solo quando \u00E8 iniziato un nuovo quadrimestre. <b>Non potrai annulare quest\'azione</b>.\nVuoi procedere?</string>
     <string name="pref_drop_marks_toast">Tutti i voti sono stati cancellati!</string>
+    <string name="pref_notif">Notifiche</string>
+    <string name="pref_notification_title">Mostra notifiche per eventi</string>
+    <string name="pref_notification_summary">Ottieni informazioni sugli eventi di domani</string>
+    <string name="pref_notification_time_title">Orario comparsa notifiche</string>
+    <string name="pref_notification_time_dialog_title">Scegli quando far comparire le notifiche</string>
+    <string name="pref_notification_time_morning">Mattina</string>
+    <string name="pref_notification_time_afternoon">Pomeriggio</string>
+    <string name="pref_notification_time_evening">Sera</string>
 
     <!-- Safe -->
     <string name="title_activity_safe">Safe</string>
@@ -218,6 +226,36 @@
     <string name="tasks_update_content_dialog">Scrivi il nuovo valore</string>
     <string name="tasks_update_hint_student">Materia\u2026</string>
     <string name="tasks_update_hint_teacher">Classe\u2026</string>
+
+    <!-- Notification -->
+    <string name="notification_title">Prossimi eventi</string>
+    <plurals name="notification_message_first">
+        <item quantity="one">C\'\u00E8 un</item>
+        <item quantity="other">Ci sono %d</item>
+    </plurals>
+    <string name="notification_message_half">, %1$d</string>
+    <string name="notification_message_last">" e %1$d"</string>
+    <string name="notification_message">domani</string>
+    <plurals name="notification_test">
+        <item quantity="one">compito</item>
+        <item quantity="other">compiti</item>
+    </plurals>
+    <plurals name="notification_school">
+        <item quantity="one">evento a scuola</item>
+        <item quantity="other">eventi a scuola</item>
+    </plurals>
+    <plurals name="notification_birthday">
+        <item quantity="one">compleanno</item>
+        <item quantity="other">compleanni</item>
+    </plurals>
+    <plurals name="notification_meeting">
+        <item quantity="one">colloquio</item>
+        <item quantity="other">colloqui</item>
+    </plurals>
+    <plurals name="notification_other">
+        <item quantity="one">evento generico</item>
+        <item quantity="other">evento generico</item>
+    </plurals>
 
     <!-- Accessibility -->
     <string name="accessibility_drawer">Intestazione</string>

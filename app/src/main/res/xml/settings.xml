@@ -45,6 +45,25 @@
             android:title="@string/pref_metrics_title" />
 
     </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_notif">
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="notification_key"
+        android:summary="@string/pref_notification_summary"
+        android:title="@string/pref_notification_title" />
+
+    <ListPreference
+        android:dependency="notification_key"
+        android:dialogTitle="@string/pref_notification_time_dialog_title"
+        android:entries="@array/pref_entries_notification_time"
+        android:entryValues="@array/pref_entryvalues_notification_time"
+        android:key="notificationtime_key"
+        android:summary="%s"
+        android:defaultValue="2"
+        android:title="@string/pref_notification_time_title" />
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/pref_info">
 
         <Preference

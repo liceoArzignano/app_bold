@@ -96,4 +96,16 @@
         <item>@string/pref_address_4</item>
         <item>@string/pref_address_5</item>
     </string-array>
+
+    <string-array name="pref_entryvalues_notification_time" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string-array name="pref_entries_notification_time" translatable="false">
+        <item>@string/pref_notification_time_morning</item>
+        <item>@string/pref_notification_time_afternoon</item>
+        <item>@string/pref_notification_time_evening</item>
+    </string-array>
 </resources>

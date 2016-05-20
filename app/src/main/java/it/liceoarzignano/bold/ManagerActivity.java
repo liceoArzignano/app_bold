@@ -1,7 +1,9 @@
 package it.liceoarzignano.bold;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,6 +36,7 @@ import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.events.EventListActivity;
 import it.liceoarzignano.bold.marks.Mark;
 import it.liceoarzignano.bold.marks.MarkListActivity;
+import it.liceoarzignano.bold.events.AlarmService;
 
 public class ManagerActivity extends AppCompatActivity
         implements AdapterView.OnItemSelectedListener {
@@ -50,6 +53,7 @@ public class ManagerActivity extends AppCompatActivity
     private SeekBar mMarkSeekBar;
     private Button mDatePicker;
     private FloatingActionButton fab;
+    private Toolbar toolbar;
     private Context context;
 
     private int objID; // id | id
@@ -66,11 +70,11 @@ public class ManagerActivity extends AppCompatActivity
             mYear = year;
             mMonth = monthOfYear + 1;
             mDay = dayOfMonth;
-            mDate = rightDate(mYear, mMonth, mDay);
+            mDate = Utils.rightDate(mYear, mMonth, mDay);
             mDatePicker.setText(getString(R.string.current_date) + " " + mDate);
         }
     };
-    private Toolbar toolbar;
+
     private boolean editMode = false;
     private boolean isMark = true;
     private Intent callingIntent;
@@ -194,7 +198,6 @@ public class ManagerActivity extends AppCompatActivity
     }
 
     /**
-     
      * Parse intent data to set up the UI
      */
     private void setupFromIntent() {
@@ -235,7 +238,7 @@ public class ManagerActivity extends AppCompatActivity
             mYear = calendar.get(Calendar.YEAR);
             mMonth = calendar.get(Calendar.MONTH) + 1;
             mDay = calendar.get(Calendar.DAY_OF_MONTH);
-            mDate = rightDate(mYear, mMonth, mDay);
+            mDate = Utils.rightDate(mYear, mMonth, mDay);
             mDatePicker.setText(getString(R.string.current_date) + " " + mDate);
             mDatePicker.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -287,7 +290,6 @@ public class ManagerActivity extends AppCompatActivity
     }
 
     /**
-     
      * Save the mark / event using data collected from the various
      * UI components
      *
@@ -295,87 +297,85 @@ public class ManagerActivity extends AppCompatActivity
      */
     private void save(final View fabView) {
         if (isMark) {
-            // Save mark
-            if (Utils.isTeacher(this)) {
-                objTitle = mTitleInput.getText().toString();
-            }
-
-            if (!objTitle.isEmpty() && objVal != 0) {
-                Utils.animFab(false, fab);
-                it.liceoarzignano.bold.marks.DatabaseConnection databaseConnection =
-                        it.liceoarzignano.bold.marks.DatabaseConnection.getInstance(context);
-                Mark markToSave = new Mark(objID, objTitle,
-                        objVal, mNotesInput.getText().toString());
-                if (editMode) {
-                    databaseConnection.updateMark(markToSave);
-                } else {
-                    databaseConnection.addMark(markToSave);
-                }
-                Snackbar.make(fabView, getString(R.string.saved), Snackbar.LENGTH_SHORT).show();
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent markList = new Intent(context, MarkListActivity.class);
-                        startActivity(markList);
-                        finish();
-                    }
-                }, 1000);
-            } else {
-                Snackbar.make(fabView, getString(R.string.manager_invalid),
-                        Snackbar.LENGTH_SHORT).show();
-
-            }
+            saveMark(fabView);
         } else {
             // Save event
-            objTitle = mTitleInput.getText().toString();
-            if (!objTitle.isEmpty()) {
-                Utils.animFab(false, fab);
-                it.liceoarzignano.bold.events.DatabaseConnection databaseConnection =
-                        it.liceoarzignano.bold.events.DatabaseConnection.getInstance(context);
-                Event eventToSave = new Event(objID, objTitle, mDate, mEventSpinner.getSelectedItemPosition());
-                if (editMode) {
-                    databaseConnection.updateEvent(eventToSave);
-                } else {
-                    databaseConnection.addEvent(eventToSave);
-                }
-                Snackbar.make(fabView, getString(R.string.saved), Snackbar.LENGTH_SHORT).show();
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent eventList = new Intent(context, EventListActivity.class);
-                        startActivity(eventList);
-                        finish();
-                    }
-                }, 1000);
-            } else {
-                Snackbar.make(fabView, getString(R.string.manager_invalid), Snackbar.LENGTH_SHORT).show();
-            }
+            saveEvent(fabView);
         }
     }
 
     /**
-     
-     * Convert calendar dialog results to a string that will be
-     * saved in the events database.
-     * Format: yyyy-mm-dd
-     *
-     * @param year:  year from the date picker dialog
-     * @param month: month from the date picker dialog
-     * @param day:   day of the month from the date picker dialog
-     * @return string with formatted date
+     * Save mark
+     * @param fab: fab that will be animated when the mark is saved
      */
-    private String rightDate(int year, int month, int day) {
-        String ret;
-        ret = year + "-";
-        if (month < 10) {
-            ret += "0";
+    private void saveMark(final View fab) {
+        if (Utils.isTeacher(this)) {
+            objTitle = mTitleInput.getText().toString();
         }
-        ret = ret + month + "-";
-        if (day < 10) {
-            ret += "0";
+
+        if (!objTitle.isEmpty() && objVal != 0) {
+            Utils.animFab(false, (FloatingActionButton) fab);
+            it.liceoarzignano.bold.marks.DatabaseConnection databaseConnection =
+                    it.liceoarzignano.bold.marks.DatabaseConnection.getInstance(context);
+
+            Mark mark = new Mark(objID, objTitle,
+                    objVal, mNotesInput.getText().toString());
+
+            if (editMode) {
+                databaseConnection.updateMark(mark);
+            } else {
+                databaseConnection.addMark(mark);
+            }
+
+            Snackbar.make(fab, getString(R.string.saved), Snackbar.LENGTH_SHORT).show();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent markList = new Intent(context, MarkListActivity.class);
+                    startActivity(markList);
+                    finish();
+                }
+            }, 1000);
+
+        } else {
+            Snackbar.make(fab, getString(R.string.manager_invalid),
+                    Snackbar.LENGTH_SHORT).show();
         }
-        ret += day;
-        return ret;
+    }
+
+    /**
+     * Save event
+     * @param fab: fab that will be animated when the event is saved
+     */
+    private void saveEvent(View fab) {
+        objTitle = mTitleInput.getText().toString();
+
+        if (!objTitle.isEmpty()) {
+            Utils.animFab(false, (FloatingActionButton) fab);
+            it.liceoarzignano.bold.events.DatabaseConnection databaseConnection =
+                    it.liceoarzignano.bold.events.DatabaseConnection.getInstance(context);
+
+            Event event = new Event(objID, objTitle, mDate, mEventSpinner.getSelectedItemPosition());
+
+            if (editMode) {
+                databaseConnection.updateEvent(event);
+            } else {
+                databaseConnection.addEvent(event);
+            }
+
+            Snackbar.make(fab, getString(R.string.saved), Snackbar.LENGTH_SHORT).show();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent eventList = new Intent(context, EventListActivity.class);
+                    startActivity(eventList);
+                    finish();
+                }
+            }, 1000);
+
+        } else {
+            Snackbar.make(fab, getString(R.string.manager_invalid), Snackbar.LENGTH_SHORT).show();
+        }
     }
 }
 

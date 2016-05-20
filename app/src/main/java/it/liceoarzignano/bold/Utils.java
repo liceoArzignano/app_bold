@@ -45,6 +45,30 @@ public class Utils {
     }
 
     /**
+     * Convert calendar dialog results to a string that will be
+     * saved in the events database.
+     * Format: yyyy-mm-dd
+     *
+     * @param year:  year from the date picker dialog
+     * @param month: month from the date picker dialog
+     * @param day:   day of the month from the date picker dialog
+     * @return string with formatted date
+     */
+    public static String rightDate(int year, int month, int day) {
+        String ret;
+        ret = year + "-";
+        if (month < 10) {
+            ret += "0";
+        }
+        ret = ret + month + "-";
+        if (day < 10) {
+            ret += "0";
+        }
+        ret += day;
+        return ret;
+    }
+
+    /**
      
      * SharedPreferences getters
      *
@@ -72,6 +96,11 @@ public class Utils {
         return preferences.getBoolean("doneSetup", false);
     }
 
+    public static boolean hasNotification(Context context) {
+        preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getBoolean("notification_key", true);
+    }
+
     public static String getAddress(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getString("address_key", "0");
@@ -85,6 +114,11 @@ public class Utils {
     public static String userNameKey(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getString("username_key", " ");
+    }
+
+    public static String getNotificationTime(Context context) {
+        preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString("notificationtime_key", "0");
     }
 
 }
