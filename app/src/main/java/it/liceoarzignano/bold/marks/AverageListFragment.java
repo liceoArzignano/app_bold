@@ -1,7 +1,9 @@
 package it.liceoarzignano.bold.marks;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -11,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.Locale;
 
 import it.liceoarzignano.bold.R;
 
@@ -23,6 +27,7 @@ public class AverageListFragment extends Fragment {
     private static TextView mTitle;
     private static TextView mValue;
     private static TextView mHint;
+    private static Resources res;
 
     public AverageListFragment() {
 
@@ -37,7 +42,7 @@ public class AverageListFragment extends Fragment {
             if (filter != null) {
                 double avg = DatabaseConnection.getInstance(context).getAverage(filter);
                 double excepted = DatabaseConnection.getInstance(context).whatShouldIGet(filter);
-                setHint(context, filter, avg, excepted);
+                setHint(filter, avg, excepted);
                 mHintLayout.setVisibility(View.VISIBLE);
             } else {
                 mHintLayout.setVisibility(View.GONE);
@@ -45,19 +50,16 @@ public class AverageListFragment extends Fragment {
         }
     }
 
-    public static void setHint(Context context, String subject, double avg, double excepted) {
+    public static void setHint(String subject, double avg, double excepted) {
         String msg;
 
-        msg = context.getString(R.string.hint_title) + " " + subject + " "
-                + context.getString(R.string.hint_title_end);
+        msg = String.format(res.getString(R.string.hint_title), subject);
         mTitle.setText(msg);
-        msg = String.format("%.2f", avg);
+        msg = String.format(Locale.ITALIAN, "%.2f", avg);
         mValue.setText(msg);
-        msg = context.getString(R.string.hint_content_common) + " " + subject + ", ";
-        msg += excepted < 6 ?
-                context.getString(R.string.hint_content_under) :
-                context.getString(R.string.hint_content_above);
-        msg = msg + " " + excepted + " " + context.getString(R.string.hint_content_common_end);
+        msg = String.format(res.getString(R.string.hint_content_common), subject)
+                + " " + String.format(res.getString(excepted < 6 ?
+                R.string.hint_content_under : R.string.hint_content_above), excepted);
         mHint.setText(msg);
     }
 
@@ -65,6 +67,7 @@ public class AverageListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstance) {
         Context context = container.getContext();
+        res = getResources();
 
         View view = inflater.inflate(R.layout.fragment_mark_average, container, false);
 

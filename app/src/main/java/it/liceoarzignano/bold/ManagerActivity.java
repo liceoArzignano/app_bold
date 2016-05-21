@@ -67,7 +67,8 @@ public class ManagerActivity extends AppCompatActivity
             mMonth = monthOfYear + 1;
             mDay = dayOfMonth;
             mDate = Utils.rightDate(mYear, mMonth, mDay);
-            mDatePicker.setText(getString(R.string.current_date) + " " + mDate);
+            mDatePicker.setText(String.format(getResources().getString(R.string.current_date),
+                    mDate));
         }
     };
 
@@ -123,8 +124,8 @@ public class ManagerActivity extends AppCompatActivity
                             @Override
                             public void onSelection(MaterialDialog dialog,
                                                     View view, int which, CharSequence text) {
-                                mSubSelectButton.setText(getString(R.string.selected_subject) +
-                                        " " + text);
+                                mSubSelectButton.setText(String.format(getResources().getString(
+                                        R.string.selected_subject), text));
                                 objTitle = text.toString();
                             }
                         })
@@ -170,7 +171,8 @@ public class ManagerActivity extends AppCompatActivity
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 double progressDouble = (double) progress / 4;
-                String msg = getString(R.string.current_mark) + " " + progressDouble;
+                String msg = String.format(getResources().getString(
+                        R.string.current_mark), progressDouble);
                 mMarkPreview.setText(msg);
             }
 
@@ -184,7 +186,8 @@ public class ManagerActivity extends AppCompatActivity
                 progress *= 25;
                 objVal = (int) progress;
                 progress /= 100;
-                String msg = getString(R.string.current_mark) + " " + progress;
+                String msg = String.format(getResources().getString(
+                        R.string.current_mark), progress);
                 Snackbar.make(coordinatorLayout, msg, Snackbar.LENGTH_LONG);
                 mMarkPreview.setText(msg);
             }
@@ -240,7 +243,8 @@ public class ManagerActivity extends AppCompatActivity
             mMonth = calendar.get(Calendar.MONTH) + 1;
             mDay = calendar.get(Calendar.DAY_OF_MONTH);
             mDate = Utils.rightDate(mYear, mMonth, mDay);
-            mDatePicker.setText(getString(R.string.current_date) + " " + mDate);
+            mDatePicker.setText(String.format(getResources().getString(
+                    R.string.current_date), mDate));
             mDatePicker.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -262,13 +266,16 @@ public class ManagerActivity extends AppCompatActivity
             if (!isMark) {
                 mEventSpinner.setSelection((!Utils.isTeacher(context) && objVal == 4) ?
                         3 : objVal);
-                mDatePicker.setText(getString(R.string.current_date) + " " + objNote);
+                mDatePicker.setText(String.format(
+                        getResources().getString(R.string.current_date), objNote));
             } else {
                 mNotesInput.setText(objNote);
                 double markValuePreview = (double) objVal / 100;
-                mMarkPreview.setText(getString(R.string.current_mark) + " " + markValuePreview);
+                mMarkPreview.setText(String.format(getResources().getString(
+                        R.string.current_mark), markValuePreview));
                 mMarkSeekBar.setProgress((int) markValuePreview * 4);
-                mSubSelectButton.setText(getString(R.string.selected_subject) + " " + objTitle);
+                mSubSelectButton.setText(String.format(getResources().getString(
+                        R.string.selected_subject), objTitle));
             }
         }
     }

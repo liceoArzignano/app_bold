@@ -2,6 +2,7 @@ package it.liceoarzignano.bold.marks;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -96,6 +97,7 @@ public class MarkListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mark_list);
 
         fContext = this;
+        Resources res = getResources();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -131,15 +133,14 @@ public class MarkListActivity extends AppCompatActivity {
                     getString(R.string.intro_fab_mark), getString(R.string.intro_gotit),
                     "markListIntro");
         } else {
-            String title = getString(R.string.title_filter) + " " + filter
-                    + " " + getString(R.string.title_filter_end);
+            String title = String.format(res.getString(R.string.title_filter), filter);
             assert toolbar != null;
             toolbar.setTitle(title);
             setSupportActionBar(toolbar);
 
             double avg = DatabaseConnection.getInstance(this).getAverage(filter);
             double excepted = DatabaseConnection.getInstance(this).whatShouldIGet(filter);
-            AverageListFragment.setHint(this, filter, avg, excepted);
+            AverageListFragment.setHint(filter, avg, excepted);
         }
 
         refreshList(this);

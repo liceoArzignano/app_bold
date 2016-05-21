@@ -2,6 +2,7 @@ package it.liceoarzignano.bold;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -69,8 +70,7 @@ public class ViewerActivity extends AppCompatActivity {
         TextView mNotes = (TextView) findViewById(R.id.notes);
 
         if (isMark) {
-            mView.setText(getString(R.string.markview_more) + " " + title +
-                    " " + getString(R.string.markview_more_end));
+            mView.setText(String.format(getResources().getString(R.string.markview_more), title));
         } else {
             assert mValueTitle != null;
             mValueTitle.setVisibility(View.GONE);
@@ -81,7 +81,8 @@ public class ViewerActivity extends AppCompatActivity {
 
         final double markVal = (double) value / 100;
         assert mValue != null;
-        mValue.setText(markVal + "");
+        final String sVal = markVal + "";
+        mValue.setText(sVal);
 
         if (!note.isEmpty() && mNotes != null) {
             mNotes.setText(note);
@@ -113,17 +114,16 @@ public class ViewerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 AnalyticsTracker.trackEvent(isMark ? "MarkViewer: Share" : "EventViewer: Share",
                         getApplicationContext());
+                Resources res = getResources();
 
                 String msg = isMark ?
-                        getString(Utils.isTeacher(fContext) ?
-                                R.string.markview_share_start :
-                                R.string.markview_share_start_teacher)
-                                + " " + markVal + " " +
-                                getString(Utils.isTeacher(fContext) ?
-                                        R.string.markview_share_end :
-                                        R.string.markview_share_end_teacher)
-                                + " " + title :
-                        title + " " + getString(R.string.eventview_share) + " " + note;
+                        !Utils.isTeacher(fContext) ?
+                                String.format(res.getString(R.string.markview_share_student),
+                                        title, sVal) :
+                                String.format(res.getString(R.string.markview_share_teacher),
+                                        title, sVal)
+                        : String.format(res.getString(R.string.eventview_share), title, sVal);
+
 
                 final Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");

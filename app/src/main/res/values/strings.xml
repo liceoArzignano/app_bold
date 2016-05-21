@@ -65,11 +65,11 @@
     <string name="hint_student">Student</string>
     <string name="hint_event">Event</string>
     <string name="hint_notes">Notes</string>
-    <string name="current_date">Date:</string>
-    <string name="current_mark">Mark:</string>
+    <string name="current_date">Date: %1$s</string>
+    <string name="current_mark">Mark: %1$s</string>
     <string name="manager_invalid">Couldn\'t save. Check the values</string>
     <string name="select_subject">Select subject</string>
-    <string name="selected_subject">Selected subject:</string>
+    <string name="selected_subject">Selected subject: %1$s</string>
     <string name="event_kind">Category:</string>
     <string name="event_spinner_test">Test</string>
     <string name="event_spinner_school">At school</string>
@@ -79,31 +79,25 @@
 
     <!-- My marks -->
     <string name="title_activity_mark_list">My marks</string>
-    <string name="title_filter"> </string>
-    <string name="title_filter_end">marks</string>
+    <string name="title_filter">%1$s marks</string>
     <string name="title_fragment_marks">Marks</string>
     <string name="title_fragments_avg">Average</string>
     <string name="title_fragments_avgs">Averages</string>
-    <string name="hint_title">Your average in</string>
-    <string name="hint_title_end">is</string>
-    <string name="hint_content_common">To have sufficiency in</string>
-    <string name="hint_content_under">the next mark might be a</string>
-    <string name="hint_content_above">the next mark must be a</string>
-    <string name="hint_content_common_end">or higher</string>
+    <string name="hint_title">Your average in %1$s is</string>
+    <string name="hint_content_common">To have sufficiency in %1$s</string>
+    <string name="hint_content_under">the next mark might be %1$s or higher</string>
+    <string name="hint_content_above">the next mark must be %1$s or higher</string>
 
     <!-- View -->
     <string name="title_activity_mark_view">MarkViewActivity</string>
     <string name="markview_share">Share</string>
     <string name="markview_remove">Remove</string>
-    <string name="markview_more">More</string>
-    <string name="markview_more_end">marks</string>
+    <string name="markview_more">More %1$s marks</string>
     <string name="markview_notes">Notes</string>
     <string name="markview_value">Value</string>
-    <string name="markview_share_start">I got</string>
-    <string name="markview_share_end">in</string>
-    <string name="markview_share_start_teacher">has got</string>
-    <string name="markview_share_end_teacher">in a test (</string>
-    <string name="eventview_share">on</string>
+    <string name="markview_share_student">I got %1$s in %2$s</string>
+    <string name="markview_share_teacher">%1$s has got %2$s</string>
+    <string name="eventview_share">Event: %1$s on the %2$s</string>
 
     <!-- My events -->
     <string name="title_activity_event_list">Events</string>

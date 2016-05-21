@@ -64,11 +64,11 @@
     <string name="hint_student">Studente</string>
     <string name="hint_event">Evento</string>
     <string name="hint_notes">Note</string>
-    <string name="current_date">Data:</string>
-    <string name="current_mark">Voto:</string>
+    <string name="current_date">Date: %1$s</string>
+    <string name="current_mark">Voto: %1$s</string>
     <string name="manager_invalid">Impossibile salvare. Ricontrolla i valori</string>
     <string name="select_subject">Seleziona materia</string>
-    <string name="selected_subject">Materia:</string>
+    <string name="selected_subject">Materia selezionata: %1$s</string>
     <string name="event_kind">Categoria:</string>
     <string name="event_spinner_test">Compito</string>
     <string name="event_spinner_school">A scuola</string>
@@ -78,31 +78,25 @@
 
     <!-- My marks -->
     <string name="title_activity_mark_list">I miei voti</string>
-    <string name="title_filter">Voti di</string>
-    <string name="title_filter_end"> </string>
+    <string name="title_filter">Voti di %1$s</string>
     <string name="title_fragment_marks">Voti</string>
     <string name="title_fragments_avg">Media</string>
     <string name="title_fragments_avgs">Medie</string>
-    <string name="hint_title">La tua media in</string>
-    <string name="hint_title_end">\u00E8</string>
-    <string name="hint_content_common">Per avere la sufficienza in</string>
-    <string name="hint_content_under">il prossimo voto pu\u00F2 essere</string>
-    <string name="hint_content_above">il prossimo voto deve essere</string>
-    <string name="hint_content_common_end">o superiore</string>
+    <string name="hint_title">La tua media in %1$s \u00E8</string>
+    <string name="hint_content_common">Per avere la sufficienza in %1$s il prossimo voto</string>
+    <string name="hint_content_under">deve essere %1$s o superiore</string>
+    <string name="hint_content_above">puo essere %1$s o superiore</string>
 
     <!-- Viewer -->
     <string name="title_activity_mark_view">Vista voto</string>
     <string name="markview_share">Condividi</string>
     <string name="markview_remove">Rimuovi</string>
-    <string name="markview_more">Altri voti di</string>
-    <string name="markview_more_end"> </string>
+    <string name="markview_more">Altri voti di %1$s</string>
     <string name="markview_notes">Note</string>
     <string name="markview_value">Valore</string>
-    <string name="markview_share_start">Ho preso</string>
-    <string name="markview_share_end">in</string>
-    <string name="markview_share_start_teacher">ha preso</string>
-    <string name="markview_share_end_teacher">in un compito (</string>
-    <string name="eventview_share">il</string>
+    <string name="markview_share_student">Ho preso %1$s in %2$s</string>
+    <string name="markview_share_teacher">%1$s ha preso %2$s</string>
+    <string name="eventview_share">Evento: %1$s il %2$s</string>
 
     <!-- My events -->
     <string name="title_activity_event_list">I miei eventi</string>
