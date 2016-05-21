@@ -53,7 +53,7 @@ public class ManagerActivity extends AppCompatActivity
     private Context context;
 
     private int objID; // id | id
-    private String objTitle; // title | title
+    private String objTitle = ""; // title | title
     private int objVal; // value | icon
     private String[] subjects;
 
