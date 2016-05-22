@@ -140,6 +140,7 @@ public class DatabaseConnection extends SQLiteOpenHelper {
         };
         SQLiteDatabase database = getWritableDatabase();
         database.delete(TABLE_MARKS, whereClause, whereArgs);
+        database.close();
     }
 
     /**
@@ -213,6 +214,8 @@ public class DatabaseConnection extends SQLiteOpenHelper {
         } finally {
             cursor.close();
         }
+
+        database.close();
         return marks;
     }
 
