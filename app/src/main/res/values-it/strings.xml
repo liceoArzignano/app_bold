@@ -102,6 +102,7 @@
     <string name="title_activity_event_list">I miei eventi</string>
 
     <!-- Welcome -->
+    <string name="slide_button">Inizia</string>
     <string name="slide0_title">I tuoi contenuti</string>
     <string name="slide0_message">Gestisci i tuoi voti, le date delle verifiche e molto altro</string>
     <string name="slide1_title">Safe</string>

@@ -103,6 +103,7 @@
     <string name="title_activity_event_list">Events</string>
 
     <!-- Intro -->
+    <string name="slide_button">Get started</string>
     <string name="slide0_title">Your contents</string>
     <string name="slide0_message">Manage marks, test dates, averages, classmates birthdays and much more</string>
     <string name="slide1_title">Safe</string>

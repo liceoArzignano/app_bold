@@ -26,11 +26,6 @@
             </intent-filter>
         </activity>
 
-        <!-- Intro -->
-        <activity
-            android:name=".IntroActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-
         <!-- Marks -->
         <activity
             android:name=".marks.MarkListActivity"
@@ -78,6 +73,13 @@
         <activity
             android:name=".tasks.TasksActivity"
             android:label="@string/title_activity_tasks"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <!-- Benefits -->
+        <activity
+            android:name=".intro.BenefitsActivity"
+            android:label="@string/slide_button"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
 

@@ -61,7 +61,6 @@ dependencies {
     // 8.4.0 doesn't play nicely with android studio 2.0 :/
     //noinspection GradleDependency
     compile 'com.google.android.gms:play-services-analytics:8.3.0'
-    compile 'com.github.paolorotolo:appintro:3.4.0'
     compile('com.github.afollestad.material-dialogs:core:0.8.5.3@aar') {
         transitive = true
     }

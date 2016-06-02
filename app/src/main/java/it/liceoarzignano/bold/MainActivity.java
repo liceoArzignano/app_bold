@@ -47,6 +47,7 @@ import it.liceoarzignano.bold.events.AlarmService;
 import it.liceoarzignano.bold.events.DatabaseConnection;
 import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.events.EventListActivity;
+import it.liceoarzignano.bold.intro.BenefitsActivity;
 import it.liceoarzignano.bold.external.showcase.MaterialShowcaseView;
 import it.liceoarzignano.bold.marks.MarkListActivity;
 import it.liceoarzignano.bold.safe.SafeActivity;
@@ -640,7 +641,7 @@ public class MainActivity extends AppCompatActivity
     private void showIntroIfNeeded(boolean force) {
         SharedPreferences prefs = getSharedPreferences("HomePrefs", MODE_PRIVATE);
         if (!prefs.getBoolean("introKey", false) || force) {
-            Intent i = new Intent(MainActivity.this, IntroActivity.class);
+            Intent i = new Intent(MainActivity.this, BenefitsActivity.class);
             startActivity(i);
             finish();
         }
