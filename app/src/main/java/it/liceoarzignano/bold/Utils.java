@@ -54,6 +54,7 @@ public class Utils {
                 fab.show();
                 new MaterialShowcaseView.Builder(context)
                         .setTarget(fab)
+                        .setTargetTouchable(true)
                         .setContentText(text)
                         .setDelay(20)
                         .singleUse(key)
