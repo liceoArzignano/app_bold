@@ -18,6 +18,7 @@ package it.liceoarzignano.bold.external.showcase;
 import it.liceoarzignano.bold.external.showcase.shape.CircleShape;
 import it.liceoarzignano.bold.external.showcase.shape.Shape;
 
+@SuppressWarnings("unused")
 class ShowcaseConfig {
 
     static final long DEFAULT_FADE_TIME = 300;

@@ -36,7 +36,7 @@
     <string name="suggestion_safe_pwd">Qualcuno conosce la tua password di Safe? Puoi cambiarla semplicemente accedendo a Safe</string>
     <string name="suggestion_avg">Vorresti sapere che voto dovresti prendere per avere la sufficienza in una materia? Vai in Voti, Media, scegli la materia e clicca sull\'icona bianca in alto per saperlo!</string>
     <string name="suggestion_tut">Vorresti rivedere il tutorial iniziale? Apri Guida dal menu laterale</string>
-    <string name="suggestion_edit_event">Evento posticipato? Nessun problema, puoi modificarlo con premendo dal visualizzatore evento</string>
+    <string name="suggestion_edit_event">Evento posticipato? Nessun problema, puoi modificarlo premendo l\'appposito pulsante modifica dal visualizzatore evento</string>
     <string name="suggestion_mark_helper">Ricordati di scrivere anche l\'argomento delle verifiche nelle note dei voti</string>
     <string name="suggestion_get_touch">Hai bisogno di contattare l\'istituto? Dalle impostazioni potrai scrivere un\'email o telefonare alla segreteria</string>
     <string name="suggestion_address">Non trovi una materia nella lista? Controlla l\'indirizzo nelle impostazioni</string>
@@ -257,4 +257,5 @@
     <string name="accessibility_safe_icon">Immagine status di Safe</string>
     <string name="accessibility_safe_show">Icona Mostra / Nascondi</string>
     <string name="accessibility_manager">Immagine d\'intestazione</string>
+    <string name="suggestion_tasks">Non ricordi l\'orario scolastico? Scrivilo nell\'agenda settimanale</string>
 </resources>

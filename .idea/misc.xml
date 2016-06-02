@@ -5,6 +5,7 @@
       <entry_point TYPE="method" FQNAME="it.liceoarzignano.bold.external.showcase.IAnimationFactory void fadeInView(android.view.View target, long duration, it.liceoarzignano.bold.external.showcase.IAnimationFactory.AnimationStartListener listener)" />
       <entry_point TYPE="method" FQNAME="it.liceoarzignano.bold.external.showcase.IAnimationFactory void fadeOutView(android.view.View target, long duration, it.liceoarzignano.bold.external.showcase.IAnimationFactory.AnimationEndListener listener)" />
       <entry_point TYPE="method" FQNAME="it.liceoarzignano.bold.external.showcase.IAnimationFactory void animateTargetToPoint(it.liceoarzignano.bold.external.showcase.MaterialShowcaseView showcaseView, android.graphics.Point point)" />
+      <entry_point TYPE="method" FQNAME="it.liceoarzignano.bold.external.showcase.ShowcaseConfig ShowcaseConfig()" />
     </entry_points>
   </component>
   <component name="NullableNotNullManager">

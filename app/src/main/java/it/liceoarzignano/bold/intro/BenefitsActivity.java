@@ -13,11 +13,6 @@ import it.liceoarzignano.bold.R;
 
 public class BenefitsActivity extends AppCompatActivity {
 
-    private BenefitPageAdapter mSectionsPagerAdapter;
-    private AppCompatButton mFinishBtn;
-    private ImageView mIndicator0;
-    private ImageView mIndicator1;
-    private ImageView mIndicator2;
     private ImageView[] mIndicators;
     private int page = 0;
 
@@ -27,13 +22,13 @@ public class BenefitsActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_benefits);
 
-        mSectionsPagerAdapter = new BenefitPageAdapter(getSupportFragmentManager());
+        BenefitPageAdapter mSectionsPagerAdapter = new BenefitPageAdapter(getSupportFragmentManager());
 
-        mFinishBtn = (AppCompatButton) findViewById(R.id.intro_btn_finish);
+        AppCompatButton mFinishBtn = (AppCompatButton) findViewById(R.id.intro_btn_finish);
 
-        mIndicator0 = (ImageView) findViewById(R.id.intro_indicator_0);
-        mIndicator1 = (ImageView) findViewById(R.id.intro_indicator_1);
-        mIndicator2 = (ImageView) findViewById(R.id.intro_indicator_2);
+        ImageView mIndicator0 = (ImageView) findViewById(R.id.intro_indicator_0);
+        ImageView mIndicator1 = (ImageView) findViewById(R.id.intro_indicator_1);
+        ImageView mIndicator2 = (ImageView) findViewById(R.id.intro_indicator_2);
 
         mIndicators = new ImageView[] {
                 mIndicator0,
@@ -45,38 +40,38 @@ public class BenefitsActivity extends AppCompatActivity {
         if (mViewPager != null) {
             mViewPager.setAdapter(mSectionsPagerAdapter);
             mViewPager.setCurrentItem(page);
+            mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset,
+                                           int positionOffsetPixels) {
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    page = position;
+                    updateIndicators(page);
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+                }
+            });
         }
 
         updateIndicators(page);
 
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset,
-                                       int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                page = position;
-                updateIndicators(page);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
-
-        mFinishBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getSharedPreferences("HomePrefs", MODE_PRIVATE).edit().putBoolean("introKey",
-                        true).apply();
-                Intent intent = new Intent(BenefitsActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
+        if (mFinishBtn != null) {
+            mFinishBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getSharedPreferences("HomePrefs", MODE_PRIVATE).edit().putBoolean("introKey",
+                            true).apply();
+                    Intent intent = new Intent(BenefitsActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+        }
     }
 
     private void updateIndicators(int position) {

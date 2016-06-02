@@ -155,13 +155,14 @@ public class ManagerActivity extends AppCompatActivity
                 break;
         }
 
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                save(view);
-            }
-        });
+        if (fab != null) {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    save(view);
+                }
+            });
+        }
 
         mMarkSeekBar = (SeekBar) findViewById(R.id.mark_seek);
         assert mMarkSeekBar != null;
@@ -198,7 +199,7 @@ public class ManagerActivity extends AppCompatActivity
                         R.string.intro_fab_save_mark_teacher :
                         R.string.intro_fab_save_mark_student) :
                         getString(R.string.intro_fab_save_event),
-                getString(R.string.intro_gotit), isMark ? "markKey" : "eventKey");
+                isMark ? "markKey" : "eventKey");
     }
 
     /**

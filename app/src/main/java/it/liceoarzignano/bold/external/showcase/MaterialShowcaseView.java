@@ -73,12 +73,10 @@ public class MaterialShowcaseView extends FrameLayout
     private AnimationFactory mAnimationFactory;
     private final long mFadeDurationInMillis = ShowcaseConfig.DEFAULT_FADE_TIME;
     private Handler mHandler;
-    private long mDelayInMillis = ShowcaseConfig.DEFAULT_DELAY;
     private boolean mSingleUse = false;
     private PrefsManager mPrefsManager;
     private List<IShowcaseListener> mListeners;
     private UpdateOnGlobalLayout mLayoutListener;
-    private boolean mDismissOnTargetTouch = true;
 
     public MaterialShowcaseView(Context context) {
         super(context);
@@ -253,8 +251,7 @@ public class MaterialShowcaseView extends FrameLayout
             /**
              * If we're on lollipop then make sure we don't draw over the nav bar
              */
-            boolean mRenderOverNav = false;
-            if (!mRenderOverNav && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 int mBottomMargin = getSoftButtonsBarSizePort((Activity) getContext());
                 FrameLayout.LayoutParams contentLP = (LayoutParams) getLayoutParams();
 
@@ -469,6 +466,7 @@ public class MaterialShowcaseView extends FrameLayout
         setShouldRender();
 
         mHandler = new Handler();
+        long mDelayInMillis = ShowcaseConfig.DEFAULT_DELAY;
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {

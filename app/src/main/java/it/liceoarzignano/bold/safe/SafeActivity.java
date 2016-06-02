@@ -319,7 +319,7 @@ public class SafeActivity extends AppCompatActivity {
         });
 
         Utils.animFabIntro(this, mFab,
-                getString(R.string.intro_fab_save_safe), getString(R.string.intro_gotit), "safeKey");
+                getString(R.string.intro_fab_save_safe), "safeKey");
 
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override

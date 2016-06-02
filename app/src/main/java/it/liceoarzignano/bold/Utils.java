@@ -47,7 +47,7 @@ public class Utils {
      */
     public static void animFabIntro(final Activity context,
                                     final FloatingActionButton fab,
-                                    final String text, final String dismiss, final String key) {
+                                    final String text, final String key) {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -117,6 +117,7 @@ public class Utils {
      * @param today: today date (will be confronted)
      * @return true if user has been using this for more than one week
      */
+    @SuppressWarnings("unused")
     public static boolean hasUsedForMoreThanOneWeek(Context context, String today) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ITALIAN);
         String first = getFirstUsageDate(context);
