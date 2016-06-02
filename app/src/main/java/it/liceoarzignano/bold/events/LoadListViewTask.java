@@ -14,7 +14,7 @@ class LoadListViewTask extends AsyncTask<Void, Void, Void> {
     private final ListView mEventsListView;
     private List<Event> events;
 
-    public LoadListViewTask(Context applicationContext, ListView mEventsListView) {
+    LoadListViewTask(Context applicationContext, ListView mEventsListView) {
         this.context = applicationContext;
         this.mEventsListView = mEventsListView;
     }
@@ -22,7 +22,7 @@ class LoadListViewTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... params) {
         DatabaseConnection databaseConnection = DatabaseConnection.getInstance(context);
-        events = databaseConnection.getAllEvents();
+        events = databaseConnection.getAllEvents(true);
         return null;
     }
 

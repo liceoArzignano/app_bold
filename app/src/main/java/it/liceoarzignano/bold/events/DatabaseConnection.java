@@ -149,7 +149,7 @@ public class DatabaseConnection extends SQLiteOpenHelper {
      * @return int with row id
      */
     private int findEventRowId(Event event) {
-        List<Event> events = getAllEvents();
+        List<Event> events = getAllEvents(true);
 
         for (Event eventInList : events) {
             if (eventInList.equals(event)) {
@@ -161,11 +161,50 @@ public class DatabaseConnection extends SQLiteOpenHelper {
 
 
     /**
-     * Get all the events in the database
+     * Get all the events ordered by time (value)
      *
-     * @return return a ListArray of all the Events
+     * @param reverseOrder: toggle " DESC" to rawQuery
+     *                    (if true newer events will appear first)
+     *                    false should be only used
+     *                    for upcoming events card
+     * @return ordered list of events
      */
-    public List<Event> getAllEvents() {
+    public List<Event> getAllEvents(boolean reverseOrder) {
+        List<Event> events = new ArrayList<>();
+
+        String query = "SELECT * FROM " + TABLE_EVENTS + " ORDER BY "
+                + " " + KEY_VALUE;
+        if (reverseOrder) {
+            query += " DESC";
+        }
+
+        SQLiteDatabase database = getReadableDatabase();
+        Cursor cursor = database.rawQuery(query, null);
+
+
+        if (cursor.moveToFirst()) {
+            do {
+                events.add(new Event(
+                        Integer.parseInt(cursor.getString(cursor.getColumnIndex(KEY_ID))),
+                        cursor.getString(cursor.getColumnIndex(KEY_TITLE)),
+                        cursor.getString(cursor.getColumnIndex(KEY_VALUE)),
+                        Integer.parseInt(cursor.getString(cursor.getColumnIndex(KEY_ICON)))));
+
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        database.close();
+        return events;
+    }
+
+    /**
+     * Get all the events in the database without ordering
+     * This is used to make sure we assign the right id to a new event
+     *
+     * @return ListArray of events ordered by id
+     */
+    private List<Event> getEventsByID() {
         List<Event> events = new ArrayList<>();
 
         SQLiteDatabase database = getReadableDatabase();
@@ -185,13 +224,14 @@ public class DatabaseConnection extends SQLiteOpenHelper {
         cursor.close();
         database.close();
         return events;
+
     }
 
     /**
      * set right NEXT_ROW_ID_NUMBER when adding an event
      */
     private void setupNextRowIdNumber() {
-        List<Event> events = getAllEvents();
+        List<Event> events = getEventsByID();
 
         if (events.size() == 0) {
             NEXT_ROW_ID_NUMBER = 0;

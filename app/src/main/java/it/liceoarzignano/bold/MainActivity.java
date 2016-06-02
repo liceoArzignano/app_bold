@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity
 
     private static Resources res;
     private static Context sContext;
-    private static ImageView mAddressLogo;
+    private ImageView mAddressLogo;
     private final Calendar c = Calendar.getInstance();
     // Header
     private Toolbar toolbar;
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity
         int hangout = 0;
         int other = 0;
 
-        List<Event> events = new DatabaseConnection(sContext).getAllEvents();
+        List<Event> events = new DatabaseConnection(sContext).getAllEvents(true);
         List<Event> tomorrowEvents = new ArrayList<>();
 
         // Create tomorrow events list
@@ -479,8 +479,10 @@ public class MainActivity extends AppCompatActivity
     private void upcomingEvents() {
         int i = 0;
         int c = 0;
+
+        // Show closest events first
         List<Event> events
-                = new DatabaseConnection(sContext).getAllEvents();
+                = new DatabaseConnection(sContext).getAllEvents(false);
         mUpcomingLayout1.setVisibility(View.GONE);
         mUpcomingLayout2.setVisibility(View.GONE);
         mUpcomingLayout3.setVisibility(View.GONE);
