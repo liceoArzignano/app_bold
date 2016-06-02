@@ -12,7 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+import it.liceoarzignano.bold.external.showcase.MaterialShowcaseView;
 
 @SuppressWarnings("SameParameterValue")
 public class Utils {
@@ -54,12 +54,8 @@ public class Utils {
                 fab.show();
                 new MaterialShowcaseView.Builder(context)
                         .setTarget(fab)
-                        .setTargetTouchable(true)
                         .setContentText(text)
-                        .setDelay(20)
                         .singleUse(key)
-                        .setDismissOnTargetTouch(true)
-                        .setDismissText(dismiss)
                         .show();
             }
         }, 500);

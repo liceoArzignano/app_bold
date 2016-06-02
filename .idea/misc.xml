@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="EntryPointsManager">
-    <entry_points version="2.0" />
+    <entry_points version="2.0">
+      <entry_point TYPE="method" FQNAME="it.liceoarzignano.bold.external.showcase.IAnimationFactory void fadeInView(android.view.View target, long duration, it.liceoarzignano.bold.external.showcase.IAnimationFactory.AnimationStartListener listener)" />
+      <entry_point TYPE="method" FQNAME="it.liceoarzignano.bold.external.showcase.IAnimationFactory void fadeOutView(android.view.View target, long duration, it.liceoarzignano.bold.external.showcase.IAnimationFactory.AnimationEndListener listener)" />
+      <entry_point TYPE="method" FQNAME="it.liceoarzignano.bold.external.showcase.IAnimationFactory void animateTargetToPoint(it.liceoarzignano.bold.external.showcase.MaterialShowcaseView showcaseView, android.graphics.Point point)" />
+    </entry_points>
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />

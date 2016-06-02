@@ -47,12 +47,12 @@ import it.liceoarzignano.bold.events.AlarmService;
 import it.liceoarzignano.bold.events.DatabaseConnection;
 import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.events.EventListActivity;
+import it.liceoarzignano.bold.external.showcase.MaterialShowcaseView;
 import it.liceoarzignano.bold.marks.MarkListActivity;
 import it.liceoarzignano.bold.safe.SafeActivity;
 import it.liceoarzignano.bold.settings.AnalyticsTracker;
 import it.liceoarzignano.bold.settings.SettingsActivity;
 import it.liceoarzignano.bold.tasks.TasksActivity;
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity
     private static final String APP_VERSION = "1.0.11";
 
     private static Resources res;
+    @SuppressLint("StaticFieldLeak")
     private static Context sContext;
     private ImageView mAddressLogo;
     private final Calendar c = Calendar.getInstance();
@@ -711,10 +712,7 @@ public class MainActivity extends AppCompatActivity
         new MaterialShowcaseView.Builder(this)
                 .setTarget(toolbar.getChildAt(1))
                 .setContentText(getString(R.string.intro_drawer))
-                .setDelay(20)
                 .singleUse("drawerIntro")
-                .setDismissOnTargetTouch(true)
-                .setDismissText(getString(R.string.intro_gotit))
                 .show();
     }
 
