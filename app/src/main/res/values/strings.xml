@@ -52,9 +52,10 @@
     <string name="dialog_first_positive">Configure now</string>
     <string name="dialog_updated_title">App has been updated</string>
     <string name="dialog_updated_content">
-        \u2022 New: Events notifications.\n
-        \u2022 Removed: Random selector.\n
-        \u2022 Performance improvements on older devices.\n
+        \u2022 New: Brand new OnBoard Experience.\n
+        \u2022 New: Events are sorted by date automatically now.\n
+        \u2022 Reduced app size.\n
+        \u2022 Performance improvements.\n
         \u2022 Bug fix.
     </string>
 

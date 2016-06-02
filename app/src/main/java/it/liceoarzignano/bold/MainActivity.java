@@ -58,7 +58,7 @@ import it.liceoarzignano.bold.tasks.TasksActivity;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String APP_VERSION = "1.0.11";
+    private static final String APP_VERSION = "1.0.12";
 
     private static Resources res;
     @SuppressLint("StaticFieldLeak")
