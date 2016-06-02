@@ -74,8 +74,8 @@ public class Utils {
      */
     public static void enableTrackerIfOverlayRequests(Context context, boolean overlay) {
         if (overlay) {
-            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
-            editor.putBoolean("analytics_key", true).apply();
+            PreferenceManager.getDefaultSharedPreferences(context)
+                    .edit().putBoolean("analytics_key", true).apply();
         }
     }
 
@@ -180,7 +180,7 @@ public class Utils {
 
     public static String getAddress(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getString("address_key", "0");
+        return preferences.getString("address_key", "1");
     }
 
     public static String appVersionKey(Context context) {

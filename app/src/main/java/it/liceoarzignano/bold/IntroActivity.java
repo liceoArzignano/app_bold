@@ -1,7 +1,6 @@
 package it.liceoarzignano.bold;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.github.paolorotolo.appintro.AppIntro2;
@@ -28,8 +27,7 @@ public class IntroActivity extends AppIntro2 {
 
     @Override
     public void onDonePressed() {
-        SharedPreferences.Editor editor = getSharedPreferences("HomePrefs", MODE_PRIVATE).edit();
-        editor.putBoolean("introKey", true).apply();
+        getSharedPreferences("HomePrefs", MODE_PRIVATE).edit().putBoolean("introKey", true).apply();
         Intent i = new Intent(IntroActivity.this, MainActivity.class);
         startActivity(i);
         finish();

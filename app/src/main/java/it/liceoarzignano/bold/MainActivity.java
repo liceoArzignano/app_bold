@@ -1,5 +1,6 @@
 package it.liceoarzignano.bold;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
@@ -656,6 +657,7 @@ public class MainActivity extends AppCompatActivity
             return;
         }
 
+        @SuppressLint("CommitPrefEdits")
         final SharedPreferences.Editor editor =
                 getSharedPreferences("HomePrefs", MODE_PRIVATE).edit();
 

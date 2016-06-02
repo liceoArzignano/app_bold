@@ -172,7 +172,7 @@ public class ManagerActivity extends AppCompatActivity
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 double progressDouble = (double) progress / 4;
                 String msg = String.format(getResources().getString(
-                        R.string.current_mark), progressDouble);
+                        R.string.current_mark), progressDouble + "");
                 mMarkPreview.setText(msg);
             }
 
@@ -187,7 +187,7 @@ public class ManagerActivity extends AppCompatActivity
                 objVal = (int) progress;
                 progress /= 100;
                 String msg = String.format(getResources().getString(
-                        R.string.current_mark), progress);
+                        R.string.current_mark), progress + "");
                 Snackbar.make(coordinatorLayout, msg, Snackbar.LENGTH_LONG);
                 mMarkPreview.setText(msg);
             }
@@ -272,7 +272,7 @@ public class ManagerActivity extends AppCompatActivity
                 mNotesInput.setText(objNote);
                 double markValuePreview = (double) objVal / 100;
                 mMarkPreview.setText(String.format(getResources().getString(
-                        R.string.current_mark), markValuePreview));
+                        R.string.current_mark), markValuePreview + ""));
                 mMarkSeekBar.setProgress((int) markValuePreview * 4);
                 mSubSelectButton.setText(String.format(getResources().getString(
                         R.string.selected_subject), objTitle));

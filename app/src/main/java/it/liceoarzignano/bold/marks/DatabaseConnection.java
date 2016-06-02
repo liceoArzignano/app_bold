@@ -215,7 +215,6 @@ public class DatabaseConnection extends SQLiteOpenHelper {
             cursor.close();
         }
 
-        database.close();
         return marks;
     }
 
