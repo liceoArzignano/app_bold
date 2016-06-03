@@ -221,4 +221,8 @@ public class MarkListActivity extends AppCompatActivity {
         }
 
     }
+
+    static String getFilter() {
+        return filter;
+    }
 }

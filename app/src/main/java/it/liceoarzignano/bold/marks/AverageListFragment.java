@@ -98,6 +98,8 @@ public class AverageListFragment extends Fragment {
                 break;
         }
 
+        refresh(context, MarkListActivity.getFilter());
+
         return view;
     }
 
