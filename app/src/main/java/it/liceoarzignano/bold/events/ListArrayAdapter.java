@@ -61,7 +61,7 @@ class ListArrayAdapter extends ArrayAdapter<Event> {
                 eventViewHolder.eventIcon.setBackgroundResource(R.drawable.ic_event_bday);
                 break;
             case 3:
-                eventViewHolder.eventIcon.setBackgroundResource(R.drawable.ic_event_hang_out);
+                eventViewHolder.eventIcon.setBackgroundResource(R.drawable.ic_event_hangout);
                 break;
             default:
                 eventViewHolder.eventIcon.setBackgroundResource(R.drawable.ic_event_other);
