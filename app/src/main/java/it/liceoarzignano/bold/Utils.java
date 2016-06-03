@@ -3,9 +3,12 @@ package it.liceoarzignano.bold;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
+import android.view.View;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -24,7 +27,7 @@ public class Utils {
      * @param show: boolean show / hide state
      * @param fab:  the fab that will be animated
      */
-    public static void animFab(final boolean show, final FloatingActionButton fab) {
+    static void animFab(final boolean show, final FloatingActionButton fab) {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -42,7 +45,6 @@ public class Utils {
      * @param context: used to create materialshowcase
      * @param fab: fab that will be animated and exposed
      * @param text: showcase text
-     * @param dismiss: dismiss showcase text
      * @param key: showcase key to show it only the first time
      */
     public static void animFabIntro(final Activity context,
@@ -51,7 +53,10 @@ public class Utils {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                fab.show();
+                if (hasApi21()) {
+                    fab.show();
+                }
+                fab.setVisibility(View.VISIBLE);
                 new MaterialShowcaseView.Builder(context)
                         .setTarget(fab)
                         .setContentText(text)
@@ -69,7 +74,7 @@ public class Utils {
      * @param context: used to access SharedPreferences
      * @param overlay: boolean xml overlay value
      */
-    public static void enableTrackerIfOverlayRequests(Context context, boolean overlay) {
+    static void enableTrackerIfOverlayRequests(Context context, boolean overlay) {
         if (overlay) {
             PreferenceManager.getDefaultSharedPreferences(context)
                     .edit().putBoolean("analytics_key", true).apply();
@@ -96,7 +101,7 @@ public class Utils {
      * @param day:   day of the month from the date picker dialog
      * @return string with formatted date
      */
-    public static String rightDate(int year, int month, int day) {
+    static String rightDate(int year, int month, int day) {
         String ret;
         ret = year + "-";
         if (month < 10) {
@@ -143,6 +148,9 @@ public class Utils {
         }
     }
 
+    static boolean hasApi21() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
+    }
 
     /**
      * SharedPreferences getters
@@ -156,22 +164,22 @@ public class Utils {
         return preferences.getBoolean("isTeacher_key", false);
     }
 
-    public static boolean trackerEnabled(Context context) {
+    static boolean trackerEnabled(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getBoolean("analytics_key", true);
     }
 
-    public static boolean hasSuggestions(Context context) {
+    static boolean hasSuggestions(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getBoolean("showSuggestions_key", true);
     }
 
-    public static boolean hasSafe(Context context) {
+    static boolean hasSafe(Context context) {
         preferences = context.getSharedPreferences("SafePrefs", Context.MODE_PRIVATE);
         return preferences.getBoolean("doneSetup", false);
     }
 
-    public static boolean hasNotification(Context context) {
+    static boolean hasNotification(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getBoolean("notification_key", true);
     }
@@ -181,7 +189,7 @@ public class Utils {
         return preferences.getString("address_key", "1");
     }
 
-    public static String appVersionKey(Context context) {
+    static String appVersionKey(Context context) {
         preferences = context.getSharedPreferences("HomePrefs", Context.MODE_PRIVATE);
         return preferences.getString("appVersionKey", "0");
     }
@@ -191,7 +199,7 @@ public class Utils {
         return preferences.getString("username_key", " ");
     }
 
-    public static String getNotificationTime(Context context) {
+    static String getNotificationTime(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getString("notificationtime_key", "0");
     }

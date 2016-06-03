@@ -724,25 +724,27 @@ public class MainActivity extends AppCompatActivity
     private void setupNavHeader() {
         mUserName.setText(Utils.userNameKey(this));
 
-        if (Utils.isTeacher(this)) {
-            mAddressLogo.setBackground(getResources().getDrawable(R.drawable.ic_address_6));
-        } else {
-            switch (Utils.getAddress(this)) {
-                case "1":
-                    mAddressLogo.setBackground(getResources().getDrawable(R.drawable.ic_address_1));
-                    break;
-                case "2":
-                    mAddressLogo.setBackground(getResources().getDrawable(R.drawable.ic_address_2));
-                    break;
-                case "3":
-                    mAddressLogo.setBackground(getResources().getDrawable(R.drawable.ic_address_3));
-                    break;
-                case "4":
-                    mAddressLogo.setBackground(getResources().getDrawable(R.drawable.ic_address_4));
-                    break;
-                case "5":
-                    mAddressLogo.setBackground(getResources().getDrawable(R.drawable.ic_address_5));
-                    break;
+        if (Utils.hasApi21()) {
+            if (Utils.isTeacher(this)) {
+                mAddressLogo.setBackground(getResources().getDrawable(R.drawable.ic_address_6));
+            } else {
+                switch (Utils.getAddress(this)) {
+                    case "1":
+                        mAddressLogo.setBackground(getResources().getDrawable(R.drawable.ic_address_1));
+                        break;
+                    case "2":
+                        mAddressLogo.setBackground(getResources().getDrawable(R.drawable.ic_address_2));
+                        break;
+                    case "3":
+                        mAddressLogo.setBackground(getResources().getDrawable(R.drawable.ic_address_3));
+                        break;
+                    case "4":
+                        mAddressLogo.setBackground(getResources().getDrawable(R.drawable.ic_address_4));
+                        break;
+                    case "5":
+                        mAddressLogo.setBackground(getResources().getDrawable(R.drawable.ic_address_5));
+                        break;
+                }
             }
         }
     }
