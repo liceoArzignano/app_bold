@@ -164,6 +164,9 @@ public class ManagerActivity extends AppCompatActivity
             });
         }
 
+        mMarkPreview.setText(String.format(getResources().getString(
+                R.string.current_mark), editMode ? (double) objVal / 100 + "" : "0.0"));
+
         mMarkSeekBar = (SeekBar) findViewById(R.id.mark_seek);
         assert mMarkSeekBar != null;
         mMarkSeekBar.setMax(40);
