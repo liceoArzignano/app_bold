@@ -26,7 +26,7 @@ class AverageArrayAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return result.length;
+        return result != null ? result.length : 0;
     }
 
     @Override
