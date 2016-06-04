@@ -256,6 +256,12 @@ public class SafeActivity extends AppCompatActivity {
                     onCreateContinue();
                 } else {
                     mLoadingText.setText(getString(R.string.safe_nomatch));
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            finish();
+                        }
+                    }, 3000);
                 }
             }
         }, 1000);
@@ -267,10 +273,25 @@ public class SafeActivity extends AppCompatActivity {
      * data
      */
     private void onCreateContinue() {
-        crUserName = decrypt(prefs.getString(userKey, ""));
-        crReg = decrypt(prefs.getString(regPwdKey, ""));
-        crPc = decrypt(prefs.getString(pcPwdKey, ""));
-        crInternet = decrypt(prefs.getString(internetPwdKey, ""));
+
+        // Always check if there's sth to decrypt, if not, pass
+        // away to speed up this process
+        String obj = prefs.getString(userKey, null);
+        if (obj != null) {
+            crUserName = decrypt(obj);
+        }
+        obj = prefs.getString(regPwdKey, null);
+        if (obj != null) {
+            crReg = decrypt(obj);
+        }
+        obj = prefs.getString(pcPwdKey, null);
+        if (obj != null) {
+            crPc = decrypt(obj);
+        }
+        obj = prefs.getString(internetPwdKey, null);
+        if (obj != null) {
+            crInternet = decrypt(obj);
+        }
 
         safeMenu.findItem(R.id.action_reset).setVisible(true);
         safeMenu.findItem(R.id.action_info).setVisible(true);
