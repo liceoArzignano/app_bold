@@ -19,7 +19,6 @@ import it.liceoarzignano.bold.R;
 
 public class AverageListFragment extends Fragment {
 
-    private static String[] subjects;
     private static ListView mAvgListview;
 
     private static LinearLayout mHintLayout;
@@ -34,7 +33,7 @@ public class AverageListFragment extends Fragment {
 
     public static void refresh(Context context, String filter) {
         if (mAvgListview != null) {
-            mAvgListview.setAdapter(new AverageArrayAdapter(context, subjects));
+            mAvgListview.setAdapter(new AverageArrayAdapter(context));
             mAvgListview.setVisibility(filter != null ? View.GONE : View.VISIBLE);
         }
         if (mHintLayout != null) {
@@ -78,25 +77,6 @@ public class AverageListFragment extends Fragment {
 
         SharedPreferences preferences =
                 PreferenceManager.getDefaultSharedPreferences(context);
-        String address = preferences.getString("address_key", "0");
-
-        switch (address) {
-            case "1":
-                subjects = getResources().getStringArray(R.array.subjects_lists_1);
-                break;
-            case "2":
-                subjects = getResources().getStringArray(R.array.subjects_lists_2);
-                break;
-            case "3":
-                subjects = getResources().getStringArray(R.array.subjects_lists_3);
-                break;
-            case "4":
-                subjects = getResources().getStringArray(R.array.subjects_lists_4);
-                break;
-            case "5":
-                subjects = getResources().getStringArray(R.array.subjects_lists_5);
-                break;
-        }
 
         refresh(context, MarkListActivity.getFilter());
 

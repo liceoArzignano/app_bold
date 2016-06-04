@@ -182,7 +182,6 @@ public class DatabaseConnection extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         cursor.close();
-        database.close();
         return marks;
     }
 

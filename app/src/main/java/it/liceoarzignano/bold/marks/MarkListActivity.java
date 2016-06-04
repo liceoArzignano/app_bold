@@ -79,14 +79,9 @@ public class MarkListActivity extends AppCompatActivity {
     private void setUpViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new MarksListFragment(), getString(R.string.title_fragment_marks));
-
-        if (!Utils.isTeacher(this)) {
-            adapter.addFragment(new AverageListFragment(), filter == null ?
+        adapter.addFragment(new AverageListFragment(), filter == null ?
                     getString(R.string.title_fragments_avg) :
                     getString(R.string.title_fragments_avgs));
-        } else {
-            tabLayout.setVisibility(View.GONE);
-        }
 
         viewPager.setAdapter(adapter);
     }
@@ -120,7 +115,7 @@ public class MarkListActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (addressOk(false)) {
+                if (addressOk()) {
                     Intent i = new Intent(MarkListActivity.this, ManagerActivity.class);
                     startActivity(i);
                     finish();
@@ -165,26 +160,15 @@ public class MarkListActivity extends AppCompatActivity {
     /**
      * Check if user defined a valid address (or is a teacher)
      *
-     * @param fromMenu: inform if it's been called from the fab (false) or a menu icon (true)
      * @return read comments to understand
      */
-    private boolean addressOk(boolean fromMenu) {
-
-        if (Utils.isTeacher(this)) {
-            // Teachers are not allowed to see averages
-            if (fromMenu) {
-                Toast.makeText(getApplicationContext(), getString(R.string.error_noteacher),
-                        Toast.LENGTH_LONG).show();
-                return false;
-            }
-        } else {
-            if (Utils.getAddress(this).equals("0")) {
+    private boolean addressOk() {
+         if (Utils.getAddress(this).equals("0")) {
                 // Students must define a valid address
                 Toast.makeText(getApplicationContext(), getString(R.string.error_noaddress),
                         Toast.LENGTH_LONG).show();
                 return false;
             }
-        }
         // Teacher and Student who defined an address are allowed to add marks
         return true;
     }

@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import it.liceoarzignano.bold.R;
+import it.liceoarzignano.bold.Utils;
 
 class AverageArrayAdapter extends BaseAdapter {
 
@@ -17,9 +18,8 @@ class AverageArrayAdapter extends BaseAdapter {
     final private String[] result;
     final private Context context;
 
-    public AverageArrayAdapter(Context context,
-                               String[] subjTitleList) {
-        result = subjTitleList;
+    public AverageArrayAdapter(Context context) {
+        result = Utils.getAverageElements(context);
         this.context = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -53,13 +53,7 @@ class AverageArrayAdapter extends BaseAdapter {
         final Double doubleAvg = new DatabaseConnection(context).getAverage(result[position]);
         holder.avg.setText(String.format("%.2f", doubleAvg));
         if (doubleAvg < 6) {
-            if (doubleAvg == 0) {
-                holder.avg.setTextColor(Color.GRAY);
-                holder.avg.setText("n\\a");
-                holder.title.setTextColor(Color.GRAY);
-            } else {
-                holder.avg.setTextColor(Color.RED);
-            }
+            holder.avg.setTextColor(Color.RED);
         }
 
         row.setOnClickListener(new View.OnClickListener() {

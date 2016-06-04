@@ -6,16 +6,23 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Locale;
 
 import it.liceoarzignano.bold.external.showcase.MaterialShowcaseView;
+import it.liceoarzignano.bold.marks.Mark;
 
 @SuppressWarnings("SameParameterValue")
 public class Utils {
@@ -148,9 +155,33 @@ public class Utils {
         }
     }
 
+    /**
+     * Check if device is running on lollipop or higer
+     * (mostly for animations and vector drawable related stuffs)
+     *
+     * @return true if there's api21+
+     */
     static boolean hasApi21() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
+
+    public static String[] getAverageElements(Context context) {
+        int size = 0;
+        List<Mark> marks = it.liceoarzignano.bold.marks.DatabaseConnection.
+                getInstance(context).getAllMarks();
+
+        ArrayList<String> elements = new ArrayList<String>();
+
+        for (Mark mark : marks) {
+            if (!elements.contains(mark.getTitle())) {
+                elements.add(mark.getTitle());
+                size++;
+            }
+        }
+
+        return elements.toArray(new String[size]);
+    }
+
 
     /**
      * SharedPreferences getters
