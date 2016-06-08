@@ -756,21 +756,35 @@ public class MainActivity extends AppCompatActivity
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, c.get(Calendar.YEAR));
         calendar.set(Calendar.MONTH, c.get(Calendar.MONTH));
-        calendar.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH) + 1);
+        calendar.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH));
 
         switch (Utils.getNotificationTime(sContext)) {
             case "0":
+                if (calendar.get(Calendar.HOUR_OF_DAY) >= 6) {
+                    calendar.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH) + 1);
+
+                }
                 calendar.set(Calendar.HOUR_OF_DAY, 6);
                 break;
             case "1":
+                if (calendar.get(Calendar.HOUR_OF_DAY) >= 15) {
+                    calendar.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH) + 1);
+
+                }
                 calendar.set(Calendar.HOUR_OF_DAY, 15);
                 break;
             case "2":
+                if (calendar.get(Calendar.HOUR_OF_DAY) >= 21) {
+                    calendar.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH) + 1);
+
+                }
                 calendar.set(Calendar.HOUR_OF_DAY, 21);
                 break;
         }
 
-        Intent intent = new Intent(MainActivity.this, AlarmService.class);
+        calendar.set(Calendar.MINUTE, 0);
+
+        Intent intent = new Intent(this, AlarmService.class);
         AlarmManager alarmManager = (AlarmManager) this.getSystemService(ALARM_SERVICE);
         PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, 0);
         alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);

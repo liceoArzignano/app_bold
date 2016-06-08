@@ -1,33 +1,27 @@
 package it.liceoarzignano.bold.events;
 
-import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 
 import it.liceoarzignano.bold.MainActivity;
 import it.liceoarzignano.bold.R;
 
-public class AlarmService extends IntentService {
-
-    public AlarmService() {
-        super("AlarmService");
-    }
+public class AlarmService extends Service {
 
     @Override
-    protected void onHandleIntent(Intent intent) {
+    public void onCreate() {
+        Context context = this.getApplicationContext();
         String message = MainActivity.getTomorrowInfo();
-
-        Intent notifIntent = new Intent(this.getApplicationContext(),
-                EventListActivity.class);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(this.getApplicationContext(),
-                0, notifIntent, 0);
-
-        //noinspection AccessStaticViaInstance
-        NotificationManager mManager = (NotificationManager) getSystemService(this
-                .getApplicationContext().NOTIFICATION_SERVICE);
+        Intent notifIntent = new Intent(context, EventListActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
+                notifIntent, 0);
+        NotificationManager manager = (NotificationManager) getSystemService(
+                context.NOTIFICATION_SERVICE);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
                 this.getApplicationContext())
@@ -39,8 +33,12 @@ public class AlarmService extends IntentService {
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
 
-        if (message != null) {
-            mManager.notify(21, mBuilder.build());
-        }
+        manager.notify(21, mBuilder.build());
+
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 }
