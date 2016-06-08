@@ -10,8 +10,14 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -55,6 +61,7 @@ public class ManagerActivity extends AppCompatActivity
     private int objID; // id | id
     private String objTitle = ""; // title | title
     private int objVal; // value | icon
+    private String objNote;
     private String[] subjects;
 
     private int mYear, mMonth, mDay;
@@ -132,6 +139,36 @@ public class ManagerActivity extends AppCompatActivity
                         .show();
             }
         });
+
+        if (!isMark) {
+            mTitleInput.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    //NOTHING
+                }
+
+                @Override
+                public void onTextChanged(final CharSequence s, int start, int before, int count) {
+                    if (s.length() > 26) {
+                        Snackbar.make(coordinatorLayout, getString(R.string.editor_text_too_long),
+                                Snackbar.LENGTH_LONG).setAction(
+                                getString(R.string.editor_text_too_long_fix),
+                                new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        String str = s.subSequence(0, 25) + "\u2026";
+                                        mTitleInput.setText(str);
+                                    }
+                                }).show();
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    //NOTHING
+                }
+            });
+        }
 
 
         switch (Utils.getAddress(context)) {
@@ -262,7 +299,7 @@ public class ManagerActivity extends AppCompatActivity
             objID = callingIntent.getIntExtra("id", -1);
             objTitle = callingIntent.getStringExtra("title");
             objVal = callingIntent.getIntExtra("val", 0);
-            String objNote = callingIntent.getStringExtra("note");
+            objNote = callingIntent.getStringExtra("note");
 
             toolbar.setTitle(getString(isMark ? R.string.update_mark : R.string.update_event));
             mTitleInput.setText(objTitle);
@@ -282,6 +319,34 @@ public class ManagerActivity extends AppCompatActivity
                         R.string.selected_subject), objTitle));
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent editIntent = new Intent(ManagerActivity.this,
+                ViewerActivity.class);
+
+        editIntent.putExtra("isEditing", true);
+        editIntent.putExtra("isMark", isMark);
+        editIntent.putExtra("id", objID);
+        editIntent.putExtra("title", objTitle);
+        editIntent.putExtra("val", objVal);
+        editIntent.putExtra("note", objNote);
+
+        if (Utils.hasApi21()) {
+            View sharedElement = findViewById(R.id.banner_image);
+
+            ActivityOptionsCompat options = ActivityOptionsCompat
+                    .makeSceneTransitionAnimation(ManagerActivity.this,
+                            sharedElement, "imageShared");
+            ActivityCompat.startActivity(ManagerActivity.this,
+                    editIntent, options.toBundle());
+        } else {
+            startActivity(editIntent);
+        }
+
+        finish();
+
     }
 
     @Override
@@ -330,8 +395,10 @@ public class ManagerActivity extends AppCompatActivity
             it.liceoarzignano.bold.marks.DatabaseConnection databaseConnection =
                     it.liceoarzignano.bold.marks.DatabaseConnection.getInstance(context);
 
+            objNote = mNotesInput.getText().toString();
+
             Mark mark = new Mark(objID, objTitle,
-                    objVal, mNotesInput.getText().toString());
+                    objVal, objNote);
 
             if (editMode) {
                 databaseConnection.updateMark(mark);
@@ -339,13 +406,15 @@ public class ManagerActivity extends AppCompatActivity
                 databaseConnection.addMark(mark);
             }
 
+            List<Mark> marks = databaseConnection.getAllMarks();
+
+            objID = marks.get(marks.size() - 1).getId();
+
             Snackbar.make(fab, getString(R.string.saved), Snackbar.LENGTH_SHORT).show();
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Intent markList = new Intent(context, MarkListActivity.class);
-                    startActivity(markList);
-                    finish();
+                    onBackPressed();
                 }
             }, 1000);
 
@@ -375,13 +444,15 @@ public class ManagerActivity extends AppCompatActivity
                 databaseConnection.addEvent(event);
             }
 
+            List<Event> events = databaseConnection.getEventsByID();
+
+            objID = events.get(events.size() - 1).getId();
+
             Snackbar.make(fab, getString(R.string.saved), Snackbar.LENGTH_SHORT).show();
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Intent eventList = new Intent(context, EventListActivity.class);
-                    startActivity(eventList);
-                    finish();
+                    onBackPressed();
                 }
             }, 1000);
 

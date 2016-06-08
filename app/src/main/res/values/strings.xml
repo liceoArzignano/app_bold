@@ -77,6 +77,8 @@
     <string name="event_spinner_bday">Birthday</string>
     <string name="event_spinner_hang_out">Meeting</string>
     <string name="event_spinner_other">Other</string>
+    <string name="editor_text_too_long">It\'s getting really long</string>
+    <string name="editor_text_too_long_fix">Fix it</string>
 
     <!-- My marks -->
     <string name="title_activity_mark_list">My marks</string>

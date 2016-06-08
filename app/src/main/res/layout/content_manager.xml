@@ -36,7 +36,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="224dp"
                 android:background="@drawable/newmark"
-                android:scaleType="center"
+                android:scaleType="centerCrop"
+                android:transitionName="imageShared"
                 android:contentDescription="@string/accessibility_manager"
                 android:paddingBottom="8dp" />
 

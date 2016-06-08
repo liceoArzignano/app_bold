@@ -204,7 +204,7 @@ public class DatabaseConnection extends SQLiteOpenHelper {
      *
      * @return ListArray of events ordered by id
      */
-    private List<Event> getEventsByID() {
+    public List<Event> getEventsByID() {
         List<Event> events = new ArrayList<>();
 
         SQLiteDatabase database = getReadableDatabase();

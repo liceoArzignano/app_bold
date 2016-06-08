@@ -75,6 +75,8 @@
     <string name="event_spinner_bday">Compleanno</string>
     <string name="event_spinner_hang_out">Colloquio</string>
     <string name="event_spinner_other">Altro</string>
+    <string name="editor_text_too_long">Sta diventando molto lungo</string>
+    <string name="editor_text_too_long_fix">Accorcia</string>
 
     <!-- My marks -->
     <string name="title_activity_mark_list">I miei voti</string>

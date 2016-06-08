@@ -118,7 +118,6 @@ public class MarkListActivity extends AppCompatActivity {
                 if (addressOk()) {
                     Intent i = new Intent(MarkListActivity.this, ManagerActivity.class);
                     startActivity(i);
-                    finish();
                 }
             }
         });

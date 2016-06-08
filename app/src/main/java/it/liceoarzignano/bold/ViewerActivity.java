@@ -7,12 +7,18 @@ import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.Transition;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import it.liceoarzignano.bold.events.Event;
@@ -52,11 +58,17 @@ public class ViewerActivity extends AppCompatActivity {
             event = new it.liceoarzignano.bold.events.DatabaseConnection(this).getEvent(id);
         }
 
+        Log.d("OHAI", id + ", " + isMark + ", " + id);
+
         title = isMark ? mark.getTitle() : event.getTitle();
         note = isMark ? mark.getContent() : event.getValue();
         value = isMark ? mark.getValue() : event.getIcon();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final ImageView toolbarImage = (ImageView) findViewById(R.id.toolbar_image);
+
+        toolbarImage.setImageResource(isMark ? R.drawable.newmark : R.drawable.newevent);
+
         if (!title.isEmpty() && toolbar != null) {
             toolbar.setTitle(title);
         }
@@ -182,7 +194,8 @@ public class ViewerActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent editIntent = new Intent(fContext, ManagerActivity.class);
+                fab.hide();
+                final Intent editIntent = new Intent(fContext, ManagerActivity.class);
 
                 editIntent.putExtra("isEditing", true);
                 editIntent.putExtra("isMark", isMark);
@@ -191,7 +204,18 @@ public class ViewerActivity extends AppCompatActivity {
                 editIntent.putExtra("val", value);
                 editIntent.putExtra("note", note);
 
-                startActivity(editIntent);
+                if (Utils.hasApi21()) {
+                    View sharedElement = findViewById(R.id.toolbar_image);
+
+                    ActivityOptionsCompat options = ActivityOptionsCompat
+                            .makeSceneTransitionAnimation(ViewerActivity.this,
+                                    sharedElement, "imageShared");
+                    ActivityCompat.startActivity(ViewerActivity.this,
+                            editIntent, options.toBundle());
+                } else {
+                    startActivity(editIntent);
+                }
+
                 finish();
             }
         });
@@ -205,5 +229,10 @@ public class ViewerActivity extends AppCompatActivity {
             }
         }, 500);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }
