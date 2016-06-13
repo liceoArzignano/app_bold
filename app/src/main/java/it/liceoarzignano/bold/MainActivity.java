@@ -515,10 +515,7 @@ public class MainActivity extends AppCompatActivity
 
         if (c > i) {
             mMoreEventsButton.setVisibility(View.VISIBLE);
-            mMoreEventsButton.setText((c - i) == 1 ?
-                    getString(R.string.more_event_single) :
-                    getString(R.string.more_event_multiple_1) + " " + (c - i)
-                            + " " + getString(R.string.more_event_multiple_2));
+            mMoreEventsButton.setText(res.getQuantityString(R.plurals.more_events, i));
         }
     }
 

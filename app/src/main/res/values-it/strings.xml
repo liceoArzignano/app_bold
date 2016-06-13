@@ -24,14 +24,15 @@
 
     <!-- Home -->
     <string name="welcome">Benvenuto</string>
-    <string name="welcome_content">Benvenuto al Liceo.
+    <string name="welcome_content"><b>Benvenuto al Liceo.</b>
         Scorri dal bordo sinistro per aprire una pagina.</string>
     <string name="upcoming_events">Prossimi eventi</string>
-    <string name="more_event_single">E un altro evento</string>
-    <string name="more_event_multiple_1">E altri</string>
-    <string name="more_event_multiple_2">eventi</string>
+    <plurals name="more_events">
+        <item quantity="one">E un altro evento</item>
+        <item quantity="other">E altri %d eventi</item>
+    </plurals>
     <string name="suggestions">Suggerimenti</string>
-    <string name="suggestion_safe">Utilizza Safe per conservare le tue password di scuola in un solo posto!</string>
+    <string name="suggestion_safe">Utilizza Safe per conservare le tue password di scuola in un unco posto al sicuro!</string>
     <string name="suggestion_safe_pwd">Qualcuno conosce la tua password di Safe? Puoi cambiarla semplicemente accedendo a Safe</string>
     <string name="suggestion_avg">Vorresti sapere che voto dovresti prendere per avere la sufficienza in una materia? Vai in Voti, Media, scegli la materia e clicca sull\'icona bianca in alto per saperlo!</string>
     <string name="suggestion_tut">Vorresti rivedere il tutorial iniziale? Apri Guida dal menu laterale</string>

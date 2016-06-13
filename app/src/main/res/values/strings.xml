@@ -26,10 +26,11 @@
     <string name="welcome">Welcome</string>
     <string name="welcome_content"><b>Welcome to the Liceo.</b>
         Swipe from the left edge to open a section.</string>
-    <string name="upcoming_events">Next events</string>
-    <string name="more_event_single">And one more event</string>
-    <string name="more_event_multiple_1">And</string>
-    <string name="more_event_multiple_2">more events</string>
+    <string name="upcoming_events">Upcoming events</string>
+    <plurals name="more_events">
+        <item quantity="one">And one more event</item>
+        <item quantity="other">And %d more events</item>
+    </plurals>
     <string name="suggestions">Suggestions</string>
     <string name="suggestion_safe">Use Safe to store your school credentials in one safe place!</string>
     <string name="suggestion_safe_pwd">Someone knows your Safe password? Change it from Safe section</string>

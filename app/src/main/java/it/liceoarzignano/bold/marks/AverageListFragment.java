@@ -57,7 +57,7 @@ public class AverageListFragment extends Fragment {
         mValue.setText(msg);
         msg = String.format(res.getString(R.string.hint_content_common), subject)
                 + " " + String.format(res.getString(excepted < 6 ?
-                R.string.hint_content_under : R.string.hint_content_above), excepted);
+                R.string.hint_content_above : R.string.hint_content_under), excepted);
         mHint.setText(msg);
     }
 

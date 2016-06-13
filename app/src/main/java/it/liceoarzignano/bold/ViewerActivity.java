@@ -128,7 +128,7 @@ public class ViewerActivity extends AppCompatActivity {
                 String msg = isMark ?
                         !Utils.isTeacher(fContext) ?
                                 String.format(res.getString(R.string.markview_share_student),
-                                        title, sVal) :
+                                        sVal, sVal) :
                                 String.format(res.getString(R.string.markview_share_teacher),
                                         title, sVal)
                         : String.format(res.getString(R.string.eventview_share), title, sVal);
