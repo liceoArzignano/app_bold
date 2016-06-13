@@ -7,15 +7,12 @@ import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.transition.Transition;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -65,7 +62,9 @@ public class ViewerActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         final ImageView toolbarImage = (ImageView) findViewById(R.id.toolbar_image);
 
-        toolbarImage.setImageResource(isMark ? R.drawable.newmark : R.drawable.newevent);
+        if (toolbarImage != null) {
+            toolbarImage.setImageResource(isMark ? R.drawable.newmark : R.drawable.newevent);
+        }
 
         if (!title.isEmpty() && toolbar != null) {
             toolbar.setTitle(title);

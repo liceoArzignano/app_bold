@@ -69,13 +69,6 @@
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!-- Task -->
-        <activity
-            android:name=".tasks.TasksActivity"
-            android:label="@string/title_activity_tasks"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
         <!-- Benefits -->
         <activity
             android:name=".intro.BenefitsActivity"

@@ -21,7 +21,6 @@
     <string name="nav_help">Guida</string>
     <string name="nav_settings">Impostazioni</string>
     <string name="nav_safe">Safe</string>
-    <string name="nav_tasks">Agenda settimanale</string>
 
     <!-- Home -->
     <string name="welcome">Benvenuto</string>
@@ -141,7 +140,6 @@
 
     <!-- Average -->
     <string name="error_noaddress">Per utilizzare questa funzione devi impostare un indirizzo nelle impostazioni</string>
-    <string name="error_noteacher">I docenti non possono visualizzare le medie</string>
 
     <!-- Settings -->
     <string name="title_activity_settings">Impostazioni</string>
@@ -207,20 +205,6 @@
     <string name="safe_first_load">Inizializzazione dati\u2026</string>
     <string name="safe_setup_checking_password">Verifica password\u2026</string>
     <string name="safe_nomatch">La password non corrisponde.</string>
-
-    <!-- Tasks -->
-    <string name="title_activity_tasks">Agenda settimanale</string>
-    <string name="week_day_1">Lunedi</string>
-    <string name="week_day_2">Martedi</string>
-    <string name="week_day_3">Mercoledi</string>
-    <string name="week_day_4">Giovedi</string>
-    <string name="week_day_5">Venerdi</string>
-    <string name="week_day_6">Sabato</string>
-    <string name="tasks_nothing">Tocca per impostare un valore</string>
-    <string name="tasks_update_title_dialog">Aggiorna agenda</string>
-    <string name="tasks_update_content_dialog">Scrivi il nuovo valore</string>
-    <string name="tasks_update_hint_student">Materia\u2026</string>
-    <string name="tasks_update_hint_teacher">Classe\u2026</string>
 
     <!-- Notification -->
     <string name="notification_title">Prossimi eventi</string>

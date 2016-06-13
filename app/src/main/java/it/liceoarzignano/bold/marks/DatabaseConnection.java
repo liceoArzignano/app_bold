@@ -197,6 +197,7 @@ public class DatabaseConnection extends SQLiteOpenHelper {
         SQLiteDatabase database = getReadableDatabase();
         Cursor cursor = database.query(TABLE_MARKS, null, null, null, null, null, null, null);
 
+        //noinspection TryFinallyCanBeTryWithResources
         try {
             if (cursor.moveToFirst() && filter != null) {
                 do {

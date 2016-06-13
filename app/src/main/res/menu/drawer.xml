@@ -13,10 +13,6 @@
             android:id="@+id/nav_calendar"
             android:icon="@drawable/ic_event"
             android:title="@string/nav_events" />
-        <item
-            android:id="@+id/nav_tasks"
-            android:icon="@drawable/ic_tasks"
-            android:title="@string/nav_tasks" />
         <item android:title="@string/nav_links">
             <menu>
                 <item

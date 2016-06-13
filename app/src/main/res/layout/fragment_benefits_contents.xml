@@ -13,6 +13,7 @@
             android:layout_height="192dp"
             android:layout_gravity="center"
             android:adjustViewBounds="true"
+            android:contentDescription="@string/accessibility_welcome"
             android:scaleType="fitCenter" />
     </FrameLayout>
 

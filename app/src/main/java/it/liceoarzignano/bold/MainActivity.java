@@ -53,7 +53,6 @@ import it.liceoarzignano.bold.marks.MarkListActivity;
 import it.liceoarzignano.bold.safe.SafeActivity;
 import it.liceoarzignano.bold.settings.AnalyticsTracker;
 import it.liceoarzignano.bold.settings.SettingsActivity;
-import it.liceoarzignano.bold.tasks.TasksActivity;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -420,9 +419,6 @@ public class MainActivity extends AppCompatActivity
                 Intent safeIntent = new Intent(MainActivity.this, SafeActivity.class);
                 startActivity(safeIntent);
                 break;
-            case R.id.nav_tasks:
-                Intent taskIntent = new Intent(MainActivity.this, TasksActivity.class);
-                startActivity(taskIntent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

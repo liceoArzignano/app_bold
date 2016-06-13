@@ -6,7 +6,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.view.View;
-import android.widget.ImageView;
 
 import it.liceoarzignano.bold.MainActivity;
 import it.liceoarzignano.bold.R;
@@ -27,7 +26,7 @@ public class BenefitsActivity extends AppCompatActivity {
         InkPageIndicator inkPageIndicator = (InkPageIndicator) findViewById(R.id.indicator);
 
         ViewPager mViewPager = (ViewPager) findViewById(R.id.container);
-        if (mViewPager != null) {
+        if (mViewPager != null && inkPageIndicator != null) {
             mViewPager.setAdapter(mSectionsPagerAdapter);
             mViewPager.setCurrentItem(0);
             mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

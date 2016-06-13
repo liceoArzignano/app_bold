@@ -75,9 +75,6 @@ public class AverageListFragment extends Fragment {
         mValue = (TextView) view.findViewById(R.id.value);
         mHint = (TextView) view.findViewById(R.id.hint);
 
-        SharedPreferences preferences =
-                PreferenceManager.getDefaultSharedPreferences(context);
-
         refresh(context, MarkListActivity.getFilter());
 
         return view;

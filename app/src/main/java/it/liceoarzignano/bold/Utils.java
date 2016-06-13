@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 
@@ -14,11 +13,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Locale;
 
 import it.liceoarzignano.bold.external.showcase.MaterialShowcaseView;
@@ -156,7 +152,7 @@ public class Utils {
     }
 
     /**
-     * Check if device is running on lollipop or higer
+     * Check if device is running on lollipop or higher
      * (mostly for animations and vector drawable related stuffs)
      *
      * @return true if there's api21+
@@ -170,7 +166,7 @@ public class Utils {
         List<Mark> marks = it.liceoarzignano.bold.marks.DatabaseConnection.
                 getInstance(context).getAllMarks();
 
-        ArrayList<String> elements = new ArrayList<String>();
+        ArrayList<String> elements = new ArrayList<>();
 
         for (Mark mark : marks) {
             if (!elements.contains(mark.getTitle())) {

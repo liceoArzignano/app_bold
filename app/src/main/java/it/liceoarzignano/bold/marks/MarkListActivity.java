@@ -29,8 +29,6 @@ public class MarkListActivity extends AppCompatActivity {
     private static Context fContext;
     private static String filter;
 
-    private TabLayout tabLayout;
-
     /**
      * Fire ViewerActivity and pass the selected mark data
      *
@@ -100,7 +98,7 @@ public class MarkListActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
 
         setUpViewPager(viewPager);
         if (tabLayout != null) {

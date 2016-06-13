@@ -21,7 +21,7 @@ public class AlarmService extends Service {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
                 notifIntent, 0);
         NotificationManager manager = (NotificationManager) getSystemService(
-                context.NOTIFICATION_SERVICE);
+                NOTIFICATION_SERVICE);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
                 this.getApplicationContext())
