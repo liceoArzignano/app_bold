@@ -81,6 +81,7 @@ public class ManagerActivity extends AppCompatActivity
 
     private boolean editMode = false;
     private boolean isMark = true;
+    private boolean hasSaved = false;
     private Intent callingIntent;
 
     /**
@@ -323,26 +324,31 @@ public class ManagerActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        Intent editIntent = new Intent(ManagerActivity.this,
-                ViewerActivity.class);
+        if (hasSaved) {
+            Intent editIntent = new Intent(this, ViewerActivity.class);
 
-        editIntent.putExtra("isEditing", true);
-        editIntent.putExtra("isMark", isMark);
-        editIntent.putExtra("id", objID);
-        editIntent.putExtra("title", objTitle);
-        editIntent.putExtra("val", objVal);
-        editIntent.putExtra("note", objNote);
+            editIntent.putExtra("isEditing", true);
+            editIntent.putExtra("isMark", isMark);
+            editIntent.putExtra("id", objID);
+            editIntent.putExtra("title", objTitle);
+            editIntent.putExtra("val", objVal);
+            editIntent.putExtra("note", objNote);
 
-        if (Utils.hasApi21()) {
-            View sharedElement = findViewById(R.id.banner_image);
+            if (Utils.hasApi21()) {
+                View sharedElement = findViewById(R.id.banner_image);
 
-            ActivityOptionsCompat options = ActivityOptionsCompat
-                    .makeSceneTransitionAnimation(ManagerActivity.this,
-                            sharedElement, "imageShared");
-            ActivityCompat.startActivity(ManagerActivity.this,
-                    editIntent, options.toBundle());
+                ActivityOptionsCompat options = ActivityOptionsCompat
+                        .makeSceneTransitionAnimation(ManagerActivity.this,
+                                sharedElement, "imageShared");
+                ActivityCompat.startActivity(ManagerActivity.this,
+                        editIntent, options.toBundle());
+            } else {
+                startActivity(editIntent);
+            }
         } else {
-            startActivity(editIntent);
+            Intent listIntent = new Intent(this, isMark ?
+                    MarkListActivity.class : EventListActivity.class);
+            startActivity(listIntent);
         }
 
         finish();
@@ -410,6 +416,8 @@ public class ManagerActivity extends AppCompatActivity
 
             objID = marks.get(marks.size() - 1).getId();
 
+            hasSaved = true;
+
             Snackbar.make(fab, getString(R.string.saved), Snackbar.LENGTH_SHORT).show();
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -447,6 +455,8 @@ public class ManagerActivity extends AppCompatActivity
             List<Event> events = databaseConnection.getEventsByID();
 
             objID = events.get(events.size() - 1).getId();
+
+            hasSaved = true;
 
             Snackbar.make(fab, getString(R.string.saved), Snackbar.LENGTH_SHORT).show();
             new Handler().postDelayed(new Runnable() {

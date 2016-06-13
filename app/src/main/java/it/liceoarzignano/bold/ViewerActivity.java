@@ -58,8 +58,6 @@ public class ViewerActivity extends AppCompatActivity {
             event = new it.liceoarzignano.bold.events.DatabaseConnection(this).getEvent(id);
         }
 
-        Log.d("OHAI", id + ", " + isMark + ", " + id);
-
         title = isMark ? mark.getTitle() : event.getTitle();
         note = isMark ? mark.getContent() : event.getValue();
         value = isMark ? mark.getValue() : event.getIcon();
