@@ -10,11 +10,9 @@ import android.widget.ImageView;
 
 import it.liceoarzignano.bold.MainActivity;
 import it.liceoarzignano.bold.R;
+import it.liceoarzignano.bold.external.inkpageindicator.InkPageIndicator;
 
 public class BenefitsActivity extends AppCompatActivity {
-
-    private ImageView[] mIndicators;
-    private int page = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,20 +24,12 @@ public class BenefitsActivity extends AppCompatActivity {
 
         AppCompatButton mFinishBtn = (AppCompatButton) findViewById(R.id.intro_btn_finish);
 
-        ImageView mIndicator0 = (ImageView) findViewById(R.id.intro_indicator_0);
-        ImageView mIndicator1 = (ImageView) findViewById(R.id.intro_indicator_1);
-        ImageView mIndicator2 = (ImageView) findViewById(R.id.intro_indicator_2);
-
-        mIndicators = new ImageView[] {
-                mIndicator0,
-                mIndicator1,
-                mIndicator2
-        };
+        InkPageIndicator inkPageIndicator = (InkPageIndicator) findViewById(R.id.indicator);
 
         ViewPager mViewPager = (ViewPager) findViewById(R.id.container);
         if (mViewPager != null) {
             mViewPager.setAdapter(mSectionsPagerAdapter);
-            mViewPager.setCurrentItem(page);
+            mViewPager.setCurrentItem(0);
             mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset,
@@ -48,17 +38,15 @@ public class BenefitsActivity extends AppCompatActivity {
 
                 @Override
                 public void onPageSelected(int position) {
-                    page = position;
-                    updateIndicators(page);
                 }
 
                 @Override
                 public void onPageScrollStateChanged(int state) {
                 }
             });
-        }
 
-        updateIndicators(page);
+            inkPageIndicator.setViewPager(mViewPager);
+        }
 
         if (mFinishBtn != null) {
             mFinishBtn.setOnClickListener(new View.OnClickListener() {
@@ -74,12 +62,4 @@ public class BenefitsActivity extends AppCompatActivity {
         }
     }
 
-    private void updateIndicators(int position) {
-        for (int i = 0; i < mIndicators.length; i++) {
-            mIndicators[i].setBackgroundResource(
-                    i == position ?
-                            R.drawable.indicator_selected :
-                            R.drawable.indicator_unselected);
-        }
-    }
 }
