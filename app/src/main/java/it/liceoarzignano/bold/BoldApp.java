@@ -16,6 +16,7 @@ public class BoldApp extends android.app.Application {
                 .schemaVersion(0)
                 .deleteRealmIfMigrationNeeded()
                 .build();
+
         Realm.setDefaultConfiguration(configuration);
     }
 

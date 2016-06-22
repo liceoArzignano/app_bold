@@ -11,7 +11,7 @@ android {
         variant.outputs.each { output ->
             //noinspection GroovyAssignabilityCheck
             output.outputFile = new File(
-                    output.outputFile.parent, "Bold-${variant.versionName}.apk")
+                    output.outputFile.parent, "Bold-${variant.versionName}-${variant.productFlavors.name}.apk")
         }
     }
 
@@ -37,7 +37,11 @@ android {
     buildTypes {
         release {
             minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules_release.pro'
+            ndk {
+                abiFilters "armeabi-v7a", "armeabi"
+            }
         }
         debug {
             minifyEnabled false
@@ -45,8 +49,20 @@ android {
         }
     }
     productFlavors {
+        arm {
+            ndk {
+                abiFilters "armeabi-v7a", "armeabi"
+            }
+        }
+        x86 {
+            ndk {
+                abiFilter "x86"
+            }
+        }
     }
 }
+
+
 
 repositories {
     mavenCentral()

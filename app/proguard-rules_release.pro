@@ -15,11 +15,11 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
--optimizationpasses 25
+-optimizationpasses 50
 -mergeinterfacesaggressively
 -dontwarn android.support.**
 -forceprocessing
--optimizations 10
+-optimizations 25
 -dontskipnonpubliclibraryclasses
 
 -assumenosideeffects class android.util.Log { *; }
