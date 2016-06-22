@@ -6,6 +6,14 @@
       <entry_point TYPE="method" FQNAME="it.liceoarzignano.bold.external.showcase.IAnimationFactory void fadeOutView(android.view.View target, long duration, it.liceoarzignano.bold.external.showcase.IAnimationFactory.AnimationEndListener listener)" />
       <entry_point TYPE="method" FQNAME="it.liceoarzignano.bold.external.showcase.IAnimationFactory void animateTargetToPoint(it.liceoarzignano.bold.external.showcase.MaterialShowcaseView showcaseView, android.graphics.Point point)" />
       <entry_point TYPE="method" FQNAME="it.liceoarzignano.bold.external.showcase.ShowcaseConfig ShowcaseConfig()" />
+      <entry_point TYPE="method" FQNAME="it.liceoarzignano.bold.realm.RealmController it.liceoarzignano.bold.realm.RealmController with(android.app.Fragment fragment)" />
+      <entry_point TYPE="method" FQNAME="it.liceoarzignano.bold.realm.RealmController it.liceoarzignano.bold.realm.RealmController with(android.app.Application application)" />
+      <entry_point TYPE="method" FQNAME="it.liceoarzignano.bold.realm.RealmController io.realm.Realm getRealm()" />
+      <entry_point TYPE="method" FQNAME="it.liceoarzignano.bold.realm.RealmController io.realm.RealmResults&lt;it.liceoarzignano.bold.marks.Mark&gt; getAllMarks()" />
+      <entry_point TYPE="method" FQNAME="it.liceoarzignano.bold.realm.RealmController void deleteMark(long id)" />
+      <entry_point TYPE="method" FQNAME="it.liceoarzignano.bold.realm.RealmController void clearAllEvents()" />
+      <entry_point TYPE="method" FQNAME="it.liceoarzignano.bold.realm.RealmController io.realm.RealmResults&lt;it.liceoarzignano.bold.events.Event&gt; getEventsById()" />
+      <entry_point TYPE="method" FQNAME="it.liceoarzignano.bold.realm.RealmController void deleteEvent(long id)" />
     </entry_points>
   </component>
   <component name="NullableNotNullManager">

@@ -1,10 +1,8 @@
 package it.liceoarzignano.bold.marks;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +14,7 @@ import android.widget.TextView;
 import java.util.Locale;
 
 import it.liceoarzignano.bold.R;
+import it.liceoarzignano.bold.realm.RealmController;
 
 public class AverageListFragment extends Fragment {
 
@@ -26,20 +25,21 @@ public class AverageListFragment extends Fragment {
     private static TextView mValue;
     private static TextView mHint;
     private static Resources res;
+    private static RealmController controller;
 
     public AverageListFragment() {
-
+        controller = RealmController.with(this.getActivity());
     }
 
     public static void refresh(Context context, String filter) {
         if (mAvgListview != null) {
-            mAvgListview.setAdapter(new AverageArrayAdapter(context));
+            mAvgListview.setAdapter(new AverageArrayAdapter(context, controller));
             mAvgListview.setVisibility(filter != null ? View.GONE : View.VISIBLE);
         }
         if (mHintLayout != null) {
             if (filter != null) {
-                double avg = DatabaseConnection.getInstance(context).getAverage(filter);
-                double excepted = DatabaseConnection.getInstance(context).whatShouldIGet(filter);
+                double avg = controller.getAverage(filter);
+                double excepted = controller.whatShouldIGet(filter);
                 setHint(filter, avg, excepted);
                 mHintLayout.setVisibility(View.VISIBLE);
             } else {

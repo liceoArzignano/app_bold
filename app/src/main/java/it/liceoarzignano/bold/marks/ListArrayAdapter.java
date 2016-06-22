@@ -5,23 +5,23 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import java.util.List;
-
+import io.realm.RealmBaseAdapter;
+import io.realm.RealmResults;
 import it.liceoarzignano.bold.R;
 
-class ListArrayAdapter extends ArrayAdapter<Mark> {
+class ListArrayAdapter extends RealmBaseAdapter<Mark> {
 
     private final Context context;
     private final int layoutResourceId;
-    private final List<Mark> marks;
+    private final RealmResults<Mark> marks;
+
 
     public ListArrayAdapter(Context context,
                             @SuppressWarnings("SameParameterValue") int layoutResourceId,
-                            List<Mark> marks) {
-        super(context, layoutResourceId, marks);
+                            RealmResults<Mark> marks) {
+        super(context, marks);
         this.context = context;
         this.layoutResourceId = layoutResourceId;
         this.marks = marks;

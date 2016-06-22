@@ -22,6 +22,7 @@ import it.liceoarzignano.bold.ManagerActivity;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
 import it.liceoarzignano.bold.ViewerActivity;
+import it.liceoarzignano.bold.realm.RealmController;
 
 
 public class MarkListActivity extends AppCompatActivity {
@@ -34,7 +35,7 @@ public class MarkListActivity extends AppCompatActivity {
      *
      * @param id: mark id
      */
-    public static void viewMark(int id) {
+    public static void viewMark(long id) {
 
         Intent viewIntent = new Intent(fContext, ViewerActivity.class);
 
@@ -92,6 +93,8 @@ public class MarkListActivity extends AppCompatActivity {
         fContext = this;
         Resources res = getResources();
 
+        RealmController controller = RealmController.with(this);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         assert getSupportActionBar() != null;
@@ -129,8 +132,8 @@ public class MarkListActivity extends AppCompatActivity {
             toolbar.setTitle(title);
             setSupportActionBar(toolbar);
 
-            double avg = DatabaseConnection.getInstance(this).getAverage(filter);
-            double excepted = DatabaseConnection.getInstance(this).whatShouldIGet(filter);
+            double avg = controller.getAverage(filter);
+            double excepted = controller.whatShouldIGet(filter);
             AverageListFragment.setHint(filter, avg, excepted);
         }
 

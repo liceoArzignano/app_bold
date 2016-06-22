@@ -44,12 +44,12 @@ import java.util.Locale;
 import java.util.Random;
 
 import it.liceoarzignano.bold.events.AlarmService;
-import it.liceoarzignano.bold.events.DatabaseConnection;
 import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.events.EventListActivity;
 import it.liceoarzignano.bold.intro.BenefitsActivity;
 import it.liceoarzignano.bold.external.showcase.MaterialShowcaseView;
 import it.liceoarzignano.bold.marks.MarkListActivity;
+import it.liceoarzignano.bold.realm.RealmController;
 import it.liceoarzignano.bold.safe.SafeActivity;
 import it.liceoarzignano.bold.settings.AnalyticsTracker;
 import it.liceoarzignano.bold.settings.SettingsActivity;
@@ -88,6 +88,8 @@ public class MainActivity extends AppCompatActivity
     private boolean showUpcomingCard;
     private boolean showSuggestionCard;
 
+    private static RealmController controller;
+
     /**
      * @return content for notification
      */
@@ -101,7 +103,7 @@ public class MainActivity extends AppCompatActivity
         int hangout = 0;
         int other = 0;
 
-        List<Event> events = new DatabaseConnection(sContext).getAllEvents(true);
+        List<Event> events = controller.getAllEvents();
         List<Event> tomorrowEvents = new ArrayList<>();
 
         // Create tomorrow events list
@@ -243,6 +245,7 @@ public class MainActivity extends AppCompatActivity
 
         res = getResources();
         sContext = getApplicationContext();
+        controller = RealmController.with(this);
 
         // Google Analytics
         new Thread(new Runnable() {
@@ -479,8 +482,7 @@ public class MainActivity extends AppCompatActivity
         int c = 0;
 
         // Show closest events first
-        List<Event> events
-                = new DatabaseConnection(sContext).getAllEvents(false);
+        List<Event> events = controller.getAllEventsInverted();
         mUpcomingLayout1.setVisibility(View.GONE);
         mUpcomingLayout2.setVisibility(View.GONE);
         mUpcomingLayout3.setVisibility(View.GONE);

@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import io.realm.Realm;
 import it.liceoarzignano.bold.external.showcase.MaterialShowcaseView;
 import it.liceoarzignano.bold.marks.Mark;
 
@@ -161,10 +162,10 @@ public class Utils {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
 
-    public static String[] getAverageElements(Context context) {
+    public static String[] getAverageElements() {
         int size = 0;
-        List<Mark> marks = it.liceoarzignano.bold.marks.DatabaseConnection.
-                getInstance(context).getAllMarks();
+        Realm realm = Realm.getInstance(BoldApp.getAppRealmConfiguration());
+        List<Mark> marks = realm.where(Mark.class).findAll();
 
         ArrayList<String> elements = new ArrayList<>();
 
@@ -177,7 +178,6 @@ public class Utils {
 
         return elements.toArray(new String[size]);
     }
-
 
     /**
      * SharedPreferences getters

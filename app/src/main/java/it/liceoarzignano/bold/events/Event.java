@@ -1,8 +1,13 @@
 package it.liceoarzignano.bold.events;
 
-public class Event {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-    private int id;
+public class Event extends RealmObject {
+
+    @PrimaryKey
+    private long id = 0;
+
     private String title;
     private String value;
     private int icon;
@@ -16,18 +21,22 @@ public class Event {
      * 4 = other
      */
 
-    public Event(int id, String title, String value, int icon) {
+    public Event() {
+
+    }
+
+    public Event(long id, String title, String value, int icon) {
         setId(id);
         setTitle(title);
         setValue(value);
         setIcon(icon);
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -35,7 +44,7 @@ public class Event {
         return title;
     }
 
-    private void setTitle(String title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 
@@ -43,7 +52,7 @@ public class Event {
         return value;
     }
 
-    private void setValue(String value) {
+    public void setValue(String value) {
         this.value = value;
     }
 
@@ -51,7 +60,7 @@ public class Event {
         return icon;
     }
 
-    private void setIcon(int icon) {
+    public void setIcon(int icon) {
         this.icon = icon;
     }
 

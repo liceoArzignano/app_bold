@@ -18,6 +18,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
 import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.events.EventListActivity;
 import it.liceoarzignano.bold.marks.Mark;
@@ -29,7 +31,7 @@ public class ViewerActivity extends AppCompatActivity {
     private String title = "Viewer";
     private String note;
     private int value;
-    private int id;
+    private long id;
     private boolean isMark;
     private Button mShare;
     private FloatingActionButton fab;
@@ -39,20 +41,23 @@ public class ViewerActivity extends AppCompatActivity {
     private Mark mark;
     private Event event;
 
+    private static Realm realm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viewer);
 
         fContext = this;
+        realm = Realm.getInstance(BoldApp.getAppRealmConfiguration());
 
         Intent i = getIntent();
-        id = i.getIntExtra("id", -1);
+        id = i.getLongExtra("id", -1);
         isMark = i.getBooleanExtra("isMark", true);
         if (isMark) {
-            mark = new it.liceoarzignano.bold.marks.DatabaseConnection(this).getMark(id);
+            mark = realm.where(Mark.class).equalTo("id", id).findFirst();
         } else {
-            event = new it.liceoarzignano.bold.events.DatabaseConnection(this).getEvent(id);
+            event = realm.where(Event.class).equalTo("id", id).findFirst();
         }
 
         title = isMark ? mark.getTitle() : event.getTitle();
@@ -157,19 +162,22 @@ public class ViewerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 AnalyticsTracker.trackEvent(isMark ? "MarkViewer: Delete" : "EventViewer: Delete",
                         getApplicationContext());
-                it.liceoarzignano.bold.marks.DatabaseConnection databaseConnectionMark =
-                        it.liceoarzignano.bold.marks.DatabaseConnection.getInstance(fContext);
-                it.liceoarzignano.bold.events.DatabaseConnection databaseConnectionEvent =
-                        it.liceoarzignano.bold.events.DatabaseConnection.getInstance(fContext);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     ((AnimatedVectorDrawable) mDelete.getCompoundDrawables()[1]).start();
                 }
 
                 if (isMark) {
-                    databaseConnectionMark.deleteMark(databaseConnectionMark.getMark(id));
+                    RealmResults<Mark> results = realm.where(Mark.class).equalTo("id", id).findAll();
+                    realm.beginTransaction();
+                    results.deleteAllFromRealm();
+                    realm.commitTransaction();
                 } else {
-                    databaseConnectionEvent.deleteEvent(databaseConnectionEvent.getEvent(id));
+                    RealmResults<Event> results =
+                            realm.where(Event.class).equalTo("id", id).findAll();
+                    realm.beginTransaction();
+                    results.deleteAllFromRealm();
+                    realm.commitTransaction();
                 }
 
                 Snackbar.make(v, getString(R.string.deleted), Snackbar.LENGTH_SHORT).show();

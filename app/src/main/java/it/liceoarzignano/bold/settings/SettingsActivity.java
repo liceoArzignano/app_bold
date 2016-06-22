@@ -1,5 +1,6 @@
 package it.liceoarzignano.bold.settings;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -14,6 +15,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
+import it.liceoarzignano.bold.realm.RealmController;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -75,8 +77,8 @@ public class SettingsActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog,
                                                     @NonNull DialogAction which) {
-                                    it.liceoarzignano.bold.marks.DatabaseConnection
-                                            .getInstance(context).dropAll();
+                                    Activity activity = (Activity) context;
+                                    RealmController.with(activity).clearAllMarks();
                                     Toast.makeText(context,
                                             getString(R.string.pref_drop_marks_toast),
                                             Toast.LENGTH_LONG).show();

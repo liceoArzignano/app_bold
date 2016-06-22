@@ -1,32 +1,43 @@
 package it.liceoarzignano.bold.marks;
 
-public class Mark {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-    private int id;
+public class Mark extends RealmObject {
+    @PrimaryKey
+    private long id = 0;
+
     private String title;
     private String content;
     private int value;
 
-    public Mark(int id, String title, int value, String content) {
-        setId(id);
-        setTitle(title);
-        setValue(value);
-        setContent(content);
+    public Mark() {
+
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
+    public Mark(long id, String title, int value, String content) {
         this.id = id;
+        this.title = title;
+        this.content = content;
+        this.value = value;
+    }
+
+    public Mark(String title, int value, String content) {
+        this.title = title;
+        this.content = content;
+        this.value = value;
+    }
+
+    public Mark(String title, int value) {
+        this.title = title;
+        this.value = value;
     }
 
     public String getTitle() {
         return title;
     }
 
-    private void setTitle(String title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 
@@ -34,7 +45,7 @@ public class Mark {
         return content;
     }
 
-    private void setContent(String content) {
+    public void setContent(String content) {
         this.content = content;
     }
 
@@ -42,12 +53,15 @@ public class Mark {
         return value;
     }
 
-    private void setValue(int value) {
+    public void setValue(int value) {
         this.value = value;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        return o instanceof Mark && this.title.equalsIgnoreCase(((Mark) o).getTitle());
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

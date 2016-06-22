@@ -38,6 +38,7 @@ import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.events.EventListActivity;
 import it.liceoarzignano.bold.marks.Mark;
 import it.liceoarzignano.bold.marks.MarkListActivity;
+import it.liceoarzignano.bold.realm.RealmController;
 
 public class ManagerActivity extends AppCompatActivity
         implements AdapterView.OnItemSelectedListener {
@@ -56,7 +57,7 @@ public class ManagerActivity extends AppCompatActivity
     private Toolbar toolbar;
     private Context context;
 
-    private int objID; // id | id
+    private long objID; // id | id
     private String objTitle = ""; // title | title
     private int objVal; // value | icon
     private String objNote;
@@ -82,11 +83,13 @@ public class ManagerActivity extends AppCompatActivity
     private boolean hasSaved = false;
     private Intent callingIntent;
 
+    private RealmController controller;
+
     /**
      * Intent-extra:
      * boolean isEditing
      * boolean isMark
-     * int id
+     * long id
      * string title
      * int val
      * string note
@@ -102,6 +105,7 @@ public class ManagerActivity extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         context = this;
+        controller = RealmController.with(this);
 
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
         mBanner = (ImageView) findViewById(R.id.banner_image);
@@ -295,7 +299,7 @@ public class ManagerActivity extends AppCompatActivity
 
         // Load intent data
         if (editMode) {
-            objID = callingIntent.getIntExtra("id", -1);
+            objID = callingIntent.getLongExtra("id", -1);
             objTitle = callingIntent.getStringExtra("title");
             objVal = callingIntent.getIntExtra("val", 0);
             objNote = callingIntent.getStringExtra("note");
@@ -396,23 +400,13 @@ public class ManagerActivity extends AppCompatActivity
 
         if (!objTitle.isEmpty() && objVal != 0) {
             Utils.animFab(false, (FloatingActionButton) fab);
-            it.liceoarzignano.bold.marks.DatabaseConnection databaseConnection =
-                    it.liceoarzignano.bold.marks.DatabaseConnection.getInstance(context);
 
             objNote = mNotesInput.getText().toString();
 
             Mark mark = new Mark(objID, objTitle,
                     objVal, objNote);
 
-            if (editMode) {
-                databaseConnection.updateMark(mark);
-            } else {
-                databaseConnection.addMark(mark);
-            }
-
-            List<Mark> marks = databaseConnection.getAllMarks();
-
-            objID = marks.get(marks.size() - 1).getId();
+            objID = editMode ? controller.updateMark(mark) : controller.addMark(mark);
 
             hasSaved = true;
 
@@ -439,20 +433,10 @@ public class ManagerActivity extends AppCompatActivity
 
         if (!objTitle.isEmpty()) {
             Utils.animFab(false, (FloatingActionButton) fab);
-            it.liceoarzignano.bold.events.DatabaseConnection databaseConnection =
-                    it.liceoarzignano.bold.events.DatabaseConnection.getInstance(context);
 
             Event event = new Event(objID, objTitle, mDate, mEventSpinner.getSelectedItemPosition());
 
-            if (editMode) {
-                databaseConnection.updateEvent(event);
-            } else {
-                databaseConnection.addEvent(event);
-            }
-
-            List<Event> events = databaseConnection.getEventsByID();
-
-            objID = events.get(events.size() - 1).getId();
+            objID = editMode ? controller.updateEvent(event) : controller.addEvent(event);
 
             hasSaved = true;
 

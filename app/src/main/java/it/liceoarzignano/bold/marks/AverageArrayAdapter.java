@@ -11,16 +11,18 @@ import android.widget.TextView;
 
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
+import it.liceoarzignano.bold.realm.RealmController;
 
 class AverageArrayAdapter extends BaseAdapter {
 
     private static LayoutInflater inflater = null;
     final private String[] result;
-    final private Context context;
+    final private RealmController controller;
 
-    public AverageArrayAdapter(Context context) {
-        result = Utils.getAverageElements(context);
-        this.context = context;
+    public AverageArrayAdapter(Context context, RealmController controller) {
+        result = Utils.getAverageElements();
+        Context context1 = context;
+        this.controller = controller;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -50,7 +52,7 @@ class AverageArrayAdapter extends BaseAdapter {
         row.setTag(holder);
         holder.title.setText(result[position]);
 
-        final Double doubleAvg = new DatabaseConnection(context).getAverage(result[position]);
+        final Double doubleAvg = controller.getAverage(result[position]);
         holder.avg.setText(String.format("%.2f", doubleAvg));
         if (doubleAvg < 6) {
             holder.avg.setTextColor(Color.RED);

@@ -4,25 +4,24 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.List;
-
+import io.realm.RealmBaseAdapter;
+import io.realm.RealmResults;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
 
-class ListArrayAdapter extends ArrayAdapter<Event> {
+class ListArrayAdapter extends RealmBaseAdapter<Event> {
 
     private final Context context;
     private final int layoutResourceId;
-    private final List<Event> events;
+    private final RealmResults<Event> events;
 
     public ListArrayAdapter(Context context,
                             @SuppressWarnings("SameParameterValue") int layoutResourceId,
-                            List<Event> events) {
-        super(context, layoutResourceId, events);
+                            RealmResults<Event> events) {
+        super(context, events);
         this.context = context;
         this.layoutResourceId = layoutResourceId;
         this.events = events;
