@@ -26,7 +26,7 @@ public class BenefitFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final int position = getArguments().getInt("section_number");
+        int position = getArguments().getInt("section_number");
 
         View view = inflater.inflate(R.layout.fragment_benefits_contents, container, false);
         TextView mTitle = (TextView) view.findViewById(R.id.title);

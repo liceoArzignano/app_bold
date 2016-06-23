@@ -18,8 +18,7 @@ class ListArrayAdapter extends RealmBaseAdapter<Mark> {
     private final RealmResults<Mark> marks;
 
 
-    public ListArrayAdapter(Context context,
-                            @SuppressWarnings("SameParameterValue") int layoutResourceId,
+    public ListArrayAdapter(Context context, int layoutResourceId,
                             RealmResults<Mark> marks) {
         super(context, marks);
         this.context = context;
@@ -29,7 +28,7 @@ class ListArrayAdapter extends RealmBaseAdapter<Mark> {
 
     @Override
     public View getView(int position, View row, ViewGroup parent) {
-        final MarkViewHolder markViewHolder;
+        MarkViewHolder markViewHolder;
 
         if (row == null) {
             LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

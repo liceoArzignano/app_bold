@@ -18,8 +18,7 @@ class ListArrayAdapter extends RealmBaseAdapter<Event> {
     private final int layoutResourceId;
     private final RealmResults<Event> events;
 
-    public ListArrayAdapter(Context context,
-                            @SuppressWarnings("SameParameterValue") int layoutResourceId,
+    public ListArrayAdapter(Context context, int layoutResourceId,
                             RealmResults<Event> events) {
         super(context, events);
         this.context = context;
@@ -28,7 +27,7 @@ class ListArrayAdapter extends RealmBaseAdapter<Event> {
     }
 
     @Override
-    public View getView(final int position, View row, ViewGroup parent) {
+    public View getView(int position, View row, ViewGroup parent) {
         EventViewHolder eventViewHolder;
 
         if (row == null) {

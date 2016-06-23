@@ -21,7 +21,6 @@ class AverageArrayAdapter extends BaseAdapter {
 
     public AverageArrayAdapter(Context context, RealmController controller) {
         result = Utils.getAverageElements();
-        Context context1 = context;
         this.controller = controller;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -44,7 +43,7 @@ class AverageArrayAdapter extends BaseAdapter {
     @SuppressLint({"DefaultLocale", "InflateParams", "ViewHolder"})
     @Override
     public View getView(final int position, View row, ViewGroup parent) {
-        final Holder holder = new Holder();
+        Holder holder = new Holder();
         row = inflater.inflate(R.layout.item_average, null);
         holder.avg = (TextView) row.findViewById(R.id.row_avg_value);
         holder.title = (TextView) row.findViewById(R.id.row_avg_title);
@@ -70,9 +69,9 @@ class AverageArrayAdapter extends BaseAdapter {
         return row;
     }
 
-    public class Holder {
-        TextView avg;
-        TextView title;
+    static class Holder {
+        static TextView avg;
+        static TextView title;
     }
 
 }

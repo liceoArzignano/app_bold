@@ -55,11 +55,11 @@ public class MaterialShowcaseView extends FrameLayout
     private Bitmap mBitmap;
     private Canvas mCanvas;
     private Paint mEraser;
-    private Target mTarget;
+    private static Target mTarget;
     private Shape mShape;
     private int mXPosition;
     private int mYPosition;
-    private boolean mWasDismissed = false;
+    private boolean mWasNotDismissed = true;
     private final int mShapePadding = ShowcaseConfig.DEFAULT_SHAPE_PADDING;
 
     private View mContentBox;
@@ -68,7 +68,7 @@ public class MaterialShowcaseView extends FrameLayout
     private int mGravity;
     private int mContentBottomMargin;
     private int mContentTopMargin;
-    private boolean mShouldRender = false;
+    private boolean mShouldNotRender = true;
     private int mMaskColour;
     private AnimationFactory mAnimationFactory;
     private final long mFadeDurationInMillis = ShowcaseConfig.DEFAULT_FADE_TIME;
@@ -131,11 +131,11 @@ public class MaterialShowcaseView extends FrameLayout
         super.onDraw(canvas);
 
         // don't bother drawing if we're not ready
-        if (!mShouldRender) return;
+        if (mShouldNotRender) return;
 
         // get current dimensions
-        final int width = getMeasuredWidth();
-        final int height = getMeasuredHeight();
+        int width = getMeasuredWidth();
+        int height = getMeasuredHeight();
 
         // don't bother drawing if there is nothing to draw on
         if(width <= 0 || height <= 0) return;
@@ -180,11 +180,11 @@ public class MaterialShowcaseView extends FrameLayout
         super.onDetachedFromWindow();
 
         /**
-         * If we're being detached from the window without the mWasDismissed flag then we weren't purposefully dismissed
+         * If we're being detached from the window without the mWasNotDismissed flag then we weren't purposefully dismissed
          * Probably due to an orientation change or user backed out of activity.
          * Ensure we reset the flag so the showcase display again.
          */
-        if (!mWasDismissed && mSingleUse && mPrefsManager != null) {
+        if (mWasNotDismissed && mSingleUse && mPrefsManager != null) {
             mPrefsManager.resetShowcase();
         }
 
@@ -341,7 +341,7 @@ public class MaterialShowcaseView extends FrameLayout
     }
 
     private void setShouldRender() {
-        mShouldRender = true;
+        mShouldNotRender = false;
     }
 
 
@@ -366,7 +366,7 @@ public class MaterialShowcaseView extends FrameLayout
      * Gives us a builder utility class with a fluent API for easily configuring showcase views
      */
     public static class Builder {
-        final MaterialShowcaseView showcaseView;
+        static MaterialShowcaseView showcaseView;
 
         private final Activity activity;
 
@@ -448,7 +448,7 @@ public class MaterialShowcaseView extends FrameLayout
      *
      * @param activity : activity
      */
-    private void show(final Activity activity) {
+    private void show(Activity activity) {
 
         /**
          * if we're in single use mode and have already shot our bolt then do nothing
@@ -483,7 +483,7 @@ public class MaterialShowcaseView extends FrameLayout
      * showcase view was dismissed purposefully (by the user or programmatically)
      */
     private void hide() {
-        mWasDismissed = true;
+        mWasNotDismissed = false;
          fadeOut();
     }
 

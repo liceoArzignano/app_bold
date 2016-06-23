@@ -129,7 +129,7 @@ public class ManagerActivity extends AppCompatActivity
             public void onClick(View v) {
                 new MaterialDialog.Builder(context)
                         .title(R.string.select_subject)
-                        .items(subjects)
+                        .items((CharSequence[]) subjects)
                         .itemsCallback(new MaterialDialog.ListCallback() {
                             @Override
                             public void onSelection(MaterialDialog dialog,
@@ -340,9 +340,9 @@ public class ManagerActivity extends AppCompatActivity
                 View sharedElement = findViewById(R.id.banner_image);
 
                 ActivityOptionsCompat options = ActivityOptionsCompat
-                        .makeSceneTransitionAnimation(ManagerActivity.this,
+                        .makeSceneTransitionAnimation(this,
                                 sharedElement, "imageShared");
-                ActivityCompat.startActivity(ManagerActivity.this,
+                ActivityCompat.startActivity(this,
                         editIntent, options.toBundle());
             } else {
                 startActivity(editIntent);
@@ -380,7 +380,7 @@ public class ManagerActivity extends AppCompatActivity
      *
      * @param fabView: fab view that's animated when the content has been successfully saved
      */
-    private void save(final View fabView) {
+    private void save(View fabView) {
         if (isMark) {
             saveMark(fabView);
         } else {
@@ -393,7 +393,7 @@ public class ManagerActivity extends AppCompatActivity
      * Save mark
      * @param fab: fab that will be animated when the mark is saved
      */
-    private void saveMark(final View fab) {
+    private void saveMark(View fab) {
         if (Utils.isTeacher(this)) {
             objTitle = mTitleInput.getText().toString();
         }

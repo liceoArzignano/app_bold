@@ -34,6 +34,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import java.security.SecureRandom;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -272,11 +273,9 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        //noinspection ConstantConditions
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        //noinspection ConstantConditions
         navigationView.setNavigationItemSelectedListener(this);
         View mHeaderView = navigationView.getHeaderView(0);
         mUserName = (TextView) mHeaderView.findViewById(R.id.username_drawer);
@@ -380,17 +379,16 @@ public class MainActivity extends AppCompatActivity
         super.onStop();
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
             case R.id.nav_my_marks:
-                Intent intent = new Intent(MainActivity.this, MarkListActivity.class);
+                Intent intent = new Intent(this, MarkListActivity.class);
                 startActivity(intent);
                 break;
             case R.id.nav_calendar:
-                Intent i = new Intent(MainActivity.this, EventListActivity.class);
+                Intent i = new Intent(this, EventListActivity.class);
                 startActivity(i);
                 break;
             case R.id.nav_website:
@@ -415,11 +413,11 @@ public class MainActivity extends AppCompatActivity
                 showIntroIfNeeded(true);
                 break;
             case R.id.nav_settings:
-                Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
                 startActivity(settingsIntent);
                 break;
             case R.id.nav_safe:
-                Intent safeIntent = new Intent(MainActivity.this, SafeActivity.class);
+                Intent safeIntent = new Intent(this, SafeActivity.class);
                 startActivity(safeIntent);
                 break;
         }
@@ -467,7 +465,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         if (mUrl != null) {
-            customTabsIntent.launchUrl(MainActivity.this, Uri.parse(mUrl));
+            customTabsIntent.launchUrl(this, Uri.parse(mUrl));
         }
     }
 
@@ -565,7 +563,7 @@ public class MainActivity extends AppCompatActivity
      * @return string with text for suggestion card
      */
     private String getSuggestion() {
-        Random random = new Random();
+        Random random = new SecureRandom();
         switch (random.nextInt(10) + 1) {
             case 1:
                 return getString(Utils.hasSafe(this) ?
@@ -636,7 +634,7 @@ public class MainActivity extends AppCompatActivity
     private void showIntroIfNeeded(boolean force) {
         SharedPreferences prefs = getSharedPreferences("HomePrefs", MODE_PRIVATE);
         if (!prefs.getBoolean("introKey", false) || force) {
-            Intent i = new Intent(MainActivity.this, BenefitsActivity.class);
+            Intent i = new Intent(this, BenefitsActivity.class);
             startActivity(i);
             finish();
         }

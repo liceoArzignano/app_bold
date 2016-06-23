@@ -50,7 +50,7 @@ public class MarkListActivity extends AppCompatActivity {
      *
      * @param context: needed to reload database data
      */
-    public static void refreshList(final Context context) {
+    public static void refreshList(Context context) {
         LoadListViewTask loadMarkPostListViewTask = new LoadListViewTask(
                 context, MarksListFragment.mMarksListView, filter);
         loadMarkPostListViewTask.execute();
@@ -176,11 +176,11 @@ public class MarkListActivity extends AppCompatActivity {
     /**
      * Custom Fragment Page Adapter class
      */
-    class ViewPagerAdapter extends FragmentPagerAdapter {
+    static class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
-        public ViewPagerAdapter(FragmentManager manager) {
+        ViewPagerAdapter(FragmentManager manager) {
             super(manager);
         }
 
@@ -199,7 +199,7 @@ public class MarkListActivity extends AppCompatActivity {
             return mFragmentTitleList.get(position);
         }
 
-        public void addFragment(Fragment fragment, String title) {
+        void addFragment(Fragment fragment, String title) {
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }

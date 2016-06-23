@@ -168,6 +168,7 @@ public class SafeActivity extends AppCompatActivity {
      * normal access
      */
     private void showPasswordDialog() {
+        @SuppressWarnings("BooleanVariableAlwaysNegated")
         final boolean doneSetup = prefs.getBoolean("doneSetup", false);
         String title;
         String msg;

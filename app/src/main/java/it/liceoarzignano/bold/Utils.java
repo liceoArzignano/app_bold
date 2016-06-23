@@ -21,7 +21,6 @@ import io.realm.Realm;
 import it.liceoarzignano.bold.external.showcase.MaterialShowcaseView;
 import it.liceoarzignano.bold.marks.Mark;
 
-@SuppressWarnings("SameParameterValue")
 public class Utils {
     private static SharedPreferences preferences;
 

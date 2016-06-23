@@ -65,7 +65,7 @@ public class ViewerActivity extends AppCompatActivity {
         value = isMark ? mark.getValue() : event.getIcon();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        final ImageView toolbarImage = (ImageView) findViewById(R.id.toolbar_image);
+        ImageView toolbarImage = (ImageView) findViewById(R.id.toolbar_image);
 
         if (toolbarImage != null) {
             toolbarImage.setImageResource(isMark ? R.drawable.newmark : R.drawable.newevent);
@@ -93,7 +93,7 @@ public class ViewerActivity extends AppCompatActivity {
             mView.setVisibility(View.GONE);
         }
 
-        final double markVal = (double) value / 100;
+        double markVal = (double) value / 100;
         assert mValue != null;
         final String sVal = markVal + "";
         mValue.setText(sVal);
@@ -200,7 +200,7 @@ public class ViewerActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 fab.hide();
-                final Intent editIntent = new Intent(fContext, ManagerActivity.class);
+                Intent editIntent = new Intent(fContext, ManagerActivity.class);
 
                 editIntent.putExtra("isEditing", true);
                 editIntent.putExtra("isMark", isMark);

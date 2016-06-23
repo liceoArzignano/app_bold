@@ -37,7 +37,7 @@ public class SettingsActivity extends AppCompatActivity {
         Context context;
 
         @Override
-        public void onCreate(final Bundle savedInstance) {
+        public void onCreate(Bundle savedInstance) {
             super.onCreate(savedInstance);
             addPreferencesFromResource(R.xml.settings);
 

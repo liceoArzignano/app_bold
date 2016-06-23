@@ -110,10 +110,10 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     public InkPageIndicator(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
-        final int density = (int) context.getResources().getDisplayMetrics().density;
+        int density = (int) context.getResources().getDisplayMetrics().density;
 
         // Load attributes
-        final TypedArray a = getContext().obtainStyledAttributes(
+        TypedArray a = getContext().obtainStyledAttributes(
                 attrs, R.styleable.InkPageIndicator, defStyle, 0);
 
         dotDiameter = a.getDimensionPixelSize(R.styleable.InkPageIndicator_dotDiameter,
@@ -549,7 +549,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
         pageChanging = true;
         previousPage = currentPage;
         currentPage = now;
-        final int steps = Math.abs(now - previousPage);
+        int steps = Math.abs(now - previousPage);
 
         if (steps > 1) {
             if (now > previousPage) {
@@ -572,7 +572,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     }
 
     private ValueAnimator createMoveSelectedAnimator(
-            final float moveTo, int was, int now, int steps) {
+            float moveTo, int was, int now, int steps) {
 
         // create the actual move animator
         ValueAnimator moveSelected = ValueAnimator.ofFloat(selectedDotX, moveTo);
@@ -643,7 +643,8 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     /**
      * A {@link ValueAnimator} that starts once a given predicate returns true.
      */
-    abstract class PendingStartAnimator extends ValueAnimator {
+    @SuppressWarnings({"CloneableClassInSecureContext", "NonStaticInnerClassInSecureContext"})
+    abstract class PendingStartAnimator extends ValueAnimator implements Cloneable {
 
         boolean hasStarted;
         final StartPredicate predicate;
@@ -667,6 +668,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
      * selected pages.  This also sets up some pending dot reveals – to be started when the retreat
      * has passed the dot to be revealed.
      */
+    @SuppressWarnings({"CloneableClassInSecureContext", "NonStaticInnerClassInSecureContext"})
     private class PendingRetreatAnimator extends PendingStartAnimator {
 
         PendingRetreatAnimator(int was, int now, int steps, StartPredicate predicate) {
@@ -679,11 +681,11 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
             // before a prior anim has finished.
             final float initialX1 = now > was ? Math.min(dotCenterX[was], selectedDotX) - dotRadius
                     : dotCenterX[now] - dotRadius;
-            final float finalX1 = now > was ? dotCenterX[now] - dotRadius
+            float finalX1 = now > was ? dotCenterX[now] - dotRadius
                     : dotCenterX[now] - dotRadius;
             final float initialX2 = now > was ? dotCenterX[now] + dotRadius
                     : Math.max(dotCenterX[was], selectedDotX) + dotRadius;
-            final float finalX2 = now > was ? dotCenterX[now] + dotRadius
+            float finalX2 = now > was ? dotCenterX[now] + dotRadius
                     : dotCenterX[now] + dotRadius;
 
             revealAnimations = new PendingRevealAnimator[steps];
@@ -757,6 +759,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     /**
      * An Animator that animates a given dot's revealFraction i.e. scales it up
      */
+    @SuppressWarnings({"CloneableClassInSecureContext", "NonStaticInnerClassInSecureContext"})
     private class PendingRevealAnimator extends PendingStartAnimator {
 
         private final int dot;
@@ -784,10 +787,11 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
         }
     }
 
+
     /**
      * A predicate used to start an animation when a test passes
      */
-    abstract class StartPredicate {
+    abstract static class StartPredicate {
 
         final float thresholdValue;
 
@@ -802,7 +806,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     /**
      * A predicate used to start an animation when a given value is greater than a threshold
      */
-    private class RightwardStartPredicate extends StartPredicate {
+    private static class RightwardStartPredicate extends StartPredicate {
 
         RightwardStartPredicate(float thresholdValue) {
             super(thresholdValue);
@@ -816,7 +820,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     /**
      * A predicate used to start an animation then a given value is less than a threshold
      */
-    private class LeftwardStartPredicate extends StartPredicate {
+    private static class LeftwardStartPredicate extends StartPredicate {
 
         LeftwardStartPredicate(float thresholdValue) {
             super(thresholdValue);
@@ -861,7 +865,6 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
             dest.writeInt(currentPage);
         }
 
-        @SuppressWarnings("UnusedDeclaration")
         public static final Parcelable.Creator<SavedState> CREATOR =
                 new Parcelable.Creator<SavedState>() {
             @Override

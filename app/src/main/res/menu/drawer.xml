@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <group>
         <item
-            android:id="@+id/nav_home"
             android:icon="@drawable/ic_home"
             android:title="@string/nav_home" />
         <item
@@ -44,7 +44,8 @@
     </group>
     <group
         android:id="@+id/nav_more"
-        android:checkableBehavior="none">
+        android:checkableBehavior="none"
+        tools:ignore="UnusedIds">
         <item
             android:id="@+id/nav_safe"
             android:icon="@drawable/ic_safe"
@@ -52,7 +53,8 @@
     </group>
     <group
         android:id="@+id/nav_prefs"
-        android:checkableBehavior="none" >
+        android:checkableBehavior="none"
+        tools:ignore="UnusedIds">
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings"
