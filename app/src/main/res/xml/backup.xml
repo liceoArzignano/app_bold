@@ -7,13 +7,7 @@
     <include domain="sharedpref" path="it.liceoarzignano.bold_preferences.xml" />
     <include domain="sharedpref" path="HomePrefs.xml" />
 
-    <!-- Databases -->
-    <include domain="database" path="Event" />
-    <include domain="database" path="Event-journal" />
-    <include domain="database" path="Mark" />
-    <include domain="database" path="Mark-journal" />
-    <include domain="database" path="Task" />
-    <include domain="database" path="Task-journal" />
+    <!-- Google Analytics -->
     <include domain="database" path="google_analytics_v4.db" />
     <include domain="database" path="google_analytics_v4.db-journal" />
     <include domain="database" path="google_app_measurement.db" />

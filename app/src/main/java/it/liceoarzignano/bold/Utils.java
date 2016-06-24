@@ -27,18 +27,13 @@ public class Utils {
     /**
      * animate fab with delay
      *
-     * @param show: boolean show / hide state
-     * @param fab:  the fab that will be animated
+     * @param fab :  the fab that will be animated
      */
-    static void animFab(final boolean show, final FloatingActionButton fab) {
+    static void animFab(final FloatingActionButton fab) {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (show) {
-                    fab.show();
-                } else {
-                    fab.hide();
-                }
+                fab.hide();
             }
         }, 500);
     }

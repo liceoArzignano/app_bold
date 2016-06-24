@@ -18,11 +18,11 @@ class ListArrayAdapter extends RealmBaseAdapter<Mark> {
     private final RealmResults<Mark> marks;
 
 
-    public ListArrayAdapter(Context context, int layoutResourceId,
+    public ListArrayAdapter(Context context,
                             RealmResults<Mark> marks) {
         super(context, marks);
         this.context = context;
-        this.layoutResourceId = layoutResourceId;
+        this.layoutResourceId = R.layout.item_mark;
         this.marks = marks;
     }
 

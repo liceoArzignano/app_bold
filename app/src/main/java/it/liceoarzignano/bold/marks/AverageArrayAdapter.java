@@ -40,6 +40,7 @@ class AverageArrayAdapter extends BaseAdapter {
         return position;
     }
 
+    @SuppressWarnings("AccessStaticViaInstance")
     @SuppressLint({"DefaultLocale", "InflateParams", "ViewHolder"})
     @Override
     public View getView(final int position, View row, ViewGroup parent) {

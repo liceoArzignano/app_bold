@@ -39,6 +39,12 @@
             android:title="@string/pref_drop_marks_title"
             android:summary="@string/pref_drop_marks_summary" />
 
+        <Preference
+            android:key="backup_key"
+            android:summary="@string/pref_backup_title"
+            android:title="@string/pref_backup_summary">
+        </Preference>
+
         <SwitchPreference
             android:defaultValue="true"
             android:key="analytics_key"

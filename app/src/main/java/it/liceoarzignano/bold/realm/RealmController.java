@@ -59,16 +59,11 @@ public class RealmController {
         realm.commitTransaction();
     }
 
-
-    public RealmResults<Mark> getAllMarks() {
-        return realm.where(Mark.class).findAll();
-    }
-
-    public RealmResults<Mark> getFilteredMarks(String title) {
+    private RealmResults<Mark> getFilteredMarks(String title) {
         return realm.where(Mark.class).equalTo("title", title).findAll();
     }
 
-    public Mark getMark(long id) {
+    private Mark getMark(long id) {
         return realm.where(Mark.class).equalTo("id", id).findFirst();
     }
 
@@ -91,13 +86,6 @@ public class RealmController {
         oldMark.setContent(mark.getContent());
         realm.commitTransaction();
         return id;
-    }
-
-    public void deleteMark(long id) {
-        RealmResults<Mark> results = realm.where(Mark.class).equalTo("id", id).findAll();
-        realm.beginTransaction();
-        results.deleteAllFromRealm();
-        realm.commitTransaction();
     }
 
     public double getAverage(String title) {
@@ -139,26 +127,11 @@ public class RealmController {
      **********
      */
 
-    public void clearAllEvents() {
-        realm.beginTransaction();
-        realm.delete(Event.class);
-        realm.commitTransaction();
-    }
-
-
-    public RealmResults<Event> getAllEvents() {
-        return realm.where(Event.class).findAllSorted("value", Sort.DESCENDING);
-    }
-
     public RealmResults<Event> getAllEventsInverted() {
         return realm.where(Event.class).findAllSorted("value", Sort.ASCENDING);
     }
 
-    public RealmResults<Event> getEventsById() {
-        return realm.where(Event.class).findAll();
-    }
-
-    public Event getEvent(long id) {
+    private Event getEvent(long id) {
         return realm.where(Event.class).equalTo("id", id).findFirst();
     }
 

@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="60dp"
     android:orientation="horizontal"
     android:paddingBottom="4dp"
+    android:background="?android:attr/selectableItemBackground"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="4dp">
+    android:paddingTop="4dp"
+    tools:ignore="Overdraw">
 
     <ImageView
         android:id="@+id/row_icon"

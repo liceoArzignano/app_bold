@@ -18,11 +18,11 @@ class ListArrayAdapter extends RealmBaseAdapter<Event> {
     private final int layoutResourceId;
     private final RealmResults<Event> events;
 
-    public ListArrayAdapter(Context context, int layoutResourceId,
+    public ListArrayAdapter(Context context,
                             RealmResults<Event> events) {
         super(context, events);
         this.context = context;
-        this.layoutResourceId = layoutResourceId;
+        this.layoutResourceId = R.layout.item_event;
         this.events = events;
     }
 

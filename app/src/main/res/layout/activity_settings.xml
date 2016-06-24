@@ -2,6 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -11,7 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:elevation="8dp"
-        app:theme="@style/AppTheme.ToolbarTheme" />
+        app:theme="@style/AppTheme.ToolbarTheme"
+        tools:targetApi="lollipop" />
 
     <FrameLayout
         android:id="@+id/content_frame"

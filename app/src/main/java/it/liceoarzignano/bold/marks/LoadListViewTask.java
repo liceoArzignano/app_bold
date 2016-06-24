@@ -7,7 +7,6 @@ import android.widget.ListView;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import it.liceoarzignano.bold.BoldApp;
-import it.liceoarzignano.bold.R;
 
 class LoadListViewTask extends AsyncTask<Void, Void, Void> {
 
@@ -33,7 +32,7 @@ class LoadListViewTask extends AsyncTask<Void, Void, Void> {
         RealmResults<Mark> marks = filter == null ? realm.where(Mark.class).findAll() :
                 realm.where(Mark.class).equalTo("title", filter).findAll();
         ListArrayAdapter listArrayAdapter = new ListArrayAdapter(context,
-                R.layout.item_mark, marks);
+                marks);
         if (mMarksListView != null) {
             mMarksListView.setAdapter(listArrayAdapter);
         }

@@ -186,6 +186,8 @@
     <string name="pref_notification_time_morning">In the morning</string>
     <string name="pref_notification_time_afternoon">In the afternoon</string>
     <string name="pref_notification_time_evening">In the evening</string>
+    <string name="pref_backup_title">Backup &amp; restore</string>
+    <string name="pref_backup_summary">Save your marks and events on Google Drive</string>
 
     <!-- Safe -->
     <string name="title_activity_safe">Safe</string>
@@ -238,6 +240,20 @@
         <item quantity="one">event</item>
         <item quantity="other">events</item>
     </plurals>
+
+    <!-- Backup -->
+    <string name="title_activity_backup">Backup &amp; Restore</string>
+    <string name="backup">Backup</string>
+    <string name="backup_created_message">The backup has successfully been created</string>
+    <string name="backup_failed_message">Unable to create backup, something went wrong</string>
+    <string name="restore_success_message">The backup has successfully been restored</string>
+    <string name="restore_failed_message">Unable to restore the backup, something went wrong</string>
+    <string name="backup_retry">Retry</string>
+    <string name="backup_title">Backup %1$d</string>
+    <string name="backup_explain">Backing up your data to Google Drive allows you to restore all your data in case you lose or change the device. This also allows you to sync data between all your devices.</string>
+    <string name="recent_backups">Recent backups</string>
+    <string name="restore_dialog_title">Revert to previous version</string>
+    <string name="restore_dialog_message">Restoring the backup will overwrite all the existing data with those in the backup.\n<b>Backup creation date</b>: %1$s\nAre you sure you want to proceed?</string>
 
     <!-- Accessibility -->
     <string name="accessibility_drawer">Header</string>

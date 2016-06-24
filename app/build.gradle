@@ -25,10 +25,12 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
 
+    //noinspection GroovyMissingReturnStatement
     lintOptions {
         disable 'MissingTranslation'
     }
 
+    //noinspection GroovyMissingReturnStatement
     aaptOptions {
         additionalParameters "--no-version-vectors"
     }
@@ -44,7 +46,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
     productFlavors {
+        all {
+            // For run / debug only
+            ndk {
+                abiFilters "armeabi-v7a", "armeabi", "x86"
+            }
+        }
         arm {
             ndk {
                 abiFilters "armeabi-v7a", "armeabi"

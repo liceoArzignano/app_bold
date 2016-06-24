@@ -15,6 +15,7 @@
  */
 package it.liceoarzignano.bold.external.showcase;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -107,6 +108,7 @@ public class MaterialShowcaseView extends FrameLayout
         // consume touch events
         setOnTouchListener(this);
 
+        //noinspection deprecation
         mMaskColour = getResources().getColor(R.color.showcase_color);
         setVisibility(INVISIBLE);
 
@@ -126,6 +128,7 @@ public class MaterialShowcaseView extends FrameLayout
      *
      * @param canvas: the canvas we'll draw things in
      */
+    @SuppressLint("DrawAllocation")
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -399,6 +402,7 @@ public class MaterialShowcaseView extends FrameLayout
 
         public MaterialShowcaseView build() {
             if (showcaseView.mShape == null) {
+                //noinspection AccessStaticViaInstance
                 showcaseView.setShape(new CircleShape(showcaseView.mTarget));
             }
 
@@ -431,6 +435,7 @@ public class MaterialShowcaseView extends FrameLayout
         mCanvas = null;
         mHandler = null;
 
+        //noinspection deprecation
         getViewTreeObserver().removeGlobalOnLayoutListener(mLayoutListener);
         mLayoutListener = null;
 

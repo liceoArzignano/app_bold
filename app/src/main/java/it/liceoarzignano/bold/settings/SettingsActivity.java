@@ -2,6 +2,7 @@ package it.liceoarzignano.bold.settings;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -15,6 +16,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
+import it.liceoarzignano.bold.backup.BackupActivity;
 import it.liceoarzignano.bold.realm.RealmController;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -46,6 +48,7 @@ public class SettingsActivity extends AppCompatActivity {
             Preference changelogPref = findPreference("changelog_key");
             Preference trackerPref = findPreference("analytics_key");
             Preference dropMarksPref = findPreference("drop_marks_key");
+            Preference backupPref = findPreference("backup_key");
             final Preference namePref = findPreference("username_key");
 
             changelogPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -85,6 +88,15 @@ public class SettingsActivity extends AppCompatActivity {
                                 }
                             })
                             .show();
+                    return true;
+                }
+            });
+
+            backupPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Intent intent = new Intent(context, BackupActivity.class);
+                    startActivity(intent);
                     return true;
                 }
             });

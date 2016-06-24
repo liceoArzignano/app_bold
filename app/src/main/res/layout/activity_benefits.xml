@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/slide_color"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    tools:ignore="Overdraw">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/container"
@@ -30,7 +32,8 @@
             android:textColor="@color/black"
             android:elevation="8dp"
             android:backgroundTint="@color/white"
-            android:text="@string/slide_button" />
+            android:text="@string/slide_button"
+            tools:targetApi="lollipop" />
 
 
         <it.liceoarzignano.bold.external.inkpageindicator.InkPageIndicator

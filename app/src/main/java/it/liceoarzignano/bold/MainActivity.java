@@ -46,7 +46,6 @@ import java.util.Random;
 
 import io.realm.Realm;
 import io.realm.Sort;
-import it.liceoarzignano.bold.backup.BackupActivity;
 import it.liceoarzignano.bold.events.AlarmService;
 import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.events.EventListActivity;
@@ -279,6 +278,7 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        //noinspection deprecation
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
@@ -725,23 +725,23 @@ public class MainActivity extends AppCompatActivity
 
         if (Utils.hasApi21()) {
             if (Utils.isTeacher(this)) {
-                mAddressLogo.setBackground(getResources().getDrawable(R.drawable.ic_address_6));
+                mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_6));
             } else {
                 switch (Utils.getAddress(this)) {
                     case "1":
-                        mAddressLogo.setBackground(getResources().getDrawable(R.drawable.ic_address_1));
+                        mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_1));
                         break;
                     case "2":
-                        mAddressLogo.setBackground(getResources().getDrawable(R.drawable.ic_address_2));
+                        mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_2));
                         break;
                     case "3":
-                        mAddressLogo.setBackground(getResources().getDrawable(R.drawable.ic_address_3));
+                        mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_3));
                         break;
                     case "4":
-                        mAddressLogo.setBackground(getResources().getDrawable(R.drawable.ic_address_4));
+                        mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_4));
                         break;
                     case "5":
-                        mAddressLogo.setBackground(getResources().getDrawable(R.drawable.ic_address_5));
+                        mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_5));
                         break;
                 }
             }

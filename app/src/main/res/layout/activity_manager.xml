@@ -17,7 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:elevation="8dp"
-            app:theme="@style/AppTheme.ToolbarTheme" />
+            app:theme="@style/AppTheme.ToolbarTheme"
+            tools:targetApi="lollipop" />
 
         <ScrollView
             android:layout_width="match_parent"

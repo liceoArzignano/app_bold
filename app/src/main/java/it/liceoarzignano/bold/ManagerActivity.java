@@ -292,6 +292,7 @@ public class ManagerActivity extends AppCompatActivity
             mDatePicker.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //noinspection deprecation
                     showDialog(33);
                 }
             });
@@ -357,6 +358,7 @@ public class ManagerActivity extends AppCompatActivity
 
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     protected Dialog onCreateDialog(int id) {
         if (id == 33) {
@@ -399,7 +401,7 @@ public class ManagerActivity extends AppCompatActivity
         }
 
         if (!objTitle.isEmpty() && objVal != 0) {
-            Utils.animFab(false, (FloatingActionButton) fab);
+            Utils.animFab((FloatingActionButton) fab);
 
             objNote = mNotesInput.getText().toString();
 
@@ -432,7 +434,7 @@ public class ManagerActivity extends AppCompatActivity
         objTitle = mTitleInput.getText().toString();
 
         if (!objTitle.isEmpty()) {
-            Utils.animFab(false, (FloatingActionButton) fab);
+            Utils.animFab((FloatingActionButton) fab);
 
             Event event = new Event(objID, objTitle, mDate, mEventSpinner.getSelectedItemPosition());
 
