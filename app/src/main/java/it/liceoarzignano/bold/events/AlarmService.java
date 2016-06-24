@@ -23,18 +23,19 @@ public class AlarmService extends Service {
         NotificationManager manager = (NotificationManager) getSystemService(
                 NOTIFICATION_SERVICE);
 
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-                this.getApplicationContext())
-                .setSmallIcon(R.drawable.ic_notification)
-                .setContentTitle(getString(R.string.notification_title))
-                .setContentText(message)
-                .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText(message))
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true);
+        if (message != null) {
+            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+                    this.getApplicationContext())
+                    .setSmallIcon(R.drawable.ic_notification)
+                    .setContentTitle(getString(R.string.notification_title))
+                    .setContentText(message)
+                    .setStyle(new NotificationCompat.BigTextStyle()
+                            .bigText(message))
+                    .setContentIntent(pendingIntent)
+                    .setAutoCancel(true);
 
-        manager.notify(21, mBuilder.build());
-
+            manager.notify(21, mBuilder.build());
+        }
     }
 
     @Override

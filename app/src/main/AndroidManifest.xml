@@ -81,6 +81,10 @@
         <service android:name=".events.AlarmService"
             android:enabled="true" />
 
+        <service
+            android:name=".events.BootReceiverService"
+            android:enabled="true" />
+
         <!-- Boot receiver -->
         <receiver android:name=".events.BootReceiver"
             android:enabled="true"

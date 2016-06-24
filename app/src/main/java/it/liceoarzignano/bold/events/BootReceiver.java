@@ -9,7 +9,7 @@ public class BootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if ("android.intent.action.BOOT_COMPLETED".equals(intent.getAction())) {
-            Intent service = new Intent(context, AlarmService.class);
+            Intent service = new Intent(context, BootReceiverService.class);
             context.startService(service);
         }
     }

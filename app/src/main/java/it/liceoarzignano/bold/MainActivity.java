@@ -44,6 +44,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
+import io.realm.Realm;
+import io.realm.Sort;
+import it.liceoarzignano.bold.backup.BackupActivity;
 import it.liceoarzignano.bold.events.AlarmService;
 import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.events.EventListActivity;
@@ -64,7 +67,7 @@ public class MainActivity extends AppCompatActivity
     @SuppressLint("StaticFieldLeak")
     private static Context sContext;
     private ImageView mAddressLogo;
-    private final Calendar c = Calendar.getInstance();
+    private static final Calendar c = Calendar.getInstance();
     // Header
     private Toolbar toolbar;
     private TextView mUserName;
@@ -104,7 +107,10 @@ public class MainActivity extends AppCompatActivity
         int hangout = 0;
         int other = 0;
 
-        List<Event> events = controller.getAllEvents();
+        // Use realm instead of RealmController to avoid NPE when onBoot intent is broadcast'ed
+        List<Event> events = Realm.getInstance(BoldApp.getAppRealmConfiguration())
+                .where(Event.class).findAllSorted("value", Sort.DESCENDING);
+
         List<Event> tomorrowEvents = new ArrayList<>();
 
         // Create tomorrow events list
@@ -745,7 +751,7 @@ public class MainActivity extends AppCompatActivity
     /**
      * Create notification that will be fired later
      */
-    private void makeEventNotification() {
+    public static void makeEventNotification() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, c.get(Calendar.YEAR));
         calendar.set(Calendar.MONTH, c.get(Calendar.MONTH));
@@ -777,9 +783,9 @@ public class MainActivity extends AppCompatActivity
 
         calendar.set(Calendar.MINUTE, 0);
 
-        Intent intent = new Intent(this, AlarmService.class);
-        AlarmManager alarmManager = (AlarmManager) this.getSystemService(ALARM_SERVICE);
-        PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, 0);
+        Intent intent = new Intent(sContext, AlarmService.class);
+        AlarmManager alarmManager = (AlarmManager) sContext.getSystemService(ALARM_SERVICE);
+        PendingIntent pendingIntent = PendingIntent.getService(sContext, 0, intent, 0);
         alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
     }
 
