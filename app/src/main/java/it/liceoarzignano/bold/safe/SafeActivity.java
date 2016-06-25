@@ -52,6 +52,7 @@ public class SafeActivity extends AppCompatActivity {
     private String crReg;
     private String crPc;
     private String crInternet;
+    private boolean doneSetup;
 
     private Context context;
 
@@ -168,8 +169,7 @@ public class SafeActivity extends AppCompatActivity {
      * normal access
      */
     private void showPasswordDialog() {
-        @SuppressWarnings("BooleanVariableAlwaysNegated")
-        final boolean doneSetup = prefs.getBoolean("doneSetup", false);
+        doneSetup = prefs.getBoolean("doneSetup", false);
         String title;
         String msg;
 
@@ -192,12 +192,14 @@ public class SafeActivity extends AppCompatActivity {
                             public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                                 AccessPassword = input.toString();
                                 mLoadingText.setVisibility(View.VISIBLE);
-                                if (!AccessPassword.isEmpty()) {
+                                if (!AccessPassword.isEmpty() && AccessPassword != null) {
                                     new Handler().postDelayed(new Runnable() {
                                         @Override
                                         public void run() {
+                                            mLoadingText.setText(getString(doneSetup ?
+                                                    R.string.safe_decrypting :
+                                                    R.string.safe_first_load));
                                             if (!doneSetup) {
-                                                mLoadingText.setText(getString(R.string.safe_first_load));
                                                 String encrypted = encrypt(AccessPassword);
                                                 editor.putString(accessKey, encrypted).apply();
                                                 editor.putBoolean("doneSetup", true).apply();
@@ -249,7 +251,6 @@ public class SafeActivity extends AppCompatActivity {
      */
     private void validateLogin() {
         final String decrypted = decrypt(prefs.getString(accessKey, "ERROR"));
-        mLoadingText.setText(getString(R.string.safe_decrypting));
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
