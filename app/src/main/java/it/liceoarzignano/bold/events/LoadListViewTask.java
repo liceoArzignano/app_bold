@@ -6,6 +6,7 @@ import android.widget.ListView;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import io.realm.Sort;
 import it.liceoarzignano.bold.BoldApp;
 
 class LoadListViewTask extends AsyncTask<Void, Void, Void> {
@@ -26,7 +27,7 @@ class LoadListViewTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void arg0) {
         Realm realm = Realm.getInstance(BoldApp.getAppRealmConfiguration());
-        RealmResults<Event> events = realm.where(Event.class).findAllSorted("value");
+        RealmResults<Event> events = realm.where(Event.class).findAllSorted("value", Sort.DESCENDING);
         ListArrayAdapter listArrayAdapter = new ListArrayAdapter(context,
                 events);
         mEventsListView.setAdapter(listArrayAdapter);
