@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsClient;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.customtabs.CustomTabsServiceConnection;
@@ -61,7 +60,7 @@ import it.liceoarzignano.bold.settings.SettingsActivity;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String APP_VERSION = "1.0.12";
+    private static final String APP_VERSION = "1.0.13";
 
     private static Resources res;
     @SuppressLint("StaticFieldLeak")

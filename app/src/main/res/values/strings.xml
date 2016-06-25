@@ -52,10 +52,11 @@
     <string name="dialog_first_positive">Configure now</string>
     <string name="dialog_updated_title">App has been updated</string>
     <string name="dialog_updated_content">
-        \u2022 New: Brand new OnBoard Experience.\n
-        \u2022 New: Events are sorted by date automatically now.\n
-        \u2022 Reduced app size.\n
-        \u2022 Performance improvements.\n
+        \u2022 New: backup data on Google Drive.\n
+        \u2022 New: Realm databases for better performances while managing Marks and Events.\n
+        \u2022 New: student averages for teachers.\n
+        \u2022 Performance improvements for Safe.\n
+        \u2022 Better notification behaviour.\n
         \u2022 Bug fix.
     </string>
 

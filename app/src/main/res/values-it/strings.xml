@@ -52,9 +52,11 @@
     <string name="dialog_first_negative">Non ora</string>
     <string name="dialog_updated_title">L\'app \u00E8 stata aggiornata!</string>
     <string name="dialog_updated_content">
-        \u2022 Nuovo: OnBoard Experience completamente rinnovata.\n
-        \u2022 Nuovo: Gli eventi vengono riordinati per data automaticamente ora.\n
-        \u2022 Miglioramenti performances.\n
+        \u2022 Nuovo: backup dei dati su Google Drive.\n
+        \u2022 Nuovo: utilizzo di database Realm per migliorare le performace nella gestione dei voti ed eventi.\n
+        \u2022 Nuovo: medie di ogni studente per i docenti.\n
+        \u2022 Miglioramenti performances di Safe.\n
+        \u2022 Miglioramenti comportamento notifiche.\n
         \u2022 Bug fix.
     </string>
 
