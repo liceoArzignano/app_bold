@@ -46,8 +46,9 @@ class BackupListAdapter extends ArrayAdapter<BackupData> {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(data.getDate());
         modified = calendar.get(Calendar.DAY_OF_MONTH) + "-" + (calendar.get(Calendar.MONTH) + 1) +
-                "-" + calendar.get(Calendar.YEAR) + " " + calendar.get(Calendar.HOUR_OF_DAY) + ":" +
-                calendar.get(Calendar.MINUTE);
+                "-" + calendar.get(Calendar.YEAR) + " " + (calendar.get(Calendar.HOUR_OF_DAY) < 10 ?
+                "0" : "") + calendar.get(Calendar.HOUR_OF_DAY) + ":" +
+                (calendar.get(Calendar.MINUTE) < 10 ? "0" : "") + calendar.get(Calendar.MINUTE);
 
         TextView title = (TextView) v.findViewById(R.id.row_backup_title);
         TextView modifiedDate = (TextView) v.findViewById(R.id.date);

@@ -10,12 +10,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.drive.Drive;
@@ -43,8 +47,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
-import it.liceoarzignano.bold.MainActivity;
 import it.liceoarzignano.bold.R;
+import it.liceoarzignano.bold.Utils;
 import it.liceoarzignano.bold.external.expandableheightlistview.ExpandableHeightListView;
 import it.liceoarzignano.bold.realm.RealmController;
 
@@ -59,7 +63,7 @@ public class BackupActivity extends AppCompatActivity {
     private SharedPreferences prefs;
 
     private String backupFolder;
-    private int status;
+    private int status = 0;
 
     @Override
     public void onCreate(Bundle savedInstance) {
@@ -75,13 +79,39 @@ public class BackupActivity extends AppCompatActivity {
         super.onStop();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.backup, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_info:
+                new MaterialDialog.Builder(this)
+                        .title(getString(R.string.backup_explain_title))
+                        .content(getString(R.string.backup_explain_message))
+                        .neutralText(getString(android.R.string.ok))
+                        .show();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
     /**
      * Setup activity UI
      */
     private void onBackupActivityCreate() {
         setContentView(R.layout.activity_backup);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        assert getSupportActionBar() != null;
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         prefs = getSharedPreferences("HomePrefs", MODE_PRIVATE);
 
@@ -97,8 +127,8 @@ public class BackupActivity extends AppCompatActivity {
         mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
         mListView = (ExpandableHeightListView) findViewById(R.id.backupsListView);
 
-        AppCompatButton mBackupButton = (AppCompatButton) findViewById(R.id.backupButton);
-        mBackupButton.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton mBackupFab = (FloatingActionButton) findViewById(R.id.fab);
+        mBackupFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 status = 1;
@@ -106,6 +136,10 @@ public class BackupActivity extends AppCompatActivity {
                 status = 0;
             }
         });
+
+         Utils.animFabIntro(this, mBackupFab,
+                 getString(R.string.intro_fab_backup), "backupFabIntro");
+
 
         if (!backupFolder.equals("")) {
             getBackupsFromDrive(DriveId.decodeFromString(backupFolder).asDriveFolder());
@@ -147,8 +181,10 @@ public class BackupActivity extends AppCompatActivity {
                 .setResultCallback(new ResultCallback<DriveApi.DriveContentsResult>() {
                     @Override
                     public void onResult(@NonNull DriveApi.DriveContentsResult result) {
+                        status = 2;
                         if (!result.getStatus().isSuccess()) {
                             showErrorDialog();
+                            status = 0;
                             return;
                         }
                         restoreRealmBackup(result);
@@ -182,15 +218,22 @@ public class BackupActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        Intent mActivity = new Intent(getApplicationContext(), MainActivity.class);
+        showSuccessDialog();
+        status = 0;
+
+        Intent mActivity = new Intent(getApplicationContext(), BackupActivity.class);
         PendingIntent mPendingIntent =
                 PendingIntent.getActivity(getApplicationContext(), 13092, mActivity,
                         PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager alarmManager = (AlarmManager)
                 getApplicationContext().getSystemService(ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + 100,
-                mPendingIntent);
-        System.exit(0);
+        alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + 10, mPendingIntent);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                System.exit(0);
+            }
+        }, 650);
     }
 
     /**
@@ -317,7 +360,7 @@ public class BackupActivity extends AppCompatActivity {
                 // Refresh UI
                 onBackupActivityCreate();
             }
-        }, Snackbar.LENGTH_LONG + 50);
+        }, 650);
 
     }
 

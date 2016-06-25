@@ -42,6 +42,7 @@
     <string name="suggestion_address">Non trovi una materia nella lista? Controlla l\'indirizzo nelle impostazioni</string>
     <string name="suggestion_suggestions">I suggerimenti ti infastidiscono? Disattivali dalle impostazioni</string>
     <string name="suggestion_notification">Se domani si verificheranno degli eventi, l\'app te lo dir\u00E0 il giorno prima</string>
+    <string name="suggestion_backups">Se il backup dei tuoi voti ed eventi su Google Drive, potrai ripristinarli facilmente nel caso in cui cambiassi o perdessi il dispositivo in uso</string>
 
     <!-- Updated Dialog -->
     <string name="dialog_first_title">Benvenuto!</string>
@@ -118,6 +119,7 @@
     <string name="intro_fab_save_mark_teacher">Scrivi il nome dello studente, seleziona il voto con lo slider e poi salva premendo questo pulsante</string>
     <string name="intro_fab_save_event">Scrivi il nome dell\'evento, seleziona la categoria e la data. Poi premi questo pulsante per salvare</string>
     <string name="intro_fab_save_safe">Puoi registrare i tuoi dati qui. Per vedere ci\u00F2 che \u00E8 scritto, clicca sull\'occhio. Quando hai finito, ricordati di salvare premendo qui</string>
+    <string name="intro_fab_backup">Per creare un backup clicca qui e seleziona la cartella in Google Drive dove vuoi archiviare i tuoi dati, poi questi saranno immediatamente caricati</string>
     <string name="intro_gotit">OK, capito</string>
 
     <!-- Subjects -->
@@ -184,6 +186,8 @@
     <string name="pref_notification_time_morning">Mattina</string>
     <string name="pref_notification_time_afternoon">Pomeriggio</string>
     <string name="pref_notification_time_evening">Sera</string>
+    <string name="pref_backup_summary">Backup &amp; ripristino</string>
+    <string name="pref_backup_title">Salva i tuoi voti ed eventi su Google Drive</string>
 
     <!-- Safe -->
     <string name="title_activity_safe">Safe</string>
@@ -205,7 +209,7 @@
     <string name="safe_decrypting">Decriptazione dati\u2026</string>
     <string name="safe_first_load">Inizializzazione dati\u2026</string>
     <string name="safe_setup_checking_password">Verifica password\u2026</string>
-    <string name="safe_nomatch">La password non corrisponde.</string>
+    <string name="safe_nomatch">La password <b>non</b> corrisponde.</string>
 
     <!-- Notification -->
     <string name="notification_title">Prossimi eventi</string>
@@ -237,6 +241,21 @@
         <item quantity="other">evento generico</item>
     </plurals>
 
+    <!-- Backup -->
+    <string name="title_activity_backup">Backup &amp; ripristino</string>
+    <string name="backup">Backup</string>
+    <string name="backup_created_message">Il backup \u00E8 stato creato con successo</string>
+    <string name="backup_failed_message">Impossibile creare il backup, qualcosa \u00E8 andato storto</string>
+    <string name="restore_success_message">Il backup \u00E8 stato ripristinato con successo</string>
+    <string name="restore_failed_message">Impossibile ripristinare il backup, qualcosa \u00E8 andato storto</string>
+    <string name="backup_retry">Riprova</string>
+    <string name="backup_title">Backup %1$d</string>
+    <string name="backup_explain_title">Informazioni sui backup</string>
+    <string name="backup_explain_message">Creando backup dei tuoi dati su Google Drive ti consentir\u00E0 di ripristinarli nel caso in cui perdessi o cambiassi dispositivo. Inoltre potrai sincronizzare i tuoi voti ed eventi anche sugli altri dispositivi che possiedi.</string>
+    <string name="recent_backups">Backup recenti</string>
+    <string name="restore_dialog_title">Ripristino dati precedenti</string>
+    <string name="restore_dialog_message">Ripristinando il backup i dati esistenti saranno sovrascritti con quelli presenti nel backup\n<b>Data di creazione del backup</b>: %1$s\nSei sicuro di voler procedere?</string>
+
     <!-- Accessibility -->
     <string name="accessibility_drawer">Intestazione</string>
     <string name="accessibility_welcome">Immagine di benvenuto</string>
@@ -244,5 +263,4 @@
     <string name="accessibility_safe_icon">Immagine status di Safe</string>
     <string name="accessibility_safe_show">Icona Mostra / Nascondi</string>
     <string name="accessibility_manager">Immagine d\'intestazione</string>
-    <string name="suggestion_tasks">Non ricordi l\'orario scolastico? Scrivilo nell\'agenda settimanale</string>
 </resources>

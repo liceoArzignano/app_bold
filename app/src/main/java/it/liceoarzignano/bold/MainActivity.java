@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsClient;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.customtabs.CustomTabsServiceConnection;
@@ -92,158 +93,6 @@ public class MainActivity extends AppCompatActivity
     private boolean showSuggestionCard;
 
     private static RealmController controller;
-
-    /**
-     * @return content for notification
-     */
-    public static String getTomorrowInfo() {
-        Calendar today = Calendar.getInstance();
-        String content = null;
-        int icon;
-        int test = 0;
-        int atSchool = 0;
-        int birthday = 0;
-        int hangout = 0;
-        int other = 0;
-
-        // Use realm instead of RealmController to avoid NPE when onBoot intent is broadcast'ed
-        List<Event> events = Realm.getInstance(BoldApp.getAppRealmConfiguration())
-                .where(Event.class).findAllSorted("value", Sort.DESCENDING);
-
-        List<Event> tomorrowEvents = new ArrayList<>();
-
-        // Create tomorrow events list
-        for (Event event : events) {
-            if (Utils.rightDate(today.get(Calendar.YEAR), today.get(Calendar.MONTH) + 1,
-                    today.get(Calendar.DAY_OF_MONTH) + 1).equals(event.getValue())) {
-                tomorrowEvents.add(event);
-            }
-        }
-
-        if (tomorrowEvents.size() == 0) {
-            return null;
-        }
-
-        // Get data
-        for (Event event : tomorrowEvents) {
-            icon = event.getIcon();
-            switch (icon) {
-                case 0:
-                    test++;
-                    break;
-                case 1:
-                    atSchool++;
-                    break;
-                case 2:
-                    birthday++;
-                    break;
-            }
-            if (Utils.isTeacher(sContext)) {
-                switch (icon) {
-                    case 3:
-                        hangout++;
-                        break;
-                    case 4:
-                        other++;
-                        break;
-                }
-            } else {
-                if (icon == 3) {
-                    other++;
-                }
-            }
-        }
-
-        // Test
-        if (test > 0) {
-            // First element
-            content = res.getQuantityString(R.plurals.notification_message_first, test, test)
-                    + " " + res.getQuantityString(R.plurals.notification_test, test, test);
-        }
-
-        // School
-        if (atSchool > 0) {
-            if (test == 0) {
-                // First element
-                content = res.getQuantityString(R.plurals.notification_message_first,
-                        atSchool, atSchool) + " ";
-            } else {
-                if (birthday == 0 && hangout == 0 && other == 0) {
-                    // Last of us
-                    content += " " + String.format(
-                            res.getString(R.string.notification_message_last), atSchool);
-                } else {
-                    // Just another one
-                    content += String.format(res.getString(R.string.notification_message_half),
-                            atSchool);
-                }
-            }
-            content += " " + res.getQuantityString(R.plurals.notification_school,
-                    atSchool, atSchool);
-        }
-
-        // Birthday
-        if (birthday > 0) {
-            if (test == 0 && atSchool == 0) {
-                // First element
-                content = res.getQuantityString(R.plurals.notification_message_first,
-                        birthday, birthday) + " ";
-            } else {
-                if (hangout == 0 && other == 0) {
-                    // Last of us
-                    content += " " + String.format(res.getString(R.string.notification_message_last),
-                            birthday);
-                } else {
-                    // Just another one
-                    content += String.format(res.getString(R.string.notification_message_half),
-                            birthday);
-                }
-            }
-            content += " " + res.getQuantityString(R.plurals.notification_birthday,
-                    birthday, birthday);
-        }
-
-        // Hangout
-        if (hangout > 0 && Utils.isTeacher(sContext)) {
-            if (test == 0 && atSchool == 0 && birthday == 0) {
-                // First element
-                content = res.getQuantityString(R.plurals.notification_message_first,
-                        hangout, hangout) + " ";
-            } else {
-                if (other == 0) {
-                    // Last of us
-                    content += " " + String.format(res.getString(R.string.notification_message_last),
-                            hangout);
-                } else {
-                    // Just another one
-                    content += String.format(res.getString(R.string.notification_message_half),
-                            atSchool);
-                }
-            }
-            content += " " + res.getQuantityString(R.plurals.notification_meeting,
-                    hangout, hangout);
-        }
-
-        // Other
-        if (other > 0) {
-            if (test == 0 && atSchool == 0 && birthday == 0 && hangout == 0) {
-                // First element
-                content = res.getQuantityString(R.plurals.notification_message_first,
-                        other, other);
-                content += " ";
-            } else {
-                // Last of us
-                content += String.format(res.getString(R.string.notification_message_last),
-                        other);
-            }
-            content += " " + res.getQuantityString(R.plurals.notification_other,
-                    other, other);
-        }
-
-        content += " " + res.getString(R.string.notification_message_end);
-
-        return content;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -587,7 +436,7 @@ public class MainActivity extends AppCompatActivity
             case 7:
                 return getString(R.string.suggestion_address);
             case 8:
-                return getString(R.string.suggestion_tasks);
+                return getString(R.string.suggestion_backups);
             case 9:
                 return getString(R.string.suggestion_suggestions);
             default:
@@ -746,6 +595,158 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         }
+    }
+
+    /**
+     * @return content for notification
+     */
+    public static String getTomorrowInfo() {
+        Calendar today = Calendar.getInstance();
+        String content = null;
+        int icon;
+        int test = 0;
+        int atSchool = 0;
+        int birthday = 0;
+        int hangout = 0;
+        int other = 0;
+
+        // Use realm instead of RealmController to avoid NPE when onBoot intent is broadcast'ed
+        List<Event> events = Realm.getInstance(BoldApp.getAppRealmConfiguration())
+                .where(Event.class).findAllSorted("value", Sort.DESCENDING);
+
+        List<Event> tomorrowEvents = new ArrayList<>();
+
+        // Create tomorrow events list
+        for (Event event : events) {
+            if (Utils.rightDate(today.get(Calendar.YEAR), today.get(Calendar.MONTH) + 1,
+                    today.get(Calendar.DAY_OF_MONTH) + 1).equals(event.getValue())) {
+                tomorrowEvents.add(event);
+            }
+        }
+
+        if (tomorrowEvents.size() == 0) {
+            return null;
+        }
+
+        // Get data
+        for (Event event : tomorrowEvents) {
+            icon = event.getIcon();
+            switch (icon) {
+                case 0:
+                    test++;
+                    break;
+                case 1:
+                    atSchool++;
+                    break;
+                case 2:
+                    birthday++;
+                    break;
+            }
+            if (Utils.isTeacher(sContext)) {
+                switch (icon) {
+                    case 3:
+                        hangout++;
+                        break;
+                    case 4:
+                        other++;
+                        break;
+                }
+            } else {
+                if (icon == 3) {
+                    other++;
+                }
+            }
+        }
+
+        // Test
+        if (test > 0) {
+            // First element
+            content = res.getQuantityString(R.plurals.notification_message_first, test, test)
+                    + " " + res.getQuantityString(R.plurals.notification_test, test, test);
+        }
+
+        // School
+        if (atSchool > 0) {
+            if (test == 0) {
+                // First element
+                content = res.getQuantityString(R.plurals.notification_message_first,
+                        atSchool, atSchool) + " ";
+            } else {
+                if (birthday == 0 && hangout == 0 && other == 0) {
+                    // Last of us
+                    content += " " + String.format(
+                            res.getString(R.string.notification_message_last), atSchool);
+                } else {
+                    // Just another one
+                    content += String.format(res.getString(R.string.notification_message_half),
+                            atSchool);
+                }
+            }
+            content += " " + res.getQuantityString(R.plurals.notification_school,
+                    atSchool, atSchool);
+        }
+
+        // Birthday
+        if (birthday > 0) {
+            if (test == 0 && atSchool == 0) {
+                // First element
+                content = res.getQuantityString(R.plurals.notification_message_first,
+                        birthday, birthday) + " ";
+            } else {
+                if (hangout == 0 && other == 0) {
+                    // Last of us
+                    content += " " + String.format(res.getString(R.string.notification_message_last),
+                            birthday);
+                } else {
+                    // Just another one
+                    content += String.format(res.getString(R.string.notification_message_half),
+                            birthday);
+                }
+            }
+            content += " " + res.getQuantityString(R.plurals.notification_birthday,
+                    birthday, birthday);
+        }
+
+        // Hangout
+        if (hangout > 0 && Utils.isTeacher(sContext)) {
+            if (test == 0 && atSchool == 0 && birthday == 0) {
+                // First element
+                content = res.getQuantityString(R.plurals.notification_message_first,
+                        hangout, hangout) + " ";
+            } else {
+                if (other == 0) {
+                    // Last of us
+                    content += " " + String.format(res.getString(R.string.notification_message_last),
+                            hangout);
+                } else {
+                    // Just another one
+                    content += String.format(res.getString(R.string.notification_message_half),
+                            atSchool);
+                }
+            }
+            content += " " + res.getQuantityString(R.plurals.notification_meeting,
+                    hangout, hangout);
+        }
+
+        // Other
+        if (other > 0) {
+            if (test == 0 && atSchool == 0 && birthday == 0 && hangout == 0) {
+                // First element
+                content = res.getQuantityString(R.plurals.notification_message_first,
+                        other, other);
+                content += " ";
+            } else {
+                // Last of us
+                content += String.format(res.getString(R.string.notification_message_last),
+                        other);
+            }
+            content += " " + res.getQuantityString(R.plurals.notification_other,
+                    other, other);
+        }
+
+        content += " " + res.getString(R.string.notification_message_end);
+
+        return content;
     }
 
     /**

@@ -40,9 +40,9 @@
     <string name="suggestion_mark_helper">Write the topic of the test in the mark to manage marks better.</string>
     <string name="suggestion_get_touch">Need to get in touch with the school? You can call or send an email from the settings</string>
     <string name="suggestion_address">You can\'t find a subject int the list? Check the address in the settings</string>
-    <string name="suggestion_tasks">You\'re not good at remembering school schedule? Write it down in the task list</string>
     <string name="suggestion_suggestions">Suggestions annoy you? Turn them off from the settings</string>
     <string name="suggestion_notification">If you have some events tomorrow, the app will notify you the day before</string>
+    <string name="suggestion_backups">If you backup up your marks and events to Google Drive, you\'ll be able to restore all your data in case you lose or change your phone</string>
 
     <!-- Updated Dialog -->
     <string name="dialog_first_title">Welcome!</string>
@@ -120,6 +120,7 @@
     <string name="intro_fab_save_mark_teacher">Write the student name, select the mark with the slider and then save the mark with this button</string>
     <string name="intro_fab_save_event">Write the event title, select its category and date. Then click this button to save it</string>
     <string name="intro_fab_save_safe">You can store all your private data here. To see what you write, click on the eye. Once you\'re done, click this button to save</string>
+    <string name="intro_fab_backup">To create a backup click this button and select a folder on your Google Drive, then the backup will be created and uploaded</string>
     <string name="intro_gotit">OK, got it</string>
 
     <!-- Subjects -->
@@ -186,8 +187,8 @@
     <string name="pref_notification_time_morning">In the morning</string>
     <string name="pref_notification_time_afternoon">In the afternoon</string>
     <string name="pref_notification_time_evening">In the evening</string>
-    <string name="pref_backup_title">Backup &amp; restore</string>
-    <string name="pref_backup_summary">Save your marks and events on Google Drive</string>
+    <string name="pref_backup_title">Save your marks and events on Google Drive</string>
+    <string name="pref_backup_summary">Backup &amp; restore</string>
 
     <!-- Safe -->
     <string name="title_activity_safe">Safe</string>
@@ -250,9 +251,10 @@
     <string name="restore_failed_message">Unable to restore the backup, something went wrong</string>
     <string name="backup_retry">Retry</string>
     <string name="backup_title">Backup %1$d</string>
-    <string name="backup_explain">Backing up your data to Google Drive allows you to restore all your data in case you lose or change the device. This also allows you to sync data between all your devices.</string>
+    <string name="backup_explain_title">Backup info</string>
+    <string name="backup_explain_message">Backing up your data to Google Drive allows you to restore all your data in case you lose or change the device. This also allows you to sync data between all your devices.</string>
     <string name="recent_backups">Recent backups</string>
-    <string name="restore_dialog_title">Revert to previous version</string>
+    <string name="restore_dialog_title">Revert to previous data</string>
     <string name="restore_dialog_message">Restoring the backup will overwrite all the existing data with those in the backup.\n<b>Backup creation date</b>: %1$s\nAre you sure you want to proceed?</string>
 
     <!-- Accessibility -->
