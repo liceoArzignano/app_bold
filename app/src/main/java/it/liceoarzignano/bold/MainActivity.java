@@ -22,6 +22,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -63,13 +64,12 @@ public class MainActivity extends AppCompatActivity
     private static final String APP_VERSION = "1.0.13";
 
     private static Resources res;
-    @SuppressLint("StaticFieldLeak")
     private static Context sContext;
-    private ImageView mAddressLogo;
     private static final Calendar c = Calendar.getInstance();
     // Header
     private Toolbar toolbar;
     private TextView mUserName;
+    private ImageView mAddressLogo;
     // Chrome custom tabs
     private CustomTabsClient mClient;
     private CustomTabsSession mCustomTabsSession;
@@ -752,6 +752,11 @@ public class MainActivity extends AppCompatActivity
      * Create notification that will be fired later
      */
     public static void makeEventNotification() {
+        // Guard against npe when called from service
+        if (sContext == null) {
+            sContext = BoldApp.getBoldContext();
+        }
+
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, c.get(Calendar.YEAR));
         calendar.set(Calendar.MONTH, c.get(Calendar.MONTH));

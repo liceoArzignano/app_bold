@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -45,7 +44,6 @@ public class ManagerActivity extends AppCompatActivity
 
     private CoordinatorLayout coordinatorLayout;
     private ImageView mBanner;
-    private TextInputLayout mTitleInputLayout; // Student OR Event title
     private EditText mTitleInput;
     private LinearLayout mEventSpinnerLayout;
     private Spinner mEventSpinner;
@@ -109,7 +107,6 @@ public class ManagerActivity extends AppCompatActivity
 
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
         mBanner = (ImageView) findViewById(R.id.banner_image);
-        mTitleInputLayout = (TextInputLayout) findViewById(R.id.title_input_layout);
         mTitleInput = (EditText) findViewById(R.id.title_input);
         mEventSpinnerLayout = (LinearLayout) findViewById(R.id.event_spinner_layout);
         mEventSpinner = (Spinner) findViewById(R.id.event_spinner);
@@ -254,7 +251,6 @@ public class ManagerActivity extends AppCompatActivity
         mBanner.setBackgroundResource(isMark ? R.drawable.newmark : R.drawable.newevent);
 
         if (Utils.isTeacher(context) || !isMark) {
-            mTitleInputLayout.setVisibility(View.VISIBLE);
             mTitleInput.setVisibility(View.VISIBLE);
             mTitleInput.setHint(getString(isMark ? R.string.hint_student : R.string.hint_event));
         }
@@ -277,6 +273,7 @@ public class ManagerActivity extends AppCompatActivity
                 categories.add(getString(R.string.event_spinner_hang_out));
             }
             categories.add(getString(R.string.event_spinner_other));
+
             ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(
                     this, android.R.layout.simple_dropdown_item_1line, categories);
             mEventSpinner.setAdapter(dataAdapter);
@@ -405,8 +402,7 @@ public class ManagerActivity extends AppCompatActivity
 
             objNote = mNotesInput.getText().toString();
 
-            Mark mark = new Mark(objID, objTitle,
-                    objVal, objNote);
+            Mark mark = new Mark(objID, objTitle, objVal, objNote);
 
             objID = editMode ? controller.updateMark(mark) : controller.addMark(mark);
 

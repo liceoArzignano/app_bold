@@ -20,14 +20,8 @@
             app:theme="@style/AppTheme.ToolbarTheme"
             tools:targetApi="lollipop" />
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingTop="?attr/actionBarSize">
+        <include layout="@layout/content_manager" />
 
-            <include layout="@layout/content_manager" />
-
-        </ScrollView>
 
     </android.support.design.widget.CoordinatorLayout>
 

@@ -86,18 +86,14 @@ public class ViewerActivity extends AppCompatActivity {
         if (isMark) {
             mView.setText(String.format(getResources().getString(R.string.markview_more), title));
         } else {
-            assert mValueTitle != null;
             mValueTitle.setVisibility(View.GONE);
-            assert mValue != null;
             mValue.setVisibility(View.GONE);
             mView.setVisibility(View.GONE);
         }
 
         double markVal = (double) value / 100;
-        assert mValue != null;
         final String sVal = markVal + "";
         mValue.setText(sVal);
-
         if (!note.isEmpty() && mNotes != null) {
             mNotes.setText(note);
         }
