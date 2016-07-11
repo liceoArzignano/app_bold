@@ -6,14 +6,6 @@ android {
     compileSdkVersion 24
     buildToolsVersion "24.0.0"
 
-    applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            //noinspection GroovyAssignabilityCheck
-            output.outputFile = new File(
-                    output.outputFile.parent, "Bold-${variant.versionName}-${variant.productFlavors.name}.apk")
-        }
-    }
-
     defaultConfig {
         //noinspection GrDeprecatedAPIUsage
         generatedDensities = []
@@ -26,14 +18,11 @@ android {
     }
 
     //noinspection GroovyMissingReturnStatement
-    lintOptions {
-        disable 'MissingTranslation'
-    }
+    lintOptions.disable 'MissingTranslation'
 
     //noinspection GroovyMissingReturnStatement
-    aaptOptions {
-        additionalParameters "--no-version-vectors"
-    }
+    aaptOptions.additionalParameters "--no-version-vectors"
+
 
     buildTypes {
         release {
@@ -47,22 +36,12 @@ android {
         }
     }
 
-    productFlavors {
-        all {
-            // For run / debug only
-            ndk {
-                abiFilters "armeabi-v7a", "armeabi", "x86"
-            }
-        }
-        arm {
-            ndk {
-                abiFilters "armeabi-v7a", "armeabi"
-            }
-        }
-        x86 {
-            ndk {
-                abiFilter "x86"
-            }
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'armeabi-v7a', 'x86', 'arm64-v8a'
+            universalApk true
         }
     }
 }
@@ -76,9 +55,22 @@ dependencies {
     compile "com.android.support:appcompat-v7:${androidSupportVersion}"
     compile "com.android.support:design:${androidSupportVersion}"
     compile "com.android.support:cardview-v7:${androidSupportVersion}"
+
     compile "com.android.support:customtabs:${androidSupportVersion}"
     compile "com.google.android.gms:play-services-analytics:${googlePlayServicesVersion}"
     compile "com.google.android.gms:play-services-drive:${googlePlayServicesVersion}"
     compile 'io.realm:android-adapters:1.3.0'
     compile('com.github.afollestad.material-dialogs:core:0.8.5.3@aar') { transitive = true }
+}
+
+import com.android.build.OutputFile
+
+ext.versionCodes = ['armeabi-v7a':1, x86:2, 'arm64-v8a':3]
+
+android.applicationVariants.all { variant ->
+    // assign different version code for each output
+    variant.outputs.each { output ->
+        int abiVersionCode = project.ext.versionCodes.get(output.getFilter(OutputFile.ABI)) ?: 0
+        output.versionCodeOverride = (abiVersionCode * 1000) + android.defaultConfig.versionCode
+    }
 }
