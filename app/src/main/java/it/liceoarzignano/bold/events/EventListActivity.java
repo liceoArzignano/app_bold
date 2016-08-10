@@ -35,7 +35,7 @@ public class EventListActivity extends AppCompatActivity {
      *
      * @param id: event id
      */
-    public static void viewEvent(long id) {
+    static void viewEvent(long id) {
         Intent editIntent = new Intent(fContext, ViewerActivity.class);
 
         editIntent.putExtra("isMark", false);

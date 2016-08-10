@@ -22,7 +22,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -115,7 +114,7 @@ public class MainActivity extends AppCompatActivity
         }).start();
 
         // Intro
-        showIntroIfNeeded(false);
+        showIntroIfNeeded();
 
         // UI
         setContentView(R.layout.activity_main);
@@ -262,9 +261,6 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_teacherzone:
                 showWebViewUI(5);
-                break;
-            case R.id.nav_help:
-                showIntroIfNeeded(true);
                 break;
             case R.id.nav_settings:
                 Intent settingsIntent = new Intent(this, SettingsActivity.class);
@@ -485,9 +481,9 @@ public class MainActivity extends AppCompatActivity
      *
      * @param force: if true shows the intro even if the user has already seen it
      */
-    private void showIntroIfNeeded(boolean force) {
+    private void showIntroIfNeeded() {
         SharedPreferences prefs = getSharedPreferences("HomePrefs", MODE_PRIVATE);
-        if (!prefs.getBoolean("introKey", false) || force) {
+        if (!prefs.getBoolean("introKey", false)) {
             Intent i = new Intent(this, BenefitsActivity.class);
             startActivity(i);
             finish();

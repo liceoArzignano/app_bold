@@ -18,7 +18,7 @@ package it.liceoarzignano.bold.external.showcase;
 import android.graphics.Point;
 import android.view.View;
 
-
+@SuppressWarnings("unused")
 interface IAnimationFactory {
 
     void fadeInView(View target, long duration, AnimationStartListener listener);

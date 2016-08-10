@@ -6,6 +6,7 @@
             android:icon="@drawable/ic_home"
             android:title="@string/nav_home" />
         <item
+
             android:id="@+id/nav_my_marks"
             android:icon="@drawable/ic_my_marks"
             android:title="@string/nav_mymarks" />
@@ -50,18 +51,9 @@
             android:id="@+id/nav_safe"
             android:icon="@drawable/ic_safe"
             android:title="@string/nav_safe" />
-    </group>
-    <group
-        android:id="@+id/nav_prefs"
-        android:checkableBehavior="none"
-        tools:ignore="UnusedIds">
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings"
             android:title="@string/nav_settings" />
-        <item
-            android:id="@+id/nav_help"
-            android:icon="@drawable/ic_help"
-            android:title="@string/nav_help" />
     </group>
 </menu>

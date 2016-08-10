@@ -25,7 +25,7 @@ public class Utils {
     private static SharedPreferences preferences;
 
     /**
-     * animate fab with delay
+     * Animate fab with delay
      *
      * @param fab :  the fab that will be animated
      */
@@ -40,6 +40,7 @@ public class Utils {
 
     /**
      * Animate fab and showcase it
+     *
      * @param context: used to create materialshowcase
      * @param fab: fab that will be animated and exposed
      * @param text: showcase text
@@ -81,6 +82,7 @@ public class Utils {
 
     /**
      * Getter for HomePrefs' initialDayKey
+     *
      * @param context: used to get sharedprefs
      * @return the date of the day the first usage happened
      */
@@ -92,7 +94,8 @@ public class Utils {
     /**
      * Convert calendar dialog results to a string that will be
      * saved in the events database.
-     * Format: yyyy-mm-dd
+     * </br>
+     * Format: yyyy-mm-dd (Locale.IT format)
      *
      * @param year:  year from the date picker dialog
      * @param month: month from the date picker dialog
@@ -156,6 +159,11 @@ public class Utils {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
 
+    /**
+     * Get array of subjects with at least one mark for averages list
+     *
+     * @return array of subjects
+     */
     public static String[] getAverageElements() {
         int size = 0;
         Realm realm = Realm.getInstance(BoldApp.getAppRealmConfiguration());

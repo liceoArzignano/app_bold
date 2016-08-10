@@ -12,7 +12,7 @@ import it.liceoarzignano.bold.R;
 
 public class MarksListFragment extends Fragment {
 
-    public static ListView mMarksListView;
+    static ListView mMarksListView;
 
     public MarksListFragment() {
 

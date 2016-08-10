@@ -18,7 +18,6 @@ package it.liceoarzignano.bold.external.showcase.target;
 import android.graphics.Point;
 import android.graphics.Rect;
 
-
 public interface Target {
     Point getPoint();
     Rect getBounds();

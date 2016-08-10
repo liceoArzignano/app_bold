@@ -19,7 +19,7 @@ class AverageArrayAdapter extends BaseAdapter {
     final private String[] result;
     final private RealmController controller;
 
-    public AverageArrayAdapter(Context context, RealmController controller) {
+    AverageArrayAdapter(Context context, RealmController controller) {
         result = Utils.getAverageElements();
         this.controller = controller;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -70,7 +70,7 @@ class AverageArrayAdapter extends BaseAdapter {
         return row;
     }
 
-    static class Holder {
+    private static class Holder {
         static TextView avg;
         static TextView title;
     }

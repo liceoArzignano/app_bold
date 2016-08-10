@@ -19,7 +19,6 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.view.View;
 
-
 public class ViewTarget implements Target {
 
     private final View mView;

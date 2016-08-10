@@ -102,7 +102,7 @@ public class ViewerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AnalyticsTracker.trackEvent("MarkViewer: More", getApplicationContext());
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if (Utils.hasApi21()) {
                     ((AnimatedVectorDrawable) mView.getCompoundDrawables()[1]).start();
 
                     new Handler().postDelayed(new Runnable() {
@@ -139,7 +139,7 @@ public class ViewerActivity extends AppCompatActivity {
                 shareIntent.setType("text/plain");
                 shareIntent.putExtra(Intent.EXTRA_TEXT, msg);
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if (Utils.hasApi21()) {
                     ((AnimatedVectorDrawable) mShare.getCompoundDrawables()[1]).start();
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -159,7 +159,7 @@ public class ViewerActivity extends AppCompatActivity {
                 AnalyticsTracker.trackEvent(isMark ? "MarkViewer: Delete" : "EventViewer: Delete",
                         getApplicationContext());
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if (Utils.hasApi21()) {
                     ((AnimatedVectorDrawable) mDelete.getCompoundDrawables()[1]).start();
                 }
 

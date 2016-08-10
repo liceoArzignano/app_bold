@@ -61,7 +61,7 @@ public class MaterialShowcaseView extends FrameLayout
     private int mXPosition;
     private int mYPosition;
     private boolean mWasNotDismissed = true;
-    private final int mShapePadding = ShowcaseConfig.DEFAULT_SHAPE_PADDING;
+    private final int mShapePadding = 10;
 
     private View mContentBox;
     private TextView mContentTextView;
@@ -72,7 +72,7 @@ public class MaterialShowcaseView extends FrameLayout
     private boolean mShouldNotRender = true;
     private int mMaskColour;
     private AnimationFactory mAnimationFactory;
-    private final long mFadeDurationInMillis = ShowcaseConfig.DEFAULT_FADE_TIME;
+    private final long mFadeDurationInMillis = 300L;
     private Handler mHandler;
     private boolean mSingleUse = false;
     private PrefsManager mPrefsManager;
@@ -471,7 +471,7 @@ public class MaterialShowcaseView extends FrameLayout
         setShouldRender();
 
         mHandler = new Handler();
-        long mDelayInMillis = ShowcaseConfig.DEFAULT_DELAY;
+        long mDelayInMillis = 20L;
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {

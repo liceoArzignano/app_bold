@@ -8,8 +8,8 @@
     <string name="path_share_lines_collapsed" translatable="false">M12,12L12,12 M12,12L12,12</string>
     <string name="path_share_lines_mid_expand" translatable="false">M18,12L18,12 M6,5L18,12</string>
 
-    <string name="name_dots">dots</string>
-    <string name="name_lines">lines</string>
+    <string name="name_dots" translatable="false">dots</string>
+    <string name="name_lines" translatable="false">lines</string>
 
     <integer name="share_duration_collapse">120</integer>
     <integer name="share_duration_mid_expand">150</integer>

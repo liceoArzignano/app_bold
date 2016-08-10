@@ -18,7 +18,7 @@ class ListArrayAdapter extends RealmBaseAdapter<Event> {
     private final int layoutResourceId;
     private final RealmResults<Event> events;
 
-    public ListArrayAdapter(Context context,
+    ListArrayAdapter(Context context,
                             RealmResults<Event> events) {
         super(context, events);
         this.context = context;
@@ -79,7 +79,7 @@ class ListArrayAdapter extends RealmBaseAdapter<Event> {
         return row;
     }
 
-    static class EventViewHolder {
+    private static class EventViewHolder {
         TextView eventTitle;
         TextView eventValue;
         ImageView eventIcon;

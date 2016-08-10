@@ -28,7 +28,6 @@ class BackupData {
     }
 
     public DriveId getId() {
-
         return id;
     }
 

@@ -1,6 +1,7 @@
 package it.liceoarzignano.bold;
 
 import android.content.Context;
+import android.os.StrictMode;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -8,7 +9,7 @@ import io.realm.RealmConfiguration;
 public class BoldApp extends android.app.Application {
 
     private static RealmConfiguration configuration;
-    public static Context context;
+    private static Context context;
 
     @Override
     public void onCreate() {
@@ -23,6 +24,17 @@ public class BoldApp extends android.app.Application {
         Realm.setDefaultConfiguration(configuration);
 
         context = getApplicationContext();
+
+        if (BuildConfig.DEBUG && Utils.hasApi21()) {
+            // Enable StrictMode
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectFileUriExposure()
+                    .detectCleartextNetwork()
+                    .penaltyLog()
+                    .penaltyDeath()
+                    .build());
+        }
+
     }
 
     public static RealmConfiguration getAppRealmConfiguration() {

@@ -14,20 +14,13 @@
           <param name="ignoreModifier" value="false" />
           <param name="ignoreName" value="false" />
         </coding_rule>
-        <coding_rule class="AbstractMethodFromConstructorInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="AccessToStaticMembersInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="AlphabeticalImportInspector" level="MAJOR" enabled="false">
-          <param name="importOrder" value="java,javax,org,com" />
-        </coding_rule>
         <coding_rule class="AndroidCallSuperFirst" level="MAJOR" enabled="false" />
         <coding_rule class="AndroidCallSuperLast" level="MAJOR" enabled="false" />
         <coding_rule class="AndroidDoNotHardCodeSDCard" level="MAJOR" enabled="false" />
         <coding_rule class="AnnotationUseStyleCheck" level="MAJOR" enabled="false" />
         <coding_rule class="AnonInnerLengthCheck" level="MAJOR" enabled="true" />
-        <coding_rule class="ArrayDeclarationInspector" level="MAJOR" enabled="false" />
         <coding_rule class="ArrayTrailingCommaCheck" level="MAJOR" enabled="false" />
         <coding_rule class="ArrayTypeStyleCheck" level="INFO" enabled="false" />
-        <coding_rule class="AssignmentInsideConditionalInspector" level="MAJOR" enabled="false" />
         <coding_rule class="AvoidInlineConditionalsCheck" level="INFO" enabled="false" />
         <coding_rule class="AvoidNestedBlocksCheck" level="MAJOR" enabled="false" />
         <coding_rule class="AvoidStarImportCheck" level="INFO" enabled="false">
@@ -41,7 +34,7 @@
         <coding_rule class="BC_EQUALS_METHOD_SHOULD_WORK_FOR_ALL_OBJECTS" level="CRITICAL" enabled="true" />
         <coding_rule class="BC_IMPOSSIBLE_CAST" level="BLOCKER" enabled="true" />
         <coding_rule class="BC_IMPOSSIBLE_DOWNCAST" level="MAJOR" enabled="false" />
-        <coding_rule class="BC_IMPOSSIBLE_DOWNCAST_OF_TOARRAY" level="MAJOR" enabled="false" />
+        <coding_rule class="BC_IMPOSSIBLE_DOWNCAST_OF_TOARRAY" level="MAJOR" enabled="true" />
         <coding_rule class="BC_IMPOSSIBLE_INSTANCEOF" level="CRITICAL" enabled="true" />
         <coding_rule class="BC_UNCONFIRMED_CAST" level="CRITICAL" enabled="true" />
         <coding_rule class="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE" level="CRITICAL" enabled="false" />
@@ -72,15 +65,15 @@
         <coding_rule class="BasicCheckSkipResult" level="MAJOR" enabled="false" />
         <coding_rule class="BasicClassCastExceptionWithToArray" level="MAJOR" enabled="true" />
         <coding_rule class="BasicCollapsibleIfStatements" level="MINOR" enabled="true" />
-        <coding_rule class="BasicDontCallThreadRun" level="MAJOR" enabled="false" />
-        <coding_rule class="BasicDontUseFloatTypeForLoopIndices" level="MAJOR" enabled="false" />
+        <coding_rule class="BasicDontCallThreadRun" level="MAJOR" enabled="true" />
+        <coding_rule class="BasicDontUseFloatTypeForLoopIndices" level="MAJOR" enabled="true" />
         <coding_rule class="BasicDoubleCheckedLocking" level="MAJOR" enabled="false" />
-        <coding_rule class="BasicExtendsObject" level="MAJOR" enabled="false" />
-        <coding_rule class="BasicForLoopShouldBeWhileLoop" level="MINOR" enabled="false" />
+        <coding_rule class="BasicExtendsObject" level="MAJOR" enabled="true" />
+        <coding_rule class="BasicForLoopShouldBeWhileLoop" level="MINOR" enabled="true" />
         <coding_rule class="BasicJSFDontNestJsfInJstlIteration" level="MAJOR" enabled="false" />
         <coding_rule class="BasicJSPIframeMissingSrcAttribute" level="MAJOR" enabled="false" />
         <coding_rule class="BasicJSPNoClassAttribute" level="MAJOR" enabled="false" />
-        <coding_rule class="BasicJSPNoHtmlComments" level="MAJOR" enabled="false" />
+        <coding_rule class="BasicJSPNoHtmlComments" level="MAJOR" enabled="true" />
         <coding_rule class="BasicJSPNoInlineStyleInformation" level="MAJOR" enabled="false" />
         <coding_rule class="BasicJSPNoJspForward" level="MAJOR" enabled="false" />
         <coding_rule class="BasicJSPNoLongScripts" level="MAJOR" enabled="false" />
@@ -90,9 +83,9 @@
         <coding_rule class="BasicOverrideBothEqualsAndHashcode" level="CRITICAL" enabled="false" />
         <coding_rule class="BasicReturnFromFinallyBlock" level="MAJOR" enabled="false" />
         <coding_rule class="BasicUnconditionalIfStatement" level="CRITICAL" enabled="true" />
-        <coding_rule class="BooleanEqualityInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="BooleanExpressionComplexityCheck" level="MAJOR" enabled="true" />
-        <coding_rule class="BraceInspector" level="MAJOR" enabled="false" />
+        <coding_rule class="BooleanExpressionComplexityCheck" level="MAJOR" enabled="true">
+          <param name="max" value="15" />
+        </coding_rule>
         <coding_rule class="BracesForLoopsMustUseBraces" level="MAJOR" enabled="true" />
         <coding_rule class="BracesIfElseStmtsMustUseBraces" level="MAJOR" enabled="true" />
         <coding_rule class="BracesIfStmtsMustUseBraces" level="MAJOR" enabled="true" />
@@ -103,7 +96,7 @@
         <coding_rule class="CAA_COVARIANT_ARRAY_RETURN" level="MAJOR" enabled="false" />
         <coding_rule class="CD_CIRCULAR_DEPENDENCY" level="MAJOR" enabled="false" />
         <coding_rule class="CI_CONFUSED_INHERITANCE" level="MINOR" enabled="true" />
-        <coding_rule class="CNT_ROUGH_CONSTANT_VALUE" level="MAJOR" enabled="false" />
+        <coding_rule class="CNT_ROUGH_CONSTANT_VALUE" level="MAJOR" enabled="true" />
         <coding_rule class="CN_IDIOM" level="MAJOR" enabled="true" />
         <coding_rule class="CN_IDIOM_NO_SUPER_CALL" level="MAJOR" enabled="true" />
         <coding_rule class="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE" level="MAJOR" enabled="true" />
@@ -111,10 +104,6 @@
         <coding_rule class="CO_COMPARETO_INCORRECT_FLOATING" level="MAJOR" enabled="false" />
         <coding_rule class="CO_COMPARETO_RESULTS_MIN_VALUE" level="CRITICAL" enabled="false" />
         <coding_rule class="CO_SELF_NO_OBJECT" level="MAJOR" enabled="true" />
-        <coding_rule class="CatchTooGeneralExceptionTypeInspector" level="MAJOR" enabled="false">
-          <param name="tooGeneralExceptions" value="java.lang.Exception,java.lang.RuntimeException,java.lang.Throwable,java.lang.Error" />
-        </coding_rule>
-        <coding_rule class="ChainExceptionsInspector" level="MAJOR" enabled="false" />
         <coding_rule class="ClassDataAbstractionCouplingCheck" level="MAJOR" enabled="false" />
         <coding_rule class="ClassFanOutComplexityCheck" level="MAJOR" enabled="false" />
         <coding_rule class="ClassTypeParameterNameCheck" level="MAJOR" enabled="false" />
@@ -132,13 +121,7 @@
         <coding_rule class="CodeSizeNcssTypeCount" level="MAJOR" enabled="true" />
         <coding_rule class="CodeSizeTooManyFields" level="MAJOR" enabled="false" />
         <coding_rule class="CodeSizeTooManyMethods" level="MAJOR" enabled="false" />
-        <coding_rule class="CodeTooLongInspector" level="MAJOR" enabled="false">
-          <param name="maxLength" value="200" />
-        </coding_rule>
-        <coding_rule class="ConditionalExpressionInspector" level="MAJOR" enabled="false" />
         <coding_rule class="ConstantNameCheck" level="INFO" enabled="true" />
-        <coding_rule class="ConstructorWithoutSuperInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="ContinueInspector" level="MAJOR" enabled="false" />
         <coding_rule class="ControversialAssignmentInOperand" level="MAJOR" enabled="false" />
         <coding_rule class="ControversialAtLeastOneConstructor" level="MAJOR" enabled="false" />
         <coding_rule class="ControversialAvoidAccessibilityAlteration" level="MAJOR" enabled="false" />
@@ -155,7 +138,7 @@
         <coding_rule class="ControversialDoNotCallGarbageCollectionExplicitly" level="CRITICAL" enabled="false" />
         <coding_rule class="ControversialDontImportSun" level="MINOR" enabled="true" />
         <coding_rule class="ControversialNullAssignment" level="MAJOR" enabled="false" />
-        <coding_rule class="ControversialOneDeclarationPerLine" level="MAJOR" enabled="false" />
+        <coding_rule class="ControversialOneDeclarationPerLine" level="MAJOR" enabled="true" />
         <coding_rule class="ControversialOnlyOneReturn" level="MINOR" enabled="false" />
         <coding_rule class="ControversialSuspiciousOctalEscape" level="MAJOR" enabled="false" />
         <coding_rule class="ControversialUnnecessaryConstructor" level="MAJOR" enabled="false" />
@@ -168,9 +151,8 @@
         <coding_rule class="CouplingLooseCoupling" level="MAJOR" enabled="true" />
         <coding_rule class="CouplingLoosePackageCoupling" level="MAJOR" enabled="false" />
         <coding_rule class="CovariantEqualsCheck" level="MAJOR" enabled="false" />
-        <coding_rule class="CyclomaticComplexityCheck" level="MAJOR" enabled="true" />
-        <coding_rule class="CyclomaticComplexityInspector" level="MAJOR" enabled="false">
-          <param name="operationMaxComplexity" value="12" />
+        <coding_rule class="CyclomaticComplexityCheck" level="MAJOR" enabled="true">
+          <param name="max" value="15" />
         </coding_rule>
         <coding_rule class="DB_DUPLICATE_BRANCHES" level="CRITICAL" enabled="true" />
         <coding_rule class="DB_DUPLICATE_SWITCH_CLAUSES" level="CRITICAL" enabled="true" />
@@ -225,7 +207,7 @@
         <coding_rule class="DM_EXIT" level="MAJOR" enabled="true" />
         <coding_rule class="DM_FP_NUMBER_CTOR" level="MAJOR" enabled="true" />
         <coding_rule class="DM_GC" level="MAJOR" enabled="true" />
-        <coding_rule class="DM_INVALID_MIN_MAX" level="MAJOR" enabled="false" />
+        <coding_rule class="DM_INVALID_MIN_MAX" level="MAJOR" enabled="true" />
         <coding_rule class="DM_MONITOR_WAIT_ON_CONDITION" level="MAJOR" enabled="true" />
         <coding_rule class="DM_NEW_FOR_GETCLASS" level="MAJOR" enabled="true" />
         <coding_rule class="DM_NEXTINT_VIA_NEXTDOUBLE" level="MAJOR" enabled="true" />
@@ -237,7 +219,7 @@
         <coding_rule class="DM_USELESS_THREAD" level="MAJOR" enabled="true" />
         <coding_rule class="DP_CREATE_CLASSLOADER_INSIDE_DO_PRIVILEGED" level="MAJOR" enabled="true" />
         <coding_rule class="DP_DO_INSIDE_DO_PRIVILEGED" level="MAJOR" enabled="true" />
-        <coding_rule class="DeclarationOrderCheck" level="INFO" enabled="false">
+        <coding_rule class="DeclarationOrderCheck" level="INFO" enabled="true">
           <param name="ignoreConstructors" value="false" />
           <param name="ignoreMethods" value="false" />
           <param name="ignoreModifiers" value="false" />
@@ -251,14 +233,14 @@
         <coding_rule class="DesignAvoidConstantsInterface" level="MAJOR" enabled="false" />
         <coding_rule class="DesignAvoidDeeplyNestedIfStmts" level="MAJOR" enabled="false" />
         <coding_rule class="DesignAvoidInstanceofChecksInCatchClause" level="MINOR" enabled="true" />
-        <coding_rule class="DesignAvoidProtectedFieldInFinalClass" level="MAJOR" enabled="false" />
+        <coding_rule class="DesignAvoidProtectedFieldInFinalClass" level="MAJOR" enabled="true" />
         <coding_rule class="DesignAvoidReassigningParameters" level="MAJOR" enabled="false" />
         <coding_rule class="DesignAvoidSynchronizedAtMethodLevel" level="MAJOR" enabled="false" />
-        <coding_rule class="DesignBadComparison" level="MAJOR" enabled="false" />
+        <coding_rule class="DesignBadComparison" level="MAJOR" enabled="true" />
         <coding_rule class="DesignClassWithOnlyPrivateConstructorsShouldBeFinal" level="MAJOR" enabled="false" />
         <coding_rule class="DesignCloseResource" level="MAJOR" enabled="true" />
         <coding_rule class="DesignCompareObjectsWithEquals" level="MAJOR" enabled="true" />
-        <coding_rule class="DesignConfusingTernary" level="MAJOR" enabled="false" />
+        <coding_rule class="DesignConfusingTernary" level="MAJOR" enabled="true" />
         <coding_rule class="DesignConstructorCallsOverridableMethod" level="MAJOR" enabled="true" />
         <coding_rule class="DesignDefaultLabelNotLastInSwitchStmt" level="MAJOR" enabled="false" />
         <coding_rule class="DesignEmptyMethodInAbstractClassShouldBeAbstract" level="MAJOR" enabled="false" />
@@ -276,12 +258,12 @@
         <coding_rule class="DesignNonCaseLabelInSwitchStatement" level="MAJOR" enabled="false" />
         <coding_rule class="DesignNonStaticInitializer" level="MAJOR" enabled="false" />
         <coding_rule class="DesignNonThreadSafeSingleton" level="MAJOR" enabled="false" />
-        <coding_rule class="DesignOptimizableToArrayCall" level="MAJOR" enabled="false" />
+        <coding_rule class="DesignOptimizableToArrayCall" level="MAJOR" enabled="true" />
         <coding_rule class="DesignPositionLiteralsFirstInComparisons" level="MAJOR" enabled="false" />
         <coding_rule class="DesignPreserveStackTrace" level="MAJOR" enabled="true" />
         <coding_rule class="DesignReturnEmptyArrayRatherThanNull" level="MINOR" enabled="false" />
         <coding_rule class="DesignSimpleDateFormatNeedsLocale" level="MAJOR" enabled="false" />
-        <coding_rule class="DesignSimplifyBooleanExpressions" level="MAJOR" enabled="false" />
+        <coding_rule class="DesignSimplifyBooleanExpressions" level="MAJOR" enabled="true" />
         <coding_rule class="DesignSimplifyBooleanReturns" level="MINOR" enabled="false" />
         <coding_rule class="DesignSimplifyConditional" level="MAJOR" enabled="true" />
         <coding_rule class="DesignSingularField" level="MINOR" enabled="true" />
@@ -292,23 +274,11 @@
         <coding_rule class="DesignUncommentedEmptyMethod" level="MAJOR" enabled="false" />
         <coding_rule class="DesignUnnecessaryLocalBeforeReturn" level="MAJOR" enabled="true" />
         <coding_rule class="DesignUnsynchronizedStaticDateFormatter" level="MAJOR" enabled="false" />
-        <coding_rule class="DesignUseCollectionIsEmpty" level="MINOR" enabled="false" />
+        <coding_rule class="DesignUseCollectionIsEmpty" level="MINOR" enabled="true" />
         <coding_rule class="DesignUseLocaleWithCaseConversions" level="MAJOR" enabled="false" />
         <coding_rule class="DesignUseNotifyAllInsteadOfNotify" level="MAJOR" enabled="false" />
         <coding_rule class="DesignUseSingleton" level="MAJOR" enabled="false" />
         <coding_rule class="DesignUseVarargs" level="MAJOR" enabled="false" />
-        <coding_rule class="DirectoryStructureInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="DoNotConstructBigDecimalFromDecimalLiteralsInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="DoNotConstructPredefinedBigDecimalsInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="DoNotUseNewForBooleanInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="DoNotUseNewForStringsInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="DoNotUseTypeInspector" level="MAJOR" enabled="false">
-          <param name="deprecatedTypes" value="java.util.Vector" />
-        </coding_rule>
-        <coding_rule class="DotChainInspector" level="MAJOR" enabled="false">
-          <param name="maxChain" value="10" />
-        </coding_rule>
-        <coding_rule class="DuplicateImportInspector" level="MAJOR" enabled="false" />
         <coding_rule class="EC_ARRAY_AND_NONARRAY" level="CRITICAL" enabled="true" />
         <coding_rule class="EC_BAD_ARRAY_COMPARE" level="CRITICAL" enabled="true" />
         <coding_rule class="EC_INCOMPATIBLE_ARRAY_COMPARE" level="MAJOR" enabled="false" />
@@ -339,10 +309,6 @@
         <coding_rule class="ES_COMPARING_STRINGS_WITH_EQ" level="MAJOR" enabled="true" />
         <coding_rule class="ESync_EMPTY_SYNC" level="MAJOR" enabled="true" />
         <coding_rule class="EmptyBlockCheck" level="MAJOR" enabled="false" />
-        <coding_rule class="EmptyBodiesInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="EmptyCatchBlockInspector" level="MAJOR" enabled="false">
-          <param name="exempts" value="java.lang.NumberFormatException" />
-        </coding_rule>
         <coding_rule class="EmptyCodeEmptyCatchBlock" level="CRITICAL" enabled="false" />
         <coding_rule class="EmptyCodeEmptyFinallyBlock" level="CRITICAL" enabled="true" />
         <coding_rule class="EmptyCodeEmptyIfStmt" level="CRITICAL" enabled="true" />
@@ -356,10 +322,7 @@
         <coding_rule class="EmptyCodeEmptyWhileStmt" level="CRITICAL" enabled="true" />
         <coding_rule class="EmptyForInitializerPadCheck" level="INFO" enabled="false" />
         <coding_rule class="EmptyForIteratorPadCheck" level="INFO" enabled="false" />
-        <coding_rule class="EmptySourceUnitInspector" level="MAJOR" enabled="false" />
         <coding_rule class="EmptyStatementCheck" level="INFO" enabled="true" />
-        <coding_rule class="EmptyStatementsInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="EmptyTryOrFinallyBlockInspector" level="MAJOR" enabled="false" />
         <coding_rule class="EqualsAvoidNullCheck" level="MAJOR" enabled="false">
           <param name="ignoreEqualsIgnoreCase" value="false" />
         </coding_rule>
@@ -380,26 +343,20 @@
         <coding_rule class="FI_USELESS" level="MINOR" enabled="true" />
         <coding_rule class="FL_MATH_USING_FLOAT_PRECISION" level="CRITICAL" enabled="true" />
         <coding_rule class="FallThroughCheck" level="MAJOR" enabled="false" />
-        <coding_rule class="FileHeaderInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="FileLengthCheck" level="MAJOR" enabled="false" />
+        <coding_rule class="FileLengthCheck" level="MAJOR" enabled="true" />
         <coding_rule class="FileTabCharacterCheck" level="MAJOR" enabled="false" />
         <coding_rule class="FinalClassCheck" level="MAJOR" enabled="true" />
         <coding_rule class="FinalLocalVariableCheck" level="INFO" enabled="false" />
         <coding_rule class="FinalParametersCheck" level="INFO" enabled="false" />
-        <coding_rule class="FinalParametersInspector" level="MAJOR" enabled="false" />
         <coding_rule class="FinalizerAvoidCallingFinalize" level="MAJOR" enabled="true" />
         <coding_rule class="FinalizerEmptyFinalizer" level="MAJOR" enabled="true" />
         <coding_rule class="FinalizerFinalizeDoesNotCallSuperFinalize" level="MAJOR" enabled="true" />
         <coding_rule class="FinalizerFinalizeOnlyCallsSuperFinalize" level="MAJOR" enabled="false" />
         <coding_rule class="FinalizerFinalizeOverloaded" level="MAJOR" enabled="true" />
         <coding_rule class="FinalizerFinalizeShouldBeProtected" level="MAJOR" enabled="false" />
-        <coding_rule class="ForConditionInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="ForInitInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="ForIteratorInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="ForLoopControlVariablesInspector" level="MAJOR" enabled="false" />
         <coding_rule class="GC_UNCHECKED_TYPE_IN_GENERIC_CALL" level="CRITICAL" enabled="true" />
         <coding_rule class="GC_UNRELATED_TYPES" level="CRITICAL" enabled="true" />
-        <coding_rule class="GenericWhitespaceCheck" level="MAJOR" enabled="false" />
+        <coding_rule class="GenericWhitespaceCheck" level="MAJOR" enabled="true" />
         <coding_rule class="HE_EQUALS_NO_HASHCODE" level="MAJOR" enabled="true" />
         <coding_rule class="HE_EQUALS_USE_HASHCODE" level="CRITICAL" enabled="true" />
         <coding_rule class="HE_HASHCODE_NO_EQUALS" level="CRITICAL" enabled="true" />
@@ -410,13 +367,9 @@
         <coding_rule class="HRS_REQUEST_PARAMETER_TO_COOKIE" level="MAJOR" enabled="true" />
         <coding_rule class="HRS_REQUEST_PARAMETER_TO_HTTP_HEADER" level="MAJOR" enabled="true" />
         <coding_rule class="HSC_HUGE_SHARED_STRING_CONSTANT" level="CRITICAL" enabled="true" />
-        <coding_rule class="HardcodedCharacterLiteralsInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="HardcodedNumericLiteralsInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="HardcodedStringLiteralsInspector" level="MAJOR" enabled="false" />
         <coding_rule class="HeaderCheck" level="MAJOR" enabled="false" />
-        <coding_rule class="HiddenFieldCheck" level="MAJOR" enabled="true" />
-        <coding_rule class="HideUtilityClassConstructorCheck" level="MAJOR" enabled="true" />
-        <coding_rule class="HidingInheritedFieldsInspector" level="MAJOR" enabled="false" />
+        <coding_rule class="HiddenFieldCheck" level="MAJOR" enabled="false" />
+        <coding_rule class="HideUtilityClassConstructorCheck" level="MAJOR" enabled="false" />
         <coding_rule class="IA_AMBIGUOUS_INVOCATION_OF_INHERITED_OR_OUTER_METHOD" level="MAJOR" enabled="true" />
         <coding_rule class="ICAST_BAD_SHIFT_AMOUNT" level="CRITICAL" enabled="true" />
         <coding_rule class="ICAST_IDIV_CAST_TO_DOUBLE" level="CRITICAL" enabled="true" />
@@ -466,24 +419,18 @@
         <coding_rule class="IllegalThrowsCheck" level="MAJOR" enabled="true" />
         <coding_rule class="IllegalTokenCheck" level="MAJOR" enabled="false" />
         <coding_rule class="IllegalTokenTextCheck" level="MAJOR" enabled="false" />
-        <coding_rule class="IllegalTypeCheck" level="MAJOR" enabled="false" />
+        <coding_rule class="IllegalTypeCheck" level="MAJOR" enabled="true" />
         <coding_rule class="ImportControlCheck" level="MAJOR" enabled="false" />
         <coding_rule class="ImportOrderCheck" level="INFO" enabled="false" />
         <coding_rule class="ImportStatementsDontImportJavaLang" level="MINOR" enabled="true" />
-        <coding_rule class="ImportStatementsDuplicateImports" level="MINOR" enabled="false" />
+        <coding_rule class="ImportStatementsDuplicateImports" level="MINOR" enabled="true" />
         <coding_rule class="ImportStatementsImportFromSamePackage" level="MINOR" enabled="false" />
         <coding_rule class="ImportStatementsTooManyStaticImports" level="MAJOR" enabled="false" />
         <coding_rule class="ImportStatementsUnusedImports" level="INFO" enabled="false" />
         <coding_rule class="IndentationCheck" level="INFO" enabled="false" />
         <coding_rule class="InnerAssignmentCheck" level="MAJOR" enabled="true" />
-        <coding_rule class="InnerClassNestingInspector" level="MAJOR" enabled="false">
-          <param name="maxNesting" value="2" />
-        </coding_rule>
-        <coding_rule class="InnerClassVisibilityInspector" level="MAJOR" enabled="false" />
         <coding_rule class="InnerTypeLastCheck" level="MAJOR" enabled="true" />
         <coding_rule class="InterfaceIsTypeCheck" level="MAJOR" enabled="false" />
-        <coding_rule class="InterfaceMethodModifiersInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="InvokeFinalizeInspector" level="MAJOR" enabled="false" />
         <coding_rule class="J2EEDoNotCallSystemExit" level="MAJOR" enabled="false" />
         <coding_rule class="J2EEDoNotUseThreads" level="MAJOR" enabled="false" />
         <coding_rule class="J2EELocalHomeNamingConvention" level="MAJOR" enabled="false" />
@@ -507,18 +454,16 @@
         <coding_rule class="JUnitTestCaseCheck" level="MAJOR" enabled="false" />
         <coding_rule class="JUnitTestClassWithoutTestCases" level="MAJOR" enabled="false" />
         <coding_rule class="JUnitUnnecessaryBooleanAssertion" level="MAJOR" enabled="false" />
-        <coding_rule class="JUnitUseAssertEqualsInsteadOfAssertTrue" level="MAJOR" enabled="false" />
-        <coding_rule class="JUnitUseAssertNullInsteadOfAssertTrue" level="MAJOR" enabled="false" />
-        <coding_rule class="JUnitUseAssertSameInsteadOfAssertTrue" level="MAJOR" enabled="false" />
-        <coding_rule class="JUnitUseAssertTrueInsteadOfAssertEquals" level="MAJOR" enabled="false" />
+        <coding_rule class="JUnitUseAssertEqualsInsteadOfAssertTrue" level="MAJOR" enabled="true" />
+        <coding_rule class="JUnitUseAssertNullInsteadOfAssertTrue" level="MAJOR" enabled="true" />
+        <coding_rule class="JUnitUseAssertSameInsteadOfAssertTrue" level="MAJOR" enabled="true" />
+        <coding_rule class="JUnitUseAssertTrueInsteadOfAssertEquals" level="MAJOR" enabled="true" />
         <coding_rule class="JakartaCommonsLoggingGuardDebugLogging" level="MAJOR" enabled="false" />
         <coding_rule class="JakartaCommonsLoggingProperLogger" level="MAJOR" enabled="false" />
         <coding_rule class="JakartaCommonsLoggingUseCorrectExceptionLogging" level="MAJOR" enabled="true" />
         <coding_rule class="JavaBeansBeanMembersShouldSerialize" level="MAJOR" enabled="false" />
         <coding_rule class="JavaBeansMissingSerialVersionUID" level="MAJOR" enabled="false" />
-        <coding_rule class="JavaDocInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="JavaLangImportInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="JavaLoggingAvoidPrintStackTrace" level="MAJOR" enabled="true" />
+        <coding_rule class="JavaLoggingAvoidPrintStackTrace" level="MAJOR" enabled="false" />
         <coding_rule class="JavaLoggingLoggerIsNotStaticFinal" level="MAJOR" enabled="false" />
         <coding_rule class="JavaLoggingMoreThanOneLogger" level="MAJOR" enabled="false" />
         <coding_rule class="JavaLoggingSystemPrintln" level="MAJOR" enabled="true" />
@@ -533,14 +478,8 @@
         <coding_rule class="LI_LAZY_INIT_UPDATE_STATIC" level="CRITICAL" enabled="true" />
         <coding_rule class="LeftCurlyCheck" level="INFO" enabled="false" />
         <coding_rule class="LineLengthCheck" level="MAJOR" enabled="false" />
-        <coding_rule class="LineLengthInspector" level="MAJOR" enabled="false">
-          <param name="maxLineLength" value="80" />
-        </coding_rule>
         <coding_rule class="LocalFinalVariableNameCheck" level="MAJOR" enabled="true" />
         <coding_rule class="LocalVariableNameCheck" level="MAJOR" enabled="true" />
-        <coding_rule class="LogicalNestingInspector" level="MAJOR" enabled="false">
-          <param name="maxNesting" value="5" />
-        </coding_rule>
         <coding_rule class="ME_ENUM_FIELD_SETTER" level="MAJOR" enabled="false" />
         <coding_rule class="ME_MUTABLE_ENUM_FIELD" level="MAJOR" enabled="false" />
         <coding_rule class="MF_CLASS_MASKS_FIELD" level="MAJOR" enabled="true" />
@@ -558,17 +497,14 @@
         <coding_rule class="MS_OOI_PKGPROTECT" level="MAJOR" enabled="true" />
         <coding_rule class="MS_PKGPROTECT" level="MAJOR" enabled="true" />
         <coding_rule class="MS_SHOULD_BE_FINAL" level="MAJOR" enabled="true" />
-        <coding_rule class="MS_SHOULD_BE_REFACTORED_TO_BE_FINAL" level="CRITICAL" enabled="false" />
+        <coding_rule class="MS_SHOULD_BE_REFACTORED_TO_BE_FINAL" level="CRITICAL" enabled="true" />
         <coding_rule class="MTIA_SUSPECT_SERVLET_INSTANCE_FIELD" level="CRITICAL" enabled="true" />
         <coding_rule class="MTIA_SUSPECT_STRUTS_INSTANCE_FIELD" level="CRITICAL" enabled="true" />
         <coding_rule class="MWN_MISMATCHED_NOTIFY" level="CRITICAL" enabled="true" />
         <coding_rule class="MWN_MISMATCHED_WAIT" level="CRITICAL" enabled="true" />
-        <coding_rule class="MagicNumberCheck" level="INFO" enabled="true">
+        <coding_rule class="MagicNumberCheck" level="INFO" enabled="false">
           <param name="ignoreHashCodeMethod" value="false" />
           <param name="ignoreAnnotation" value="false" />
-        </coding_rule>
-        <coding_rule class="MaxLinesInFileInspector" level="MAJOR" enabled="false">
-          <param name="maxLength" value="2000" />
         </coding_rule>
         <coding_rule class="MemberNameCheck" level="MAJOR" enabled="true" />
         <coding_rule class="MethodCountCheck" level="MAJOR" enabled="false">
@@ -580,34 +516,28 @@
         </coding_rule>
         <coding_rule class="MethodLengthCheck" level="MAJOR" enabled="false" />
         <coding_rule class="MethodNameCheck" level="MAJOR" enabled="true" />
-        <coding_rule class="MethodNameSameAsConstructorInspector" level="MAJOR" enabled="false" />
         <coding_rule class="MethodParamPadCheck" level="MAJOR" enabled="false" />
         <coding_rule class="MethodTypeParameterNameCheck" level="MAJOR" enabled="false" />
         <coding_rule class="MigrationAvoidAssertAsIdentifier" level="MAJOR" enabled="true" />
         <coding_rule class="MigrationAvoidEnumAsIdentifier" level="MAJOR" enabled="true" />
-        <coding_rule class="MigrationByteInstantiation" level="MAJOR" enabled="false" />
+        <coding_rule class="MigrationByteInstantiation" level="MAJOR" enabled="true" />
         <coding_rule class="MigrationIntegerInstantiation" level="MAJOR" enabled="true" />
         <coding_rule class="MigrationJUnit4SuitesShouldUseSuiteAnnotation" level="MAJOR" enabled="false" />
         <coding_rule class="MigrationJUnit4TestShouldUseAfterAnnotation" level="MAJOR" enabled="false" />
         <coding_rule class="MigrationJUnit4TestShouldUseBeforeAnnotation" level="MAJOR" enabled="false" />
         <coding_rule class="MigrationJUnit4TestShouldUseTestAnnotation" level="MAJOR" enabled="false" />
         <coding_rule class="MigrationJUnitUseExpected" level="MAJOR" enabled="false" />
-        <coding_rule class="MigrationLongInstantiation" level="MAJOR" enabled="false" />
+        <coding_rule class="MigrationLongInstantiation" level="MAJOR" enabled="true" />
         <coding_rule class="MigrationReplaceEnumerationWithIterator" level="MAJOR" enabled="true" />
         <coding_rule class="MigrationReplaceHashtableWithMap" level="MAJOR" enabled="true" />
         <coding_rule class="MigrationReplaceVectorWithList" level="MAJOR" enabled="true" />
-        <coding_rule class="MigrationShortInstantiation" level="MAJOR" enabled="false" />
-        <coding_rule class="MinimalInstanceVariableLengthInspector" level="MAJOR" enabled="false">
-          <param name="minLength" value="3" />
-        </coding_rule>
+        <coding_rule class="MigrationShortInstantiation" level="MAJOR" enabled="true" />
         <coding_rule class="MissingCtorCheck" level="MAJOR" enabled="false" />
         <coding_rule class="MissingDeprecatedCheck" level="MAJOR" enabled="false" />
         <coding_rule class="MissingOverrideCheck" level="MAJOR" enabled="false" />
-        <coding_rule class="MissingPackageDeclarationInspector" level="MAJOR" enabled="false" />
         <coding_rule class="MissingSwitchDefaultCheck" level="MAJOR" enabled="false" />
         <coding_rule class="ModifiedControlVariableCheck" level="MAJOR" enabled="false" />
         <coding_rule class="ModifierOrderCheck" level="INFO" enabled="true" />
-        <coding_rule class="ModifiersOrderInspector" level="MAJOR" enabled="false" />
         <coding_rule class="MultipleStringLiteralsCheck" level="MAJOR" enabled="false" />
         <coding_rule class="MultipleVariableDeclarationsCheck" level="MAJOR" enabled="false" />
         <coding_rule class="MutableExceptionCheck" level="MAJOR" enabled="false" />
@@ -673,7 +603,7 @@
         <coding_rule class="NamingAvoidDollarSigns" level="MINOR" enabled="true" />
         <coding_rule class="NamingAvoidFieldNameMatchingMethodName" level="MAJOR" enabled="false" />
         <coding_rule class="NamingAvoidFieldNameMatchingTypeName" level="MAJOR" enabled="false" />
-        <coding_rule class="NamingBooleanGetMethodName" level="MAJOR" enabled="false" />
+        <coding_rule class="NamingBooleanGetMethodName" level="MAJOR" enabled="true" />
         <coding_rule class="NamingClassNamingConventions" level="MAJOR" enabled="true" />
         <coding_rule class="NamingGenericsNaming" level="MAJOR" enabled="false" />
         <coding_rule class="NamingLongVariable" level="MAJOR" enabled="false" />
@@ -685,7 +615,6 @@
         <coding_rule class="NamingShortClassName" level="MAJOR" enabled="false" />
         <coding_rule class="NamingShortMethodName" level="MAJOR" enabled="false" />
         <coding_rule class="NamingShortVariable" level="MAJOR" enabled="false" />
-        <coding_rule class="NamingStandardInspector" level="MAJOR" enabled="false" />
         <coding_rule class="NamingSuspiciousConstantFieldName" level="MAJOR" enabled="true" />
         <coding_rule class="NamingSuspiciousEqualsMethodName" level="CRITICAL" enabled="true" />
         <coding_rule class="NamingSuspiciousHashcodeMethodName" level="MAJOR" enabled="true" />
@@ -699,45 +628,30 @@
         <coding_rule class="NewlineAtEndOfFileCheck" level="INFO" enabled="false" />
         <coding_rule class="NoCloneCheck" level="MAJOR" enabled="false" />
         <coding_rule class="NoFinalizerCheck" level="MAJOR" enabled="false" />
-        <coding_rule class="NoPublicFieldsInspector" level="MAJOR" enabled="false">
-          <param name="finalAllowed" value="true" />
-          <param name="staticFinalAllowed" value="true" />
-        </coding_rule>
-        <coding_rule class="NoStarImportsInspector" level="MAJOR" enabled="false" />
         <coding_rule class="NoWhitespaceAfterCheck" level="INFO" enabled="false" />
         <coding_rule class="NoWhitespaceBeforeCheck" level="INFO" enabled="false" />
-        <coding_rule class="NotifyInspector" level="MAJOR" enabled="false" />
         <coding_rule class="OBL_UNSATISFIED_OBLIGATION" level="CRITICAL" enabled="false" />
         <coding_rule class="OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE" level="CRITICAL" enabled="false" />
         <coding_rule class="ODR_OPEN_DATABASE_RESOURCE" level="CRITICAL" enabled="true" />
         <coding_rule class="ODR_OPEN_DATABASE_RESOURCE_EXCEPTION_PATH" level="CRITICAL" enabled="true" />
         <coding_rule class="OS_OPEN_STREAM" level="CRITICAL" enabled="true" />
         <coding_rule class="OS_OPEN_STREAM_EXCEPTION_PATH" level="CRITICAL" enabled="true" />
-        <coding_rule class="ObjectEqualsInspector" level="MAJOR" enabled="false" />
         <coding_rule class="OneStatementPerLineCheck" level="INFO" enabled="false" />
-        <coding_rule class="OneStatementPerLineInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="OneTypePerFileInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="OperationParameterNamesInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="OperationWithRuntimeExceptionInThrowsInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="OperationWithTooGeneralExceptonTypeInThrowsInspector" level="MAJOR" enabled="false">
-          <param name="tooGeneralExceptionTypes" value="java.lang.Exception,java.lang.RuntimeException,java.lang.Throwable,java.lang.Error" />
-        </coding_rule>
         <coding_rule class="OperatorWrapCheck" level="INFO" enabled="false" />
         <coding_rule class="OptimizationAddEmptyString" level="MAJOR" enabled="false" />
         <coding_rule class="OptimizationAvoidArrayLoops" level="MAJOR" enabled="true" />
         <coding_rule class="OptimizationAvoidInstantiatingObjectsInLoops" level="MINOR" enabled="false" />
         <coding_rule class="OptimizationLocalVariableCouldBeFinal" level="MINOR" enabled="false" />
-        <coding_rule class="OptimizationMethodArgumentCouldBeFinal" level="MINOR" enabled="false" />
+        <coding_rule class="OptimizationMethodArgumentCouldBeFinal" level="MINOR" enabled="true" />
         <coding_rule class="OptimizationPrematureDeclaration" level="MAJOR" enabled="false" />
         <coding_rule class="OptimizationRedundantFieldInitializer" level="MAJOR" enabled="false" />
         <coding_rule class="OptimizationSimplifyStartsWith" level="MINOR" enabled="false" />
         <coding_rule class="OptimizationUnnecessaryWrapperObjectCreation" level="MAJOR" enabled="false" />
         <coding_rule class="OptimizationUseArrayListInsteadOfVector" level="MAJOR" enabled="true" />
         <coding_rule class="OptimizationUseArraysAsList" level="MAJOR" enabled="true" />
-        <coding_rule class="OptimizationUseStringBufferForStringAppends" level="MAJOR" enabled="false" />
+        <coding_rule class="OptimizationUseStringBufferForStringAppends" level="MAJOR" enabled="true" />
         <coding_rule class="OuterTypeFilenameCheck" level="INFO" enabled="false" />
         <coding_rule class="OuterTypeNumberCheck" level="MAJOR" enabled="false" />
-        <coding_rule class="OverrideEqualsAndHashCodeInspector" level="MAJOR" enabled="false" />
         <coding_rule class="PS_PUBLIC_SEMAPHORES" level="CRITICAL" enabled="true" />
         <coding_rule class="PT_ABSOLUTE_PATH_TRAVERSAL" level="CRITICAL" enabled="false" />
         <coding_rule class="PT_RELATIVE_PATH_TRAVERSAL" level="CRITICAL" enabled="false" />
@@ -752,8 +666,6 @@
         <coding_rule class="ParameterNameCheck" level="MAJOR" enabled="true" />
         <coding_rule class="ParameterNumberCheck" level="MAJOR" enabled="false" />
         <coding_rule class="ParenPadCheck" level="INFO" enabled="false" />
-        <coding_rule class="PrintStackTraceInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="PublicStaticArrayFieldsInspector" level="MAJOR" enabled="false" />
         <coding_rule class="QBA_QUESTIONABLE_BOOLEAN_ASSIGNMENT" level="CRITICAL" enabled="true" />
         <coding_rule class="QF_QUESTIONABLE_FOR_LOOP" level="CRITICAL" enabled="true" />
         <coding_rule class="RANGE_ARRAY_INDEX" level="MAJOR" enabled="false" />
@@ -793,7 +705,6 @@
         <coding_rule class="RV_RETURN_VALUE_OF_PUTIFABSENT_IGNORED" level="MAJOR" enabled="false" />
         <coding_rule class="RedundantImportCheck" level="INFO" enabled="false" />
         <coding_rule class="RedundantModifierCheck" level="INFO" enabled="true" />
-        <coding_rule class="RedundantParenthesisInspector" level="MAJOR" enabled="false" />
         <coding_rule class="RedundantThrowsCheck" level="INFO" enabled="true" />
         <coding_rule class="RegexpCheck" level="MAJOR" enabled="false" />
         <coding_rule class="RegexpHeaderCheck" level="MAJOR" enabled="false" />
@@ -821,9 +732,7 @@
         </coding_rule>
         <coding_rule class="RequireThisCheck" level="MAJOR" enabled="false" />
         <coding_rule class="ReturnCountCheck" level="MAJOR" enabled="false" />
-        <coding_rule class="ReturnFromFinallyInspector" level="MAJOR" enabled="false" />
         <coding_rule class="RightCurlyCheck" level="INFO" enabled="false" />
-        <coding_rule class="RootPackageInspector" level="MAJOR" enabled="false" />
         <coding_rule class="RpC_REPEATED_CONDITIONAL_TEST" level="MAJOR" enabled="true" />
         <coding_rule class="SA_FIELD_DOUBLE_ASSIGNMENT" level="CRITICAL" enabled="true" />
         <coding_rule class="SA_FIELD_SELF_ASSIGNMENT" level="CRITICAL" enabled="true" />
@@ -876,30 +785,28 @@
         <coding_rule class="STCAL_STATIC_SIMPLE_DATE_FORMAT_INSTANCE" level="CRITICAL" enabled="true" />
         <coding_rule class="STI_INTERRUPTED_ON_CURRENTTHREAD" level="CRITICAL" enabled="true" />
         <coding_rule class="STI_INTERRUPTED_ON_UNKNOWNTHREAD" level="CRITICAL" enabled="true" />
-        <coding_rule class="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD" level="CRITICAL" enabled="true" />
+        <coding_rule class="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD" level="CRITICAL" enabled="false" />
         <coding_rule class="SWL_SLEEP_WITH_LOCK_HELD" level="CRITICAL" enabled="true" />
         <coding_rule class="SW_SWING_METHODS_INVOKED_IN_SWING_THREAD" level="MAJOR" enabled="true" />
         <coding_rule class="SecurityCodeGuidelinesArrayIsStoredDirectly" level="CRITICAL" enabled="true" />
         <coding_rule class="SecurityCodeGuidelinesMethodReturnsInternalArray" level="CRITICAL" enabled="false" />
         <coding_rule class="SimplifyBooleanExpressionCheck" level="MAJOR" enabled="true" />
         <coding_rule class="SimplifyBooleanReturnCheck" level="MAJOR" enabled="true" />
-        <coding_rule class="StaticCollectionsInspector" level="MAJOR" enabled="false" />
         <coding_rule class="StaticVariableNameCheck" level="MAJOR" enabled="true" />
         <coding_rule class="StrictDuplicateCodeCheck" level="MAJOR" enabled="false" />
-        <coding_rule class="StrictExceptionsAvoidCatchingGenericException" level="MAJOR" enabled="false" />
+        <coding_rule class="StrictExceptionsAvoidCatchingGenericException" level="MAJOR" enabled="true" />
         <coding_rule class="StrictExceptionsAvoidCatchingNPE" level="MAJOR" enabled="true" />
         <coding_rule class="StrictExceptionsAvoidCatchingThrowable" level="CRITICAL" enabled="true" />
         <coding_rule class="StrictExceptionsAvoidLosingExceptionInformation" level="MAJOR" enabled="false" />
         <coding_rule class="StrictExceptionsAvoidRethrowingException" level="MAJOR" enabled="true" />
-        <coding_rule class="StrictExceptionsAvoidThrowingNewInstanceOfSameException" level="MAJOR" enabled="false" />
-        <coding_rule class="StrictExceptionsAvoidThrowingNullPointerException" level="MAJOR" enabled="true" />
+        <coding_rule class="StrictExceptionsAvoidThrowingNewInstanceOfSameException" level="MAJOR" enabled="true" />
+        <coding_rule class="StrictExceptionsAvoidThrowingNullPointerException" level="MAJOR" enabled="false" />
         <coding_rule class="StrictExceptionsAvoidThrowingRawExceptionTypes" level="MAJOR" enabled="true" />
         <coding_rule class="StrictExceptionsDoNotExtendJavaLangError" level="MAJOR" enabled="false" />
         <coding_rule class="StrictExceptionsDoNotThrowExceptionInFinally" level="MAJOR" enabled="false" />
         <coding_rule class="StrictExceptionsExceptionAsFlowControl" level="MAJOR" enabled="true" />
         <coding_rule class="StrictExceptionsSignatureDeclareThrowsException" level="MAJOR" enabled="true" />
         <coding_rule class="StringLiteralEqualityCheck" level="MAJOR" enabled="true" />
-        <coding_rule class="StringLiteralEqualsInspector" level="MAJOR" enabled="false" />
         <coding_rule class="StringandStringBufferAppendCharacterWithChar" level="MINOR" enabled="false" />
         <coding_rule class="StringandStringBufferAvoidDuplicateLiterals" level="MAJOR" enabled="true" />
         <coding_rule class="StringandStringBufferAvoidStringBufferField" level="MAJOR" enabled="false" />
@@ -916,14 +823,8 @@
         <coding_rule class="StringandStringBufferUseStringBufferLength" level="MINOR" enabled="true" />
         <coding_rule class="StringandStringBufferUselessStringValueOf" level="MINOR" enabled="true" />
         <coding_rule class="SuperCloneCheck" level="MAJOR" enabled="false" />
-        <coding_rule class="SuperCloneInspector" level="MAJOR" enabled="false" />
         <coding_rule class="SuperFinalizeCheck" level="MAJOR" enabled="false" />
         <coding_rule class="SuppressWarningsCheck" level="MAJOR" enabled="false" />
-        <coding_rule class="SwitchCaseBreakInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="SwitchDefaultInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="SynchronizedInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="SystemGcMisuseInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="SystemPrintlnLoggingInspector" level="MAJOR" enabled="false" />
         <coding_rule class="TLW_TWO_LOCK_WAIT" level="MAJOR" enabled="true" />
         <coding_rule class="TQ_ALWAYS_VALUE_USED_WHERE_NEVER_REQUIRED" level="CRITICAL" enabled="true" />
         <coding_rule class="TQ_COMPARING_VALUES_WITH_INCOMPATIBLE_TYPE_QUALIFIERS" level="CRITICAL" enabled="false" />
@@ -933,20 +834,8 @@
         <coding_rule class="TQ_MAYBE_SOURCE_VALUE_REACHES_NEVER_SINK" level="CRITICAL" enabled="true" />
         <coding_rule class="TQ_NEVER_VALUE_USED_WHERE_ALWAYS_REQUIRED" level="CRITICAL" enabled="true" />
         <coding_rule class="TQ_UNKNOWN_VALUE_USED_WHERE_ALWAYS_STRICTLY_REQUIRED" level="CRITICAL" enabled="false" />
-        <coding_rule class="ThreadSubclassesInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="ThreadYieldInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="ThrowTooGeneralExceptionTypeInspector" level="MAJOR" enabled="false">
-          <param name="tooGeneralExceptionTypes" value="java.lang.Exception,java.lang.RuntimeException,java.lang.Throwable,java.lang.Error" />
-        </coding_rule>
-        <coding_rule class="ThrowsClauseInspector" level="MAJOR" enabled="false" />
         <coding_rule class="ThrowsCountCheck" level="MAJOR" enabled="false" />
         <coding_rule class="TodoCommentCheck" level="INFO" enabled="false" />
-        <coding_rule class="TooManyParametersInspector" level="MAJOR" enabled="false">
-          <param name="maxParameters" value="7" />
-        </coding_rule>
-        <coding_rule class="TooManyThrowsInspector" level="MAJOR" enabled="false">
-          <param name="maxThrows" value="3" />
-        </coding_rule>
         <coding_rule class="TrailingCommentCheck" level="INFO" enabled="false" />
         <coding_rule class="TranslationCheck" level="INFO" enabled="false" />
         <coding_rule class="TypeNameCheck" level="MAJOR" enabled="false" />
@@ -983,9 +872,6 @@
         <coding_rule class="UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD" level="CRITICAL" enabled="false" />
         <coding_rule class="UW_UNCOND_WAIT" level="MAJOR" enabled="true" />
         <coding_rule class="UncommentedMainCheck" level="MAJOR" enabled="false" />
-        <coding_rule class="UnconditionalIfInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="UnnecessaryCastOrInstanceofInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="UnnecessaryElseInspector" level="MAJOR" enabled="false" />
         <coding_rule class="UnnecessaryParenthesesCheck" level="INFO" enabled="false" />
         <coding_rule class="UnnecessaryUnnecessaryConversionTemporary" level="MAJOR" enabled="false" />
         <coding_rule class="UnnecessaryUnnecessaryFinalModifier" level="INFO" enabled="false" />
@@ -993,7 +879,7 @@
         <coding_rule class="UnnecessaryUnusedNullCheckInEquals" level="MAJOR" enabled="true" />
         <coding_rule class="UnnecessaryUselessOperationOnImmutable" level="CRITICAL" enabled="true" />
         <coding_rule class="UnnecessaryUselessOverridingMethod" level="MAJOR" enabled="true" />
-        <coding_rule class="UnnecessaryUselessParentheses" level="MAJOR" enabled="false" />
+        <coding_rule class="UnnecessaryUselessParentheses" level="MAJOR" enabled="true" />
         <coding_rule class="UnusedCodeUnusedFormalParameter" level="MAJOR" enabled="true" />
         <coding_rule class="UnusedCodeUnusedLocalVariable" level="MAJOR" enabled="true" />
         <coding_rule class="UnusedCodeUnusedModifier" level="MAJOR" enabled="true" />
@@ -1003,13 +889,6 @@
           <param name="processJavadoc" value="false" />
         </coding_rule>
         <coding_rule class="UpperEllCheck" level="INFO" enabled="false" />
-        <coding_rule class="UpperLInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="UseBigDecimalInsteadOfFloatAndDoubleInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="UseCollectionsInsteadOfArraysInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="UseEqualsInsteadOfCompareToInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="UselessOperationOnImmutableInspector" level="MAJOR" enabled="false">
-          <param name="immutables" value="java.lang.Object,java.lang.String,java.math.BigDecimal,java.math.BigInteger,java.lang.Number,java.lang.Byte,java.lang.Double,java.lang.Float,java.lang.Integer,java.lang.Long,java.lang.Short,java.lang.Boolean,java.lang.Character" />
-        </coding_rule>
         <coding_rule class="VA_FORMAT_STRING_BAD_ARGUMENT" level="CRITICAL" enabled="true" />
         <coding_rule class="VA_FORMAT_STRING_BAD_CONVERSION" level="CRITICAL" enabled="true" />
         <coding_rule class="VA_FORMAT_STRING_BAD_CONVERSION_FROM_ARRAY" level="MAJOR" enabled="true" />
@@ -1024,19 +903,12 @@
         <coding_rule class="VO_VOLATILE_INCREMENT" level="CRITICAL" enabled="false" />
         <coding_rule class="VO_VOLATILE_REFERENCE_TO_ARRAY" level="MAJOR" enabled="true" />
         <coding_rule class="VR_UNRESOLVABLE_REFERENCE" level="MAJOR" enabled="false" />
-        <coding_rule class="VariableNameClashesWithTypeNameInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="VariablesAndMethodsNameClashingInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="VariablesInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="VendorNameInspector" level="MAJOR" enabled="false" />
         <coding_rule class="VisibilityModifierCheck" level="MAJOR" enabled="true" />
         <coding_rule class="WA_AWAIT_NOT_IN_LOOP" level="CRITICAL" enabled="true" />
         <coding_rule class="WA_NOT_IN_LOOP" level="CRITICAL" enabled="true" />
         <coding_rule class="WL_USING_GETCLASS_RATHER_THAN_CLASS_LITERAL" level="CRITICAL" enabled="true" />
         <coding_rule class="WMI_WRONG_MAP_ITERATOR" level="CRITICAL" enabled="true" />
         <coding_rule class="WS_WRITEOBJECT_SYNC" level="CRITICAL" enabled="true" />
-        <coding_rule class="WaitAndNotifyInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="WaitAndNotifyInsteadOfPollingInspector" level="MAJOR" enabled="false" />
-        <coding_rule class="WaitInLoopInspector" level="MAJOR" enabled="false" />
         <coding_rule class="WhitespaceAfterCheck" level="INFO" enabled="false" />
         <coding_rule class="WhitespaceAroundCheck" level="INFO" enabled="false" />
         <coding_rule class="WriteTagCheck" level="INFO" enabled="false" />

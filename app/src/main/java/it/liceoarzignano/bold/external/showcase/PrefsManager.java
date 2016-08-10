@@ -18,7 +18,6 @@ package it.liceoarzignano.bold.external.showcase;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-
 class PrefsManager {
 
     private static final int SEQUENCE_NEVER_STARTED = 0;
