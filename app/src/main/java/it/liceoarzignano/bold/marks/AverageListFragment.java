@@ -4,14 +4,13 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import java.util.Locale;
 
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.realm.RealmController;
@@ -28,19 +27,19 @@ public class AverageListFragment extends Fragment {
     private static RealmController controller;
 
     public AverageListFragment() {
-        controller = RealmController.with(this.getActivity());
+        controller = RealmController.with(getActivity());
     }
 
-    public static void refresh(Context context, String filter) {
+    static void refresh(Context context, Pair<String, Integer> filter) {
         if (mAvgListview != null) {
-            mAvgListview.setAdapter(new AverageArrayAdapter(context, controller));
-            mAvgListview.setVisibility(filter != null ? View.GONE : View.VISIBLE);
+            mAvgListview.setAdapter(new AverageArrayAdapter(context, controller, filter.second));
+            mAvgListview.setVisibility(filter.first != null ? View.GONE : View.VISIBLE);
         }
         if (mHintLayout != null) {
-            if (filter != null) {
-                double avg = controller.getAverage(filter);
-                double excepted = controller.whatShouldIGet(filter);
-                setHint(filter, avg, excepted);
+            if (filter.first != null) {
+                double avg = controller.getAverage(filter.first, filter.second);
+                double excepted = controller.whatShouldIGet(filter.first, filter.second);
+                setHint(filter.first, avg, excepted);
                 mHintLayout.setVisibility(View.VISIBLE);
             } else {
                 mHintLayout.setVisibility(View.GONE);
@@ -48,12 +47,12 @@ public class AverageListFragment extends Fragment {
         }
     }
 
-    public static void setHint(String subject, double avg, double excepted) {
+    static void setHint(String subject, double avg, double excepted) {
         String msg;
 
         msg = String.format(res.getString(R.string.hint_title), subject);
         mTitle.setText(msg);
-        msg = String.format(Locale.ITALIAN, "%.2f", avg);
+        msg = String.valueOf(avg);
         mValue.setText(msg);
         msg = String.format(res.getString(R.string.hint_content_common), subject)
                 + " " + String.format(res.getString(excepted < 6 ?
@@ -75,7 +74,7 @@ public class AverageListFragment extends Fragment {
         mValue = (TextView) view.findViewById(R.id.value);
         mHint = (TextView) view.findViewById(R.id.hint);
 
-        refresh(context, MarkListActivity.getFilter());
+        refresh(context, MarkListActivity.getSubjectFilter());
 
         return view;
     }

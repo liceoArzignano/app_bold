@@ -42,9 +42,9 @@ public class Utils {
      * Animate fab and showcase it
      *
      * @param context: used to create materialshowcase
-     * @param fab: fab that will be animated and exposed
-     * @param text: showcase text
-     * @param key: showcase key to show it only the first time
+     * @param fab:     fab that will be animated and exposed
+     * @param text:    showcase text
+     * @param key:     showcase key to show it only the first time
      */
     public static void animFabIntro(final Activity context,
                                     final FloatingActionButton fab,
@@ -119,8 +119,9 @@ public class Utils {
     /**
      * Use for adaptive feature discovery
      * TODO: implement ^^^^
+     *
      * @param context: used to call getFirstUsageDate(Context)
-     * @param today: today date (will be confronted)
+     * @param today:   today date (will be confronted)
      * @return true if user has been using this for more than one week
      */
     @SuppressWarnings("unused")
@@ -164,10 +165,20 @@ public class Utils {
      *
      * @return array of subjects
      */
-    public static String[] getAverageElements() {
+    public static String[] getAverageElements(int filter) {
         int size = 0;
         Realm realm = Realm.getInstance(BoldApp.getAppRealmConfiguration());
-        List<Mark> marks = realm.where(Mark.class).findAll();
+        List<Mark> marks;
+        switch (filter) {
+            case 1:
+                marks = realm.where(Mark.class).equalTo("isFirstQuarter", true).findAll();
+                break;
+            case 2:
+                marks = realm.where(Mark.class).equalTo("isFirstQuarter", false).findAll();
+                break;
+            default:
+                marks = realm.where(Mark.class).findAll();
+        }
 
         ArrayList<String> elements = new ArrayList<>();
 
@@ -179,6 +190,60 @@ public class Utils {
         }
 
         return elements.toArray(new String[size]);
+    }
+
+    /**
+     * Get event category description from int
+     *
+     * @param category: event icon value
+     * @return category name
+     */
+    static String eventCategoryToString(int category) {
+        Context context = BoldApp.getBoldContext();
+        switch (category) {
+            case 0:
+                return context.getString(R.string.event_spinner_test);
+            case 1:
+                return context.getString(R.string.event_spinner_school);
+            case 2:
+                return context.getString(R.string.event_spinner_bday);
+        }
+        if (category == 3 && isTeacher(context)) {
+            return context.getString(R.string.event_spinner_hang_out);
+        } else {
+            return context.getString(R.string.event_spinner_other);
+        }
+    }
+
+    /**
+     * Convert string to date
+     *
+     * @param string yyyy-MM-dd date
+     * @return java date
+     */
+    static Date stringToDate(String string) {
+        if (string == null || string.length() != 10 || !string.contains("-")) {
+            throw new IllegalArgumentException(string + ": invalid format. Must be yyyy-MM-dd");
+        }
+
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ITALIAN);
+            return format.parse(string);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return new Date();
+        }
+    }
+
+    /**
+     * Determine if a mark has been assigned during the first or second quarter
+     *
+     * @param mark given mark
+     * @return true if first quarter, else false
+     */
+    public static boolean isFirstQuarterMark(Mark mark) {
+        return stringToDate(BoldApp.getBoldContext().getString(R.string.config_quarter_change))
+                .after(stringToDate(mark.getDate()));
     }
 
     /**

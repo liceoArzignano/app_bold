@@ -22,33 +22,34 @@ class ListArrayAdapter extends RealmBaseAdapter<Mark> {
                             RealmResults<Mark> marks) {
         super(context, marks);
         this.context = context;
-        this.layoutResourceId = R.layout.item_mark;
+        layoutResourceId = R.layout.item_mark;
         this.marks = marks;
     }
 
     @Override
     public View getView(int position, View row, ViewGroup parent) {
-        MarkViewHolder markViewHolder;
+        ListArrayAdapter.MarkViewHolder markViewHolder;
 
         if (row == null) {
-            LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater layoutInflater =
+                    (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             row = layoutInflater.inflate(layoutResourceId, parent, false);
 
-            markViewHolder = new MarkViewHolder();
+            markViewHolder = new ListArrayAdapter.MarkViewHolder();
             markViewHolder.markTitle = (TextView) row.findViewById(R.id.row_mark_title);
             markViewHolder.markValue = (TextView) row.findViewById(R.id.row_mark_value);
             markViewHolder.markNotes = (TextView) row.findViewById(R.id.row_mark_notes);
 
             row.setTag(markViewHolder);
         } else {
-            markViewHolder = (MarkViewHolder) row.getTag();
+            markViewHolder = (ListArrayAdapter.MarkViewHolder) row.getTag();
         }
 
         final Mark mark = marks.get(position);
         markViewHolder.markTitle.setText(mark.getTitle());
         markViewHolder.markNotes.setText(mark.getContent());
 
-        Double doubleValue = ((double) mark.getValue()) / 100;
+        Double doubleValue = (double) mark.getValue() / 100;
         String mValue = Double.toString(doubleValue);
         if (doubleValue < 6) {
             markViewHolder.markValue.setTextColor(Color.RED);

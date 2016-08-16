@@ -15,7 +15,7 @@ public class AlarmService extends Service {
 
     @Override
     public void onCreate() {
-        Context context = this.getApplicationContext();
+        Context context = getApplicationContext();
         String message = MainActivity.getTomorrowInfo();
         Intent notifIntent = new Intent(context, EventListActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
@@ -25,7 +25,7 @@ public class AlarmService extends Service {
 
         if (message != null) {
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-                    this.getApplicationContext())
+                    getApplicationContext())
                     .setSmallIcon(R.drawable.ic_notification)
                     .setContentTitle(getString(R.string.notification_title))
                     .setContentText(message)

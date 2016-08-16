@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.AnimatedVectorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -28,20 +27,16 @@ import it.liceoarzignano.bold.settings.AnalyticsTracker;
 
 public class ViewerActivity extends AppCompatActivity {
     private static Context fContext;
+    private static Realm realm;
     private String title = "Viewer";
-    private String note;
-    private int value;
     private long id;
     private boolean isMark;
     private Button mShare;
     private FloatingActionButton fab;
     private Button mDelete;
     private Button mView;
-
-    private Mark mark;
-    private Event event;
-
-    private static Realm realm;
+    private Mark mark = new Mark();
+    private Event event = new Event();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +49,7 @@ public class ViewerActivity extends AppCompatActivity {
         Intent i = getIntent();
         id = i.getLongExtra("id", -1);
         isMark = i.getBooleanExtra("isMark", true);
+
         if (isMark) {
             mark = realm.where(Mark.class).equalTo("id", id).findFirst();
         } else {
@@ -61,8 +57,8 @@ public class ViewerActivity extends AppCompatActivity {
         }
 
         title = isMark ? mark.getTitle() : event.getTitle();
-        note = isMark ? mark.getContent() : event.getValue();
-        value = isMark ? mark.getValue() : event.getIcon();
+
+        String date = isMark ? mark.getDate() : event.getDate();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         ImageView toolbarImage = (ImageView) findViewById(R.id.toolbar_image);
@@ -81,22 +77,35 @@ public class ViewerActivity extends AppCompatActivity {
         mView = (Button) findViewById(R.id.more);
         TextView mValue = (TextView) findViewById(R.id.value);
         TextView mValueTitle = (TextView) findViewById(R.id.value_title);
+        TextView mDate = (TextView) findViewById(R.id.dates);
         TextView mNotes = (TextView) findViewById(R.id.notes);
+        TextView mNotesTitle = (TextView) findViewById(R.id.notes_title);
+
+        mDate.setText(date);
+        int value = isMark ? mark.getValue() : 0;
+        final String sVal = isMark ? String.valueOf((double) value / 100) : "0";
 
         if (isMark) {
-            mView.setText(String.format(getResources().getString(R.string.markview_more), title));
+            String note = mark.getContent();
+            mValueTitle.setText(getString(R.string.viewer_values));
+            mView.setText(
+                    String.format(getResources().getString(R.string.viewer_more_marks), title));
+            mValue.setText(sVal);
+            StringBuilder builder = new StringBuilder();
+            builder.append(note);
+            if (!note.isEmpty()) {
+                builder.append('\n');
+            }
+            builder.append(getString(mark.getIsFirstQuarter() ?
+                    R.string.viewer_first_quarter : R.string.viewer_second_quarter));
+            mNotes.setText(builder.toString());
         } else {
-            mValueTitle.setVisibility(View.GONE);
-            mValue.setVisibility(View.GONE);
+            mValueTitle.setText(getString(R.string.viewer_category));
+            mValue.setText(Utils.eventCategoryToString(event.getIcon()));
             mView.setVisibility(View.GONE);
+            mNotesTitle.setVisibility(View.GONE);
         }
 
-        double markVal = (double) value / 100;
-        final String sVal = markVal + "";
-        mValue.setText(sVal);
-        if (!note.isEmpty() && mNotes != null) {
-            mNotes.setText(note);
-        }
 
         mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,11 +137,11 @@ public class ViewerActivity extends AppCompatActivity {
 
                 String msg = isMark ?
                         !Utils.isTeacher(fContext) ?
-                                String.format(res.getString(R.string.markview_share_student),
+                                String.format(res.getString(R.string.viewer_share_student),
                                         sVal, title) :
-                                String.format(res.getString(R.string.markview_share_teacher),
+                                String.format(res.getString(R.string.viewer_share_teacher),
                                         title, sVal)
-                        : String.format(res.getString(R.string.eventview_share), title, sVal);
+                        : String.format(res.getString(R.string.viewer_share_event), title, sVal);
 
 
                 final Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -144,11 +153,13 @@ public class ViewerActivity extends AppCompatActivity {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            startActivity(Intent.createChooser(shareIntent, getString(R.string.markview_share)));
+                            startActivity(Intent.createChooser(shareIntent,
+                                    getString(R.string.viewer_share)));
                         }
                     }, 1000);
                 } else {
-                    startActivity(Intent.createChooser(shareIntent, getString(R.string.markview_share)));
+                    startActivity(Intent.createChooser(shareIntent,
+                            getString(R.string.viewer_share)));
                 }
             }
         });
@@ -164,7 +175,8 @@ public class ViewerActivity extends AppCompatActivity {
                 }
 
                 if (isMark) {
-                    RealmResults<Mark> results = realm.where(Mark.class).equalTo("id", id).findAll();
+                    RealmResults<Mark> results =
+                            realm.where(Mark.class).equalTo("id", id).findAll();
                     realm.beginTransaction();
                     results.deleteAllFromRealm();
                     realm.commitTransaction();
@@ -176,7 +188,7 @@ public class ViewerActivity extends AppCompatActivity {
                     realm.commitTransaction();
                 }
 
-                Snackbar.make(v, getString(R.string.deleted), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(v, getString(R.string.removed), Snackbar.LENGTH_SHORT).show();
                 if (isMark) {
                     MarkListActivity.refreshList(getApplicationContext());
                 } else {
@@ -201,9 +213,6 @@ public class ViewerActivity extends AppCompatActivity {
                 editIntent.putExtra("isEditing", true);
                 editIntent.putExtra("isMark", isMark);
                 editIntent.putExtra("id", id);
-                editIntent.putExtra("title", title);
-                editIntent.putExtra("val", value);
-                editIntent.putExtra("note", note);
 
                 if (Utils.hasApi21()) {
                     View sharedElement = findViewById(R.id.toolbar_image);
@@ -221,8 +230,9 @@ public class ViewerActivity extends AppCompatActivity {
             }
         });
 
-        assert getSupportActionBar() != null;
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

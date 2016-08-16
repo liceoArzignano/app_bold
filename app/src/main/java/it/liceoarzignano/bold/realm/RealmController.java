@@ -13,6 +13,7 @@ import io.realm.Sort;
 import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.marks.Mark;
 
+@SuppressWarnings("unused")
 public class RealmController {
     private static RealmController instance;
     private final Realm realm;
@@ -59,11 +60,20 @@ public class RealmController {
         realm.commitTransaction();
     }
 
-    private RealmResults<Mark> getFilteredMarks(String title) {
-        return realm.where(Mark.class).equalTo("title", title).findAll();
+    private RealmResults<Mark> getFilteredMarks(String title, int quarter) {
+        switch (quarter) {
+            case 1:
+                return realm.where(Mark.class).equalTo("title", title)
+                        .equalTo("isFirstQuarter", true).findAll();
+            case 2:
+                return realm.where(Mark.class).equalTo("title", title)
+                        .equalTo("isFirstQuarter", false).findAll();
+            default:
+                return realm.where(Mark.class).equalTo("title", title).findAll();
+        }
     }
 
-    private Mark getMark(long id) {
+    public Mark getMark(long id) {
         return realm.where(Mark.class).equalTo("id", id).findFirst();
     }
 
@@ -88,10 +98,10 @@ public class RealmController {
         return id;
     }
 
-    public double getAverage(String title) {
-        List<Mark> marks = getFilteredMarks(title);
+    public double getAverage(String title, int quarter) {
+        List<Mark> marks = getFilteredMarks(title, quarter);
         double sum = 0;
-        if (marks.size() > 0) {
+        if (!marks.isEmpty()) {
             for (Mark mark : marks) {
                 sum += mark.getValue();
             }
@@ -103,17 +113,17 @@ public class RealmController {
         }
     }
 
-    public double whatShouldIGet(String title) {
+    public double whatShouldIGet(String title, int quarter) {
         double sum = 0;
 
-        List<Mark> marks = getFilteredMarks(title);
+        List<Mark> marks = getFilteredMarks(title, quarter);
 
         for (Mark markInList : marks) {
             sum += markInList.getValue();
         }
         sum /= 100;
 
-        if (marks.size() > 0) {
+        if (!marks.isEmpty()) {
             return 6 * (marks.size() + 1) - sum;
         } else {
             return 0;
@@ -128,10 +138,10 @@ public class RealmController {
      */
 
     public RealmResults<Event> getAllEventsInverted() {
-        return realm.where(Event.class).findAllSorted("value", Sort.ASCENDING);
+        return realm.where(Event.class).findAllSorted("date", Sort.ASCENDING);
     }
 
-    private Event getEvent(long id) {
+    public Event getEvent(long id) {
         return realm.where(Event.class).equalTo("id", id).findFirst();
     }
 
@@ -151,7 +161,7 @@ public class RealmController {
         Event oldEvent = getEvent(id);
         realm.beginTransaction();
         oldEvent.setTitle(event.getTitle());
-        oldEvent.setValue(event.getValue());
+        oldEvent.setDate(event.getDate());
         oldEvent.setIcon(event.getIcon());
         realm.commitTransaction();
         return id;

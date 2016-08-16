@@ -11,6 +11,7 @@ public class BootReceiverService extends Service {
     public void onCreate() {
         MainActivity.makeEventNotification();
     }
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;

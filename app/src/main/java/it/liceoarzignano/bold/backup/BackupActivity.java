@@ -40,6 +40,7 @@ import com.google.android.gms.drive.query.SortableField;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -109,9 +110,9 @@ public class BackupActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        assert getSupportActionBar() != null;
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         prefs = getSharedPreferences("HomePrefs", MODE_PRIVATE);
 
         backupFolder = prefs.getString("BACKUP_FOLDER", "");
@@ -136,8 +137,8 @@ public class BackupActivity extends AppCompatActivity {
             }
         });
 
-         Utils.animFabIntro(this, mBackupFab,
-                 getString(R.string.intro_fab_backup), "backupFabIntro");
+        Utils.animFabIntro(this, mBackupFab,
+                getString(R.string.intro_fab_backup), "backupFabIntro");
 
 
         if (!backupFolder.equals("")) {
@@ -156,7 +157,7 @@ public class BackupActivity extends AppCompatActivity {
                     if (mIntentPicker == null) {
                         mIntentPicker = Drive.DriveApi
                                 .newOpenFileActivityBuilder()
-                                .setMimeType(new String[] {DriveFolder.MIME_TYPE})
+                                .setMimeType(new String[]{DriveFolder.MIME_TYPE})
                                 .build(mGoogleApiClient);
                     }
                     startIntentSenderForResult(mIntentPicker, 2, null, 0, 0, 0);
@@ -196,7 +197,7 @@ public class BackupActivity extends AppCompatActivity {
      * file downloaded from GDrive.
      * Once it's done, restart the app
      *
-     *  @param result GDrive content result
+     * @param result GDrive content result
      */
     private void restoreRealmBackup(DriveApi.DriveContentsResult result) {
         DriveContents contents = result.getDriveContents();
@@ -213,7 +214,7 @@ public class BackupActivity extends AppCompatActivity {
             }
             outputStream.flush();
             outputStream.close();
-        } catch (java.io.IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -282,7 +283,7 @@ public class BackupActivity extends AppCompatActivity {
                     while ((read = inputStream.read(buffer)) > 0) {
                         outputStream.write(buffer, 0, read);
                     }
-                } catch (java.io.IOException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
 
@@ -311,8 +312,8 @@ public class BackupActivity extends AppCompatActivity {
      * Parse results for GDrive api
      *
      * @param requestCode api request code
-     * @param resultCode api result code
-     * @param data data
+     * @param resultCode  api result code
+     * @param data        data
      */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
@@ -329,7 +330,8 @@ public class BackupActivity extends AppCompatActivity {
                     DriveId mFolderDriveId = data.getParcelableExtra(
                             OpenFileActivityBuilder.EXTRA_RESPONSE_DRIVE_ID);
                     uploadToDrive(mFolderDriveId);
-                    prefs.edit().putString("BACKUP_FOLDER", mFolderDriveId.encodeToString()).apply();
+                    prefs.edit().putString("BACKUP_FOLDER",
+                            mFolderDriveId.encodeToString()).apply();
                 } else {
                     showErrorDialog();
                 }
@@ -372,7 +374,7 @@ public class BackupActivity extends AppCompatActivity {
                 .setAction(getString(R.string.backup_retry), new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                            openFolderPicker();
+                        openFolderPicker();
                     }
                 }).show();
     }

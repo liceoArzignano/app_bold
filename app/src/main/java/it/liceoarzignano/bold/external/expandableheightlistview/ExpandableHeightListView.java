@@ -20,6 +20,7 @@ package it.liceoarzignano.bold.external.expandableheightlistview;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
@@ -39,7 +40,7 @@ public class ExpandableHeightListView extends ListView {
 
     @Override
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int expandSpec = MeasureSpec.makeMeasureSpec(MEASURED_SIZE_MASK, MeasureSpec.AT_MOST);
+        int expandSpec = View.MeasureSpec.makeMeasureSpec(MEASURED_SIZE_MASK, View.MeasureSpec.AT_MOST);
         super.onMeasure(widthMeasureSpec, expandSpec);
         ViewGroup.LayoutParams params = getLayoutParams();
         params.height = getMeasuredHeight();

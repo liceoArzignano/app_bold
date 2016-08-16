@@ -19,8 +19,8 @@ allprojects {
         maven { url "https://jitpack.io" }
     }
 
-    ext.androidSupportVersion = '24.0.0'
-    ext.googlePlayServicesVersion = '9.2.0'
+    ext.androidSupportVersion = '24.1.1'
+    ext.googlePlayServicesVersion = '9.4.0'
 }
 
 task clean(type: Delete) {

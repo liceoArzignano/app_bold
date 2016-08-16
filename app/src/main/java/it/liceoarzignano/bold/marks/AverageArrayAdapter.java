@@ -13,14 +13,19 @@ import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
 import it.liceoarzignano.bold.realm.RealmController;
 
+/**
+ * TODO:
+ * rewrite the quarter logic using sharedpreference boolean livingFirstQuarter
+ * also find out why the fuck Mark.isFirstQuarter() returns always true
+ */
 class AverageArrayAdapter extends BaseAdapter {
 
     private static LayoutInflater inflater = null;
-    final private String[] result;
-    final private RealmController controller;
+    private final String[] result;
+    private final RealmController controller;
 
-    AverageArrayAdapter(Context context, RealmController controller) {
-        result = Utils.getAverageElements();
+    AverageArrayAdapter(Context context, RealmController controller, int quarterFilter) {
+        result = Utils.getAverageElements(quarterFilter);
         this.controller = controller;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -44,7 +49,7 @@ class AverageArrayAdapter extends BaseAdapter {
     @SuppressLint({"DefaultLocale", "InflateParams", "ViewHolder"})
     @Override
     public View getView(final int position, View row, ViewGroup parent) {
-        Holder holder = new Holder();
+        AverageArrayAdapter.Holder holder = new AverageArrayAdapter.Holder();
         row = inflater.inflate(R.layout.item_average, null);
         holder.avg = (TextView) row.findViewById(R.id.row_avg_value);
         holder.title = (TextView) row.findViewById(R.id.row_avg_title);
@@ -52,7 +57,7 @@ class AverageArrayAdapter extends BaseAdapter {
         row.setTag(holder);
         holder.title.setText(result[position]);
 
-        final Double doubleAvg = controller.getAverage(result[position]);
+        final Double doubleAvg = controller.getAverage(result[position], 0);
         holder.avg.setText(String.format("%.2f", doubleAvg));
         if (doubleAvg < 6) {
             holder.avg.setTextColor(Color.RED);

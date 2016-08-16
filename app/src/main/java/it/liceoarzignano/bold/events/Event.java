@@ -9,7 +9,7 @@ public class Event extends RealmObject {
     private long id = 0;
 
     private String title;
-    private String value;
+    private String date;
     private int icon;
 
     /**
@@ -25,10 +25,10 @@ public class Event extends RealmObject {
 
     }
 
-    public Event(long id, String title, String value, int icon) {
+    public Event(long id, String title, String date, int icon) {
         setId(id);
         setTitle(title);
-        setValue(value);
+        setDate(date);
         setIcon(icon);
     }
 
@@ -48,12 +48,12 @@ public class Event extends RealmObject {
         this.title = title;
     }
 
-    public String getValue() {
-        return value;
+    public String getDate() {
+        return date;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public int getIcon() {
@@ -66,6 +66,6 @@ public class Event extends RealmObject {
 
     @Override
     public boolean equals(Object o) {
-        return o instanceof Event && this.title.equalsIgnoreCase(((Event) o).getTitle());
+        return o instanceof Event && title.equalsIgnoreCase(((Event) o).getTitle());
     }
 }

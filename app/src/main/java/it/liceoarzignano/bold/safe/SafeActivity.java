@@ -43,7 +43,9 @@ public class SafeActivity extends AppCompatActivity {
     private static final String keyStr
             = "eezrWvsJWmaic7/DD2dt5g==:xuf8gXH87fUzeGBIMmn+PveCgx4gXcl610GuYOMFSjo=";
     private static final String salt
-            = "3oUjZk/hB6b9K/1Zf6pfgPy/wfBpSPffG8AXwjlqouWFECxbKjJH95tVgFD6ZYuG4odBNjYCh+PquKvKPuz/00KXzqAon2/frtw783/Nmmb1w7GgW0o73BoJtRP6p3g9AzDAwMkgGZXUpYHi7t9fYCihxhY3siVsay+Tzos0i0k=";
+            = "3oUjZk/hB6b9K/1Zf6pfgPy/wfBpSPffG8AXwjlqouWFECxbKjJH95tVgFD6ZYuG" +
+            "4odBNjYCh+PquKvKPuz/00KXzqAon2/frtw783/Nmmb1w7GgW0o73BoJtRP6p3g9Az" +
+            "DAwMkgGZXUpYHi7t9fYCihxhY3siVsay+Tzos0i0k=";
     private static SharedPreferences prefs;
     private static SharedPreferences.Editor editor;
     private static String AccessPassword;
@@ -83,8 +85,9 @@ public class SafeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_safe);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        assert getSupportActionBar() != null;
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         context = this;
 
@@ -149,7 +152,8 @@ public class SafeActivity extends AppCompatActivity {
      */
     private boolean tellMeTheresNoXposed() {
         try {
-            PackageInfo pi = getApplicationContext().getPackageManager().getPackageInfo(XPOSED_INSTALLER_PACAKGE, 0);
+            PackageInfo pi = getApplicationContext().getPackageManager()
+                    .getPackageInfo(XPOSED_INSTALLER_PACAKGE, 0);
             if (pi.applicationInfo.enabled) {
                 mLoadingText.setText(getString(R.string.safe_security_issue_xposed));
                 Log.e(TAG, "Shit! There\'s xposed in this device");
@@ -189,7 +193,8 @@ public class SafeActivity extends AppCompatActivity {
                 .input(getString(R.string.safe_dialog_password_input_hint),
                         "", new MaterialDialog.InputCallback() {
                             @Override
-                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                            public void onInput(@NonNull MaterialDialog dialog,
+                                                CharSequence input) {
                                 AccessPassword = input.toString();
                                 mLoadingText.setVisibility(View.VISIBLE);
                                 if (!AccessPassword.isEmpty() && AccessPassword != null) {
@@ -246,7 +251,6 @@ public class SafeActivity extends AppCompatActivity {
     }
 
     /**
-     
      * Check if password is right and update UI
      */
     private void validateLogin() {
@@ -312,7 +316,8 @@ public class SafeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mShow1.setBackgroundResource(show1Active ? R.drawable.ic_hide : R.drawable.ic_show);
-                mUserEdit.setTransformationMethod(show1Active ? null : new PasswordTransformationMethod());
+                mUserEdit.setTransformationMethod(show1Active ?
+                        null : new PasswordTransformationMethod());
                 show1Active = !show1Active;
             }
         });
@@ -320,7 +325,8 @@ public class SafeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mShow2.setBackgroundResource(show2Active ? R.drawable.ic_hide : R.drawable.ic_show);
-                mRegEdit.setTransformationMethod(show2Active ? null : new PasswordTransformationMethod());
+                mRegEdit.setTransformationMethod(show2Active ?
+                        null : new PasswordTransformationMethod());
                 show2Active = !show2Active;
             }
         });
@@ -328,7 +334,8 @@ public class SafeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mShow3.setBackgroundResource(show3Active ? R.drawable.ic_hide : R.drawable.ic_show);
-                mPcEdit.setTransformationMethod(show3Active ? null : new PasswordTransformationMethod());
+                mPcEdit.setTransformationMethod(show3Active ?
+                        null : new PasswordTransformationMethod());
                 show3Active = !show3Active;
             }
         });
@@ -336,7 +343,8 @@ public class SafeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mShow4.setBackgroundResource(show4Active ? R.drawable.ic_hide : R.drawable.ic_show);
-                mInternetEdit.setTransformationMethod(show4Active ? null : new PasswordTransformationMethod());
+                mInternetEdit.setTransformationMethod(show4Active ?
+                        null : new PasswordTransformationMethod());
                 show4Active = !show4Active;
             }
         });
@@ -385,7 +393,8 @@ public class SafeActivity extends AppCompatActivity {
                 .positiveText(getString(android.R.string.yes))
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    public void onClick(@NonNull MaterialDialog dialog,
+                                        @NonNull DialogAction which) {
                         editor.remove(accessKey).apply();
                         editor.remove(userKey).apply();
                         editor.remove(regPwdKey).apply();

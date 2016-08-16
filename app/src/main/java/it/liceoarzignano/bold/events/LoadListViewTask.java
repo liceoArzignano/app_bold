@@ -15,7 +15,7 @@ class LoadListViewTask extends AsyncTask<Void, Void, Void> {
     private final ListView mEventsListView;
 
     LoadListViewTask(Context applicationContext, ListView mEventsListView) {
-        this.context = applicationContext;
+        context = applicationContext;
         this.mEventsListView = mEventsListView;
     }
 
@@ -27,9 +27,9 @@ class LoadListViewTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void arg0) {
         Realm realm = Realm.getInstance(BoldApp.getAppRealmConfiguration());
-        RealmResults<Event> events = realm.where(Event.class).findAllSorted("value", Sort.DESCENDING);
-        ListArrayAdapter listArrayAdapter = new ListArrayAdapter(context,
-                events);
+        RealmResults<Event> events =
+                realm.where(Event.class).findAllSorted("date", Sort.DESCENDING);
+        ListArrayAdapter listArrayAdapter = new ListArrayAdapter(context, events);
         mEventsListView.setAdapter(listArrayAdapter);
     }
 }

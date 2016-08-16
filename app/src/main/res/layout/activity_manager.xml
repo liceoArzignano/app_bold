@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".ManagerActivity">
+    android:fitsSystemWindows="true">
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -20,8 +21,118 @@
             app:theme="@style/AppTheme.ToolbarTheme"
             tools:targetApi="lollipop" />
 
-        <include layout="@layout/content_manager" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="?actionBarSize"
+            android:layout_gravity="center|bottom"
+            android:gravity="center|bottom"
+            android:orientation="vertical">
 
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/card_margin"
+                android:layout_marginRight="@dimen/card_margin"
+                android:orientation="vertical"
+                android:paddingTop="16dp"
+                card_view:cardBackgroundColor="@color/card_background_default"
+                card_view:cardCornerRadius="2dp"
+                card_view:cardElevation="@dimen/card_elevation"
+                card_view:contentPaddingBottom="@dimen/card_content_padding">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="56dp">
+                    <ImageView
+                        android:id="@+id/banner_image"
+                        android:layout_width="fill_parent"
+                        android:layout_height="224dp"
+                        android:background="@drawable/newmark"
+                        android:scaleType="centerCrop"
+                        android:transitionName="imageShared"
+                        android:contentDescription="@string/accessibility_manager"
+                        android:paddingBottom="8dp"
+                        tools:targetApi="lollipop" />
+
+                    <!-- Title -->
+                    <EditText
+                        android:id="@+id/title_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/hint_event"
+                        android:textColor="@color/black"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/subjects_selector"
+                        style="?borderlessButtonStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:text="@string/select_subject" />
+
+                    <!-- Notes -->
+                    <EditText
+                        android:id="@+id/input_notes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/hint_notes"
+                        android:textColorHint="@color/colorAccent" />
+
+                    <!-- Value -->
+                    <LinearLayout
+                        android:id="@+id/event_spinner_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="4dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            style="@style/home_card_text"
+                            android:layout_weight="1"
+                            android:text="@string/event_kind"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="@dimen/text_secondary_size" />
+
+                        <Spinner
+                            android:id="@+id/event_spinner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:paddingLeft="@dimen/activity_horizontal_margin" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/mark_preview"
+                        style="@style/home_card_text"
+                        android:text="@string/current_mark"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="@dimen/text_secondary_size" />
+
+                    <SeekBar
+                        android:id="@+id/mark_seek"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="8dp" />
+
+                    <Button
+                        android:id="@+id/datepicker_button"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:text="@string/current_date"
+                        android:textColor="@color/text_secondary"
+                        android:gravity="left"
+                        android:textSize="@dimen/text_secondary_size"/>
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
 
     </android.support.design.widget.CoordinatorLayout>
 

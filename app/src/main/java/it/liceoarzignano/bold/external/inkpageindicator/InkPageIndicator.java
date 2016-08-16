@@ -63,13 +63,20 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     private final float dotRadius;
     private final float halfDotRadius;
     private final long animHalfDuration;
+    // drawing
+    private final Paint unselectedPaint;
+    private final Paint selectedPaint;
+    private final Path combinedUnselectedPath;
+    private final Path unselectedDotPath;
+    private final Path unselectedDotLeftPath;
+    private final Path unselectedDotRightPath;
+    private final RectF rectF;
+    private final Interpolator interpolator;
     private float dotTopY;
     private float dotCenterY;
     private float dotBottomY;
-
     // ViewPager
     private ViewPager viewPager;
-
     // state
     private int pageCount;
     private int currentPage;
@@ -83,21 +90,10 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     private float[] dotRevealFractions;
     private boolean isAttachedToWindow;
     private boolean pageChanging;
-
-    // drawing
-    private final Paint unselectedPaint;
-    private final Paint selectedPaint;
-    private final Path combinedUnselectedPath;
-    private final Path unselectedDotPath;
-    private final Path unselectedDotLeftPath;
-    private final Path unselectedDotRightPath;
-    private final RectF rectF;
-
     // animation
     private ValueAnimator moveAnimation;
     private PendingRetreatAnimator retreatAnimation;
     private PendingRevealAnimator[] revealAnimations;
-    private final Interpolator interpolator;
 
     public InkPageIndicator(Context context) {
         this(context, null, 0);
@@ -209,7 +205,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
         int right = width - getPaddingRight();
 
         int requiredWidth = getRequiredWidth();
-        float startLeft = left + ((right - left - requiredWidth) / 2) + dotRadius;
+        float startLeft = left + (right - left - requiredWidth) / 2 + dotRadius;
 
         dotCenterX = new float[pageCount];
         for (int i = 0; i < pageCount; i++) {
@@ -249,14 +245,14 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
 
         int desiredHeight = getDesiredHeight();
         int height;
-        switch (MeasureSpec.getMode(heightMeasureSpec)) {
-            case MeasureSpec.EXACTLY:
-                height = MeasureSpec.getSize(heightMeasureSpec);
+        switch (View.MeasureSpec.getMode(heightMeasureSpec)) {
+            case View.MeasureSpec.EXACTLY:
+                height = View.MeasureSpec.getSize(heightMeasureSpec);
                 break;
-            case MeasureSpec.AT_MOST:
-                height = Math.min(desiredHeight, MeasureSpec.getSize(heightMeasureSpec));
+            case View.MeasureSpec.AT_MOST:
+                height = Math.min(desiredHeight, View.MeasureSpec.getSize(heightMeasureSpec));
                 break;
-            case MeasureSpec.UNSPECIFIED:
+            case View.MeasureSpec.UNSPECIFIED:
             default:
                 height = desiredHeight;
                 break;
@@ -264,14 +260,14 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
 
         int desiredWidth = getDesiredWidth();
         int width;
-        switch (MeasureSpec.getMode(widthMeasureSpec)) {
-            case MeasureSpec.EXACTLY:
-                width = MeasureSpec.getSize(widthMeasureSpec);
+        switch (View.MeasureSpec.getMode(widthMeasureSpec)) {
+            case View.MeasureSpec.EXACTLY:
+                width = View.MeasureSpec.getSize(widthMeasureSpec);
                 break;
-            case MeasureSpec.AT_MOST:
-                width = Math.min(desiredWidth, MeasureSpec.getSize(widthMeasureSpec));
+            case View.MeasureSpec.AT_MOST:
+                width = Math.min(desiredWidth, View.MeasureSpec.getSize(widthMeasureSpec));
                 break;
-            case MeasureSpec.UNSPECIFIED:
+            case View.MeasureSpec.UNSPECIFIED:
             default:
                 width = desiredWidth;
                 break;
@@ -389,7 +385,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
             unselectedDotLeftPath.arcTo(rectF, 90, 180, true);
 
             // cubic to the right middle
-            endX1 = centerX + dotRadius + (joiningFraction * gap);
+            endX1 = centerX + dotRadius + joiningFraction * gap;
             endY1 = dotCenterY;
             controlX1 = centerX + halfDotRadius;
             controlY1 = dotTopY;
@@ -423,7 +419,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
             unselectedDotRightPath.arcTo(rectF, 90, -180, true);
 
             // cubic to the left middle
-            endX1 = nextCenterX - dotRadius - (joiningFraction * gap);
+            endX1 = nextCenterX - dotRadius - joiningFraction * gap;
             endY1 = dotCenterY;
             controlX1 = nextCenterX - halfDotRadius;
             controlY1 = dotTopY;
@@ -462,11 +458,11 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
             unselectedDotPath.arcTo(rectF, 90, 180, true);
 
             // bezier to the middle top of the join
-            endX1 = centerX + dotRadius + (gap / 2);
-            endY1 = dotCenterY - (adjustedFraction * dotRadius);
-            controlX1 = endX1 - (adjustedFraction * dotRadius);
+            endX1 = centerX + dotRadius + gap / 2;
+            endY1 = dotCenterY - adjustedFraction * dotRadius;
+            controlX1 = endX1 - adjustedFraction * dotRadius;
             controlY1 = dotTopY;
-            controlX2 = endX1 - ((1 - adjustedFraction) * dotRadius);
+            controlX2 = endX1 - (1 - adjustedFraction) * dotRadius;
             controlY2 = endY1;
             unselectedDotPath.cubicTo(controlX1, controlY1,
                     controlX2, controlY2,
@@ -475,9 +471,9 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
             // bezier to the top right of the join
             endX2 = nextCenterX;
             endY2 = dotTopY;
-            controlX1 = endX1 + ((1 - adjustedFraction) * dotRadius);
+            controlX1 = endX1 + (1 - adjustedFraction) * dotRadius;
             controlY1 = endY1;
-            controlX2 = endX1 + (adjustedFraction * dotRadius);
+            controlX2 = endX1 + adjustedFraction * dotRadius;
             controlY2 = dotTopY;
             unselectedDotPath.cubicTo(controlX1, controlY1,
                     controlX2, controlY2,
@@ -489,10 +485,10 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
 
             // bezier to the middle bottom of the join
             // endX1 stays the same
-            endY1 = dotCenterY + (adjustedFraction * dotRadius);
-            controlX1 = endX1 + (adjustedFraction * dotRadius);
+            endY1 = dotCenterY + adjustedFraction * dotRadius;
+            controlX1 = endX1 + adjustedFraction * dotRadius;
             controlY1 = dotBottomY;
-            controlX2 = endX1 + ((1 - adjustedFraction) * dotRadius);
+            controlX2 = endX1 + (1 - adjustedFraction) * dotRadius;
             controlY2 = endY1;
             unselectedDotPath.cubicTo(controlX1, controlY1,
                     controlX2, controlY2,
@@ -501,9 +497,9 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
             // bezier back to the start point in the bottom left
             endX2 = centerX;
             endY2 = dotBottomY;
-            controlX1 = endX1 - ((1 - adjustedFraction) * dotRadius);
+            controlX1 = endX1 - (1 - adjustedFraction) * dotRadius;
             controlY1 = endY1;
-            controlX2 = endX1 - (adjustedFraction * dotRadius);
+            controlX2 = endX1 - adjustedFraction * dotRadius;
             controlY2 = endY2;
             unselectedDotPath.cubicTo(controlX1, controlY1,
                     controlX2, controlY2,
@@ -578,10 +574,12 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
         ValueAnimator moveSelected = ValueAnimator.ofFloat(selectedDotX, moveTo);
 
         // also set up a pending retreat anim – this starts when the move is 75% complete
-        retreatAnimation = new PendingRetreatAnimator(was, now, steps,
+        retreatAnimation = new InkPageIndicator.PendingRetreatAnimator(was, now, steps,
                 now > was ?
-                        new RightwardStartPredicate(moveTo - ((moveTo - selectedDotX) * 0.25f)) :
-                        new LeftwardStartPredicate(moveTo + ((selectedDotX - moveTo) * 0.25f)));
+                        new InkPageIndicator.RightwardStartPredicate(
+                                moveTo - (moveTo - selectedDotX) * 0.25f) :
+                        new InkPageIndicator.LeftwardStartPredicate(
+                                moveTo + (selectedDotX - moveTo) * 0.25f));
         retreatAnimation.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -634,10 +632,100 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     }
 
     private void setDotRevealFraction(int dot, float fraction) {
-        if(dot < dotRevealFractions.length) {
+        if (dot < dotRevealFractions.length) {
             dotRevealFractions[dot] = fraction;
         }
         ViewCompat.postInvalidateOnAnimation(this);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Parcelable state) {
+        InkPageIndicator.SavedState savedState = (InkPageIndicator.SavedState) state;
+        super.onRestoreInstanceState(savedState.getSuperState());
+        currentPage = savedState.currentPage;
+        requestLayout();
+    }
+
+    @Override
+    public Parcelable onSaveInstanceState() {
+        Parcelable superState = super.onSaveInstanceState();
+        InkPageIndicator.SavedState savedState = new InkPageIndicator.SavedState(superState);
+        savedState.currentPage = currentPage;
+        return savedState;
+    }
+
+    /**
+     * A predicate used to start an animation when a test passes
+     */
+    abstract static class StartPredicate {
+
+        final float thresholdValue;
+
+        StartPredicate(float thresholdValue) {
+            this.thresholdValue = thresholdValue;
+        }
+
+        abstract boolean shouldStart(float currentValue);
+
+    }
+
+    /**
+     * A predicate used to start an animation when a given value is greater than a threshold
+     */
+    private static class RightwardStartPredicate extends InkPageIndicator.StartPredicate {
+
+        RightwardStartPredicate(float thresholdValue) {
+            super(thresholdValue);
+        }
+
+        boolean shouldStart(float currentValue) {
+            return currentValue > thresholdValue;
+        }
+    }
+
+    /**
+     * A predicate used to start an animation then a given value is less than a threshold
+     */
+    private static class LeftwardStartPredicate extends InkPageIndicator.StartPredicate {
+
+        LeftwardStartPredicate(float thresholdValue) {
+            super(thresholdValue);
+        }
+
+        boolean shouldStart(float currentValue) {
+            return currentValue < thresholdValue;
+        }
+    }
+
+    private static class SavedState extends View.BaseSavedState {
+        public static final Parcelable.Creator<InkPageIndicator.SavedState> CREATOR =
+                new Parcelable.Creator<InkPageIndicator.SavedState>() {
+                    @Override
+                    public InkPageIndicator.SavedState createFromParcel(Parcel in) {
+                        return new InkPageIndicator.SavedState(in);
+                    }
+
+                    @Override
+                    public InkPageIndicator.SavedState[] newArray(int size) {
+                        return new InkPageIndicator.SavedState[size];
+                    }
+                };
+        int currentPage;
+
+        SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        private SavedState(Parcel in) {
+            super(in);
+            currentPage = in.readInt();
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            super.writeToParcel(dest, flags);
+            dest.writeInt(currentPage);
+        }
     }
 
     /**
@@ -646,11 +734,10 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     @SuppressWarnings({"CloneableClassInSecureContext", "NonStaticInnerClassInSecureContext"})
     abstract class PendingStartAnimator extends ValueAnimator implements Cloneable {
 
+        final InkPageIndicator.StartPredicate predicate;
         boolean hasStarted;
-        final StartPredicate predicate;
 
-        PendingStartAnimator(StartPredicate predicate) {
-            super();
+        PendingStartAnimator(InkPageIndicator.StartPredicate predicate) {
             this.predicate = predicate;
             hasStarted = false;
         }
@@ -688,7 +775,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
             float finalX2 = now > was ? dotCenterX[now] + dotRadius
                     : dotCenterX[now] + dotRadius;
 
-            revealAnimations = new PendingRevealAnimator[steps];
+            revealAnimations = new InkPageIndicator.PendingRevealAnimator[steps];
             // hold on to the indexes of the dots that will be hidden by the retreat so that
             // we can initialize their revealFraction's i.e. make sure they're hidden while the
             // reveal animation runs
@@ -697,8 +784,8 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
                 setFloatValues(initialX1, finalX1);
                 // create the reveal animations that will run when the retreat passes them
                 for (int i = 0; i < steps; i++) {
-                    revealAnimations[i] = new PendingRevealAnimator(was + i,
-                            new RightwardStartPredicate(dotCenterX[was + i]));
+                    revealAnimations[i] = new InkPageIndicator.PendingRevealAnimator(was + i,
+                            new InkPageIndicator.RightwardStartPredicate(dotCenterX[was + i]));
                     dotsToHide[i] = was + i;
                 }
                 addUpdateListener(new AnimatorUpdateListener() {
@@ -716,8 +803,8 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
                 setFloatValues(initialX2, finalX2);
                 // create the reveal animations that will run when the retreat passes them
                 for (int i = 0; i < steps; i++) {
-                    revealAnimations[i] = new PendingRevealAnimator(was - i,
-                            new LeftwardStartPredicate(dotCenterX[was - i]));
+                    revealAnimations[i] = new InkPageIndicator.PendingRevealAnimator(was - i,
+                            new InkPageIndicator.LeftwardStartPredicate(dotCenterX[was - i]));
                     dotsToHide[i] = was - i;
                 }
                 addUpdateListener(new AnimatorUpdateListener() {
@@ -785,97 +872,5 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
                 }
             });
         }
-    }
-
-
-    /**
-     * A predicate used to start an animation when a test passes
-     */
-    abstract static class StartPredicate {
-
-        final float thresholdValue;
-
-        StartPredicate(float thresholdValue) {
-            this.thresholdValue = thresholdValue;
-        }
-
-        abstract boolean shouldStart(float currentValue);
-
-    }
-
-    /**
-     * A predicate used to start an animation when a given value is greater than a threshold
-     */
-    private static class RightwardStartPredicate extends StartPredicate {
-
-        RightwardStartPredicate(float thresholdValue) {
-            super(thresholdValue);
-        }
-
-        boolean shouldStart(float currentValue) {
-            return currentValue > thresholdValue;
-        }
-    }
-
-    /**
-     * A predicate used to start an animation then a given value is less than a threshold
-     */
-    private static class LeftwardStartPredicate extends StartPredicate {
-
-        LeftwardStartPredicate(float thresholdValue) {
-            super(thresholdValue);
-        }
-
-        boolean shouldStart(float currentValue) {
-            return currentValue < thresholdValue;
-        }
-    }
-
-    @Override
-    public void onRestoreInstanceState(Parcelable state) {
-        SavedState savedState = (SavedState) state;
-        super.onRestoreInstanceState(savedState.getSuperState());
-        currentPage = savedState.currentPage;
-        requestLayout();
-    }
-
-    @Override
-    public Parcelable onSaveInstanceState() {
-        Parcelable superState = super.onSaveInstanceState();
-        SavedState savedState = new SavedState(superState);
-        savedState.currentPage = currentPage;
-        return savedState;
-    }
-
-    private static class SavedState extends BaseSavedState {
-        int currentPage;
-
-        SavedState(Parcelable superState) {
-            super(superState);
-        }
-
-        private SavedState(Parcel in) {
-            super(in);
-            currentPage = in.readInt();
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-            super.writeToParcel(dest, flags);
-            dest.writeInt(currentPage);
-        }
-
-        public static final Parcelable.Creator<SavedState> CREATOR =
-                new Parcelable.Creator<SavedState>() {
-            @Override
-            public SavedState createFromParcel(Parcel in) {
-                return new SavedState(in);
-            }
-
-            @Override
-            public SavedState[] newArray(int size) {
-                return new SavedState[size];
-            }
-        };
     }
 }

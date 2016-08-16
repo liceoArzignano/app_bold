@@ -1,11 +1,7 @@
 <resources>
     <string name="app_name">Liceo</string>
 
-    <string name="saved">Salvato</string>
-    <string name="deleted">Rimosso</string>
-
     <!-- Navigation drawer -->
-    <string name="school_name">Liceo L. Da Vinci</string>
     <string name="navigation_drawer_open">Apri navigation drawer</string>
     <string name="navigation_drawer_close">Chiudi navigation drawer</string>
     <string name="nav_home">Home</string>
@@ -79,6 +75,7 @@
     <string name="event_spinner_other">Altro</string>
     <string name="editor_text_too_long">Sta diventando molto lungo</string>
     <string name="editor_text_too_long_fix">Accorcia</string>
+    <string name="saved">Salvato</string>
 
     <!-- My marks -->
     <string name="title_activity_mark_list">I miei voti</string>
@@ -86,21 +83,28 @@
     <string name="title_fragment_marks">Voti</string>
     <string name="title_fragments_avg">Media</string>
     <string name="title_fragments_avgs">Medie</string>
+    <string name="marks_menu_filter">Filtro voti</string>
+    <string name="marks_all">Tutti</string>
     <string name="hint_title">La tua media in %1$s \u00E8</string>
     <string name="hint_content_common">Per avere la sufficienza in %1$s il prossimo voto</string>
     <string name="hint_content_under">deve essere %1$s o superiore</string>
     <string name="hint_content_above">puo essere %1$s o superiore</string>
 
     <!-- Viewer -->
-    <string name="title_activity_mark_view">Vista voto</string>
-    <string name="markview_share">Condividi</string>
-    <string name="markview_remove">Rimuovi</string>
-    <string name="markview_more">Altri voti di %1$s</string>
-    <string name="markview_notes">Note</string>
-    <string name="markview_value">Valore</string>
-    <string name="markview_share_student">Ho preso %1$s in %2$s</string>
-    <string name="markview_share_teacher">%1$s ha preso %2$s</string>
-    <string name="eventview_share">Evento: %1$s il %2$s</string>
+    <string name="title_activity_mark_view">Visualizzatore</string>
+    <string name="viewer_remove">Rimuovi</string>
+    <string name="removed">Rimosso</string>
+    <string name="viewer_more_marks">Altri voti di %1$s</string>
+    <string name="viewer_date">Data</string>
+    <string name="viewer_notes">Note</string>
+    <string name="viewer_category">Categoria</string>
+    <string name="viewer_values">Valore</string>
+    <string name="viewer_share">Condividi</string>
+    <string name="viewer_share_student">Ho preso %1$s in %2$s</string>
+    <string name="viewer_share_teacher">%1$s ha preso %2$s</string>
+    <string name="viewer_share_event">Evento: %1$s on the %2$s</string>
+    <string name="viewer_first_quarter">Primo quadrimenstre</string>
+    <string name="viewer_second_quarter">Secondo quadrimenstre</string>
 
     <!-- My events -->
     <string name="title_activity_event_list">I miei eventi</string>

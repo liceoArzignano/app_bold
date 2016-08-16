@@ -6,8 +6,7 @@
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="it.liceoarzignano.bold.marks.MarkListActivity">
+    android:fitsSystemWindows="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -25,7 +24,8 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:theme="@style/AppTheme.ToolbarTheme" />
+                app:theme="@style/AppTheme.ToolbarTheme"
+                app:popupTheme="@style/AppTheme.AppBarOverlay"/>
 
             <android.support.design.widget.TabLayout
                 android:id="@+id/tabs"

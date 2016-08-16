@@ -6,6 +6,7 @@ android {
     compileSdkVersion 24
     buildToolsVersion "24.0.1"
 
+    //noinspection GroovyMissingReturnStatement
     defaultConfig {
         //noinspection GrDeprecatedAPIUsage
         generatedDensities = []

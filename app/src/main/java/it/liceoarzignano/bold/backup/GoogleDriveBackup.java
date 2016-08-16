@@ -23,16 +23,19 @@ class GoogleDriveBackup implements Backup, GoogleApiClient.OnConnectionFailedLis
 
     @Override
     public void init(@NonNull Activity activity) {
-        this.activityRef = new WeakReference<>(activity);
+        activityRef = new WeakReference<>(activity);
 
         googleApiClient = new GoogleApiClient.Builder(activity)
                 .addApi(Drive.API)
                 .addScope(Drive.SCOPE_FILE)
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                     @Override
-                    public void onConnected(Bundle bundle) {}
+                    public void onConnected(Bundle bundle) {
+                    }
+
                     @Override
-                    public void onConnectionSuspended(int i) {}
+                    public void onConnectionSuspended(int i) {
+                    }
                 })
                 .addOnConnectionFailedListener(this)
                 .build();
@@ -40,7 +43,7 @@ class GoogleDriveBackup implements Backup, GoogleApiClient.OnConnectionFailedLis
     }
 
     @Override
-    public GoogleApiClient getClient(){
+    public GoogleApiClient getClient() {
         return googleApiClient;
     }
 
@@ -64,8 +67,6 @@ class GoogleDriveBackup implements Backup, GoogleApiClient.OnConnectionFailedLis
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult result) {
-        Log.i("Connection Failed", "GoogleApiClient connection failed: " + result);
-
         if (result.hasResolution() && activityRef != null && activityRef.get() != null) {
             Activity a = activityRef.get();
             // show the localized error dialog.

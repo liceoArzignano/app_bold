@@ -1,12 +1,12 @@
 /**
  * Copyright 2015 Dean Wild
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -49,20 +49,20 @@ import it.liceoarzignano.bold.external.showcase.target.Target;
 import it.liceoarzignano.bold.external.showcase.target.ViewTarget;
 
 public class MaterialShowcaseView extends FrameLayout
-        implements View.OnTouchListener, View.OnClickListener{
+        implements View.OnTouchListener, View.OnClickListener {
 
+    private static Target mTarget;
+    private final int mShapePadding = 10;
+    private final long mFadeDurationInMillis = 300L;
     private int mOldHeight;
     private int mOldWidth;
     private Bitmap mBitmap;
     private Canvas mCanvas;
     private Paint mEraser;
-    private static Target mTarget;
     private Shape mShape;
     private int mXPosition;
     private int mYPosition;
     private boolean mWasNotDismissed = true;
-    private final int mShapePadding = 10;
-
     private View mContentBox;
     private TextView mContentTextView;
     private TextView mDismissButton;
@@ -72,7 +72,6 @@ public class MaterialShowcaseView extends FrameLayout
     private boolean mShouldNotRender = true;
     private int mMaskColour;
     private AnimationFactory mAnimationFactory;
-    private final long mFadeDurationInMillis = 300L;
     private Handler mHandler;
     private boolean mSingleUse = false;
     private PrefsManager mPrefsManager;
@@ -83,6 +82,7 @@ public class MaterialShowcaseView extends FrameLayout
         super(context);
         init();
     }
+
     public MaterialShowcaseView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
@@ -91,6 +91,22 @@ public class MaterialShowcaseView extends FrameLayout
     public MaterialShowcaseView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
+    }
+
+    private static int getSoftButtonsBarSizePort(Activity activity) {
+        // getRealMetrics is only available with API 17 and +
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            DisplayMetrics metrics = new DisplayMetrics();
+            activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+            int usableHeight = metrics.heightPixels;
+            activity.getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
+            int realHeight = metrics.heightPixels;
+            if (realHeight > usableHeight)
+                return realHeight - usableHeight;
+            else
+                return 0;
+        }
+        return 0;
     }
 
     private void init() {
@@ -112,7 +128,8 @@ public class MaterialShowcaseView extends FrameLayout
         mMaskColour = getResources().getColor(R.color.showcase_color);
         setVisibility(INVISIBLE);
 
-        View contentView = LayoutInflater.from(getContext()).inflate(R.layout.showcase_content, this, true);
+        View contentView = LayoutInflater.from(getContext())
+                .inflate(R.layout.showcase_content, this, true);
         mContentBox = contentView.findViewById(R.id.content_box);
         mContentTextView = (TextView) contentView.findViewById(R.id.tv_content);
         mDismissButton = (TextView) contentView.findViewById(R.id.tv_dismiss);
@@ -120,11 +137,10 @@ public class MaterialShowcaseView extends FrameLayout
         mDismissButton.setText(getContext().getString(R.string.intro_gotit));
     }
 
-
     /**
      * Interesting drawing stuff.
-     * We draw a block of semi transparent colour to fill the whole screen then we draw of transparency
-     * to create a circular "viewport" through to the underlying content
+     * We draw a block of semi transparent colour to fill the whole screen then we
+     * draw of transparency to create a circular "viewport" through to the underlying content
      *
      * @param canvas: the canvas we'll draw things in
      */
@@ -141,7 +157,7 @@ public class MaterialShowcaseView extends FrameLayout
         int height = getMeasuredHeight();
 
         // don't bother drawing if there is nothing to draw on
-        if(width <= 0 || height <= 0) return;
+        if (width <= 0 || height <= 0) return;
 
         // build a new canvas if needed i.e first pass or new dimensions
         if (mBitmap == null || mCanvas == null || mOldHeight != height || mOldWidth != width) {
@@ -183,7 +199,8 @@ public class MaterialShowcaseView extends FrameLayout
         super.onDetachedFromWindow();
 
         /**
-         * If we're being detached from the window without the mWasNotDismissed flag then we weren't purposefully dismissed
+         * If we're being detached from the window without the mWasNotDismissed flag
+         * then we weren't purposefully dismissed
          * Probably due to an orientation change or user backed out of activity.
          * Ensure we reset the flag so the showcase display again.
          */
@@ -198,17 +215,16 @@ public class MaterialShowcaseView extends FrameLayout
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        if(mTarget.getBounds().contains((int)event.getX(), (int)event.getY())) {
+        if (mTarget.getBounds().contains((int) event.getX(), (int) event.getY())) {
             hide();
             return false;
         }
         return true;
     }
 
-
     private void notifyOnDisplayed() {
 
-        if(mListeners != null){
+        if (mListeners != null) {
             for (IShowcaseListener listener : mListeners) {
                 listener.onShowcaseDisplayed(this);
             }
@@ -281,7 +297,7 @@ public class MaterialShowcaseView extends FrameLayout
             if (yPos > midPoint) {
                 // target is in lower half of screen, we'll sit above it
                 mContentTopMargin = 0;
-                mContentBottomMargin = (height - yPos) + radius + mShapePadding;
+                mContentBottomMargin = height - yPos + radius + mShapePadding;
                 mGravity = Gravity.BOTTOM;
             } else {
                 // target is in upper half of screen, we'll sit below it
@@ -317,7 +333,8 @@ public class MaterialShowcaseView extends FrameLayout
             }
 
             /**
-             * Only apply the layout params if we've actually changed them, otherwise we'll get stuck in a layout loop
+             * Only apply the layout params if we've actually changed them,
+             * otherwise we'll get stuck in a layout loop
              */
             if (layoutParamsChanged)
                 mContentBox.setLayoutParams(contentLP);
@@ -347,22 +364,110 @@ public class MaterialShowcaseView extends FrameLayout
         mShouldNotRender = false;
     }
 
-
     private void setShape(Shape mShape) {
         this.mShape = mShape;
     }
 
-    /**
-     * REDRAW LISTENER - this ensures we redraw after activity finishes laying out
-     */
-    private class UpdateOnGlobalLayout implements ViewTreeObserver.OnGlobalLayoutListener {
-
-        @Override
-        public void onGlobalLayout() {
-            setTarget(mTarget);
-        }
+    private void singleUse(String showcaseID) {
+        mSingleUse = true;
+        mPrefsManager = new PrefsManager(getContext(), showcaseID);
     }
 
+    private void removeFromWindow() {
+        if (getParent() != null && getParent() instanceof ViewGroup) {
+            ((ViewGroup) getParent()).removeView(this);
+        }
+
+        if (mBitmap != null) {
+            mBitmap.recycle();
+            mBitmap = null;
+        }
+
+        mEraser = null;
+        mAnimationFactory = null;
+        mCanvas = null;
+        mHandler = null;
+
+        //noinspection deprecation
+        getViewTreeObserver().removeGlobalOnLayoutListener(mLayoutListener);
+        mLayoutListener = null;
+
+        if (mPrefsManager != null)
+            mPrefsManager.close();
+
+        mPrefsManager = null;
+
+
+    }
+
+    /**
+     * Reveal the showcase view
+     *
+     * @param activity : activity
+     */
+    private void show(Activity activity) {
+
+        /**
+         * if we're in single use mode and have already shot our bolt then do nothing
+         */
+        if (mSingleUse) {
+            if (mPrefsManager.hasFired()) {
+                return;
+            } else {
+                mPrefsManager.setFired();
+            }
+        }
+
+        ((ViewGroup) activity.getWindow().getDecorView()).addView(this);
+
+        setShouldRender();
+
+        mHandler = new Handler();
+        long mDelayInMillis = 20L;
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                fadeIn();
+            }
+        }, mDelayInMillis);
+
+        mDismissButton.setVisibility(VISIBLE);
+    }
+
+    /**
+     * This flag is used to indicate to onDetachedFromWindow that the
+     * showcase view was dismissed purposefully (by the user or programmatically)
+     */
+    private void hide() {
+        mWasNotDismissed = false;
+        fadeOut();
+    }
+
+    private void fadeIn() {
+        setVisibility(INVISIBLE);
+
+        mAnimationFactory.fadeInView(this, mFadeDurationInMillis,
+                new IAnimationFactory.AnimationStartListener() {
+                    @Override
+                    public void onAnimationStart() {
+                        setVisibility(View.VISIBLE);
+                        notifyOnDisplayed();
+                    }
+                }
+        );
+    }
+
+    private void fadeOut() {
+
+        mAnimationFactory.fadeOutView(this, mFadeDurationInMillis,
+                new IAnimationFactory.AnimationEndListener() {
+            @Override
+            public void onAnimationEnd() {
+                setVisibility(INVISIBLE);
+                removeFromWindow();
+            }
+        });
+    }
 
     /**
      * BUILDER CLASS
@@ -415,121 +520,14 @@ public class MaterialShowcaseView extends FrameLayout
 
     }
 
-    private void singleUse(String showcaseID) {
-        mSingleUse = true;
-        mPrefsManager = new PrefsManager(getContext(), showcaseID);
-    }
-
-    private void removeFromWindow() {
-        if (getParent() != null && getParent() instanceof ViewGroup) {
-            ((ViewGroup) getParent()).removeView(this);
-        }
-
-        if (mBitmap != null) {
-            mBitmap.recycle();
-            mBitmap = null;
-        }
-
-        mEraser = null;
-        mAnimationFactory = null;
-        mCanvas = null;
-        mHandler = null;
-
-        //noinspection deprecation
-        getViewTreeObserver().removeGlobalOnLayoutListener(mLayoutListener);
-        mLayoutListener = null;
-
-        if (mPrefsManager != null)
-            mPrefsManager.close();
-
-        mPrefsManager = null;
-
-
-    }
-
-
     /**
-     * Reveal the showcase view
-     *
-     * @param activity : activity
+     * REDRAW LISTENER - this ensures we redraw after activity finishes laying out
      */
-    private void show(Activity activity) {
+    private class UpdateOnGlobalLayout implements ViewTreeObserver.OnGlobalLayoutListener {
 
-        /**
-         * if we're in single use mode and have already shot our bolt then do nothing
-         */
-        if (mSingleUse) {
-            if (mPrefsManager.hasFired()) {
-                return;
-            } else {
-                mPrefsManager.setFired();
-            }
+        @Override
+        public void onGlobalLayout() {
+            setTarget(mTarget);
         }
-
-        ((ViewGroup) activity.getWindow().getDecorView()).addView(this);
-
-        setShouldRender();
-
-        mHandler = new Handler();
-        long mDelayInMillis = 20L;
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                fadeIn();
-            }
-        }, mDelayInMillis);
-
-        mDismissButton.setVisibility(VISIBLE);
-    }
-
-
-    /**
-     * This flag is used to indicate to onDetachedFromWindow that the
-     * showcase view was dismissed purposefully (by the user or programmatically)
-     */
-    private void hide() {
-        mWasNotDismissed = false;
-         fadeOut();
-    }
-
-    private void fadeIn() {
-        setVisibility(INVISIBLE);
-
-        mAnimationFactory.fadeInView(this, mFadeDurationInMillis,
-                new IAnimationFactory.AnimationStartListener() {
-                    @Override
-                    public void onAnimationStart() {
-                        setVisibility(View.VISIBLE);
-                        notifyOnDisplayed();
-                    }
-                }
-        );
-    }
-
-    private void fadeOut() {
-
-        mAnimationFactory.fadeOutView(this, mFadeDurationInMillis, new IAnimationFactory.AnimationEndListener() {
-            @Override
-            public void onAnimationEnd() {
-                setVisibility(INVISIBLE);
-                removeFromWindow();
-            }
-        });
-    }
-
-    private static int getSoftButtonsBarSizePort(Activity activity) {
-        // getRealMetrics is only available with API 17 and +
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            DisplayMetrics metrics = new DisplayMetrics();
-            activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-            int usableHeight = metrics.heightPixels;
-            activity.getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
-            int realHeight = metrics.heightPixels;
-            if (realHeight > usableHeight)
-                return realHeight - usableHeight;
-            else
-                return 0;
-        }
-        return 0;
     }
 }

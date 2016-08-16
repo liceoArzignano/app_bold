@@ -2,6 +2,7 @@ package it.liceoarzignano.bold.marks;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -9,15 +10,19 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.util.Pair;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.ManagerActivity;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
@@ -27,8 +32,14 @@ import it.liceoarzignano.bold.realm.RealmController;
 
 public class MarkListActivity extends AppCompatActivity {
 
+    private static final String PREF_QUARTER_SELECTOR = "quarterSelector";
     private static Context fContext;
-    private static String filter;
+    private static MenuItem allMarks;
+    private static MenuItem firstQMarks;
+    private static MenuItem secondQMarks;
+    private static String subjectFilter;
+    private static int quarterFilter;
+    private SharedPreferences prefs;
 
     /**
      * Fire ViewerActivity and pass the selected mark data
@@ -52,22 +63,27 @@ public class MarkListActivity extends AppCompatActivity {
      */
     public static void refreshList(Context context) {
         LoadListViewTask loadMarkPostListViewTask = new LoadListViewTask(
-                context, MarksListFragment.mMarksListView, filter);
+                context, MarksListFragment.mMarksListView,
+                new Pair<>(subjectFilter, quarterFilter));
         loadMarkPostListViewTask.execute();
 
-        AverageListFragment.refresh(context, filter);
+        AverageListFragment.refresh(context, new Pair<>(subjectFilter, quarterFilter));
     }
 
     /**
-     * Restart this activity with a filter for the ListView content
+     * Restart this activity with a subjectFilter for the ListView content
      *
-     * @param filter: title filter
+     * @param filter: title subjectFilter
      */
     public static void showFilteredMarks(String filter) {
         Intent filteredList = new Intent(fContext, MarkListActivity.class);
         filteredList.putExtra("filteredList", filter);
 
         fContext.startActivity(filteredList);
+    }
+
+    static Pair<String, Integer> getSubjectFilter() {
+        return new Pair<>(subjectFilter, quarterFilter);
     }
 
     /**
@@ -78,9 +94,9 @@ public class MarkListActivity extends AppCompatActivity {
     private void setUpViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new MarksListFragment(), getString(R.string.title_fragment_marks));
-        adapter.addFragment(new AverageListFragment(), filter == null ?
-                    getString(R.string.title_fragments_avg) :
-                    getString(R.string.title_fragments_avgs));
+        adapter.addFragment(new AverageListFragment(), subjectFilter == null ?
+                getString(R.string.title_fragments_avg) :
+                getString(R.string.title_fragments_avgs));
 
         viewPager.setAdapter(adapter);
     }
@@ -94,11 +110,14 @@ public class MarkListActivity extends AppCompatActivity {
         Resources res = getResources();
 
         RealmController controller = RealmController.with(this);
+        prefs = getSharedPreferences("HomePrefs", MODE_PRIVATE);
+        quarterFilter = prefs.getInt(PREF_QUARTER_SELECTOR, 0);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        assert getSupportActionBar() != null;
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -109,10 +128,9 @@ public class MarkListActivity extends AppCompatActivity {
         }
 
         Intent thisIntent = getIntent();
-        filter = thisIntent.getStringExtra("filteredList");
+        subjectFilter = thisIntent.getStringExtra("filteredList");
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add_new_mark);
-        assert fab != null;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -123,20 +141,18 @@ public class MarkListActivity extends AppCompatActivity {
             }
         });
 
-        if (filter == null) {
+        if (subjectFilter == null) {
             Utils.animFabIntro(this, fab,
                     getString(R.string.intro_fab_mark), "markListIntro");
         } else {
-            String title = String.format(res.getString(R.string.title_filter), filter);
-            assert toolbar != null;
+            String title = String.format(res.getString(R.string.title_filter), subjectFilter);
             toolbar.setTitle(title);
             setSupportActionBar(toolbar);
 
-            double avg = controller.getAverage(filter);
-            double excepted = controller.whatShouldIGet(filter);
-            AverageListFragment.setHint(filter, avg, excepted);
+            double avg = controller.getAverage(subjectFilter, 0);
+            double excepted = controller.whatShouldIGet(subjectFilter, 0);
+            AverageListFragment.setHint(subjectFilter, avg, excepted);
         }
-
         refreshList(this);
     }
 
@@ -149,12 +165,44 @@ public class MarkListActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         // If showing single mark view, roll back to the "all" view
-        if (filter != null) {
+        if (subjectFilter != null) {
             Intent backIntent = new Intent(this, MarkListActivity.class);
             startActivity(backIntent);
-
         }
         finish();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.marks, menu);
+        allMarks = menu.findItem(R.id.filter_all);
+        firstQMarks = menu.findItem(R.id.filter_first);
+        secondQMarks = menu.findItem(R.id.filter_second);
+        setSelectedItem();
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.filter_all:
+                quarterFilter = 0;
+                break;
+            case R.id.filter_first:
+                quarterFilter = 1;
+                break;
+            case R.id.filter_second:
+                quarterFilter = 2;
+                break;
+        }
+        item.setChecked(true);
+        prefs.edit().putInt(PREF_QUARTER_SELECTOR, quarterFilter).apply();
+        refreshList(BoldApp.getBoldContext());
+
+
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -163,14 +211,29 @@ public class MarkListActivity extends AppCompatActivity {
      * @return read comments to understand
      */
     private boolean addressOk() {
-         if (Utils.getAddress(this).equals("0")) {
-                // Students must define a valid address
-                Toast.makeText(getApplicationContext(), getString(R.string.error_noaddress),
-                        Toast.LENGTH_LONG).show();
-                return false;
-            }
+        if (Utils.getAddress(this).equals("0")) {
+            // Students must define a valid address
+            Toast.makeText(getApplicationContext(), getString(R.string.error_noaddress),
+                    Toast.LENGTH_LONG).show();
+            return false;
+        }
         // Teacher and Student who defined an address are allowed to add marks
         return true;
+    }
+
+    private void setSelectedItem() {
+        quarterFilter = prefs.getInt(PREF_QUARTER_SELECTOR, 0);
+        switch (quarterFilter) {
+            case 0:
+                allMarks.setChecked(true);
+                break;
+            case 1:
+                firstQMarks.setChecked(true);
+                break;
+            case 2:
+                secondQMarks.setChecked(true);
+                break;
+        }
     }
 
     /**
@@ -204,9 +267,5 @@ public class MarkListActivity extends AppCompatActivity {
             mFragmentTitleList.add(title);
         }
 
-    }
-
-    static String getFilter() {
-        return filter;
     }
 }

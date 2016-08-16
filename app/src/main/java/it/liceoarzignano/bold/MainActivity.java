@@ -35,13 +35,9 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.security.SecureRandom;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Random;
 
 import io.realm.Realm;
@@ -49,8 +45,8 @@ import io.realm.Sort;
 import it.liceoarzignano.bold.events.AlarmService;
 import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.events.EventListActivity;
-import it.liceoarzignano.bold.intro.BenefitsActivity;
 import it.liceoarzignano.bold.external.showcase.MaterialShowcaseView;
+import it.liceoarzignano.bold.intro.BenefitsActivity;
 import it.liceoarzignano.bold.marks.MarkListActivity;
 import it.liceoarzignano.bold.realm.RealmController;
 import it.liceoarzignano.bold.safe.SafeActivity;
@@ -61,10 +57,10 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String APP_VERSION = "1.0.13";
-
+    private static final Calendar c = Calendar.getInstance();
     private static Resources res;
     private static Context sContext;
-    private static final Calendar c = Calendar.getInstance();
+    private static RealmController controller;
     // Header
     private Toolbar toolbar;
     private TextView mUserName;
@@ -90,7 +86,205 @@ public class MainActivity extends AppCompatActivity
     private boolean showUpcomingCard;
     private boolean showSuggestionCard;
 
-    private static RealmController controller;
+    /**
+     * @return content for notification
+     */
+    public static String getTomorrowInfo() {
+        Calendar today = Calendar.getInstance();
+        String content = null;
+        int icon;
+        int test = 0;
+        int atSchool = 0;
+        int birthday = 0;
+        int hangout = 0;
+        int other = 0;
+
+        // Use realm instead of RealmController to avoid NPE when onBoot intent is broadcast'ed
+        List<Event> events = Realm.getInstance(BoldApp.getAppRealmConfiguration())
+                .where(Event.class).findAllSorted("date", Sort.DESCENDING);
+
+        List<Event> tomorrowEvents = new ArrayList<>();
+
+        // Create tomorrow events list
+        for (Event event : events) {
+            if (Utils.rightDate(today.get(Calendar.YEAR), today.get(Calendar.MONTH) + 1,
+                    today.get(Calendar.DAY_OF_MONTH) + 1).equals(event.getDate())) {
+                tomorrowEvents.add(event);
+            }
+        }
+
+        if (tomorrowEvents.isEmpty()) {
+            return null;
+        }
+
+        // Get data
+        for (Event event : tomorrowEvents) {
+            icon = event.getIcon();
+            switch (icon) {
+                case 0:
+                    test++;
+                    break;
+                case 1:
+                    atSchool++;
+                    break;
+                case 2:
+                    birthday++;
+                    break;
+            }
+            if (Utils.isTeacher(sContext)) {
+                switch (icon) {
+                    case 3:
+                        hangout++;
+                        break;
+                    case 4:
+                        other++;
+                        break;
+                }
+            } else {
+                if (icon == 3) {
+                    other++;
+                }
+            }
+        }
+
+        // Test
+        if (test > 0) {
+            // First element
+            content = res.getQuantityString(R.plurals.notification_message_first, test, test)
+                    + " " + res.getQuantityString(R.plurals.notification_test, test, test);
+        }
+
+        // School
+        if (atSchool > 0) {
+            if (test == 0) {
+                // First element
+                content = res.getQuantityString(R.plurals.notification_message_first,
+                        atSchool, atSchool) + " ";
+            } else {
+                if (birthday == 0 && hangout == 0 && other == 0) {
+                    // Last of us
+                    content += " " + String.format(
+                            res.getString(R.string.notification_message_last), atSchool);
+                } else {
+                    // Just another one
+                    content += String.format(res.getString(R.string.notification_message_half),
+                            atSchool);
+                }
+            }
+            content += " " + res.getQuantityString(R.plurals.notification_school,
+                    atSchool, atSchool);
+        }
+
+        // Birthday
+        if (birthday > 0) {
+            if (test == 0 && atSchool == 0) {
+                // First element
+                content = res.getQuantityString(R.plurals.notification_message_first,
+                        birthday, birthday) + " ";
+            } else {
+                if (hangout == 0 && other == 0) {
+                    // Last of us
+                    content += " " +
+                            String.format(res.getString(R.string.notification_message_last),
+                            birthday);
+                } else {
+                    // Just another one
+                    content += String.format(res.getString(R.string.notification_message_half),
+                            birthday);
+                }
+            }
+            content += " " + res.getQuantityString(R.plurals.notification_birthday,
+                    birthday, birthday);
+        }
+
+        // Hangout
+        if (hangout > 0 && Utils.isTeacher(sContext)) {
+            if (test == 0 && atSchool == 0 && birthday == 0) {
+                // First element
+                content = res.getQuantityString(R.plurals.notification_message_first,
+                        hangout, hangout) + " ";
+            } else {
+                if (other == 0) {
+                    // Last of us
+                    content += " " +
+                            String.format(res.getString(R.string.notification_message_last),
+                            hangout);
+                } else {
+                    // Just another one
+                    content += String.format(res.getString(R.string.notification_message_half),
+                            atSchool);
+                }
+            }
+            content += " " + res.getQuantityString(R.plurals.notification_meeting,
+                    hangout, hangout);
+        }
+
+        // Other
+        if (other > 0) {
+            if (test == 0 && atSchool == 0 && birthday == 0 && hangout == 0) {
+                // First element
+                content = res.getQuantityString(R.plurals.notification_message_first,
+                        other, other);
+                content += " ";
+            } else {
+                // Last of us
+                content += String.format(res.getString(R.string.notification_message_last),
+                        other);
+            }
+            content += " " + res.getQuantityString(R.plurals.notification_other,
+                    other, other);
+        }
+
+        content += " " + res.getString(R.string.notification_message_end);
+
+        return content;
+    }
+
+    /**
+     * Create notification that will be fired later
+     */
+    public static void makeEventNotification() {
+        // Guard against npe when called from service
+        if (sContext == null) {
+            sContext = BoldApp.getBoldContext();
+        }
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, c.get(Calendar.YEAR));
+        calendar.set(Calendar.MONTH, c.get(Calendar.MONTH));
+        calendar.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH));
+
+        switch (Utils.getNotificationTime(sContext)) {
+            case "0":
+                if (calendar.get(Calendar.HOUR_OF_DAY) >= 6) {
+                    calendar.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH) + 1);
+
+                }
+                calendar.set(Calendar.HOUR_OF_DAY, 6);
+                break;
+            case "1":
+                if (calendar.get(Calendar.HOUR_OF_DAY) >= 15) {
+                    calendar.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH) + 1);
+
+                }
+                calendar.set(Calendar.HOUR_OF_DAY, 15);
+                break;
+            case "2":
+                if (calendar.get(Calendar.HOUR_OF_DAY) >= 21) {
+                    calendar.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH) + 1);
+
+                }
+                calendar.set(Calendar.HOUR_OF_DAY, 21);
+                break;
+        }
+
+        calendar.set(Calendar.MINUTE, 0);
+
+        Intent intent = new Intent(sContext, AlarmService.class);
+        AlarmManager alarmManager = (AlarmManager) sContext.getSystemService(ALARM_SERVICE);
+        PendingIntent pendingIntent = PendingIntent.getService(sContext, 0, intent, 0);
+        alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,8 +317,8 @@ public class MainActivity extends AppCompatActivity
 
         // Navigation drawer
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         //noinspection deprecation
         drawer.setDrawerListener(toggle);
         toggle.syncState();
@@ -273,7 +467,6 @@ public class MainActivity extends AppCompatActivity
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        assert drawer != null;
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -293,24 +486,24 @@ public class MainActivity extends AppCompatActivity
 
         switch (index) {
             case 0:
-                mUrl = getString(R.string.url_home);
+                mUrl = getString(R.string.config_url_home);
                 break;
             case 1:
                 mUrl = getString(Utils.isTeacher(this) ?
-                        R.string.url_news_teacher : R.string.url_news_student);
+                        R.string.config_url_news_teacher : R.string.config_url_news_student);
                 break;
             case 2:
                 mUrl = getString(Utils.isTeacher(this) ?
-                        R.string.url_reg_teacher : R.string.url_reg_student);
+                        R.string.config_url_reg_teacher : R.string.config_url_reg_student);
                 break;
             case 3:
-                mUrl = getString(R.string.url_moodle);
+                mUrl = getString(R.string.config_url_moodle);
                 break;
             case 4:
-                mUrl = getString(R.string.url_copybook);
+                mUrl = getString(R.string.config_url_copybook);
                 break;
             case 5:
-                mUrl = getString(R.string.url_teacherzone);
+                mUrl = getString(R.string.config_url_teacherzone);
                 break;
         }
 
@@ -337,24 +530,24 @@ public class MainActivity extends AppCompatActivity
         showUpcomingCard = false;
 
         for (Event eventInList : events) {
-            if (isThisWeek(eventInList.getValue())) {
+            if (isThisWeek(eventInList.getDate())) {
                 switch (i) {
                     case 0:
                         showUpcomingCard = true;
                         mUpcomingTitle1.setText(eventInList.getTitle());
-                        mUpcomingDate1.setText(eventInList.getValue());
+                        mUpcomingDate1.setText(eventInList.getDate());
                         mUpcomingLayout1.setVisibility(View.VISIBLE);
                         i++;
                         break;
                     case 1:
                         mUpcomingTitle2.setText(eventInList.getTitle());
-                        mUpcomingDate2.setText(eventInList.getValue());
+                        mUpcomingDate2.setText(eventInList.getDate());
                         mUpcomingLayout2.setVisibility(View.VISIBLE);
                         i++;
                         break;
                     case 2:
                         mUpcomingTitle3.setText(eventInList.getTitle());
-                        mUpcomingDate3.setText(eventInList.getValue());
+                        mUpcomingDate3.setText(eventInList.getDate());
                         mUpcomingLayout3.setVisibility(View.VISIBLE);
                         i++;
                         break;
@@ -376,21 +569,12 @@ public class MainActivity extends AppCompatActivity
      * @return true if it's within 7 days, false if not
      */
     private boolean isThisWeek(String stringDate) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ITALIAN);
+        Calendar dateCalendar = Calendar.getInstance();
+        dateCalendar.setTimeInMillis(Utils.stringToDate(stringDate).getTime());
 
-        try {
-            Date date = format.parse(stringDate);
-            Calendar dateCalendar = Calendar.getInstance();
-            dateCalendar.setTimeInMillis(date.getTime());
+        int diff = dateCalendar.get(Calendar.DAY_OF_YEAR) - c.get(Calendar.DAY_OF_YEAR);
 
-
-            int diff = dateCalendar.get(Calendar.DAY_OF_YEAR) - c.get(Calendar.DAY_OF_YEAR);
-
-            return c.get(Calendar.YEAR) == dateCalendar.get(Calendar.YEAR) && diff >= 0 && diff < 8;
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return c.get(Calendar.YEAR) == dateCalendar.get(Calendar.YEAR) && diff >= 0 && diff < 8;
     }
 
     /**
@@ -478,8 +662,6 @@ public class MainActivity extends AppCompatActivity
     /**
      * Show the intro / tutorial activity
      * if it's the first time we fire the app
-     *
-     * @param force: if true shows the intro even if the user has already seen it
      */
     private void showIntroIfNeeded() {
         SharedPreferences prefs = getSharedPreferences("HomePrefs", MODE_PRIVATE);
@@ -590,204 +772,6 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         }
-    }
-
-    /**
-     * @return content for notification
-     */
-    public static String getTomorrowInfo() {
-        Calendar today = Calendar.getInstance();
-        String content = null;
-        int icon;
-        int test = 0;
-        int atSchool = 0;
-        int birthday = 0;
-        int hangout = 0;
-        int other = 0;
-
-        // Use realm instead of RealmController to avoid NPE when onBoot intent is broadcast'ed
-        List<Event> events = Realm.getInstance(BoldApp.getAppRealmConfiguration())
-                .where(Event.class).findAllSorted("value", Sort.DESCENDING);
-
-        List<Event> tomorrowEvents = new ArrayList<>();
-
-        // Create tomorrow events list
-        for (Event event : events) {
-            if (Utils.rightDate(today.get(Calendar.YEAR), today.get(Calendar.MONTH) + 1,
-                    today.get(Calendar.DAY_OF_MONTH) + 1).equals(event.getValue())) {
-                tomorrowEvents.add(event);
-            }
-        }
-
-        if (tomorrowEvents.size() == 0) {
-            return null;
-        }
-
-        // Get data
-        for (Event event : tomorrowEvents) {
-            icon = event.getIcon();
-            switch (icon) {
-                case 0:
-                    test++;
-                    break;
-                case 1:
-                    atSchool++;
-                    break;
-                case 2:
-                    birthday++;
-                    break;
-            }
-            if (Utils.isTeacher(sContext)) {
-                switch (icon) {
-                    case 3:
-                        hangout++;
-                        break;
-                    case 4:
-                        other++;
-                        break;
-                }
-            } else {
-                if (icon == 3) {
-                    other++;
-                }
-            }
-        }
-
-        // Test
-        if (test > 0) {
-            // First element
-            content = res.getQuantityString(R.plurals.notification_message_first, test, test)
-                    + " " + res.getQuantityString(R.plurals.notification_test, test, test);
-        }
-
-        // School
-        if (atSchool > 0) {
-            if (test == 0) {
-                // First element
-                content = res.getQuantityString(R.plurals.notification_message_first,
-                        atSchool, atSchool) + " ";
-            } else {
-                if (birthday == 0 && hangout == 0 && other == 0) {
-                    // Last of us
-                    content += " " + String.format(
-                            res.getString(R.string.notification_message_last), atSchool);
-                } else {
-                    // Just another one
-                    content += String.format(res.getString(R.string.notification_message_half),
-                            atSchool);
-                }
-            }
-            content += " " + res.getQuantityString(R.plurals.notification_school,
-                    atSchool, atSchool);
-        }
-
-        // Birthday
-        if (birthday > 0) {
-            if (test == 0 && atSchool == 0) {
-                // First element
-                content = res.getQuantityString(R.plurals.notification_message_first,
-                        birthday, birthday) + " ";
-            } else {
-                if (hangout == 0 && other == 0) {
-                    // Last of us
-                    content += " " + String.format(res.getString(R.string.notification_message_last),
-                            birthday);
-                } else {
-                    // Just another one
-                    content += String.format(res.getString(R.string.notification_message_half),
-                            birthday);
-                }
-            }
-            content += " " + res.getQuantityString(R.plurals.notification_birthday,
-                    birthday, birthday);
-        }
-
-        // Hangout
-        if (hangout > 0 && Utils.isTeacher(sContext)) {
-            if (test == 0 && atSchool == 0 && birthday == 0) {
-                // First element
-                content = res.getQuantityString(R.plurals.notification_message_first,
-                        hangout, hangout) + " ";
-            } else {
-                if (other == 0) {
-                    // Last of us
-                    content += " " + String.format(res.getString(R.string.notification_message_last),
-                            hangout);
-                } else {
-                    // Just another one
-                    content += String.format(res.getString(R.string.notification_message_half),
-                            atSchool);
-                }
-            }
-            content += " " + res.getQuantityString(R.plurals.notification_meeting,
-                    hangout, hangout);
-        }
-
-        // Other
-        if (other > 0) {
-            if (test == 0 && atSchool == 0 && birthday == 0 && hangout == 0) {
-                // First element
-                content = res.getQuantityString(R.plurals.notification_message_first,
-                        other, other);
-                content += " ";
-            } else {
-                // Last of us
-                content += String.format(res.getString(R.string.notification_message_last),
-                        other);
-            }
-            content += " " + res.getQuantityString(R.plurals.notification_other,
-                    other, other);
-        }
-
-        content += " " + res.getString(R.string.notification_message_end);
-
-        return content;
-    }
-
-    /**
-     * Create notification that will be fired later
-     */
-    public static void makeEventNotification() {
-        // Guard against npe when called from service
-        if (sContext == null) {
-            sContext = BoldApp.getBoldContext();
-        }
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, c.get(Calendar.YEAR));
-        calendar.set(Calendar.MONTH, c.get(Calendar.MONTH));
-        calendar.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH));
-
-        switch (Utils.getNotificationTime(sContext)) {
-            case "0":
-                if (calendar.get(Calendar.HOUR_OF_DAY) >= 6) {
-                    calendar.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH) + 1);
-
-                }
-                calendar.set(Calendar.HOUR_OF_DAY, 6);
-                break;
-            case "1":
-                if (calendar.get(Calendar.HOUR_OF_DAY) >= 15) {
-                    calendar.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH) + 1);
-
-                }
-                calendar.set(Calendar.HOUR_OF_DAY, 15);
-                break;
-            case "2":
-                if (calendar.get(Calendar.HOUR_OF_DAY) >= 21) {
-                    calendar.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH) + 1);
-
-                }
-                calendar.set(Calendar.HOUR_OF_DAY, 21);
-                break;
-        }
-
-        calendar.set(Calendar.MINUTE, 0);
-
-        Intent intent = new Intent(sContext, AlarmService.class);
-        AlarmManager alarmManager = (AlarmManager) sContext.getSystemService(ALARM_SERVICE);
-        PendingIntent pendingIntent = PendingIntent.getService(sContext, 0, intent, 0);
-        alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
     }
 
 }
