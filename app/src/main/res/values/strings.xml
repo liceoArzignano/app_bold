@@ -29,22 +29,18 @@
     <string name="suggestions">Suggestions</string>
     <string name="suggestion_safe">Use Safe to store your school credentials in one safe place!</string>
     <string name="suggestion_safe_pwd">Someone knows your Safe password? Change it from Safe section</string>
-    <string name="suggestion_avg">Would you like what mark you should get next to have the sufficiency in a mark? Go to Marks, Averages, choose a subject and click on the white icon on the top to know it!</string>
-    <string name="suggestion_tut">You\'d like to see the tutorial again? Go to Help from the navigation drawer</string>
-    <string name="suggestion_edit_event">Postponed an event? Long press it to edit and change the date to the right one</string>
+    <string name="suggestion_avg">Would you like what mark you should get next to have the sufficiency in a subject? Pick a subject from the average, and look at the suggestions!</string>
+    <string name="suggestion_quarter">A new quarter has begun? You can filter your marks in the marks section</string>
+    <string name="suggestion_edit_event">Postponed an event? Press on it, click the green edit icon and update the date</string>
     <string name="suggestion_mark_helper">Write the topic of the test in the mark to manage marks better.</string>
     <string name="suggestion_get_touch">Need to get in touch with the school? You can call or send an email from the settings</string>
     <string name="suggestion_address">You can\'t find a subject int the list? Check the address in the settings</string>
     <string name="suggestion_suggestions">Suggestions annoy you? Turn them off from the settings</string>
-    <string name="suggestion_notification">If you have some events tomorrow, the app will notify you the day before</string>
-    <string name="suggestion_backups">If you backup up your marks and events to Google Drive, you\'ll be able to restore all your data in case you lose or change your phone</string>
+    <string name="suggestion_notification">Never miss an event, the app will notify you the day before it happens</string>
+    <string name="suggestion_backups">If you backup up your marks and events to Google Drive, you\'ll be able to restore your data in case you lose or change your phone</string>
 
     <!-- Updated Dialog -->
     <string name="dialog_first_title">Welcome!</string>
-    <string name="dialog_first_content">To make sure everything works fine,
-        set up the app the way you need it.</string>
-    <string name="dialog_first_negative">Not now</string>
-    <string name="dialog_first_positive">Configure now</string>
     <string name="dialog_updated_title">App has been updated</string>
     <string name="dialog_updated_content">
         \u2022 New: backup data on Google Drive.\n
@@ -56,7 +52,7 @@
     </string>
 
     <!-- Manager -->
-    <string name="title_activity_manager">Manager</string>
+    <string name="title_activity_manager">Editor</string>
     <string name="update_mark">Edit mark</string>
     <string name="update_event">Edit event</string>
     <string name="hint_student">Student</string>
@@ -89,6 +85,7 @@
     <string name="hint_content_common">To have sufficiency in %1$s</string>
     <string name="hint_content_under">the next mark might be %1$s or higher</string>
     <string name="hint_content_above">the next mark must be %1$s or higher</string>
+    <string name="error_noaddress">Pick an address from the settings to see averages</string>
 
     <!-- View -->
     <string name="title_activity_mark_view">Viewer</string>
@@ -112,18 +109,18 @@
     <!-- Intro -->
     <string name="slide_button">Get started</string>
     <string name="slide0_title">Your contents</string>
-    <string name="slide0_message">Manage marks, test dates, averages, classmates birthdays and much more</string>
-    <string name="slide1_title">Safe</string>
+    <string name="slide0_message">Manage marks, test dates, averages, school-related events and much more</string>
+    <string name="slide1_title">Stay Safe</string>
     <string name="slide1_message">With Safe, you just have to remember one password instead of many. You can store all your school passwords in one place</string>
     <string name="slide2_title">Teacher-ready</string>
     <string name="slide2_message">Even teachers can use this app, switch to teacher mode in the settings, and the app will adapt for you</string>
     <string name="intro_drawer">Click here to navigate through the app sections</string>
     <string name="intro_fab_mark">Click here to add a mark</string>
-    <string name="intro_fab_event">Click here to create a new event</string>
-    <string name="intro_fab_save_mark_student">Choose the subject, select the mark using the slider and then save the mark with this button</string>
+    <string name="intro_fab_event">Click here to create your first event</string>
+    <string name="intro_fab_save_mark_student">Pick the subject, select the mark using the slider and then save the mark with this button</string>
     <string name="intro_fab_save_mark_teacher">Write the student name, select the mark with the slider and then save the mark with this button</string>
     <string name="intro_fab_save_event">Write the event title, select its category and date. Then click this button to save it</string>
-    <string name="intro_fab_save_safe">You can store all your private data here. To see what you write, click on the eye. Once you\'re done, click this button to save</string>
+    <string name="intro_fab_save_safe">You can store all your private data here. To see what you\'ve written, click on the eye. Once you\'re done, click this button to save</string>
     <string name="intro_fab_backup">To create a backup click this button and select a folder on your Google Drive, then the backup will be created and uploaded</string>
     <string name="intro_gotit">OK, got it</string>
 
@@ -146,9 +143,6 @@
     <string name="subject_human">Human sciences</string>
     <string name="subject_economy">Economy</string>
 
-    <!-- Average -->
-    <string name="error_noaddress">Pick an address from the settings to see averages</string>
-
     <!-- Settings -->
     <string name="title_activity_settings">Settings</string>
     <string name="pref_general">Preferences</string>
@@ -158,7 +152,7 @@
     <string name="pref_address_title">Address</string>
     <string name="pref_address_dialog">Pick an address</string>
     <string name="pref_suggestion_title">Suggestions</string>
-    <string name="pref_suggestion_summary">Show suggestions to use the app better</string>
+    <string name="pref_suggestion_summary">Show suggestions and learn how to use this app</string>
     <string name="pref_metrics_title">Send metrics</string>
     <string name="pref_metrics_summary">Help the developer improve the app by sending anonymous data regarding your usage of this app</string>
     <string name="pref_metrics_summary_forced">You\'re using a beta build. You\'re not allowed to turn off metrics reports</string>
@@ -178,11 +172,6 @@
     <string name="pref_username">User name</string>
     <string name="pref_username_dialog_title">Set user name</string>
     <string name="pref_username_dialog_msg">Input here your name</string>
-    <string name="pref_drop_marks_title">Clear marks</string>
-    <string name="pref_drop_marks_summary">Remove all the marks because a new school period has begun</string>
-    <string name="pref_drop_marks_dialog_title">Clear all marks</string>
-    <string name="pref_drop_marks_dialog_message">You\'re going to erase all your saved marks. You should do this only when a new school period begins. You <b>cannot</b> undo this action.\nDo you still want to proceed?</string>
-    <string name="pref_drop_marks_toast">All the marks have been erased!</string>
     <string name="pref_notif">Notifications</string>
     <string name="pref_notification_title">Show events notifications</string>
     <string name="pref_notification_summary">Get notification about tomorrow events</string>
@@ -192,7 +181,7 @@
     <string name="pref_notification_time_afternoon">In the afternoon</string>
     <string name="pref_notification_time_evening">In the evening</string>
     <string name="pref_backup_title">Save your marks and events on Google Drive</string>
-    <string name="pref_backup_summary">Backup &amp; restore</string>
+    <string name="pref_backup_summary">Backup &amp; Restore</string>
 
     <!-- Safe -->
     <string name="title_activity_safe">Safe</string>
@@ -207,7 +196,7 @@
     <string name="safe_pc_pwd">Your pc-account password</string>
     <string name="safe_internet_pwd">Your internet password</string>
     <string name="safe_info_title">Security info</string>
-    <string name="safe_info_content">All your passwords are encrypted and decrypted using the AES algorythm with a 128-bit key. This means that your passwords are saved in an unreadable format no one (except this app) can understand. Each time you open this section the encrypted text is decrypted and a similar thing happens when you save your data, and this operation. That\'s why it takes so long.</string>
+    <string name="safe_info_content">All your passwords are encrypted and decrypted using the AES algorythm with a 128-bit key. This means that your passwords are saved in an unreadable format no one (except this app) can understand. Each time you open this section the saved encrypted text is decrypted and vice versa when you save your data. That\'s why it takes so long.</string>
     <string name="safe_reset_title">Reset password</string>
     <string name="safe_reset_content">Do you want to reset the password? <b>If you rest your password you\'ll loose the other stored passwords too!\n You cannot undo this.</b> Do you still want to proceed?</string>
     <string name="safe_encrypting"><b>Encrypting data\u2026</b></string>

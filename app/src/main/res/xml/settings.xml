@@ -26,18 +26,11 @@
             android:dialogTitle="@string/pref_username_dialog_title"
             android:dialogMessage="@string/pref_username_dialog_msg" />
 
-
         <SwitchPreference
             android:defaultValue="true"
             android:key="showSuggestions_key"
             android:summary="@string/pref_suggestion_summary"
             android:title="@string/pref_suggestion_title" />
-
-        <Preference
-            android:key="drop_marks_key"
-            android:dependency="isTeacher_key"
-            android:title="@string/pref_drop_marks_title"
-            android:summary="@string/pref_drop_marks_summary" />
 
         <Preference
             android:key="backup_key"

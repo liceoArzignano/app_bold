@@ -29,22 +29,18 @@
     <string name="suggestions">Suggerimenti</string>
     <string name="suggestion_safe">Utilizza Safe per conservare le tue password di scuola in un unco posto al sicuro!</string>
     <string name="suggestion_safe_pwd">Qualcuno conosce la tua password di Safe? Puoi cambiarla semplicemente accedendo a Safe</string>
-    <string name="suggestion_avg">Vorresti sapere che voto dovresti prendere per avere la sufficienza in una materia? Vai in Voti, Media, scegli la materia e clicca sull\'icona bianca in alto per saperlo!</string>
-    <string name="suggestion_tut">Vorresti rivedere il tutorial iniziale? Apri Guida dal menu laterale</string>
+    <string name="suggestion_avg">Vorresti sapere qual\'\u00E8 il prossimo voto che dovresti prendere per avere la sufficienza in una materia? Selezionala dalle medie e dai un\'occhiata ai suggerimenti!</string>
+    <string name="suggestion_quarter">Nuovo quadrimestre? Puoi filtrare i voti nell\'omonima sezione</string>
     <string name="suggestion_edit_event">Evento posticipato? Nessun problema, puoi modificarlo premendo l\'appposito pulsante modifica dal visualizzatore evento</string>
     <string name="suggestion_mark_helper">Ricordati di scrivere anche l\'argomento delle verifiche nelle note dei voti</string>
     <string name="suggestion_get_touch">Hai bisogno di contattare l\'istituto? Dalle impostazioni potrai scrivere un\'email o telefonare alla segreteria</string>
     <string name="suggestion_address">Non trovi una materia nella lista? Controlla l\'indirizzo nelle impostazioni</string>
     <string name="suggestion_suggestions">I suggerimenti ti infastidiscono? Disattivali dalle impostazioni</string>
-    <string name="suggestion_notification">Se domani si verificheranno degli eventi, l\'app te lo dir\u00E0 il giorno prima</string>
-    <string name="suggestion_backups">Se il backup dei tuoi voti ed eventi su Google Drive, potrai ripristinarli facilmente nel caso in cui cambiassi o perdessi il dispositivo in uso</string>
+    <string name="suggestion_notification">Non perderti nessun evento, l\'app te lo ricorder\u00E0 il giorno prima</string>
+    <string name="suggestion_backups">Se effetui il backup dei tuoi voti ed eventi su Google Drive, potrai ripristinarli facilmente nel caso in cui cambiassi o perdessi il tuo telefono</string>
 
     <!-- Updated Dialog -->
     <string name="dialog_first_title">Benvenuto!</string>
-    <string name="dialog_first_content">Per assicurarti che tutto funzioni
-        configura l\'app in base alle tue esigenze.</string>
-    <string name="dialog_first_positive">Configura subito</string>
-    <string name="dialog_first_negative">Non ora</string>
     <string name="dialog_updated_title">L\'app \u00E8 stata aggiornata!</string>
     <string name="dialog_updated_content">
         \u2022 Nuovo: backup dei dati su Google Drive.\n
@@ -89,6 +85,7 @@
     <string name="hint_content_common">Per avere la sufficienza in %1$s il prossimo voto</string>
     <string name="hint_content_under">deve essere %1$s o superiore</string>
     <string name="hint_content_above">puo essere %1$s o superiore</string>
+    <string name="error_noaddress">Per utilizzare questa funzione devi impostare un indirizzo nelle impostazioni</string>
 
     <!-- Viewer -->
     <string name="title_activity_mark_view">Visualizzatore</string>
@@ -112,14 +109,14 @@
     <!-- Welcome -->
     <string name="slide_button">Inizia</string>
     <string name="slide0_title">I tuoi contenuti</string>
-    <string name="slide0_message">Gestisci i tuoi voti, le date delle verifiche e molto altro</string>
-    <string name="slide1_title">Safe</string>
-    <string name="slide1_message">Con Safe, potrai registrare in modo sicuro tutte le password della scuola</string>
-    <string name="slide2_title">Docente?</string>
+    <string name="slide0_message">Gestisci i tuoi voti, date delle verifiche, medie e molto altro</string>
+    <string name="slide1_title">Stay Safe</string>
+    <string name="slide1_message">Con Safe, potrai registrare in modo sicuro tutte le password della scuola in un posto sicuro</string>
+    <string name="slide2_title">Pronti per i docenti</string>
     <string name="slide2_message">Anche i docenti possono utilizzare quest\'app. Attivando l\'apposita opzione l\'app di adatter\u00E0</string>
     <string name="intro_drawer">Scorri da qui per navigare nelle varie sezioni dell\'app</string>
     <string name="intro_fab_mark">Clicca qui per aggiungere un nuovo voto</string>
-    <string name="intro_fab_event">Clicca qui per creare un nuovo evento</string>
+    <string name="intro_fab_event">Clicca qui per creare il tuo primo evento</string>
     <string name="intro_fab_save_mark_student">Scegli la materia, seleziona il voto con lo slider e poi salva premendo questo pulsante</string>
     <string name="intro_fab_save_mark_teacher">Scrivi il nome dello studente, seleziona il voto con lo slider e poi salva premendo questo pulsante</string>
     <string name="intro_fab_save_event">Scrivi il nome dell\'evento, seleziona la categoria e la data. Poi premi questo pulsante per salvare</string>
@@ -145,9 +142,6 @@
     <string name="subject_german">Tedesco</string>
     <string name="subject_human">Scienze umane</string>
     <string name="subject_economy">Economia</string>
-
-    <!-- Average -->
-    <string name="error_noaddress">Per utilizzare questa funzione devi impostare un indirizzo nelle impostazioni</string>
 
     <!-- Settings -->
     <string name="title_activity_settings">Impostazioni</string>
@@ -178,11 +172,6 @@
     <string name="pref_username">Nome utente</string>
     <string name="pref_username_dialog_title">Imposta nome utente</string>
     <string name="pref_username_dialog_msg">Scrivi qui il tuo nome utente</string>
-    <string name="pref_drop_marks_title">Elimina voti</string>
-    <string name="pref_drop_marks_summary">Cancella tutti i voti perch\u00E9 \u00E8 iniziato un nuovo quadrimestre</string>
-    <string name="pref_drop_marks_dialog_title">Elimina voti</string>
-    <string name="pref_drop_marks_dialog_message">Stai cancellando tutti i tuoi voti. Dovresti far questo solo quando \u00E8 iniziato un nuovo quadrimestre. <b>Non potrai annulare quest\'azione</b>.\nVuoi procedere?</string>
-    <string name="pref_drop_marks_toast">Tutti i voti sono stati cancellati!</string>
     <string name="pref_notif">Notifiche</string>
     <string name="pref_notification_title">Mostra notifiche per eventi</string>
     <string name="pref_notification_summary">Ottieni informazioni sugli eventi di domani</string>

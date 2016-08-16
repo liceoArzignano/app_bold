@@ -605,7 +605,7 @@ public class MainActivity extends AppCompatActivity
             case 2:
                 return getString(R.string.suggestion_avg);
             case 3:
-                return getString(R.string.suggestion_tut);
+                return getString(R.string.suggestion_quarter);
             case 4:
                 return getString(R.string.suggestion_edit_event);
             case 5:
@@ -697,26 +697,8 @@ public class MainActivity extends AppCompatActivity
                 // Used for feature discovery
                 final String today = Utils.rightDate(c.get(Calendar.YEAR), c.get(Calendar.MONTH),
                         c.get(Calendar.DAY_OF_MONTH));
-
-                new MaterialDialog.Builder(context)
-                        .title(getString(R.string.dialog_first_title))
-                        .content(getString(R.string.dialog_first_content))
-                        .positiveText(getString(R.string.dialog_first_positive))
-                        .negativeText(getString(R.string.dialog_first_negative))
-                        .canceledOnTouchOutside(false)
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog,
-                                                @NonNull DialogAction which) {
-                                editor.putString("appVersionKey", APP_VERSION).apply();
-                                editor.putString("initialDayKey", today).apply();
-                                Intent settingsIntent = new Intent(MainActivity.this,
-                                        SettingsActivity.class);
-                                startActivity(settingsIntent);
-
-                            }
-                        })
-                        .show();
+                editor.putString("appVersionKey", APP_VERSION).apply();
+                editor.putString("initialDayKey", today).apply();
                 break;
             default:
                 new MaterialDialog.Builder(context)
