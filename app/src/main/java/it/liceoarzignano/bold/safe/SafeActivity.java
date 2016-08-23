@@ -68,14 +68,6 @@ public class SafeActivity extends AppCompatActivity {
     private EditText mPcEdit;
     private EditText mInternetEdit;
     private ImageView mImage;
-    private ImageButton mShow1;
-    private ImageButton mShow2;
-    private ImageButton mShow3;
-    private ImageButton mShow4;
-    private boolean show1Active = true;
-    private boolean show2Active = true;
-    private boolean show3Active = true;
-    private boolean show4Active = true;
     private FloatingActionButton mFab;
 
     @SuppressLint("CommitPrefEdits")
@@ -102,10 +94,6 @@ public class SafeActivity extends AppCompatActivity {
         mPcEdit = (EditText) findViewById(R.id.pcPwd);
         mInternetEdit = (EditText) findViewById(R.id.internetPwd);
         mImage = (ImageView) findViewById(R.id.safe_image);
-        mShow1 = (ImageButton) findViewById(R.id.showHide1);
-        mShow2 = (ImageButton) findViewById(R.id.showHide2);
-        mShow3 = (ImageButton) findViewById(R.id.showHide3);
-        mShow4 = (ImageButton) findViewById(R.id.showHide4);
         mFab = (FloatingActionButton) findViewById(R.id.fab);
 
         mLoadingLayout.setVisibility(View.VISIBLE);
@@ -307,47 +295,6 @@ public class SafeActivity extends AppCompatActivity {
         mRegEdit.setText(crReg);
         mPcEdit.setText(crPc);
         mInternetEdit.setText(crInternet);
-        mShow1.setBackgroundResource(R.drawable.ic_show);
-        mShow2.setBackgroundResource(R.drawable.ic_show);
-        mShow3.setBackgroundResource(R.drawable.ic_show);
-        mShow4.setBackgroundResource(R.drawable.ic_show);
-
-        mShow1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mShow1.setBackgroundResource(show1Active ? R.drawable.ic_hide : R.drawable.ic_show);
-                mUserEdit.setTransformationMethod(show1Active ?
-                        null : new PasswordTransformationMethod());
-                show1Active = !show1Active;
-            }
-        });
-        mShow2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mShow2.setBackgroundResource(show2Active ? R.drawable.ic_hide : R.drawable.ic_show);
-                mRegEdit.setTransformationMethod(show2Active ?
-                        null : new PasswordTransformationMethod());
-                show2Active = !show2Active;
-            }
-        });
-        mShow3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mShow3.setBackgroundResource(show3Active ? R.drawable.ic_hide : R.drawable.ic_show);
-                mPcEdit.setTransformationMethod(show3Active ?
-                        null : new PasswordTransformationMethod());
-                show3Active = !show3Active;
-            }
-        });
-        mShow4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mShow4.setBackgroundResource(show4Active ? R.drawable.ic_hide : R.drawable.ic_show);
-                mInternetEdit.setTransformationMethod(show4Active ?
-                        null : new PasswordTransformationMethod());
-                show4Active = !show4Active;
-            }
-        });
 
         Utils.animFabIntro(this, mFab,
                 getString(R.string.intro_fab_save_safe), "safeKey");

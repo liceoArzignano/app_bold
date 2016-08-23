@@ -60,7 +60,6 @@
 
             </LinearLayout>
 
-
             <LinearLayout
                 android:id="@+id/safe_content"
                 android:layout_width="match_parent"
@@ -68,143 +67,64 @@
                 android:orientation="vertical"
                 android:visibility="gone">
 
-                <LinearLayout
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:paddingTop="16dp">
 
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="0dp"
+                    <EditText
+                        android:id="@+id/userNamePwd"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="7">
+                        android:ellipsize="start"
+                        android:hint="@string/safe_username"
+                        android:inputType="textPassword"
+                        android:paddingBottom="16dp" />
+                </android.support.design.widget.TextInputLayout>
 
-                        <EditText
-                            android:id="@+id/userNamePwd"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="start"
-                            android:hint="@string/safe_username"
-                            android:inputType="textPassword"
-                            android:paddingBottom="16dp" />
-                    </android.support.design.widget.TextInputLayout>
-
-                    <ImageButton
-                        android:id="@+id/showHide1"
-                        style="?borderlessButtonStyle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:scaleType="fitCenter"
-                        android:contentDescription="@string/accessibility_safe_show"
-                        tools:ignore="MissingPrefix" />
-                </LinearLayout>
-
-                <LinearLayout
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content">
 
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="0dp"
+                    <EditText
+                        android:id="@+id/regPwd"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="7">
+                        android:ellipsize="start"
+                        android:hint="@string/safe_reg_pwd"
+                        android:inputType="textPassword"
+                        android:paddingBottom="16dp" />
+                </android.support.design.widget.TextInputLayout>
 
-                        <EditText
-                            android:id="@+id/regPwd"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="start"
-                            android:hint="@string/safe_reg_pwd"
-                            android:inputType="textPassword"
-                            android:paddingBottom="16dp" />
-                    </android.support.design.widget.TextInputLayout>
-
-                    <ImageButton
-                        android:id="@+id/showHide2"
-                        style="?borderlessButtonStyle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:contentDescription="@string/accessibility_safe_show"
-                        android:gravity="center"
-                        android:paddingTop="16dp"
-                        android:scaleType="fitCenter"
-                        tools:ignore="MissingPrefix"/>
-                </LinearLayout>
-
-                <LinearLayout
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content">
 
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="0dp"
+                    <EditText
+                        android:id="@+id/pcPwd"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="7">
+                        android:ellipsize="start"
+                        android:hint="@string/safe_pc_pwd"
+                        android:inputType="textPassword"
+                        android:paddingBottom="16dp" />
+                </android.support.design.widget.TextInputLayout>
 
-                        <EditText
-                            android:id="@+id/pcPwd"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="start"
-                            android:hint="@string/safe_pc_pwd"
-                            android:inputType="textPassword"
-                            android:paddingBottom="16dp" />
-                    </android.support.design.widget.TextInputLayout>
-
-                    <ImageButton
-                        android:id="@+id/showHide3"
-                        style="?borderlessButtonStyle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:contentDescription="@string/accessibility_safe_show"
-                        android:scaleType="matrix"
-                        tools:ignore="MissingPrefix"/>
-                </LinearLayout>
-
-                <LinearLayout
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content">
 
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="0dp"
+                    <EditText
+                        android:id="@+id/internetPwd"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="7">
-
-                        <EditText
-                            android:id="@+id/internetPwd"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="start"
-                            android:hint="@string/safe_internet_pwd"
-                            android:inputType="textPassword"
-                            android:paddingBottom="16dp" />
-                    </android.support.design.widget.TextInputLayout>
-
-                    <ImageButton
-                        android:id="@+id/showHide4"
-                        style="?borderlessButtonStyle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:contentDescription="@string/accessibility_safe_show"
-                        android:scaleType="center"
-                        tools:ignore="MissingPrefix"/>
-                </LinearLayout>
-
+                        android:ellipsize="start"
+                        android:hint="@string/safe_internet_pwd"
+                        android:inputType="textPassword"
+                        android:paddingBottom="16dp" />
+                </android.support.design.widget.TextInputLayout>
             </LinearLayout>
         </LinearLayout>
-
     </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
