@@ -41,96 +41,99 @@
                 card_view:cardElevation="@dimen/card_elevation"
                 card_view:contentPaddingBottom="@dimen/card_content_padding">
 
-                <LinearLayout
+                <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingBottom="56dp">
-                    <ImageView
-                        android:id="@+id/banner_image"
-                        android:layout_width="fill_parent"
-                        android:layout_height="224dp"
-                        android:background="@drawable/newmark"
-                        android:scaleType="centerCrop"
-                        android:transitionName="imageShared"
-                        android:contentDescription="@string/accessibility_manager"
-                        android:paddingBottom="8dp"
-                        tools:targetApi="lollipop" />
-
-                    <!-- Title -->
-                    <EditText
-                        android:id="@+id/title_input"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/hint_event"
-                        android:textColor="@color/black"
-                        android:visibility="gone" />
-
-                    <Button
-                        android:id="@+id/subjects_selector"
-                        style="?borderlessButtonStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="left"
-                        android:text="@string/select_subject" />
-
-                    <!-- Notes -->
-                    <EditText
-                        android:id="@+id/input_notes"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/hint_notes"
-                        android:textColorHint="@color/colorAccent" />
-
-                    <!-- Value -->
+                    android:layout_height="wrap_content">
                     <LinearLayout
-                        android:id="@+id/event_spinner_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingBottom="4dp"
-                        android:visibility="gone">
+                        android:orientation="vertical"
+                        android:paddingBottom="56dp">
+                        <ImageView
+                            android:id="@+id/banner_image"
+                            android:layout_width="fill_parent"
+                            android:layout_height="224dp"
+                            android:background="@drawable/newmark"
+                            android:scaleType="centerCrop"
+                            android:transitionName="imageShared"
+                            android:contentDescription="@string/accessibility_manager"
+                            android:paddingBottom="8dp"
+                            tools:targetApi="lollipop" />
+
+                        <!-- Title -->
+                        <EditText
+                            android:id="@+id/title_input"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/hint_event"
+                            android:textColor="@color/black"
+                            android:visibility="gone" />
+
+                        <Button
+                            android:id="@+id/subjects_selector"
+                            style="?borderlessButtonStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="left"
+                            android:text="@string/select_subject" />
+
+                        <!-- Notes -->
+                        <EditText
+                            android:id="@+id/input_notes"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/hint_notes"
+                            android:textColorHint="@color/colorAccent" />
+
+                        <!-- Value -->
+                        <LinearLayout
+                            android:id="@+id/event_spinner_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingBottom="4dp"
+                            android:visibility="gone">
+
+                            <TextView
+                                style="@style/home_card_text"
+                                android:layout_weight="1"
+                                android:text="@string/event_kind"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="@dimen/text_secondary_size" />
+
+                            <Spinner
+                                android:id="@+id/event_spinner"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:paddingLeft="@dimen/activity_horizontal_margin" />
+                        </LinearLayout>
 
                         <TextView
+                            android:id="@+id/mark_preview"
                             style="@style/home_card_text"
-                            android:layout_weight="1"
-                            android:text="@string/event_kind"
+                            android:text="@string/current_mark"
                             android:textColor="@color/text_secondary"
                             android:textSize="@dimen/text_secondary_size" />
 
-                        <Spinner
-                            android:id="@+id/event_spinner"
+                        <SeekBar
+                            android:id="@+id/mark_seek"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="8dp" />
+
+                        <Button
+                            android:id="@+id/datepicker_button"
+                            style="?android:attr/borderlessButtonStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:paddingLeft="@dimen/activity_horizontal_margin" />
+                            android:paddingLeft="@dimen/activity_horizontal_margin"
+                            android:text="@string/current_date"
+                            android:textColor="@color/text_secondary"
+                            android:gravity="left"
+                            android:textSize="@dimen/text_secondary_size"/>
                     </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/mark_preview"
-                        style="@style/home_card_text"
-                        android:text="@string/current_mark"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="@dimen/text_secondary_size" />
-
-                    <SeekBar
-                        android:id="@+id/mark_seek"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="8dp" />
-
-                    <Button
-                        android:id="@+id/datepicker_button"
-                        style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="@dimen/activity_horizontal_margin"
-                        android:text="@string/current_date"
-                        android:textColor="@color/text_secondary"
-                        android:gravity="left"
-                        android:textSize="@dimen/text_secondary_size"/>
-
-                </LinearLayout>
+                </ScrollView>
             </android.support.v7.widget.CardView>
         </LinearLayout>
 
