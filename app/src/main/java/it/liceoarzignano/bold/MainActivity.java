@@ -45,13 +45,13 @@ import io.realm.Sort;
 import it.liceoarzignano.bold.events.AlarmService;
 import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.events.EventListActivity;
-import it.liceoarzignano.bold.external.showcase.MaterialShowcaseView;
 import it.liceoarzignano.bold.intro.BenefitsActivity;
 import it.liceoarzignano.bold.marks.MarkListActivity;
 import it.liceoarzignano.bold.realm.RealmController;
 import it.liceoarzignano.bold.safe.SafeActivity;
 import it.liceoarzignano.bold.settings.AnalyticsTracker;
 import it.liceoarzignano.bold.settings.SettingsActivity;
+import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -717,11 +717,16 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
 
-        new MaterialShowcaseView.Builder(this)
-                .setTarget(toolbar.getChildAt(1))
-                .setContentText(getString(R.string.intro_drawer))
-                .singleUse("drawerIntro")
-                .show();
+        if (prefs.getBoolean("drawerIntro", true)) {
+            prefs.edit().putBoolean("drawerIntro", false).apply();
+            new MaterialTapTargetPrompt.Builder(this)
+                    .setTarget(toolbar.getChildAt(1))
+                    .setPrimaryText(getString(R.string.intro_drawer_title))
+                    .setSecondaryText(getString(R.string.intro_drawer))
+                    .setBackgroundColourFromRes(R.color.colorAccentDark)
+                    .setFocalColourFromRes(R.color.colorPrimaryDark)
+                    .show();
+        }
     }
 
     /**

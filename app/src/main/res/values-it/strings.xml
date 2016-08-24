@@ -114,15 +114,20 @@
     <string name="slide1_message">Con Safe, potrai registrare in modo sicuro tutte le password della scuola in un posto sicuro</string>
     <string name="slide2_title">Pronti per i docenti</string>
     <string name="slide2_message">Anche i docenti possono utilizzare quest\'app. Attivando l\'apposita opzione l\'app di adatter\u00E0</string>
-    <string name="intro_drawer">Scorri da qui per navigare nelle varie sezioni dell\'app</string>
-    <string name="intro_fab_mark">Clicca qui per aggiungere un nuovo voto</string>
-    <string name="intro_fab_event">Clicca qui per creare il tuo primo evento</string>
-    <string name="intro_fab_save_mark_student">Scegli la materia, seleziona il voto con lo slider e poi salva premendo questo pulsante</string>
-    <string name="intro_fab_save_mark_teacher">Scrivi il nome dello studente, seleziona il voto con lo slider e poi salva premendo questo pulsante</string>
-    <string name="intro_fab_save_event">Scrivi il nome dell\'evento, seleziona la categoria e la data. Poi premi questo pulsante per salvare</string>
-    <string name="intro_fab_save_safe">Puoi registrare i tuoi dati qui. Per vedere ci\u00F2 che \u00E8 scritto, clicca sull\'occhio. Quando hai finito, ricordati di salvare premendo qui</string>
-    <string name="intro_fab_backup">Per creare un backup clicca qui e seleziona la cartella in Google Drive dove vuoi archiviare i tuoi dati, poi questi saranno immediatamente caricati</string>
-    <string name="intro_gotit">OK, capito</string>
+    <string name="intro_drawer_title">Start here</string>
+    <string name="intro_drawer">Tap this to navigate through the app sections.\nThe home screen will populate one you start using the app</string>
+    <string name="intro_fab_mark_title">Try this</string>
+    <string name="intro_fab_mark">Here you will find all your marks and real-time averages. To create your first mark, tap this</string>
+    <string name="intro_fab_event_title">Your plans, here</string>
+    <string name="intro_fab_event">All your events will appear here, ordered by date. To get started, create a new event by tapping this</string>
+    <string name="intro_fab_save_mark_title">Save your mark</string>
+    <string name="intro_fab_save_mark">Fill this screen with the mark information and then tap this button to save it</string>
+    <string name="intro_fab_save_event_title">Register your event</string>
+    <string name="intro_fab_save_event">Fill this screen with the event information and once you\'re done tap this button to save your new event</string>
+    <string name="intro_fab_save_safe_title">Welcome in a Safe place</string>
+    <string name="intro_fab_save_safe">You can store all your private data here, no one will be able to access them. Once you\'re done, tap this button to save\nTip: to see what you\'ve written, click on the eye. </string>
+    <string name="intro_fab_backup_title">Backup your data</string>
+    <string name="intro_fab_backup">Once you\'ve logged into Google Drive tap this button and select a folder to create and upload your first backup</string>
 
     <!-- Subjects -->
     <string name="subject_italian">Italiano</string>

@@ -229,10 +229,8 @@ public class ManagerActivity extends AppCompatActivity
         });
 
         Utils.animFabIntro(this, fab,
-                isMark ? getString(Utils.isTeacher(this) ?
-                        R.string.intro_fab_save_mark_teacher :
-                        R.string.intro_fab_save_mark_student) :
-                        getString(R.string.intro_fab_save_event),
+                getString(isMark ? R.string.intro_fab_mark_title : R.string.intro_fab_event_title),
+                getString(isMark ? R.string.intro_fab_save_mark : R.string.intro_fab_save_event),
                 isMark ? "markKey" : "eventKey");
     }
 

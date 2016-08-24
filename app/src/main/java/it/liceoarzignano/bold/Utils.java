@@ -18,8 +18,10 @@ import java.util.List;
 import java.util.Locale;
 
 import io.realm.Realm;
-import it.liceoarzignano.bold.external.showcase.MaterialShowcaseView;
 import it.liceoarzignano.bold.marks.Mark;
+import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class Utils {
     private static SharedPreferences preferences;
@@ -43,24 +45,31 @@ public class Utils {
      *
      * @param context: used to create materialshowcase
      * @param fab:     fab that will be animated and exposed
-     * @param text:    showcase text
+     * @param title:   showcase title
+     * @param message: showcase message
      * @param key:     showcase key to show it only the first time
      */
     public static void animFabIntro(final Activity context,
                                     final FloatingActionButton fab,
-                                    final String text, final String key) {
+                                    final String title, final String message, final String key) {
+        final SharedPreferences prefs = context.getSharedPreferences("HomePrefs", MODE_PRIVATE);
+        final boolean firstUsage = prefs.getBoolean(key, true);
+        if (hasApi21()) {
+            fab.show();
+        }
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (hasApi21()) {
-                    fab.show();
-                }
                 fab.setVisibility(View.VISIBLE);
-                new MaterialShowcaseView.Builder(context)
-                        .setTarget(fab)
-                        .setContentText(text)
-                        .singleUse(key)
-                        .show();
+                if (firstUsage) {
+                    prefs.edit().putBoolean(key, false).apply();
+                    new MaterialTapTargetPrompt.Builder(context)
+                            .setTarget(fab)
+                            .setPrimaryText(title)
+                            .setSecondaryText(message)
+                            .setBackgroundColourFromRes(R.color.colorAccentDark)
+                            .show();
+                }
             }
         }, 500);
 
@@ -87,7 +96,7 @@ public class Utils {
      * @return the date of the day the first usage happened
      */
     private static String getFirstUsageDate(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences("HomePrefs", Context.MODE_PRIVATE);
+        SharedPreferences prefs = context.getSharedPreferences("HomePrefs", MODE_PRIVATE);
         return prefs.getString("initialDayKey", "2000-01-01");
     }
 
@@ -269,7 +278,7 @@ public class Utils {
     }
 
     static boolean hasSafe(Context context) {
-        preferences = context.getSharedPreferences("SafePrefs", Context.MODE_PRIVATE);
+        preferences = context.getSharedPreferences("SafePrefs", MODE_PRIVATE);
         return preferences.getBoolean("doneSetup", false);
     }
 
@@ -284,7 +293,7 @@ public class Utils {
     }
 
     static String appVersionKey(Context context) {
-        preferences = context.getSharedPreferences("HomePrefs", Context.MODE_PRIVATE);
+        preferences = context.getSharedPreferences("HomePrefs", MODE_PRIVATE);
         return preferences.getString("appVersionKey", "0");
     }
 

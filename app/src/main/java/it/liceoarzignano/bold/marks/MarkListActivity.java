@@ -142,7 +142,7 @@ public class MarkListActivity extends AppCompatActivity {
         });
 
         if (subjectFilter == null) {
-            Utils.animFabIntro(this, fab,
+            Utils.animFabIntro(this, fab, getString(R.string.intro_fab_mark_title),
                     getString(R.string.intro_fab_mark), "markListIntro");
         } else {
             String title = String.format(res.getString(R.string.title_filter), subjectFilter);

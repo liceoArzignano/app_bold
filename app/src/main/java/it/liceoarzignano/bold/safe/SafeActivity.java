@@ -296,7 +296,7 @@ public class SafeActivity extends AppCompatActivity {
         mPcEdit.setText(crPc);
         mInternetEdit.setText(crInternet);
 
-        Utils.animFabIntro(this, mFab,
+        Utils.animFabIntro(this, mFab, getString(R.string.intro_fab_save_safe_title),
                 getString(R.string.intro_fab_save_safe), "safeKey");
 
         mFab.setOnClickListener(new View.OnClickListener() {

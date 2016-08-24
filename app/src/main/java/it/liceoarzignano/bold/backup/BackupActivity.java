@@ -137,7 +137,7 @@ public class BackupActivity extends AppCompatActivity {
             }
         });
 
-        Utils.animFabIntro(this, mBackupFab,
+        Utils.animFabIntro(this, mBackupFab, getString(R.string.intro_fab_backup_title),
                 getString(R.string.intro_fab_backup), "backupFabIntro");
 
 
