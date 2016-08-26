@@ -114,20 +114,20 @@
     <string name="slide1_message">Con Safe, potrai registrare in modo sicuro tutte le password della scuola in un posto sicuro</string>
     <string name="slide2_title">Pronti per i docenti</string>
     <string name="slide2_message">Anche i docenti possono utilizzare quest\'app. Attivando l\'apposita opzione l\'app di adatter\u00E0</string>
-    <string name="intro_drawer_title">Start here</string>
-    <string name="intro_drawer">Tap this to navigate through the app sections.\nThe home screen will populate one you start using the app</string>
-    <string name="intro_fab_mark_title">Try this</string>
-    <string name="intro_fab_mark">Here you will find all your marks and real-time averages. To create your first mark, tap this</string>
-    <string name="intro_fab_event_title">Your plans, here</string>
-    <string name="intro_fab_event">All your events will appear here, ordered by date. To get started, create a new event by tapping this</string>
-    <string name="intro_fab_save_mark_title">Save your mark</string>
-    <string name="intro_fab_save_mark">Fill this screen with the mark information and then tap this button to save it</string>
-    <string name="intro_fab_save_event_title">Register your event</string>
-    <string name="intro_fab_save_event">Fill this screen with the event information and once you\'re done tap this button to save your new event</string>
-    <string name="intro_fab_save_safe_title">Welcome in a Safe place</string>
-    <string name="intro_fab_save_safe">You can store all your private data here, no one will be able to access them. Once you\'re done, tap this button to save\nTip: to see what you\'ve written, click on the eye. </string>
-    <string name="intro_fab_backup_title">Backup your data</string>
-    <string name="intro_fab_backup">Once you\'ve logged into Google Drive tap this button and select a folder to create and upload your first backup</string>
+    <string name="intro_drawer_title">Inizia qui</string>
+    <string name="intro_drawer">Tocca qui per navigare tra le sezioni dell\'app.\nLa schermata Home si riempir\u00E0 man mano che utilizzerai l\'app</string>
+    <string name="intro_fab_mark_title">Prova questo</string>
+    <string name="intro_fab_mark">In questa schermata puoi trovare i tuoi voti e medie. Per aggiungere il tuo primo voto, tocca qui</string>
+    <string name="intro_fab_event_title">I tuoi piani, qui</string>
+    <string name="intro_fab_event">I tuoi eventi appariranno in questa schermata, ordinati per data. Per iniziare, crea un evento toccando qui</string>
+    <string name="intro_fab_save_mark_title">Aggiungi il tuo voto</string>
+    <string name="intro_fab_save_mark">Inserisci le informazioni relative al voto e poi tocca questo pulsante per salvarlo</string>
+    <string name="intro_fab_save_event_title">Registra il tuo evento</string>
+    <string name="intro_fab_save_event">Inserisci le informazioni relative all\'evento e poi quando hai finito tocca questo pulsante per salvarlo</string>
+    <string name="intro_fab_save_safe_title">Benvenuto in un posto Safe</string>
+    <string name="intro_fab_save_safe">Puoi registrare i tuoi dati privati qui, nessuno potr\u00E0 accedervi. Quando hai finito, ricordati di toccare questo pulsante per salvare\nSuggerimento: per vedere ci\u00F2 che scrivi, tocca l\'occhio. </string>
+    <string name="intro_fab_backup_title">Fai il backup dei tuoi dati</string>
+    <string name="intro_fab_backup">Una volta che ti sarai connesso a Google Drive, tocca questo pulsante per selezionare la cartella di destinazione e creare un backup</string>
 
     <!-- Subjects -->
     <string name="subject_italian">Italiano</string>
