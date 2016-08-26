@@ -47,6 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
+import it.liceoarzignano.bold.BuildConfig;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
 import it.liceoarzignano.bold.external.expandableheightlistview.ExpandableHeightListView;
@@ -132,14 +133,18 @@ public class BackupActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 status = 1;
-                openFolderPicker();
+                if (!BuildConfig.DEBUG) {
+                    openFolderPicker();
+                } else {
+                    Snackbar.make(mCoordinatorLayout, getString(R.string.backup_error_debug),
+                            Snackbar.LENGTH_LONG).show();
+                }
                 status = 0;
             }
         });
 
         Utils.animFabIntro(this, mBackupFab, getString(R.string.intro_fab_backup_title),
                 getString(R.string.intro_fab_backup), "backupFabIntro");
-
 
         if (!backupFolder.equals("")) {
             getBackupsFromDrive(DriveId.decodeFromString(backupFolder).asDriveFolder());

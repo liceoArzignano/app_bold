@@ -258,6 +258,7 @@
     <string name="recent_backups">Backup recenti</string>
     <string name="restore_dialog_title">Ripristino dati precedenti</string>
     <string name="restore_dialog_message">Ripristinando il backup i dati esistenti saranno sovrascritti con quelli presenti nel backup\n<b>Data di creazione del backup</b>: %1$s\nSei sicuro di voler procedere?</string>
+    <string name="backup_error_debug">Non puoi creare backup quando utilizzi una build debug</string>
 
     <!-- Accessibility -->
     <string name="accessibility_drawer">Intestazione</string>
