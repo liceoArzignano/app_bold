@@ -64,16 +64,6 @@
         android:title="@string/pref_notification_time_title" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/pref_info">
-
-        <Preference
-            android:key="changelog_key"
-            android:summary="@string/pref_app_version_summary"
-            android:title="@string/pref_app_version_title" />
-
-        <Preference android:key="secret_key"
-            android:title="@string/pref_dev_info" />
-    </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_getintouch">
 
         <PreferenceScreen
@@ -108,5 +98,16 @@
                 android:data="https://www.instagram.com/liceoarzignano" />
         </PreferenceScreen>
 
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_info">
+
+        <Preference
+            android:key="changelog_key"
+            android:summary="@string/pref_app_version_summary"
+            android:title="@string/pref_app_version_title" />
+
+        <Preference android:key="secret_key"
+            android:title="@string/pref_dev_info" />
     </PreferenceCategory>
 </PreferenceScreen>
