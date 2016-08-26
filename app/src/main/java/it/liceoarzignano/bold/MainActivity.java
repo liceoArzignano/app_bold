@@ -56,7 +56,7 @@ import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String APP_VERSION = "1.0.13";
+    private static final String APP_VERSION = BuildConfig.VERSION_NAME;
     private static final Calendar c = Calendar.getInstance();
     private static Resources res;
     private static Context sContext;

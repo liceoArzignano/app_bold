@@ -22,6 +22,6 @@
     <!-- First quarter end date. Format: yyyy-mm-dd -->
     <string translatable="false" name="config_quarter_change" tools:ignore="TypographyDashes">2016-08-31</string>
 
-    <!-- Update APP_VERSION in MainActivity.java, the build.gradle file and strings.xml too when this is changed -->
-    <string translatable="false" name="pref_app_version_summary">Liceo 1.0.13</string>
+    <!-- Update APP_VERSION the build.gradle file and strings.xml too when this is changed -->
+    <string translatable="false" name="pref_app_version_summary">Liceo 1.0.14</string>
 </resources>

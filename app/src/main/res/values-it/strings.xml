@@ -43,11 +43,10 @@
     <string name="dialog_first_title">Benvenuto!</string>
     <string name="dialog_updated_title">L\'app \u00E8 stata aggiornata!</string>
     <string name="dialog_updated_content">
-        \u2022 Nuovo: backup dei dati su Google Drive.\n
-        \u2022 Nuovo: utilizzo di database Realm per migliorare le performace nella gestione dei voti ed eventi.\n
-        \u2022 Nuovo: medie di ogni studente per i docenti.\n
-        \u2022 Miglioramenti performances di Safe.\n
-        \u2022 Miglioramenti comportamento notifiche.\n
+        \u2022 Nuovo: gestione dei voti in base al quadrimestre.\n
+        \u2022 Nuovo: supporto android 7.0 Nougat (Schermo Diviso supportato).\n
+        \u2022 Aggiornata interfaccia feature discovery.\n
+        \u2022 Miglioramenti sicurezza Safe.\n
         \u2022 Bug fix.
     </string>
 
