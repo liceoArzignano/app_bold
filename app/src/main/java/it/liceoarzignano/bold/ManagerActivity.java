@@ -229,9 +229,10 @@ public class ManagerActivity extends AppCompatActivity
         });
 
         Utils.animFabIntro(this, fab,
-                getString(isMark ? R.string.intro_fab_mark_title : R.string.intro_fab_event_title),
+                getString(isMark ?
+                        R.string.intro_fab_save_mark_title : R.string.intro_fab_save_event_title),
                 getString(isMark ? R.string.intro_fab_save_mark : R.string.intro_fab_save_event),
-                isMark ? "markKey" : "eventKey");
+                isMark ? "markManKey" : "eventManKey");
     }
 
     /**
@@ -319,9 +320,9 @@ public class ManagerActivity extends AppCompatActivity
             } else {
                 mEventSpinner.setSelection(!Utils.isTeacher(context) && value == 4 ? 3 : value);
             }
-            mMarkPreview.setText(String.format(getResources().getString(R.string.current_mark),
-                    editMode ? String.valueOf((double) value / 100) : "0.0"));
         }
+        mMarkPreview.setText(String.format(getResources().getString(R.string.current_mark),
+                editMode ? String.valueOf((double) value / 100) : "0.0"));
     }
 
     @Override
