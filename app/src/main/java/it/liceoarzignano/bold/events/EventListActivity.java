@@ -79,4 +79,9 @@ public class EventListActivity extends AppCompatActivity {
         super.onResume();
         refreshList(fContext);
     }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }
