@@ -71,7 +71,8 @@
             android:summary="@string/pref_app_version_summary"
             android:title="@string/pref_app_version_title" />
 
-        <Preference android:title="@string/pref_dev_info" />
+        <Preference android:key="secret_key"
+            android:title="@string/pref_dev_info" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_getintouch">
 

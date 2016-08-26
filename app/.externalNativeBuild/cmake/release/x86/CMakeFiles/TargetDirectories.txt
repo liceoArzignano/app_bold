@@ -1,0 +1,3 @@
+/git/bold/app/.externalNativeBuild/cmake/release/x86/CMakeFiles/edit_cache.dir
+/git/bold/app/.externalNativeBuild/cmake/release/x86/CMakeFiles/rebuild_cache.dir
+/git/bold/app/.externalNativeBuild/cmake/release/x86/CMakeFiles/safe-addon-jni.dir

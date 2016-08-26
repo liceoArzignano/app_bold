@@ -187,6 +187,11 @@
     <string name="pref_notification_time_evening">In the evening</string>
     <string name="pref_backup_title">Save your marks and events on Google Drive</string>
     <string name="pref_backup_summary">Backup &amp; Restore</string>
+    <string name="pref_secret_export_safe_title">Password sharing tool</string>
+    <string name="pref_secret_export_safe_message">You can share a copy of your <b>encrypted</b> password.\nOnce you shared your encrypted password you won\'t be able to do it anymore unless you change it.\nSharing your password <b>is dangerous</b> because it could be decrypted. Choose carefully.</string>
+    <string name="pref_secret_export_message">My encrypted password: %1$s</string>
+    <string name="pref_secret_export_title">Share password</string>
+    <string name="pref_secret_export_already_shared">The password has already been shared. To share it again you need change it</string>
 
     <!-- Safe -->
     <string name="title_activity_safe">Safe</string>

@@ -13,13 +13,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
-import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -40,12 +39,7 @@ public class SafeActivity extends AppCompatActivity {
     private static final String regPwdKey = "reg_pwd";
     private static final String pcPwdKey = "pd_pwd";
     private static final String internetPwdKey = "internet_pwd";
-    private static final String keyStr
-            = "eezrWvsJWmaic7/DD2dt5g==:xuf8gXH87fUzeGBIMmn+PveCgx4gXcl610GuYOMFSjo=";
-    private static final String salt
-            = "3oUjZk/hB6b9K/1Zf6pfgPy/wfBpSPffG8AXwjlqouWFECxbKjJH95tVgFD6ZYuG" +
-            "4odBNjYCh+PquKvKPuz/00KXzqAon2/frtw783/Nmmb1w7GgW0o73BoJtRP6p3g9Az" +
-            "DAwMkgGZXUpYHi7t9fYCihxhY3siVsay+Tzos0i0k=";
+    private static final String hasSharedKey = "has_shared";
     private static SharedPreferences prefs;
     private static SharedPreferences.Editor editor;
     private static String AccessPassword;
@@ -55,6 +49,7 @@ public class SafeActivity extends AppCompatActivity {
     private String crPc;
     private String crInternet;
     private boolean doneSetup;
+    private boolean isWorking = false;
 
     private Context context;
 
@@ -70,10 +65,19 @@ public class SafeActivity extends AppCompatActivity {
     private ImageView mImage;
     private FloatingActionButton mFab;
 
+    // Safe jni addons
+    static {
+        System.loadLibrary("safe-addon-jni");
+    }
+    public native String getKey();
+    public native String getSalt();
+
+
     @SuppressLint("CommitPrefEdits")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_safe);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -97,11 +101,42 @@ public class SafeActivity extends AppCompatActivity {
         mFab = (FloatingActionButton) findViewById(R.id.fab);
 
         mLoadingLayout.setVisibility(View.VISIBLE);
+        isWorking = true;
 
         if (tellMeTheresNoXposed()) {
             setupEncryption();
             showPasswordDialog();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Reload everything since it everything was destroyed onPause();
+        if (!isWorking) {
+            setupEncryption();
+            showPasswordDialog();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        // Remove all the private data from memory
+        encryption = null;
+        crUserName = null;
+        crInternet = null;
+        crPc = null;
+        crReg = null;
+        mUserEdit.setText("");
+        mInternetEdit.setText("");
+        mPcEdit.setText("");
+        mRegEdit.setText("");
+        mContentLayout.setVisibility(View.GONE);
+        mLoadingLayout.setVisibility(View.VISIBLE);
+        safeMenu.findItem(R.id.action_reset).setVisible(false);
+        safeMenu.findItem(R.id.action_info).setVisible(false);
+
+        super.onPause();
     }
 
     @Override
@@ -215,7 +250,7 @@ public class SafeActivity extends AppCompatActivity {
      * Fire encryption stuffs
      */
     private void setupEncryption() {
-        encryption = Encryption.getDefault(keyStr, salt, new byte[16]);
+        encryption = Encryption.getDefault(getKey(), getSalt(), new byte[16]);
     }
 
     /**
@@ -267,6 +302,7 @@ public class SafeActivity extends AppCompatActivity {
      * data
      */
     private void onCreateContinue() {
+        isWorking = false;
 
         // Always check if there's sth to decrypt, if not, pass
         // away to speed up this process
@@ -347,6 +383,7 @@ public class SafeActivity extends AppCompatActivity {
                         editor.remove(regPwdKey).apply();
                         editor.remove(pcPwdKey).apply();
                         editor.remove(internetPwdKey).apply();
+                        editor.remove(hasSharedKey).apply();
                         editor.remove("doneSetup").apply();
 
                         new Handler().postDelayed(new Runnable() {
@@ -359,5 +396,38 @@ public class SafeActivity extends AppCompatActivity {
                     }
                 })
                 .show();
+    }
+
+    /**
+     * Encrypted password getter
+     *
+     * @param context used to access sharedPreferences
+     * @return encrypted password from sharedPreferences
+     */
+    public static String getEncryptedPassword(Context context) {
+        return context.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE).getString(accessKey, "");
+    }
+
+    /**
+     * Public getter for hasShared password, used to prevent
+     * encrypted password to be shared too many times from secret menu
+     *
+     * @param context used to access to sharedPreferences
+     * @return true if user has already shared the password
+     */
+    public static boolean hasSharedPassword(Context context) {
+        return context.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE)
+                .getBoolean(hasSharedKey, false);
+    }
+
+    /**
+     * Public setter for hasShared password, used to prevent
+     * encrypted password to be shared too many times from secret menu
+     *
+     * @param context used to access SharedPreferences
+     */
+    public static void setSharedPassword(Context context) {
+        context.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE).edit()
+                .putBoolean(hasSharedKey, true).apply();
     }
 }

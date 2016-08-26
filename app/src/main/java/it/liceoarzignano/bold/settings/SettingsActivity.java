@@ -2,19 +2,25 @@ package it.liceoarzignano.bold.settings;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
 import it.liceoarzignano.bold.backup.BackupActivity;
+import it.liceoarzignano.bold.safe.SafeActivity;
 
 public class SettingsActivity extends AppCompatActivity {
+    private static int counter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstance) {
@@ -42,9 +48,10 @@ public class SettingsActivity extends AppCompatActivity {
             context = getActivity();
 
             Preference changelogPref = findPreference("changelog_key");
-            Preference trackerPref = findPreference("analytics_key");
+            final Preference trackerPref = findPreference("analytics_key");
             Preference backupPref = findPreference("backup_key");
             final Preference namePref = findPreference("username_key");
+            final Preference secretPref = findPreference("secret_key");
 
             changelogPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
@@ -77,6 +84,43 @@ public class SettingsActivity extends AppCompatActivity {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     namePref.setSummary(newValue.toString());
+                    return true;
+                }
+            });
+
+            secretPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    counter++;
+                    if (counter == 9) {
+                        if (SafeActivity.hasSharedPassword(context)) {
+                            Toast.makeText(context, getString(
+                                    R.string.pref_secret_export_already_shared), Toast.LENGTH_LONG)
+                                    .show();
+                        } else {
+                            new MaterialDialog.Builder(context)
+                                    .title(getString(R.string.pref_secret_export_safe_title))
+                                    .content(getString(R.string.pref_secret_export_safe_message))
+                                    .negativeText(getString(android.R.string.cancel))
+                                    .positiveText(getString(R.string.viewer_share))
+                                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                        @Override
+                                        public void onClick(@NonNull MaterialDialog dialog,
+                                                            @NonNull DialogAction which) {
+                                            final Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                                            shareIntent.setType("text/plain");
+                                            shareIntent.putExtra(Intent.EXTRA_TEXT, String.format(
+                                                    getString(R.string.pref_secret_export_message),
+                                                    SafeActivity.getEncryptedPassword(context)));
+                                            startActivity(Intent.createChooser(shareIntent,
+                                                    getString(R.string.pref_secret_export_title)));
+                                            SafeActivity.setSharedPassword(context);
+                                        }
+                                    })
+                                    .show();
+                        }
+
+                    }
                     return true;
                 }
             });

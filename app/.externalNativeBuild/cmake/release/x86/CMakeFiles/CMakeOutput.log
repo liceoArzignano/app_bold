@@ -1,0 +1,196 @@
+The target system is: Android - 16 - i686
+The host system is: Linux - 4.4.0-31-generic - x86_64
+Determining if the C compiler works passed with the following output:
+Change Dir: /git/bold/app/.externalNativeBuild/cmake/release/x86/CMakeFiles/CMakeTmp
+
+Run Build Command:"/home/joey/android/android-sdk/cmake/3.6.3155560/bin/ninja" "cmTC_7438a"
+[1/2] Building C object CMakeFiles/cmTC_7438a.dir/testCCompiler.c.o
+[2/2] Linking C executable cmTC_7438a
+
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: /git/bold/app/.externalNativeBuild/cmake/release/x86/CMakeFiles/CMakeTmp
+
+Run Build Command:"/home/joey/android/android-sdk/cmake/3.6.3155560/bin/ninja" "cmTC_1a61a"
+[1/2] Building C object CMakeFiles/cmTC_1a61a.dir/CMakeCCompilerABI.c.o
+[2/2] Linking C executable cmTC_1a61a
+Android clang version 3.8.256229  (based on LLVM 3.8.256229)
+Target: i686-none-linux-android
+Thread model: posix
+InstalledDir: /home/joey/android/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin
+Found candidate GCC installation: /home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x
+Selected GCC installation: /home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x
+Candidate multilib: .;@m32
+Selected multilib: .;@m32
+ "/home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x/../../../../i686-linux-android/bin/ld" --sysroot=/home/joey/android/android-ndk/platforms/android-16/arch-x86 -pie -z relro --build-id --eh-frame-hdr -m elf_i386 -dynamic-linker /system/bin/linker -o cmTC_1a61a /home/joey/android/android-ndk/platforms/android-16/arch-x86/usr/lib/crtbegin_dynamic.o -L/home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x -L/home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x/../../../../i686-linux-android/lib -L/home/joey/android/android-ndk/platforms/android-16/arch-x86/usr/lib --build-id --warn-shared-textrel --fatal-warnings --no-undefined -z noexecstack -z relro -z now --gc-sections -z nocopyreloc --build-id --warn-shared-textrel --fatal-warnings --no-undefined -z noexecstack -z relro -z now --gc-sections -z nocopyreloc CMakeFiles/cmTC_1a61a.dir/CMakeCCompilerABI.c.o -lgcc -ldl -lc -lgcc -ldl /home/joey/android/android-ndk/platforms/android-16/arch-x86/usr/lib/crtend_android.o
+
+
+Parsed C implicit link information from above output:
+  link line regex: [^( *|.*[/\])(i686-linux-android-ld|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: /git/bold/app/.externalNativeBuild/cmake/release/x86/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command:"/home/joey/android/android-sdk/cmake/3.6.3155560/bin/ninja" "cmTC_1a61a"]
+  ignore line: [[1/2] Building C object CMakeFiles/cmTC_1a61a.dir/CMakeCCompilerABI.c.o]
+  ignore line: [[2/2] Linking C executable cmTC_1a61a]
+  ignore line: [Android clang version 3.8.256229  (based on LLVM 3.8.256229)]
+  ignore line: [Target: i686-none-linux-android]
+  ignore line: [Thread model: posix]
+  ignore line: [InstalledDir: /home/joey/android/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin]
+  ignore line: [Found candidate GCC installation: /home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x]
+  ignore line: [Selected GCC installation: /home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x]
+  ignore line: [Candidate multilib: .]
+  ignore line: [@m32]
+  ignore line: [Selected multilib: .]
+  ignore line: [@m32]
+  link line: [ "/home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x/../../../../i686-linux-android/bin/ld" --sysroot=/home/joey/android/android-ndk/platforms/android-16/arch-x86 -pie -z relro --build-id --eh-frame-hdr -m elf_i386 -dynamic-linker /system/bin/linker -o cmTC_1a61a /home/joey/android/android-ndk/platforms/android-16/arch-x86/usr/lib/crtbegin_dynamic.o -L/home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x -L/home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x/../../../../i686-linux-android/lib -L/home/joey/android/android-ndk/platforms/android-16/arch-x86/usr/lib --build-id --warn-shared-textrel --fatal-warnings --no-undefined -z noexecstack -z relro -z now --gc-sections -z nocopyreloc --build-id --warn-shared-textrel --fatal-warnings --no-undefined -z noexecstack -z relro -z now --gc-sections -z nocopyreloc CMakeFiles/cmTC_1a61a.dir/CMakeCCompilerABI.c.o -lgcc -ldl -lc -lgcc -ldl /home/joey/android/android-ndk/platforms/android-16/arch-x86/usr/lib/crtend_android.o]
+    arg [/home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x/../../../../i686-linux-android/bin/ld] ==> ignore
+    arg [--sysroot=/home/joey/android/android-ndk/platforms/android-16/arch-x86] ==> ignore
+    arg [-pie] ==> ignore
+    arg [-zrelro] ==> ignore
+    arg [--build-id] ==> ignore
+    arg [--eh-frame-hdr] ==> ignore
+    arg [-m] ==> ignore
+    arg [elf_i386] ==> ignore
+    arg [-dynamic-linker] ==> ignore
+    arg [/system/bin/linker] ==> ignore
+    arg [-o] ==> ignore
+    arg [cmTC_1a61a] ==> ignore
+    arg [/home/joey/android/android-ndk/platforms/android-16/arch-x86/usr/lib/crtbegin_dynamic.o] ==> ignore
+    arg [-L/home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x] ==> dir [/home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x]
+    arg [-L/home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x/../../../../i686-linux-android/lib] ==> dir [/home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x/../../../../i686-linux-android/lib]
+    arg [-L/home/joey/android/android-ndk/platforms/android-16/arch-x86/usr/lib] ==> dir [/home/joey/android/android-ndk/platforms/android-16/arch-x86/usr/lib]
+    arg [--build-id] ==> ignore
+    arg [--warn-shared-textrel] ==> ignore
+    arg [--fatal-warnings] ==> ignore
+    arg [--no-undefined] ==> ignore
+    arg [-znoexecstack] ==> ignore
+    arg [-zrelro] ==> ignore
+    arg [-znow] ==> ignore
+    arg [--gc-sections] ==> ignore
+    arg [-znocopyreloc] ==> ignore
+    arg [--build-id] ==> ignore
+    arg [--warn-shared-textrel] ==> ignore
+    arg [--fatal-warnings] ==> ignore
+    arg [--no-undefined] ==> ignore
+    arg [-znoexecstack] ==> ignore
+    arg [-zrelro] ==> ignore
+    arg [-znow] ==> ignore
+    arg [--gc-sections] ==> ignore
+    arg [-znocopyreloc] ==> ignore
+    arg [CMakeFiles/cmTC_1a61a.dir/CMakeCCompilerABI.c.o] ==> ignore
+    arg [-lgcc] ==> lib [gcc]
+    arg [-ldl] ==> lib [dl]
+    arg [-lc] ==> lib [c]
+    arg [-lgcc] ==> lib [gcc]
+    arg [-ldl] ==> lib [dl]
+    arg [/home/joey/android/android-ndk/platforms/android-16/arch-x86/usr/lib/crtend_android.o] ==> ignore
+  remove lib [gcc]
+  remove lib [gcc]
+  collapse library dir [/home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x] ==> [/home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x]
+  collapse library dir [/home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x/../../../../i686-linux-android/lib] ==> [/home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/i686-linux-android/lib]
+  collapse library dir [/home/joey/android/android-ndk/platforms/android-16/arch-x86/usr/lib] ==> [/home/joey/android/android-ndk/platforms/android-16/arch-x86/usr/lib]
+  implicit libs: [dl;c;dl]
+  implicit dirs: [/home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x;/home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/i686-linux-android/lib;/home/joey/android/android-ndk/platforms/android-16/arch-x86/usr/lib]
+  implicit fwks: []
+
+
+Determining if the CXX compiler works passed with the following output:
+Change Dir: /git/bold/app/.externalNativeBuild/cmake/release/x86/CMakeFiles/CMakeTmp
+
+Run Build Command:"/home/joey/android/android-sdk/cmake/3.6.3155560/bin/ninja" "cmTC_ad220"
+[1/2] Building CXX object CMakeFiles/cmTC_ad220.dir/testCXXCompiler.cxx.o
+[2/2] Linking CXX executable cmTC_ad220
+
+
+Detecting CXX compiler ABI info compiled with the following output:
+Change Dir: /git/bold/app/.externalNativeBuild/cmake/release/x86/CMakeFiles/CMakeTmp
+
+Run Build Command:"/home/joey/android/android-sdk/cmake/3.6.3155560/bin/ninja" "cmTC_5113f"
+[1/2] Building CXX object CMakeFiles/cmTC_5113f.dir/CMakeCXXCompilerABI.cpp.o
+[2/2] Linking CXX executable cmTC_5113f
+Android clang version 3.8.256229  (based on LLVM 3.8.256229)
+Target: i686-none-linux-android
+Thread model: posix
+InstalledDir: /home/joey/android/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin
+Found candidate GCC installation: /home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x
+Selected GCC installation: /home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x
+Candidate multilib: .;@m32
+Selected multilib: .;@m32
+ "/home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x/../../../../i686-linux-android/bin/ld" --sysroot=/home/joey/android/android-ndk/platforms/android-16/arch-x86 -pie -z relro --build-id --eh-frame-hdr -m elf_i386 -dynamic-linker /system/bin/linker -o cmTC_5113f /home/joey/android/android-ndk/platforms/android-16/arch-x86/usr/lib/crtbegin_dynamic.o -L/home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x -L/home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x/../../../../i686-linux-android/lib -L/home/joey/android/android-ndk/platforms/android-16/arch-x86/usr/lib --build-id --warn-shared-textrel --fatal-warnings --no-undefined -z noexecstack -z relro -z now --gc-sections -z nocopyreloc --build-id --warn-shared-textrel --fatal-warnings --no-undefined -z noexecstack -z relro -z now --gc-sections -z nocopyreloc CMakeFiles/cmTC_5113f.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc -lgcc -ldl -lc -lgcc -lgcc -ldl /home/joey/android/android-ndk/platforms/android-16/arch-x86/usr/lib/crtend_android.o
+
+
+Parsed CXX implicit link information from above output:
+  link line regex: [^( *|.*[/\])(i686-linux-android-ld|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: /git/bold/app/.externalNativeBuild/cmake/release/x86/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command:"/home/joey/android/android-sdk/cmake/3.6.3155560/bin/ninja" "cmTC_5113f"]
+  ignore line: [[1/2] Building CXX object CMakeFiles/cmTC_5113f.dir/CMakeCXXCompilerABI.cpp.o]
+  ignore line: [[2/2] Linking CXX executable cmTC_5113f]
+  ignore line: [Android clang version 3.8.256229  (based on LLVM 3.8.256229)]
+  ignore line: [Target: i686-none-linux-android]
+  ignore line: [Thread model: posix]
+  ignore line: [InstalledDir: /home/joey/android/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin]
+  ignore line: [Found candidate GCC installation: /home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x]
+  ignore line: [Selected GCC installation: /home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x]
+  ignore line: [Candidate multilib: .]
+  ignore line: [@m32]
+  ignore line: [Selected multilib: .]
+  ignore line: [@m32]
+  link line: [ "/home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x/../../../../i686-linux-android/bin/ld" --sysroot=/home/joey/android/android-ndk/platforms/android-16/arch-x86 -pie -z relro --build-id --eh-frame-hdr -m elf_i386 -dynamic-linker /system/bin/linker -o cmTC_5113f /home/joey/android/android-ndk/platforms/android-16/arch-x86/usr/lib/crtbegin_dynamic.o -L/home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x -L/home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x/../../../../i686-linux-android/lib -L/home/joey/android/android-ndk/platforms/android-16/arch-x86/usr/lib --build-id --warn-shared-textrel --fatal-warnings --no-undefined -z noexecstack -z relro -z now --gc-sections -z nocopyreloc --build-id --warn-shared-textrel --fatal-warnings --no-undefined -z noexecstack -z relro -z now --gc-sections -z nocopyreloc CMakeFiles/cmTC_5113f.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc -lgcc -ldl -lc -lgcc -lgcc -ldl /home/joey/android/android-ndk/platforms/android-16/arch-x86/usr/lib/crtend_android.o]
+    arg [/home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x/../../../../i686-linux-android/bin/ld] ==> ignore
+    arg [--sysroot=/home/joey/android/android-ndk/platforms/android-16/arch-x86] ==> ignore
+    arg [-pie] ==> ignore
+    arg [-zrelro] ==> ignore
+    arg [--build-id] ==> ignore
+    arg [--eh-frame-hdr] ==> ignore
+    arg [-m] ==> ignore
+    arg [elf_i386] ==> ignore
+    arg [-dynamic-linker] ==> ignore
+    arg [/system/bin/linker] ==> ignore
+    arg [-o] ==> ignore
+    arg [cmTC_5113f] ==> ignore
+    arg [/home/joey/android/android-ndk/platforms/android-16/arch-x86/usr/lib/crtbegin_dynamic.o] ==> ignore
+    arg [-L/home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x] ==> dir [/home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x]
+    arg [-L/home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x/../../../../i686-linux-android/lib] ==> dir [/home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x/../../../../i686-linux-android/lib]
+    arg [-L/home/joey/android/android-ndk/platforms/android-16/arch-x86/usr/lib] ==> dir [/home/joey/android/android-ndk/platforms/android-16/arch-x86/usr/lib]
+    arg [--build-id] ==> ignore
+    arg [--warn-shared-textrel] ==> ignore
+    arg [--fatal-warnings] ==> ignore
+    arg [--no-undefined] ==> ignore
+    arg [-znoexecstack] ==> ignore
+    arg [-zrelro] ==> ignore
+    arg [-znow] ==> ignore
+    arg [--gc-sections] ==> ignore
+    arg [-znocopyreloc] ==> ignore
+    arg [--build-id] ==> ignore
+    arg [--warn-shared-textrel] ==> ignore
+    arg [--fatal-warnings] ==> ignore
+    arg [--no-undefined] ==> ignore
+    arg [-znoexecstack] ==> ignore
+    arg [-zrelro] ==> ignore
+    arg [-znow] ==> ignore
+    arg [--gc-sections] ==> ignore
+    arg [-znocopyreloc] ==> ignore
+    arg [CMakeFiles/cmTC_5113f.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+    arg [-lstdc++] ==> lib [stdc++]
+    arg [-lm] ==> lib [m]
+    arg [-lgcc] ==> lib [gcc]
+    arg [-lgcc] ==> lib [gcc]
+    arg [-ldl] ==> lib [dl]
+    arg [-lc] ==> lib [c]
+    arg [-lgcc] ==> lib [gcc]
+    arg [-lgcc] ==> lib [gcc]
+    arg [-ldl] ==> lib [dl]
+    arg [/home/joey/android/android-ndk/platforms/android-16/arch-x86/usr/lib/crtend_android.o] ==> ignore
+  remove lib [gcc]
+  remove lib [gcc]
+  remove lib [gcc]
+  remove lib [gcc]
+  collapse library dir [/home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x] ==> [/home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x]
+  collapse library dir [/home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x/../../../../i686-linux-android/lib] ==> [/home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/i686-linux-android/lib]
+  collapse library dir [/home/joey/android/android-ndk/platforms/android-16/arch-x86/usr/lib] ==> [/home/joey/android/android-ndk/platforms/android-16/arch-x86/usr/lib]
+  implicit libs: [stdc++;m;dl;c;dl]
+  implicit dirs: [/home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x;/home/joey/android/android-ndk/toolchains/x86-4.9/prebuilt/linux-x86_64/i686-linux-android/lib;/home/joey/android/android-ndk/platforms/android-16/arch-x86/usr/lib]
+  implicit fwks: []
+
+

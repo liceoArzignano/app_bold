@@ -187,6 +187,11 @@
     <string name="pref_notification_time_evening">Sera</string>
     <string name="pref_backup_summary">Backup &amp; ripristino</string>
     <string name="pref_backup_title">Salva i tuoi voti ed eventi su Google Drive</string>
+    <string name="pref_secret_export_safe_title">Strumento condivisione password</string>
+    <string name="pref_secret_export_safe_message">Puoi condividere una singola copia della tua password criptata.\nNon \u00E8 possibile condividere la stessa password due volte. La condivisione della tua password \u00E8 pericolosa in quanto potrebbe essere decriptata.\nScegli attentamente</string>
+    <string name="pref_secret_export_message">La mia password criptata \u00E8: %1$s</string>
+    <string name="pref_secret_export_title">Condividi password</string>
+    <string name="pref_secret_export_already_shared">La password \u00E8 gi\u00E0 stata condivisa una volta, devi sostituirla con una nuova per condividerla nuovamente</string>
 
     <!-- Safe -->
     <string name="title_activity_safe">Safe</string>
