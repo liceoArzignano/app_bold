@@ -19,7 +19,7 @@ public class BenefitsActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_benefits);
 
-        BenefitPageAdapter mSectionsPagerAdapter =
+        final BenefitPageAdapter mSectionsPagerAdapter =
                 new BenefitPageAdapter(getSupportFragmentManager());
 
         AppCompatButton mFinishBtn = (AppCompatButton) findViewById(R.id.intro_btn_finish);
@@ -61,5 +61,4 @@ public class BenefitsActivity extends AppCompatActivity {
             });
         }
     }
-
 }

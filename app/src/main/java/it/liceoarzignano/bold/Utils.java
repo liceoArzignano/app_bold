@@ -289,7 +289,7 @@ public class Utils {
 
     public static String getAddress(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getString("address_key", "1");
+        return preferences.getString("address_key", "0");
     }
 
     static String appVersionKey(Context context) {

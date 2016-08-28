@@ -107,12 +107,12 @@
 
     <!-- Welcome -->
     <string name="slide_button">Inizia</string>
-    <string name="slide0_title">I tuoi contenuti</string>
-    <string name="slide0_message">Gestisci i tuoi voti, date delle verifiche, medie e molto altro</string>
-    <string name="slide1_title">Stay Safe</string>
-    <string name="slide1_message">Con Safe, potrai registrare in modo sicuro tutte le password della scuola in un posto sicuro</string>
-    <string name="slide2_title">Pronti per i docenti</string>
-    <string name="slide2_message">Anche i docenti possono utilizzare quest\'app. Attivando l\'apposita opzione l\'app di adatter\u00E0</string>
+    <string name="slide0_title">Benvenuto</string>
+    <string name="slide0_message">Scorri per scoprire le principali funzionalit\u00E0</string>
+    <string name="slide1_title">La tua vita scolastica, qui</string>
+    <string name="slide1_message">Gestisci facilmente voti, medie, date delle verifiche e promemoria all\'interno dell\'app</string>
+    <string name="slide2_title">Safe</string>
+    <string name="slide2_message">Con Safe, potrai registrare tutte le tue password della scuola in un luogo sicuro</string>
     <string name="intro_drawer_title">Inizia qui</string>
     <string name="intro_drawer">Tocca qui per navigare tra le sezioni dell\'app.\nLa schermata Home si riempir\u00E0 man mano che utilizzerai l\'app</string>
     <string name="intro_fab_mark_title">Prova questo</string>

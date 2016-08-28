@@ -107,12 +107,12 @@
 
     <!-- Intro -->
     <string name="slide_button">Get started</string>
-    <string name="slide0_title">Your contents</string>
-    <string name="slide0_message">Manage marks, test dates, averages, school-related events and much more</string>
-    <string name="slide1_title">Stay Safe</string>
-    <string name="slide1_message">With Safe, you just have to remember one password instead of many. You can store all your school passwords in one place</string>
-    <string name="slide2_title">Teacher-ready</string>
-    <string name="slide2_message">Even teachers can use this app, switch to teacher mode in the settings, and the app will adapt for you</string>
+    <string name="slide0_title">Welcome</string>
+    <string name="slide0_message">Slide to discover the main features</string>
+    <string name="slide1_title">Your school life, here</string>
+    <string name="slide1_message">Manage marks, test dates, averages, reminders and much more</string>
+    <string name="slide2_title">Stay Safe</string>
+    <string name="slide2_message">With Safe, you can store all your school passwords in one protected place</string>
     <string name="intro_drawer_title">Start here</string>
     <string name="intro_drawer">Tap this to navigate through the app sections.\nThe home screen will populate one you start using the app</string>
     <string name="intro_fab_mark_title">Try this</string>

@@ -27,32 +27,29 @@ public class BenefitFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         int position = getArguments().getInt("section_number");
-
         View view = inflater.inflate(R.layout.fragment_benefits_contents, container, false);
+
         TextView mTitle = (TextView) view.findViewById(R.id.title);
         TextView mDescription = (TextView) view.findViewById(R.id.message);
         ImageView mImage = (ImageView) view.findViewById(R.id.section_img);
-
 
         switch (position) {
             case 1:
                 mTitle.setText(getString(R.string.slide0_title));
                 mDescription.setText(getString(R.string.slide0_message));
-                mImage.setBackgroundResource(R.drawable.slide_0);
+                mImage.setImageResource(R.drawable.slide_0);
                 break;
             case 2:
                 mTitle.setText(getString(R.string.slide1_title));
                 mDescription.setText(getString(R.string.slide1_message));
-                mImage.setBackgroundResource(R.drawable.slide_1);
+                mImage.setImageResource(R.drawable.slide_1);
                 break;
             case 3:
                 mTitle.setText(getString(R.string.slide2_title));
                 mDescription.setText(getString(R.string.slide2_message));
-                mImage.setBackgroundResource(R.drawable.slide_2);
+                mImage.setImageResource(R.drawable.slide_2);
                 break;
-
         }
-
 
         return view;
     }
