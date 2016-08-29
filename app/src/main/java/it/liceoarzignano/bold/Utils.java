@@ -76,6 +76,28 @@ public class Utils {
     }
 
     /**
+     * Get today date
+     *
+     * @return today formatted in Locale.ITALIAN (yyyy-mm-dd)
+     */
+    static String getToday() {
+        Calendar calendar = Calendar.getInstance();
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        StringBuilder builder = new StringBuilder();
+        builder.append(calendar.get(Calendar.YEAR)).append("-");
+        if (month < 10) {
+            builder.append("0");
+        }
+        builder.append(month).append("-");
+        if (day < 10) {
+            builder.append("0");
+        }
+        builder.append(day);
+        return builder.toString();
+    }
+
+    /**
      * Force enable Google Analytics Tracker
      * if overlay requires it (used for test builds)
      *
@@ -130,11 +152,10 @@ public class Utils {
      * TODO: implement ^^^^
      *
      * @param context: used to call getFirstUsageDate(Context)
-     * @param today:   today date (will be confronted)
      * @return true if user has been using this for more than one week
      */
     @SuppressWarnings("unused")
-    public static boolean hasUsedForMoreThanOneWeek(Context context, String today) {
+    public static boolean hasUsedForMoreThanOneWeek(Context context) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ITALIAN);
         String first = getFirstUsageDate(context);
 
@@ -143,7 +164,7 @@ public class Utils {
         }
 
         try {
-            Date date = format.parse(today);
+            Date date = format.parse(getToday());
             Calendar c = Calendar.getInstance();
             Calendar d = Calendar.getInstance();
             d.setTimeInMillis(date.getTime());

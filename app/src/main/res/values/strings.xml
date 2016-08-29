@@ -26,6 +26,7 @@
         <item quantity="one">And one more event</item>
         <item quantity="other">And %d more events</item>
     </plurals>
+    <string name="lastest_marks">Lastest marks</string>
     <string name="suggestions">Suggestions</string>
     <string name="suggestion_safe">Use Safe to store your school credentials in one safe place!</string>
     <string name="suggestion_safe_pwd">Someone knows your Safe password? Change it from Safe section</string>

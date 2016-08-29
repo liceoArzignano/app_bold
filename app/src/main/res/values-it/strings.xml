@@ -26,6 +26,7 @@
         <item quantity="one">E un altro evento</item>
         <item quantity="other">E altri %d eventi</item>
     </plurals>
+    <string name="lastest_marks">Ultimi voti</string>
     <string name="suggestions">Suggerimenti</string>
     <string name="suggestion_safe">Utilizza Safe per conservare le tue password di scuola in un unco posto al sicuro!</string>
     <string name="suggestion_safe_pwd">Qualcuno conosce la tua password di Safe? Puoi cambiarla semplicemente accedendo a Safe</string>

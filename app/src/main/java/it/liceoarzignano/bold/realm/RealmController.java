@@ -60,6 +60,10 @@ public class RealmController {
         realm.commitTransaction();
     }
 
+    public RealmResults<Mark> getAllMarks() {
+        return realm.where(Mark.class).findAllSorted("date", Sort.ASCENDING);
+    }
+
     private RealmResults<Mark> getFilteredMarks(String title, int quarter) {
         switch (quarter) {
             case 1:
