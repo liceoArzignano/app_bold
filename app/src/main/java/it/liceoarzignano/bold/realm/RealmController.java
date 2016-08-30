@@ -13,7 +13,6 @@ import io.realm.Sort;
 import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.marks.Mark;
 
-@SuppressWarnings("unused")
 public class RealmController {
     private static RealmController instance;
     private final Realm realm;
@@ -53,12 +52,6 @@ public class RealmController {
      * Marks *
      *********
      */
-
-    public void clearAllMarks() {
-        realm.beginTransaction();
-        realm.delete(Mark.class);
-        realm.commitTransaction();
-    }
 
     public RealmResults<Mark> getAllMarks() {
         return realm.where(Mark.class).findAllSorted("date", Sort.ASCENDING);
@@ -169,12 +162,5 @@ public class RealmController {
         oldEvent.setIcon(event.getIcon());
         realm.commitTransaction();
         return id;
-    }
-
-    public void deleteEvent(long id) {
-        RealmResults<Event> results = realm.where(Event.class).equalTo("id", id).findAll();
-        realm.beginTransaction();
-        results.deleteAllFromRealm();
-        realm.commitTransaction();
     }
 }
