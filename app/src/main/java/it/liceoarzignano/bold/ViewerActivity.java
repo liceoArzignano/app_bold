@@ -23,7 +23,6 @@ import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.events.EventListActivity;
 import it.liceoarzignano.bold.marks.Mark;
 import it.liceoarzignano.bold.marks.MarkListActivity;
-import it.liceoarzignano.bold.settings.AnalyticsTracker;
 
 public class ViewerActivity extends AppCompatActivity {
     private static Context fContext;
@@ -110,7 +109,6 @@ public class ViewerActivity extends AppCompatActivity {
         mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AnalyticsTracker.trackEvent("MarkViewer: More", getApplicationContext());
                 if (Utils.hasApi21()) {
                     ((AnimatedVectorDrawable) mView.getCompoundDrawables()[1]).start();
 
@@ -131,8 +129,6 @@ public class ViewerActivity extends AppCompatActivity {
         mShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AnalyticsTracker.trackEvent(isMark ? "MarkViewer: Share" : "EventViewer: Share",
-                        getApplicationContext());
                 Resources res = getResources();
 
                 String msg = isMark ?
@@ -167,8 +163,6 @@ public class ViewerActivity extends AppCompatActivity {
         mDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AnalyticsTracker.trackEvent(isMark ? "MarkViewer: Delete" : "EventViewer: Delete",
-                        getApplicationContext());
 
                 if (Utils.hasApi21()) {
                     ((AnimatedVectorDrawable) mDelete.getCompoundDrawables()[1]).start();

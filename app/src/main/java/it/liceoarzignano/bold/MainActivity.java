@@ -50,7 +50,6 @@ import it.liceoarzignano.bold.marks.Mark;
 import it.liceoarzignano.bold.marks.MarkListActivity;
 import it.liceoarzignano.bold.realm.RealmController;
 import it.liceoarzignano.bold.safe.SafeActivity;
-import it.liceoarzignano.bold.settings.AnalyticsTracker;
 import it.liceoarzignano.bold.settings.SettingsActivity;
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
@@ -302,15 +301,14 @@ public class MainActivity extends AppCompatActivity
         sContext = getApplicationContext();
         controller = RealmController.with(this);
 
-        // Google Analytics
+        // Analytics
         new Thread(new Runnable() {
             @Override
             public void run() {
                 Utils.enableTrackerIfOverlayRequests(sContext,
                         getResources().getBoolean(R.bool.force_tracker));
                 if (Utils.trackerEnabled(sContext)) {
-                    AnalyticsTracker.initializeTracker(sContext);
-                    AnalyticsTracker.getInstance().get();
+                    //TODO: reimplement analytics opt-out
                 }
             }
         }).start();
@@ -499,10 +497,6 @@ public class MainActivity extends AppCompatActivity
      * @param index: the selected item from the nav drawer menu
      */
     private void showWebViewUI(int index) {
-        if (Utils.trackerEnabled(this)) {
-            AnalyticsTracker.trackEvent("WebPage: " + index, sContext);
-        }
-
         switch (index) {
             case 0:
                 mUrl = getString(R.string.config_url_home);
