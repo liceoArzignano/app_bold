@@ -349,15 +349,22 @@ public class SafeActivity extends AppCompatActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        crUserName = encrypt(mUserEdit.getText().toString());
-                        crReg = encrypt(mRegEdit.getText().toString());
-                        crPc = encrypt(mPcEdit.getText().toString());
-                        crInternet = encrypt(mInternetEdit.getText().toString());
-
-                        editor.putString(userKey, crUserName).apply();
-                        editor.putString(regPwdKey, crReg).apply();
-                        editor.putString(pcPwdKey, crPc).apply();
-                        editor.putString(internetPwdKey, crInternet).apply();
+                        String text = mUserEdit.getText().toString();
+                        if (!text.isEmpty()) {
+                            editor.putString(userKey, encrypt(text)).apply();
+                        }
+                        text = mRegEdit.getText().toString();
+                        if (!text.isEmpty()) {
+                            editor.putString(regPwdKey, encrypt(text)).apply();
+                        }
+                        text = mPcEdit.getText().toString();
+                        if (!text.isEmpty()) {
+                            editor.putString(pcPwdKey, encrypt(text)).apply();
+                        }
+                        text = mInternetEdit.getText().toString();
+                        if (!text.isEmpty()) {
+                            editor.putString(internetPwdKey, encrypt(text)).apply();
+                        }
                         finish();
                     }
                 }, 800);
