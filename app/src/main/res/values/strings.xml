@@ -29,7 +29,7 @@
     <string name="lastest_marks">Lastest marks</string>
     <string name="suggestions">Suggestions</string>
     <string name="suggestion_safe">Use Safe to store your school credentials in one safe place!</string>
-    <string name="suggestion_safe_pwd">Someone knows your Safe password? Change it from Safe section</string>
+    <string name="suggestion_safe_pwd">Someone knows your Safe password? Change it from Safe</string>
     <string name="suggestion_avg">Would you like what mark you should get next to have the sufficiency in a subject? Pick a subject from the average, and look at the suggestions!</string>
     <string name="suggestion_quarter">A new quarter has begun? You can filter your marks in the marks section</string>
     <string name="suggestion_edit_event">Postponed an event? Press on it, click the green edit icon and update the date</string>
