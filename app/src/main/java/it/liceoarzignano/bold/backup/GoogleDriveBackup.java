@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.Drive;
 
@@ -78,7 +79,9 @@ class GoogleDriveBackup implements Backup, GoogleApiClient.OnConnectionFailedLis
                         .getErrorDialog(a, result.getErrorCode(), 0).show();
             }
         } else {
-            Log.d("error", "cannot resolve connection issue");
+            Log.e("GoogleDriveAPI", "Unable to connect!");
+            Log.e("GoogleDriveAPI", "Error code: " + result.getErrorCode());
+            Log.e("GoogleDriveAPI", "Error message: " +  result.getErrorMessage());
         }
     }
 }

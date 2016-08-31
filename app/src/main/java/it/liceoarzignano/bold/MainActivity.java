@@ -33,6 +33,7 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -45,6 +46,7 @@ import io.realm.Sort;
 import it.liceoarzignano.bold.events.AlarmService;
 import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.events.EventListActivity;
+import it.liceoarzignano.bold.firebase.BoldAnalytics;
 import it.liceoarzignano.bold.intro.BenefitsActivity;
 import it.liceoarzignano.bold.marks.Mark;
 import it.liceoarzignano.bold.marks.MarkListActivity;
@@ -61,6 +63,9 @@ public class MainActivity extends AppCompatActivity
     private static Resources res;
     private static Context sContext;
     private static RealmController controller;
+    // Firebase
+    private BoldAnalytics mBoldAnalytics;
+    private boolean isAnalyticsEnabled = false;
     // Header
     private Toolbar toolbar;
     private TextView mUserName;
@@ -308,7 +313,8 @@ public class MainActivity extends AppCompatActivity
                 Utils.enableTrackerIfOverlayRequests(sContext,
                         getResources().getBoolean(R.bool.force_tracker));
                 if (Utils.trackerEnabled(sContext)) {
-                    //TODO: reimplement analytics opt-out
+                    isAnalyticsEnabled = true;
+                    mBoldAnalytics = BoldApp.getBoldAnalytics();
                 }
             }
         }).start();
@@ -446,41 +452,59 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
+        int menuVal = 0;
         switch (id) {
             case R.id.nav_my_marks:
+                menuVal = 1;
                 Intent intent = new Intent(this, MarkListActivity.class);
                 startActivity(intent);
                 break;
             case R.id.nav_calendar:
+                menuVal = 2;
                 Intent i = new Intent(this, EventListActivity.class);
                 startActivity(i);
                 break;
             case R.id.nav_website:
+                menuVal = 3;
                 showWebViewUI(0);
                 break;
             case R.id.nav_news:
+                menuVal = 4;
                 showWebViewUI(1);
                 break;
             case R.id.nav_reg:
+                menuVal = 5;
                 showWebViewUI(2);
                 break;
             case R.id.nav_moodle:
+                menuVal = 6;
                 showWebViewUI(3);
                 break;
             case R.id.nav_copyboox:
+                menuVal = 7;
                 showWebViewUI(4);
                 break;
             case R.id.nav_teacherzone:
+                menuVal = 8;
                 showWebViewUI(5);
                 break;
             case R.id.nav_settings:
+                menuVal = 9;
                 Intent settingsIntent = new Intent(this, SettingsActivity.class);
                 startActivity(settingsIntent);
                 break;
             case R.id.nav_safe:
+                menuVal = 10;
                 Intent safeIntent = new Intent(this, SafeActivity.class);
                 startActivity(safeIntent);
                 break;
+        }
+
+        if (isAnalyticsEnabled) {
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Drawer Item");
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, String.valueOf(menuVal));
+            mBoldAnalytics.sendEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

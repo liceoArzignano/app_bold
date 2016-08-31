@@ -18,6 +18,7 @@
 -optimizationpasses 50
 -mergeinterfacesaggressively
 -dontwarn android.support.**
+-dontwarn com.google.**
 -forceprocessing
 -optimizations 25
 -dontskipnonpubliclibraryclasses

@@ -7,11 +7,13 @@ import android.os.StrictMode;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import it.liceoarzignano.bold.firebase.BoldAnalytics;
 
 public class BoldApp extends Application {
 
     private static RealmConfiguration configuration;
     private static Context context;
+    private static BoldAnalytics mBoldAnalytics;
 
     public static RealmConfiguration getAppRealmConfiguration() {
         return configuration;
@@ -19,6 +21,10 @@ public class BoldApp extends Application {
 
     public static Context getBoldContext() {
         return context;
+    }
+
+    public static BoldAnalytics getBoldAnalytics() {
+        return mBoldAnalytics;
     }
 
     @Override
@@ -35,6 +41,8 @@ public class BoldApp extends Application {
 
         context = getApplicationContext();
 
+        mBoldAnalytics = new BoldAnalytics(context);
+
         // Enable StrictMode
         if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
@@ -44,6 +52,6 @@ public class BoldApp extends Application {
                     .penaltyDeath()
                     .build());
         }
-
     }
+
 }

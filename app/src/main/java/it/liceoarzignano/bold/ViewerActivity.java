@@ -17,16 +17,21 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import io.realm.Realm;
 import io.realm.RealmResults;
 import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.events.EventListActivity;
+import it.liceoarzignano.bold.firebase.BoldAnalytics;
 import it.liceoarzignano.bold.marks.Mark;
 import it.liceoarzignano.bold.marks.MarkListActivity;
 
 public class ViewerActivity extends AppCompatActivity {
     private static Context fContext;
     private static Realm realm;
+    private BoldAnalytics mBoldAnalytics;
+    private boolean hasAnalytics;
     private String title = "Viewer";
     private long id;
     private boolean isMark;
@@ -44,6 +49,12 @@ public class ViewerActivity extends AppCompatActivity {
 
         fContext = this;
         realm = Realm.getInstance(BoldApp.getAppRealmConfiguration());
+
+        hasAnalytics = Utils.trackerEnabled(fContext);
+
+        if (hasAnalytics) {
+            mBoldAnalytics = BoldApp.getBoldAnalytics();
+        }
 
         Intent i = getIntent();
         id = i.getLongExtra("id", -1);
@@ -109,6 +120,13 @@ public class ViewerActivity extends AppCompatActivity {
         mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (hasAnalytics) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Viewer");
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "View");
+                    mBoldAnalytics.sendEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+                }
+
                 if (Utils.hasApi21()) {
                     ((AnimatedVectorDrawable) mView.getCompoundDrawables()[1]).start();
 
@@ -129,6 +147,13 @@ public class ViewerActivity extends AppCompatActivity {
         mShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (hasAnalytics) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Viewer");
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Share");
+                    mBoldAnalytics.sendEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+                }
+
                 Resources res = getResources();
 
                 String msg = isMark ?
@@ -163,6 +188,12 @@ public class ViewerActivity extends AppCompatActivity {
         mDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (hasAnalytics) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Viewer");
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Delete");
+                    mBoldAnalytics.sendEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+                }
 
                 if (Utils.hasApi21()) {
                     ((AnimatedVectorDrawable) mDelete.getCompoundDrawables()[1]).start();

@@ -16,3 +16,4 @@
 #   public *;
 #}
 -dontwarn android.support.**
+-dontwarn com.google.**

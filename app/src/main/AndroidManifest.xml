@@ -86,7 +86,7 @@
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!-- Service -->
+        <!-- Services -->
         <service
             android:name=".events.AlarmService"
             android:enabled="true" />
@@ -94,6 +94,18 @@
         <service
             android:name=".events.BootReceiverService"
             android:enabled="true" />
+
+        <service android:name=".firebase.BoldMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        
+        <service android:name=".firebase.BoldInstanceIdService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
 
         <!-- Boot receiver -->
         <receiver
