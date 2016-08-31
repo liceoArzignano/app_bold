@@ -80,16 +80,16 @@ public class MainActivity extends AppCompatActivity
     // Event card
     private View mEventsCardSeparatorView;
     private CardView mEventsCard;
-    private TextView[] mEventTitles = new TextView[3];
-    private TextView[] mEventDates = new TextView[3];
-    private LinearLayout[] mEventLayouts = new LinearLayout[3];
+    private final TextView[] mEventTitles = new TextView[3];
+    private final TextView[] mEventDates = new TextView[3];
+    private final LinearLayout[] mEventLayouts = new LinearLayout[3];
     private Button mMoreEventsButton;
     // Marks card
     private View mMarksCardSeparatorView;
     private CardView mMarksCard;
-    private TextView[] mMarksTitles = new TextView[3];
-    private TextView[] mMarksDates = new TextView[3];
-    private LinearLayout[] mMarksLayouts = new LinearLayout[3];
+    private final TextView[] mMarksTitles = new TextView[3];
+    private final TextView[] mMarksDates = new TextView[3];
+    private final LinearLayout[] mMarksLayouts = new LinearLayout[3];
     // Suggestions card
     private View mSuggestionCardSeparatorView;
     private CardView mSuggestionCard;
@@ -504,7 +504,7 @@ public class MainActivity extends AppCompatActivity
             Bundle bundle = new Bundle();
             bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Drawer Item");
             bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, String.valueOf(menuVal));
-            mBoldAnalytics.sendEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+            mBoldAnalytics.sendEvent(bundle);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -15,7 +15,7 @@ import it.liceoarzignano.bold.realm.RealmController;
 
 /**
  * TODO:
- * rewrite the quarter logic using sharedpreference boolean livingFirstQuarter
+ * rewrite the quarter logic using sharedPreference boolean livingFirstQuarter
  * also find out why the fuck Mark.isFirstQuarter() returns always true
  */
 class AverageArrayAdapter extends BaseAdapter {

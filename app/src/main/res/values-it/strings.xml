@@ -41,7 +41,6 @@
     <string name="suggestion_backups">Se effetui il backup dei tuoi voti ed eventi su Google Drive, potrai ripristinarli facilmente nel caso in cui cambiassi o perdessi il tuo telefono</string>
 
     <!-- Updated Dialog -->
-    <string name="dialog_first_title">Benvenuto!</string>
     <string name="dialog_updated_title">L\'app \u00E8 stata aggiornata!</string>
     <string name="dialog_updated_content">
         \u2022 Nuovo: gestione dei voti in base al quadrimestre.\n
@@ -265,6 +264,5 @@
     <string name="accessibility_welcome">Immagine di benvenuto</string>
     <string name="accessibility_event_icon">Icona evento</string>
     <string name="accessibility_safe_icon">Immagine status di Safe</string>
-    <string name="accessibility_safe_show">Icona Mostra / Nascondi</string>
     <string name="accessibility_manager">Immagine d\'intestazione</string>
 </resources>

@@ -41,7 +41,6 @@
     <string name="suggestion_backups">If you backup up your marks and events to Google Drive, you\'ll be able to restore your data in case you lose or change your phone</string>
 
     <!-- Updated Dialog -->
-    <string name="dialog_first_title">Welcome!</string>
     <string name="dialog_updated_title">App has been updated</string>
     <string name="dialog_updated_content">
         \u2022 New: quarter-based mark management.\n
@@ -265,6 +264,5 @@
     <string name="accessibility_welcome">Welcome picture</string>
     <string name="accessibility_event_icon">Event icon</string>
     <string name="accessibility_safe_icon">Safe status icon</string>
-    <string name="accessibility_safe_show">Show / Hide icon</string>
     <string name="accessibility_manager">Header picture</string>
 </resources>

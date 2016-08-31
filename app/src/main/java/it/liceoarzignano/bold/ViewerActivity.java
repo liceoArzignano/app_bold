@@ -124,7 +124,7 @@ public class ViewerActivity extends AppCompatActivity {
                     Bundle bundle = new Bundle();
                     bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Viewer");
                     bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "View");
-                    mBoldAnalytics.sendEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+                    mBoldAnalytics.sendEvent(bundle);
                 }
 
                 if (Utils.hasApi21()) {
@@ -151,7 +151,7 @@ public class ViewerActivity extends AppCompatActivity {
                     Bundle bundle = new Bundle();
                     bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Viewer");
                     bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Share");
-                    mBoldAnalytics.sendEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+                    mBoldAnalytics.sendEvent(bundle);
                 }
 
                 Resources res = getResources();
@@ -192,7 +192,7 @@ public class ViewerActivity extends AppCompatActivity {
                     Bundle bundle = new Bundle();
                     bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Viewer");
                     bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Delete");
-                    mBoldAnalytics.sendEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+                    mBoldAnalytics.sendEvent(bundle);
                 }
 
                 if (Utils.hasApi21()) {
