@@ -9,8 +9,7 @@ import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -21,7 +20,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -42,49 +40,56 @@ import it.liceoarzignano.bold.realm.RealmController;
 public class ManagerActivity extends AppCompatActivity
         implements AdapterView.OnItemSelectedListener {
 
-    private CoordinatorLayout coordinatorLayout;
-    private ImageView mBanner;
+    private Context mContext;
+    private Intent callingIntent;
+    private RealmController controller;
+
+    private CoordinatorLayout mCoordinatorLayout;
+    // Title
+    private TextInputLayout mTitleLayout;
     private EditText mTitleInput;
+    // Subject
+    private Button mSubjectButton;
+    // Notes
+    private TextInputLayout mNotesLayout;
+    private EditText mNotesInput;
+    // Event category
     private LinearLayout mEventSpinnerLayout;
     private Spinner mEventSpinner;
-    private Button mSubSelectButton;
-    private EditText mNotesInput;
+    // Mark value
+    private LinearLayout mMarkValueLayout;
     private TextView mMarkPreview;
     private SeekBar mMarkSeekBar;
+    // Date picker
     private Button mDatePicker;
-    private Toolbar toolbar;
-    private Context context;
 
-    private long objID; // id | id
-    private Mark objMark;
-    private Event objEvent;
+    private long mObjId;
+    private Mark mMark;
+    private Event mEvent;
+    private int value;
     private String[] subjects;
     private String title;
     private String notes;
     private String date;
-    private int value;
 
-    private int mYear, mMonth, mDay;
+    private boolean editMode = false;
+    private boolean isMark = true;
+    private boolean hasSaved = false;
+
+    private int year, month, day;
     private String mDate;
     private final DatePickerDialog.OnDateSetListener dpickerListener
             = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            mYear = year;
-            mMonth = monthOfYear + 1;
-            mDay = dayOfMonth;
-            mDate = Utils.rightDate(mYear, mMonth, mDay);
+            ManagerActivity.this.year = year;
+            month = monthOfYear + 1;
+            day = dayOfMonth;
+            mDate = Utils.rightDate(ManagerActivity.this.year, month, day);
             mDatePicker.setText(String.format(getResources().getString(R.string.current_date),
                     mDate));
         }
     };
-
-    private boolean editMode = false;
-    private boolean isMark = true;
-    private boolean hasSaved = false;
-    private Intent callingIntent;
-
-    private RealmController controller;
 
     /**
      * Intent-extra:
@@ -97,51 +102,210 @@ public class ManagerActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manager);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+        mContext = this;
+        controller = RealmController.with(this);
+
+        callingIntent = getIntent();
+        isMark = callingIntent.getBooleanExtra("isMark", true);
+        editMode = callingIntent.getBooleanExtra("isEditing", false);
+
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar.setTitle(getString(isMark ?
+                (editMode ? R.string.update_mark : R.string.new_mark) :
+                (editMode ? R.string.update_event : R.string.new_event)));
+        setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        context = this;
-        controller = RealmController.with(this);
+        mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
-        mBanner = (ImageView) findViewById(R.id.banner_image);
+        mTitleLayout = (TextInputLayout) findViewById(R.id.title_layout);
         mTitleInput = (EditText) findViewById(R.id.title_input);
+        mSubjectButton = (Button) findViewById(R.id.subjects_selector);
+        mNotesLayout = (TextInputLayout) findViewById(R.id.notes_layout);
+        mNotesInput = (EditText) findViewById(R.id.notes_input);
         mEventSpinnerLayout = (LinearLayout) findViewById(R.id.event_spinner_layout);
         mEventSpinner = (Spinner) findViewById(R.id.event_spinner);
-        mSubSelectButton = (Button) findViewById(R.id.subjects_selector);
-        mNotesInput = (EditText) findViewById(R.id.input_notes);
+        mMarkValueLayout = (LinearLayout) findViewById(R.id.mark_value_layout);
         mMarkPreview = (TextView) findViewById(R.id.mark_preview);
         mMarkSeekBar = (SeekBar) findViewById(R.id.mark_seek);
         mDatePicker = (Button) findViewById(R.id.datepicker_button);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        context = this;
 
-        callingIntent = getIntent();
         setupFromIntent();
-
-        mSubSelectButton.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                new MaterialDialog.Builder(context)
-                        .title(R.string.select_subject)
-                        .items((CharSequence[]) subjects)
-                        .itemsCallback(new MaterialDialog.ListCallback() {
-                            @Override
-                            public void onSelection(MaterialDialog dialog,
-                                                    View view, int which, CharSequence text) {
-                                mSubSelectButton.setText(String.format(getResources().getString(
-                                        R.string.selected_subject), text));
-                                title = text.toString();
-                            }
-                        })
-                        .show();
+            public void onClick(View view) {
+                save(view);
             }
         });
 
-        if (!isMark) {
+        Utils.animFabIntro(this, fab,
+                getString(isMark ?
+                        R.string.intro_fab_save_mark_title : R.string.intro_fab_save_event_title),
+                getString(isMark ? R.string.intro_fab_save_mark : R.string.intro_fab_save_event),
+                isMark ? "markManKey" : "eventManKey");
+
+        LinearLayout mRootLayout = (LinearLayout) findViewById(R.id.manager_layout);
+        mRootLayout.setAlpha(0f);
+        mRootLayout.animate().alpha(1f).setDuration(750).setStartDelay(250).start();
+    }
+
+    /**
+     * Parse intent data to set up the UI
+     */
+    private void setupFromIntent() {
+        Calendar calendar = Calendar.getInstance();
+        Mark loadMark;
+        Event loadEvent;
+
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH) + 1;
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+        mDate = Utils.rightDate(year, month, day);
+        mDatePicker.setText(String.format(getResources().getString(
+                R.string.current_date), mDate));
+        mDatePicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //noinspection deprecation
+                showDialog(33);
+            }
+        });
+
+        // Load intent data
+        if (editMode) {
+            mObjId = callingIntent.getLongExtra("id", -1);
+            if (isMark) {
+                loadMark = controller.getMark(mObjId);
+                title = loadMark.getTitle();
+                notes = loadMark.getContent();
+                value = loadMark.getValue();
+                date = loadMark.getDate();
+                double markValuePreview = (double) value / 100;
+                mMarkSeekBar.setProgress((int) markValuePreview * 4);
+            } else {
+                loadEvent = controller.getEvent(mObjId);
+                title = loadEvent.getTitle();
+                value = loadEvent.getIcon();
+                date = loadEvent.getDate();
+                mEventSpinner.setSelection(!Utils.isTeacher(mContext) && value == 4 ? 3 : value);
+            }
+
+            mTitleInput.setText(title);
+            mDatePicker.setText(String.format(
+                    getResources().getString(R.string.current_date), date));
+        }
+
+        // Setup UI
+        if (Utils.isTeacher(mContext) || !isMark) {
+            mTitleInput.setHint(getString(isMark ? R.string.hint_student : R.string.hint_event));
+        } else {
+            mTitleLayout.setVisibility(View.GONE);
+        }
+
+        if (isMark) {
+            // Hide events-related items
+            mEventSpinnerLayout.setVisibility(View.GONE);
+
+            // Subjects list
+            switch (Utils.getAddress(mContext)) {
+                case "1":
+                    subjects = getResources().getStringArray(R.array.subjects_lists_1);
+                    break;
+                case "2":
+                    subjects = getResources().getStringArray(R.array.subjects_lists_2);
+                    break;
+                case "3":
+                    subjects = getResources().getStringArray(R.array.subjects_lists_3);
+                    break;
+                case "4":
+                    subjects = getResources().getStringArray(R.array.subjects_lists_4);
+                    break;
+                case "5":
+                    subjects = getResources().getStringArray(R.array.subjects_lists_5);
+                    break;
+                default:
+                    subjects = getResources().getStringArray(R.array.subjects_lists_0);
+                    break;
+            }
+
+            // Subject selector
+            mSubjectButton.setText(String.format(getResources()
+                    .getString(R.string.selected_subject), title));
+            mSubjectButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new MaterialDialog.Builder(mContext)
+                            .title(R.string.select_subject)
+                            .items((CharSequence[]) subjects)
+                            .itemsCallback(new MaterialDialog.ListCallback() {
+                                @Override
+                                public void onSelection(MaterialDialog dialog,
+                                                        View view, int which, CharSequence text) {
+                                    mSubjectButton.setText(String.format(getResources().getString(
+                                            R.string.selected_subject), text));
+                                    title = text.toString();
+                                }
+                            })
+                            .show();
+                }
+            });
+
+            // Mark value
+            mMarkPreview.setText(String.format(getResources().getString(R.string.current_mark),
+                    editMode ? String.valueOf((double) value / 100) : "0.0"));
+            mMarkSeekBar.setMax(40);
+            mMarkSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                }
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    double progressDouble = (double) progress / 4;
+                    String msg = String.format(getResources().getString(
+                            R.string.current_mark), String.valueOf(progressDouble));
+                    mMarkPreview.setText(msg);
+                }
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    double progress = mMarkSeekBar.getProgress();
+                    progress *= 25;
+                    value = (int) progress;
+                    progress /= 100;
+                    String msg = String.format(getResources().getString(
+                            R.string.current_mark), String.valueOf(progress));
+                    Snackbar.make(mCoordinatorLayout, msg, Snackbar.LENGTH_LONG);
+                    mMarkPreview.setText(msg);
+                }
+            });
+
+            // Notes
+            mNotesInput.setText(notes);
+        } else {
+            // Hide marks-related items
+            mSubjectButton.setVisibility(View.GONE);
+            mNotesLayout.setVisibility(View.GONE);
+            mMarkValueLayout.setVisibility(View.GONE);
+
+            // Event categories
+            List<String> categories = new ArrayList<>();
+            categories.add(getString(R.string.event_spinner_test));
+            categories.add(getString(R.string.event_spinner_school));
+            categories.add(getString(R.string.event_spinner_bday));
+            if (Utils.isTeacher(mContext)) {
+                categories.add(getString(R.string.event_spinner_hang_out));
+            }
+            categories.add(getString(R.string.event_spinner_other));
+
+            // Event spinner
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(
+                    this, android.R.layout.simple_dropdown_item_1line, categories);
+            mEventSpinner.setAdapter(dataAdapter);
+
+            // Title fixer
             mTitleInput.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -154,7 +318,7 @@ public class ManagerActivity extends AppCompatActivity
                 @Override
                 public void onTextChanged(final CharSequence s, int start, int before, int count) {
                     if (s.length() > 26) {
-                        Snackbar.make(coordinatorLayout, getString(R.string.editor_text_too_long),
+                        Snackbar.make(mCoordinatorLayout, getString(R.string.editor_text_too_long),
                                 Snackbar.LENGTH_LONG).setAction(
                                 getString(R.string.editor_text_too_long_fix),
                                 new View.OnClickListener() {
@@ -168,161 +332,6 @@ public class ManagerActivity extends AppCompatActivity
                 }
             });
         }
-
-        switch (Utils.getAddress(context)) {
-            case "1":
-                subjects = getResources().getStringArray(R.array.subjects_lists_1);
-                break;
-            case "2":
-                subjects = getResources().getStringArray(R.array.subjects_lists_2);
-                break;
-            case "3":
-                subjects = getResources().getStringArray(R.array.subjects_lists_3);
-                break;
-            case "4":
-                subjects = getResources().getStringArray(R.array.subjects_lists_4);
-                break;
-            case "5":
-                subjects = getResources().getStringArray(R.array.subjects_lists_5);
-                break;
-            default:
-                subjects = getResources().getStringArray(R.array.subjects_lists_0);
-                break;
-        }
-
-        if (fab != null) {
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    save(view);
-                }
-            });
-        }
-
-        mMarkSeekBar = (SeekBar) findViewById(R.id.mark_seek);
-        mMarkSeekBar.setMax(40);
-
-        mMarkSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                double progressDouble = (double) progress / 4;
-                String msg = String.format(getResources().getString(
-                        R.string.current_mark), String.valueOf(progressDouble));
-                mMarkPreview.setText(msg);
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                double progress = mMarkSeekBar.getProgress();
-                progress *= 25;
-                value = (int) progress;
-                progress /= 100;
-                String msg = String.format(getResources().getString(
-                        R.string.current_mark), String.valueOf(progress));
-                Snackbar.make(coordinatorLayout, msg, Snackbar.LENGTH_LONG);
-                mMarkPreview.setText(msg);
-            }
-        });
-
-        Utils.animFabIntro(this, fab,
-                getString(isMark ?
-                        R.string.intro_fab_save_mark_title : R.string.intro_fab_save_event_title),
-                getString(isMark ? R.string.intro_fab_save_mark : R.string.intro_fab_save_event),
-                isMark ? "markManKey" : "eventManKey");
-    }
-
-    /**
-     * Parse intent data to set up the UI
-     */
-    private void setupFromIntent() {
-        Calendar calendar = Calendar.getInstance();
-        Mark loadMark;
-        Event loadEvent;
-
-        editMode = callingIntent.getBooleanExtra("isEditing", false);
-        isMark = callingIntent.getBooleanExtra("isMark", true);
-        mBanner.setBackgroundResource(isMark ? R.drawable.newmark : R.drawable.newevent);
-        mSubSelectButton.setVisibility(Utils.isTeacher(context) ? View.GONE : View.VISIBLE);
-        mYear = calendar.get(Calendar.YEAR);
-        mMonth = calendar.get(Calendar.MONTH) + 1;
-        mDay = calendar.get(Calendar.DAY_OF_MONTH);
-        mDate = Utils.rightDate(mYear, mMonth, mDay);
-        mDatePicker.setText(String.format(getResources().getString(
-                R.string.current_date), mDate));
-        mDatePicker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //noinspection deprecation
-                showDialog(33);
-            }
-        });
-
-        if (Utils.isTeacher(context) || !isMark) {
-            mTitleInput.setVisibility(View.VISIBLE);
-            mTitleInput.setHint(getString(isMark ? R.string.hint_student : R.string.hint_event));
-        }
-
-        // Show events UI if needed
-        if (!isMark) {
-            mEventSpinnerLayout.setVisibility(View.VISIBLE);
-            mNotesInput.setVisibility(View.GONE);
-            mSubSelectButton.setVisibility(View.GONE);
-            mMarkPreview.setVisibility(View.GONE);
-            mMarkSeekBar.setVisibility(View.GONE);
-
-            List<String> categories = new ArrayList<>();
-            categories.add(getString(R.string.event_spinner_test));
-            categories.add(getString(R.string.event_spinner_school));
-            categories.add(getString(R.string.event_spinner_bday));
-            if (Utils.isTeacher(context)) {
-                categories.add(getString(R.string.event_spinner_hang_out));
-            }
-            categories.add(getString(R.string.event_spinner_other));
-
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(
-                    this, android.R.layout.simple_dropdown_item_1line, categories);
-            mEventSpinner.setAdapter(dataAdapter);
-        }
-
-        // Load intent data
-        if (editMode) {
-            objID = callingIntent.getLongExtra("id", -1);
-            if (editMode) {
-                if (isMark) {
-                    loadMark = controller.getMark(objID);
-                    title = loadMark.getTitle();
-                    notes = loadMark.getContent();
-                    value = loadMark.getValue();
-                    date = loadMark.getDate();
-                } else {
-                    loadEvent = controller.getEvent(objID);
-                    title = loadEvent.getTitle();
-                    value = loadEvent.getIcon();
-                    date = loadEvent.getDate();
-                }
-            }
-
-            toolbar.setTitle(getString(isMark ? R.string.update_mark : R.string.update_event));
-            mTitleInput.setText(title);
-            mDatePicker.setText(String.format(
-                    getResources().getString(R.string.current_date), date));
-
-            if (isMark) {
-                mNotesInput.setText(notes);
-                double markValuePreview = (double) value / 100;
-                mMarkSeekBar.setProgress((int) markValuePreview * 4);
-                mSubSelectButton.setText(String.format(getResources().getString(
-                        R.string.selected_subject), title));
-            } else {
-                mEventSpinner.setSelection(!Utils.isTeacher(context) && value == 4 ? 3 : value);
-            }
-        }
-        mMarkPreview.setText(String.format(getResources().getString(R.string.current_mark),
-                editMode ? String.valueOf((double) value / 100) : "0.0"));
     }
 
     @Override
@@ -332,19 +341,9 @@ public class ManagerActivity extends AppCompatActivity
 
             editIntent.putExtra("isEditing", true);
             editIntent.putExtra("isMark", isMark);
-            editIntent.putExtra("id", objID);
+            editIntent.putExtra("id", mObjId);
 
-            if (Utils.hasApi21()) {
-                View sharedElement = findViewById(R.id.banner_image);
-
-                ActivityOptionsCompat options = ActivityOptionsCompat
-                        .makeSceneTransitionAnimation(this,
-                                sharedElement, "imageShared");
-                ActivityCompat.startActivity(this,
-                        editIntent, options.toBundle());
-            } else {
-                startActivity(editIntent);
-            }
+            startActivity(editIntent);
         } else {
             Intent listIntent = new Intent(this, isMark ?
                     MarkListActivity.class : EventListActivity.class);
@@ -358,14 +357,14 @@ public class ManagerActivity extends AppCompatActivity
     @Override
     protected Dialog onCreateDialog(int id) {
         if (id == 33) {
-            return new DatePickerDialog(this, dpickerListener, mYear, mMonth - 1, mDay);
+            return new DatePickerDialog(this, dpickerListener, year, month - 1, day);
         }
         return null;
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        objEvent.setIcon(position);
+        mEvent.setIcon(position);
     }
 
     @Override
@@ -380,10 +379,10 @@ public class ManagerActivity extends AppCompatActivity
      */
     private void save(View fabView) {
         if (isMark) {
-            objMark = new Mark();
+            mMark = new Mark();
             saveMark(fabView);
         } else {
-            objEvent = new Event();
+            mEvent = new Event();
             saveEvent(fabView);
         }
     }
@@ -401,13 +400,13 @@ public class ManagerActivity extends AppCompatActivity
         if (title != null && !title.isEmpty() && value != 0) {
             Utils.animFab((FloatingActionButton) fab);
 
-            objMark.setId(objID);
-            objMark.setTitle(title);
-            objMark.setContent(mNotesInput.getText().toString());
-            objMark.setValue(value);
-            objMark.setDate(mDate);
+            mMark.setId(mObjId);
+            mMark.setTitle(title);
+            mMark.setContent(mNotesInput.getText().toString());
+            mMark.setValue(value);
+            mMark.setDate(mDate);
 
-            objID = editMode ? controller.updateMark(objMark) : controller.addMark(objMark);
+            mObjId = editMode ? controller.updateMark(mMark) : controller.addMark(mMark);
 
             hasSaved = true;
 
@@ -435,12 +434,12 @@ public class ManagerActivity extends AppCompatActivity
         if (!title.isEmpty()) {
             Utils.animFab((FloatingActionButton) fab);
 
-            objEvent.setId(objID);
-            objEvent.setTitle(title);
-            objEvent.setIcon(mEventSpinner.getSelectedItemPosition());
-            objEvent.setDate(mDate);
+            mEvent.setId(mObjId);
+            mEvent.setTitle(title);
+            mEvent.setIcon(mEventSpinner.getSelectedItemPosition());
+            mEvent.setDate(mDate);
 
-            objID = editMode ? controller.updateEvent(objEvent) : controller.addEvent(objEvent);
+            mObjId = editMode ? controller.updateEvent(mEvent) : controller.addEvent(mEvent);
 
             hasSaved = true;
 

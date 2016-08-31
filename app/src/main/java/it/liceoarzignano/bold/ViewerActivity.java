@@ -240,18 +240,25 @@ public class ViewerActivity extends AppCompatActivity {
                 editIntent.putExtra("id", id);
 
                 if (Utils.hasApi21()) {
-                    View sharedElement = findViewById(R.id.toolbar_image);
+                    View sharedElement = findViewById(R.id.fab);
 
                     ActivityOptionsCompat options = ActivityOptionsCompat
                             .makeSceneTransitionAnimation(ViewerActivity.this,
-                                    sharedElement, "imageShared");
+                                    sharedElement, "fab");
                     ActivityCompat.startActivity(ViewerActivity.this,
                             editIntent, options.toBundle());
                 } else {
                     startActivity(editIntent);
                 }
 
-                finish();
+                // finish with delay to prevent glitches
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        finish();
+
+                    }
+                }, 200);
             }
         });
 
