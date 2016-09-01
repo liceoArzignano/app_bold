@@ -215,6 +215,8 @@
     <string name="safe_first_load"><b>Initializing data\u2026</b></string>
     <string name="safe_setup_checking_password"><b>Checking password\u2026</b></string>
     <string name="safe_nomatch"><b>Password does not match.</b></string>
+    <string name="safe_back_title">Quitting Safe</string>
+    <string name="safe_back_message">Are you sure you want to quit Safe? Your changes will not be saved.\nTo save and quit, click the V button at the bottom</string>
 
     <!-- Notification -->
     <string name="notification_title">Upcoming events</string>

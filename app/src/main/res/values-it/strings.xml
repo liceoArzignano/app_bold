@@ -212,6 +212,8 @@
     <string name="safe_first_load">Inizializzazione dati\u2026</string>
     <string name="safe_setup_checking_password">Verifica password\u2026</string>
     <string name="safe_nomatch">Verifica password fallita.</string>
+    <string name="safe_back_title">Chiusura di Safe</string>
+    <string name="safe_back_message">Vuoi chiudere Safe? I tuoi cambiamenti non verranno applicati.\nPer salvare i dati e chiudere, tocca il pulsante V in basso</string>
 
     <!-- Notification -->
     <string name="notification_title">Prossimi eventi</string>

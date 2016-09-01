@@ -42,14 +42,14 @@ public class SafeActivity extends AppCompatActivity {
     private static final String hasSharedKey = "has_shared";
     private static SharedPreferences prefs;
     private static SharedPreferences.Editor editor;
-    private static String AccessPassword;
-    private Encryption encryption;
+    private static String accessPassword;
+    private Encryption encryption = null;
     private String crUserName;
     private String crReg;
     private String crPc;
     private String crInternet;
     private boolean doneSetup;
-    private boolean isWorking = false;
+    private boolean isWorking = true;
 
     private Context context;
 
@@ -112,29 +112,34 @@ public class SafeActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
+
         // Reload everything since it everything was destroyed onPause();
         if (!isWorking) {
-            setupEncryption();
+            if (encryption == null) {
+                setupEncryption();
+            }
             showPasswordDialog();
         }
     }
 
     @Override
     public void onPause() {
-        // Remove all the private data from memory
-        encryption = null;
-        crUserName = null;
-        crInternet = null;
-        crPc = null;
-        crReg = null;
-        mUserEdit.setText("");
-        mInternetEdit.setText("");
-        mPcEdit.setText("");
-        mRegEdit.setText("");
-        mContentLayout.setVisibility(View.GONE);
-        mLoadingLayout.setVisibility(View.VISIBLE);
-        safeMenu.findItem(R.id.action_reset).setVisible(false);
-        safeMenu.findItem(R.id.action_info).setVisible(false);
+        if (!isWorking) {
+            // Remove all the private data from memory
+            crUserName = null;
+            crInternet = null;
+            crPc = null;
+            crReg = null;
+            mUserEdit.setText("");
+            mInternetEdit.setText("");
+            mPcEdit.setText("");
+            mRegEdit.setText("");
+            mFab.setVisibility(View.GONE);
+            mContentLayout.setVisibility(View.GONE);
+            mLoadingLayout.setVisibility(View.VISIBLE);
+            safeMenu.findItem(R.id.action_reset).setVisible(false);
+            safeMenu.findItem(R.id.action_info).setVisible(false);
+        }
 
         super.onPause();
     }
@@ -165,6 +170,27 @@ public class SafeActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!isWorking) {
+            new MaterialDialog.Builder(context)
+                    .title(R.string.safe_back_title)
+                    .content(R.string.safe_back_message)
+                    .positiveText(android.R.string.ok)
+                    .negativeText(android.R.string.cancel)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog,
+                                            @NonNull DialogAction which) {
+                            finish();
+                        }
+                    })
+                    .show();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     /**
@@ -218,9 +244,9 @@ public class SafeActivity extends AppCompatActivity {
                             @Override
                             public void onInput(@NonNull MaterialDialog dialog,
                                                 CharSequence input) {
-                                AccessPassword = input.toString();
+                                accessPassword = input.toString();
                                 mLoadingText.setVisibility(View.VISIBLE);
-                                if (!AccessPassword.isEmpty() && AccessPassword != null) {
+                                if (!accessPassword.isEmpty() && accessPassword != null) {
                                     new Handler().postDelayed(new Runnable() {
                                         @Override
                                         public void run() {
@@ -228,7 +254,7 @@ public class SafeActivity extends AppCompatActivity {
                                                     R.string.safe_decrypting :
                                                     R.string.safe_first_load));
                                             if (!doneSetup) {
-                                                String encrypted = encrypt(AccessPassword);
+                                                String encrypted = encrypt(accessPassword);
                                                 editor.putString(accessKey, encrypted).apply();
                                                 editor.putBoolean("doneSetup", true).apply();
                                                 onCreateContinue();
@@ -281,7 +307,7 @@ public class SafeActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (AccessPassword.equals(decrypted)) {
+                if (accessPassword.equals(decrypted)) {
                     onCreateContinue();
                 } else {
                     mLoadingText.setText(getString(R.string.safe_nomatch));
