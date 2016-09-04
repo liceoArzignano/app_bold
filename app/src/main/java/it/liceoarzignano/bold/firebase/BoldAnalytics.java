@@ -9,7 +9,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 import it.liceoarzignano.bold.Utils;
 
-import static it.liceoarzignano.bold.safe.Encryption.Builder.strToSHA;
+import static it.liceoarzignano.bold.safe.Encryption.strToSHA;
 
 public class BoldAnalytics {
     private final FirebaseAnalytics mFirebaseAnalytics;

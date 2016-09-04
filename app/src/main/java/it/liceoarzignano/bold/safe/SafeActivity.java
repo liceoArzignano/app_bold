@@ -26,6 +26,9 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
+
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
 
@@ -43,7 +46,9 @@ public class SafeActivity extends AppCompatActivity {
     private static SharedPreferences prefs;
     private static SharedPreferences.Editor editor;
     private static String accessPassword;
-    private Encryption encryption = null;
+    private Encryption.SecretKeys secretKeys = null;
+    private String primKey;
+    private String salt;
     private String crUserName;
     private String crReg;
     private String crPc;
@@ -77,7 +82,8 @@ public class SafeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_safe);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -103,9 +109,18 @@ public class SafeActivity extends AppCompatActivity {
         mLoadingLayout.setVisibility(View.VISIBLE);
         isWorking = true;
 
+        primKey = getKey();
+        salt = getSalt();
+
         if (tellMeTheresNoXposed()) {
-            setupEncryption();
-            showPasswordDialog();
+            mLoadingText.setText(R.string.safe_first_load);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    setupEncryption();
+                    showPasswordDialog();
+                }
+            }, 100);
         }
     }
 
@@ -115,9 +130,6 @@ public class SafeActivity extends AppCompatActivity {
 
         // Reload everything since it everything was destroyed onPause();
         if (!isWorking) {
-            if (encryption == null) {
-                setupEncryption();
-            }
             showPasswordDialog();
         }
     }
@@ -276,7 +288,12 @@ public class SafeActivity extends AppCompatActivity {
      * Fire encryption stuffs
      */
     private void setupEncryption() {
-        encryption = Encryption.getDefault(getKey(), getSalt(), new byte[16]);
+        //encryption = Encryption.getDefault(getKey(), getSalt(), new byte[16]);
+        try {
+            secretKeys = Encryption.generateKeyFromPassword(primKey, salt.getBytes());
+        } catch (GeneralSecurityException e) {
+            Log.e("Safe", e.getMessage(), e);
+        }
     }
 
     /**
@@ -286,7 +303,13 @@ public class SafeActivity extends AppCompatActivity {
      * @return encrypted string
      */
     private String encrypt(String s) {
-        return encryption.encryptOrNull(s);
+        //return encryption.encryptOrNull(s);
+        try {
+            return Encryption.encrypt(s, secretKeys).toString();
+        } catch (UnsupportedEncodingException | GeneralSecurityException e) {
+            Log.e("Safe", e.getMessage(), e);
+            return "";
+        }
     }
 
     /**
@@ -296,7 +319,14 @@ public class SafeActivity extends AppCompatActivity {
      * @return decrypted string
      */
     private String decrypt(String s) {
-        return encryption.decryptOrNull(s);
+        //return encryption.decryptOrNull(s);
+        try {
+            return Encryption.decryptString(
+                    new Encryption.CipherTextIvMac(s), secretKeys);
+        } catch (UnsupportedEncodingException | GeneralSecurityException e) {
+            Log.e("Safe", e.getMessage(), e);
+            return "";
+        }
     }
 
     /**
