@@ -82,7 +82,7 @@ public class SafeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
                 WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_safe);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -186,7 +186,9 @@ public class SafeActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (!isWorking) {
+        if (isWorking) {
+            super.onBackPressed();
+        } else {
             new MaterialDialog.Builder(context)
                     .title(R.string.safe_back_title)
                     .content(R.string.safe_back_message)
@@ -200,8 +202,6 @@ public class SafeActivity extends AppCompatActivity {
                         }
                     })
                     .show();
-        } else {
-            super.onBackPressed();
         }
     }
 
@@ -238,12 +238,12 @@ public class SafeActivity extends AppCompatActivity {
         String title;
         String msg;
 
-        if (!doneSetup) {
-            title = getString(R.string.safe_dialog_first_title);
-            msg = getString(R.string.safe_dialog_first_content);
-        } else {
+        if (doneSetup) {
             title = getString(R.string.safe_dialog_title);
             msg = getString(R.string.safe_dialog_content);
+        } else {
+            title = getString(R.string.safe_dialog_first_title);
+            msg = getString(R.string.safe_dialog_first_content);
         }
 
         new MaterialDialog.Builder(context)
@@ -265,13 +265,13 @@ public class SafeActivity extends AppCompatActivity {
                                             mLoadingText.setText(getString(doneSetup ?
                                                     R.string.safe_decrypting :
                                                     R.string.safe_first_load));
-                                            if (!doneSetup) {
+                                            if (doneSetup) {
+                                                validateLogin();
+                                            } else {
                                                 String encrypted = encrypt(accessPassword);
                                                 editor.putString(accessKey, encrypted).apply();
                                                 editor.putBoolean("doneSetup", true).apply();
                                                 onCreateContinue();
-                                            } else {
-                                                validateLogin();
                                             }
                                         }
                                     }, 200);

@@ -173,15 +173,9 @@ public class MainActivity extends AppCompatActivity
                 content = res.getQuantityString(R.plurals.notification_message_first,
                         atSchool, atSchool) + " ";
             } else {
-                if (birthday == 0 && hangout == 0 && other == 0) {
-                    // Last of us
-                    content += " " + String.format(
-                            res.getString(R.string.notification_message_last), atSchool);
-                } else {
-                    // Just another one
-                    content += String.format(res.getString(R.string.notification_message_half),
-                            atSchool);
-                }
+                content += birthday == 0 && hangout == 0 && other == 0 ? " " +
+                        String.format(res.getString(R.string.notification_message_last), atSchool) :
+                        String.format(res.getString(R.string.notification_message_half), atSchool);
             }
             content += " " + res.getQuantityString(R.plurals.notification_school,
                     atSchool, atSchool);
@@ -194,16 +188,10 @@ public class MainActivity extends AppCompatActivity
                 content = res.getQuantityString(R.plurals.notification_message_first,
                         birthday, birthday) + " ";
             } else {
-                if (hangout == 0 && other == 0) {
-                    // Last of us
-                    content += " " +
-                            String.format(res.getString(R.string.notification_message_last),
-                            birthday);
-                } else {
-                    // Just another one
-                    content += String.format(res.getString(R.string.notification_message_half),
-                            birthday);
-                }
+                content += hangout == 0 && other == 0 ? " " +
+                        String.format(res.getString(R.string.notification_message_last),
+                                birthday) : String.format(res.getString(R.string.notification_message_half),
+                        birthday);
             }
             content += " " + res.getQuantityString(R.plurals.notification_birthday,
                     birthday, birthday);
@@ -216,16 +204,10 @@ public class MainActivity extends AppCompatActivity
                 content = res.getQuantityString(R.plurals.notification_message_first,
                         hangout, hangout) + " ";
             } else {
-                if (other == 0) {
-                    // Last of us
-                    content += " " +
-                            String.format(res.getString(R.string.notification_message_last),
-                            hangout);
-                } else {
-                    // Just another one
-                    content += String.format(res.getString(R.string.notification_message_half),
-                            atSchool);
-                }
+                content += other == 0 ? " " +
+                        String.format(res.getString(R.string.notification_message_last),
+                                hangout) : String.format(res.getString(R.string.notification_message_half),
+                        atSchool);
             }
             content += " " + res.getQuantityString(R.plurals.notification_meeting,
                     hangout, hangout);
@@ -610,8 +592,7 @@ public class MainActivity extends AppCompatActivity
                 if (i == 3) {
                     break;
                 }
-                mMarksTitles[i].setText(mark.getTitle() + ": " +
-                        String.valueOf((double) mark.getValue() / 100));
+                mMarksTitles[i].setText(mark.getTitle() + ": " + ((double) mark.getValue() / 100));
                 mMarksDates[i].setText(mark.getDate());
                 mMarksLayouts[i].setVisibility(View.VISIBLE);
                 i++;

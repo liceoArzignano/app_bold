@@ -219,11 +219,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     }
 
     private void setCurrentPageImmediate() {
-        if (viewPager != null) {
-            currentPage = viewPager.getCurrentItem();
-        } else {
-            currentPage = 0;
-        }
+        currentPage = viewPager != null ? viewPager.getCurrentItem() : 0;
         if (dotCenterX != null && dotCenterX.length > 0 &&
                 (moveAnimation == null || !moveAnimation.isStarted())) {
             selectedDotX = dotCenterX[currentPage];
@@ -780,31 +776,12 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
             // we can initialize their revealFraction's i.e. make sure they're hidden while the
             // reveal animation runs
             final int[] dotsToHide = new int[steps];
-            if (initialX1 != finalX1) { // rightward retreat
-                setFloatValues(initialX1, finalX1);
-                // create the reveal animations that will run when the retreat passes them
-                for (int i = 0; i < steps; i++) {
-                    revealAnimations[i] = new InkPageIndicator.PendingRevealAnimator(was + i,
-                            new InkPageIndicator.RightwardStartPredicate(dotCenterX[was + i]));
-                    dotsToHide[i] = was + i;
-                }
-                addUpdateListener(new AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                        retreatingJoinX1 = (Float) valueAnimator.getAnimatedValue();
-                        ViewCompat.postInvalidateOnAnimation(InkPageIndicator.this);
-                        // start any reveal animations if we've passed them
-                        for (PendingRevealAnimator pendingReveal : revealAnimations) {
-                            pendingReveal.startIfNecessary(retreatingJoinX1);
-                        }
-                    }
-                });
-            } else { // (initialX2 != finalX2) leftward retreat
+            if (initialX1 == finalX1) { // (initialX2 != finalX2) leftward retreat
                 setFloatValues(initialX2, finalX2);
                 // create the reveal animations that will run when the retreat passes them
                 for (int i = 0; i < steps; i++) {
-                    revealAnimations[i] = new InkPageIndicator.PendingRevealAnimator(was - i,
-                            new InkPageIndicator.LeftwardStartPredicate(dotCenterX[was - i]));
+                    revealAnimations[i] = new PendingRevealAnimator(was - i,
+                            new LeftwardStartPredicate(dotCenterX[was - i]));
                     dotsToHide[i] = was - i;
                 }
                 addUpdateListener(new AnimatorUpdateListener() {
@@ -815,6 +792,25 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
                         // start any reveal animations if we've passed them
                         for (PendingRevealAnimator pendingReveal : revealAnimations) {
                             pendingReveal.startIfNecessary(retreatingJoinX2);
+                        }
+                    }
+                });
+            } else { // rightward retreat
+                setFloatValues(initialX1, finalX1);
+                // create the reveal animations that will run when the retreat passes them
+                for (int i = 0; i < steps; i++) {
+                    revealAnimations[i] = new PendingRevealAnimator(was + i,
+                            new RightwardStartPredicate(dotCenterX[was + i]));
+                    dotsToHide[i] = was + i;
+                }
+                addUpdateListener(new AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                        retreatingJoinX1 = (Float) valueAnimator.getAnimatedValue();
+                        ViewCompat.postInvalidateOnAnimation(InkPageIndicator.this);
+                        // start any reveal animations if we've passed them
+                        for (PendingRevealAnimator pendingReveal : revealAnimations) {
+                            pendingReveal.startIfNecessary(retreatingJoinX1);
                         }
                     }
                 });

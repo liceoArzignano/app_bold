@@ -36,9 +36,10 @@ class BackupListAdapter extends ArrayAdapter<BackupData> {
         return String.format(Locale.ITALIAN, "%.1f %sB", bytes / Math.pow(unit, exp), pre);
     }
 
+    @NonNull
     @SuppressLint("InflateParams")
     @Override
-    public View getView(int position, View contentView, ViewGroup parent) {
+    public View getView(int position, View contentView, @NonNull ViewGroup parent) {
         View v = contentView;
 
         if (v == null) {
@@ -48,11 +49,17 @@ class BackupListAdapter extends ArrayAdapter<BackupData> {
         }
 
         BackupData data = getItem(position);
-        final DriveId id = data.getId();
+        final DriveId id;
         final String modified;
-        String dataSize = humanReadableByteCount(data.getSize());
+        String dataSize = null;
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(data.getDate());
+        if (data != null) {
+            id = data.getId();
+            dataSize = humanReadableByteCount(data.getSize());
+            calendar.setTime(data.getDate());
+        } else {
+            id = null;
+        }
         modified = calendar.get(Calendar.DAY_OF_MONTH) + "-" + (calendar.get(Calendar.MONTH) + 1) +
                 "-" + calendar.get(Calendar.YEAR) + " " + (calendar.get(Calendar.HOUR_OF_DAY) < 10 ?
                 "0" : "") + calendar.get(Calendar.HOUR_OF_DAY) + ":" +

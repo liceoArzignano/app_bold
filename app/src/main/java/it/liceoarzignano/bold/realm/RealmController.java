@@ -98,15 +98,15 @@ public class RealmController {
     public double getAverage(String title, int quarter) {
         List<Mark> marks = getFilteredMarks(title, quarter);
         double sum = 0;
-        if (!marks.isEmpty()) {
+        if (marks.isEmpty()) {
+            return 0;
+        } else {
             for (Mark mark : marks) {
                 sum += mark.getValue();
             }
             sum /= 100;
 
             return sum / marks.size();
-        } else {
-            return 0;
         }
     }
 
@@ -120,11 +120,7 @@ public class RealmController {
         }
         sum /= 100;
 
-        if (!marks.isEmpty()) {
-            return 6 * (marks.size() + 1) - sum;
-        } else {
-            return 0;
-        }
+        return !marks.isEmpty() ? 6 * (marks.size() + 1) - sum : 0;
     }
 
 

@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.View;
 
 import java.text.ParseException;
@@ -175,7 +176,9 @@ public class Utils {
 
             return c.get(Calendar.YEAR) == d.get(Calendar.YEAR) && diff > 7;
         } catch (ParseException e) {
-            e.printStackTrace();
+            if (android.support.compat.BuildConfig.DEBUG) {
+                Log.e("Backup", e.getMessage());
+            }
             return false;
         }
     }
@@ -238,11 +241,9 @@ public class Utils {
             case 2:
                 return context.getString(R.string.event_spinner_bday);
         }
-        if (category == 3 && isTeacher(context)) {
-            return context.getString(R.string.event_spinner_hang_out);
-        } else {
-            return context.getString(R.string.event_spinner_other);
-        }
+        return category == 3 && isTeacher(context) ?
+                context.getString(R.string.event_spinner_hang_out) :
+                context.getString(R.string.event_spinner_other);
     }
 
     /**
@@ -260,7 +261,9 @@ public class Utils {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ITALIAN);
             return format.parse(string);
         } catch (ParseException e) {
-            e.printStackTrace();
+            if (android.support.compat.BuildConfig.DEBUG) {
+                Log.e("Backup", e.getMessage());
+            }
             return new Date();
         }
     }

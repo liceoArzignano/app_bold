@@ -73,7 +73,9 @@ class GoogleDriveBackup implements Backup, GoogleApiClient.OnConnectionFailedLis
             try {
                 result.startResolutionForResult(a, 1);
             } catch (IntentSender.SendIntentException e) {
-                e.printStackTrace();
+                if (android.support.compat.BuildConfig.DEBUG) {
+                    Log.e("Backup", e.getMessage());
+                }
                 GoogleApiAvailability.getInstance()
                         .getErrorDialog(a, result.getErrorCode(), 0).show();
             }

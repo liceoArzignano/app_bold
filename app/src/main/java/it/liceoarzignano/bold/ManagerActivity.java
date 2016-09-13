@@ -70,13 +70,14 @@ public class ManagerActivity extends AppCompatActivity
     private String[] subjects;
     private String title;
     private String notes;
-    private String date;
 
     private boolean editMode = false;
     private boolean isMark = true;
     private boolean hasSaved = false;
 
-    private int year, month, day;
+    private int year;
+    private int month;
+    private int day;
     private String mDate;
     private final DatePickerDialog.OnDateSetListener dpickerListener
             = new DatePickerDialog.OnDateSetListener() {
@@ -178,6 +179,7 @@ public class ManagerActivity extends AppCompatActivity
         // Load intent data
         if (editMode) {
             mObjId = callingIntent.getLongExtra("id", -1);
+            String date;
             if (isMark) {
                 loadMark = controller.getMark(mObjId);
                 title = loadMark.getTitle();
@@ -431,7 +433,9 @@ public class ManagerActivity extends AppCompatActivity
     private void saveEvent(View fab) {
         title = mTitleInput.getText().toString();
 
-        if (!title.isEmpty()) {
+        if (title.isEmpty()) {
+            Snackbar.make(fab, getString(R.string.manager_invalid), Snackbar.LENGTH_SHORT).show();
+        } else {
             Utils.animFab((FloatingActionButton) fab);
 
             mEvent.setId(mObjId);
@@ -451,8 +455,6 @@ public class ManagerActivity extends AppCompatActivity
                 }
             }, 1000);
 
-        } else {
-            Snackbar.make(fab, getString(R.string.manager_invalid), Snackbar.LENGTH_SHORT).show();
         }
     }
 }

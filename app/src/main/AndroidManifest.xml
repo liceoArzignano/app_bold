@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="it.liceoarzignano.bold">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -95,13 +96,16 @@
             android:name=".events.BootReceiverService"
             android:enabled="true" />
 
-        <service android:name=".firebase.BoldMessagingService">
+        <service
+            android:name=".firebase.BoldMessagingService"
+            tools:ignore="ExportedService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
         
-        <service android:name=".firebase.BoldInstanceIdService">
+        <service android:name=".firebase.BoldInstanceIdService"
+            tools:ignore="ExportedService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>

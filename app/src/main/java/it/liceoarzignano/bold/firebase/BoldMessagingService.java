@@ -1,5 +1,6 @@
 package it.liceoarzignano.bold.firebase;
 
+import android.support.compat.BuildConfig;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -10,8 +11,10 @@ public class BoldMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        Log.d(TAG, "FCM Message Id: " + remoteMessage.getMessageId());
-        Log.d(TAG, "FCM Notification Message: " + remoteMessage.getNotification());
-        Log.d(TAG, "FCM Data Message: " + remoteMessage.getData());
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "FCM Message Id: " + remoteMessage.getMessageId());
+            Log.d(TAG, "FCM Notification Message: " + remoteMessage.getNotification());
+            Log.d(TAG, "FCM Data Message: " + remoteMessage.getData());
+        }
     }
 }

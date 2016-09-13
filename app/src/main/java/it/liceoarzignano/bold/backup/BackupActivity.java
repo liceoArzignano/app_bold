@@ -14,6 +14,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -133,11 +134,11 @@ public class BackupActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 status = 1;
-                if (!BuildConfig.DEBUG) {
-                    openFolderPicker();
-                } else {
+                if (BuildConfig.DEBUG) {
                     Snackbar.make(mCoordinatorLayout, getString(R.string.backup_error_debug),
                             Snackbar.LENGTH_LONG).show();
+                } else {
+                    openFolderPicker();
                 }
                 status = 0;
             }
@@ -146,7 +147,7 @@ public class BackupActivity extends AppCompatActivity {
         Utils.animFabIntro(this, mBackupFab, getString(R.string.intro_fab_backup_title),
                 getString(R.string.intro_fab_backup), "backupFabIntro");
 
-        if (!backupFolder.equals("")) {
+        if (!backupFolder.isEmpty()) {
             getBackupsFromDrive(DriveId.decodeFromString(backupFolder).asDriveFolder());
         }
     }
@@ -156,7 +157,7 @@ public class BackupActivity extends AppCompatActivity {
      * where the backup file will be exported
      */
     private void openFolderPicker() {
-        if (backupFolder.equals("")) {
+        if (backupFolder.isEmpty()) {
             try {
                 if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
                     if (mIntentPicker == null) {
@@ -169,7 +170,9 @@ public class BackupActivity extends AppCompatActivity {
                 }
             } catch (IntentSender.SendIntentException e) {
                 showErrorDialog();
-                e.printStackTrace();
+                if (android.support.compat.BuildConfig.DEBUG) {
+                    Log.e("Backup", e.getMessage());
+                }
             }
         } else {
             uploadToDrive(DriveId.decodeFromString(backupFolder));
@@ -220,7 +223,9 @@ public class BackupActivity extends AppCompatActivity {
             outputStream.flush();
             outputStream.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            if (android.support.compat.BuildConfig.DEBUG) {
+                Log.e("Backup", e.getMessage());
+            }
         }
 
         showSuccessDialog();
@@ -289,7 +294,9 @@ public class BackupActivity extends AppCompatActivity {
                         outputStream.write(buffer, 0, read);
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    if (android.support.compat.BuildConfig.DEBUG) {
+                        Log.e("Backup", e.getMessage());
+                    }
                 }
 
                 MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
@@ -302,10 +309,10 @@ public class BackupActivity extends AppCompatActivity {
                             @Override
                             public void onResult(
                                     @NonNull DriveFolder.DriveFileResult driveFileResult) {
-                                if (!result.getStatus().isSuccess()) {
-                                    showErrorDialog();
-                                } else {
+                                if (result.getStatus().isSuccess()) {
                                     showSuccessDialog();
+                                } else {
+                                    showErrorDialog();
                                 }
                             }
                         });
