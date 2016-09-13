@@ -2,8 +2,8 @@
 <resources>
     <color name="colorPrimary">#333333</color>
     <color name="colorPrimaryDark">#212121</color>
-    <color name="colorAccent">#7DB344</color>
-    <color name="colorAccentDark">#568B30</color>
+    <color name="colorAccent">#47a64a</color>
+    <color name="colorAccentDark">#214d22</color>
 
     <color name="icon">@color/white</color>
 
@@ -20,11 +20,11 @@
 
     <color name="slide_color">@color/colorPrimary</color>
 
-    <color name="address_1">@color/yellow</color>
-    <color name="address_2">#2196F3</color>
-    <color name="address_3">#E91E63</color>
-    <color name="address_4">@color/red</color>
-    <color name="address_5">@color/teal</color>
-    <color name="address_6">#607D8B</color>
+    <color name="address_1">#ffc108</color>
+    <color name="address_2">#8093ff</color>
+    <color name="address_3">#ff216b</color>
+    <color name="address_4">#ff4336</color>
+    <color name="address_5">#6eff72</color>
+    <color name="address_6">#b0e5ff</color>
 
 </resources>
