@@ -331,4 +331,16 @@ public class Utils {
         return preferences.getString("notificationtime_key", "0");
     }
 
+    static void setAddress(Context context, String value) {
+        preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        preferences.edit().putString("address_key", value).putBoolean("isTeacher_key", false)
+                .apply();
+    }
+
+    static void setTeacherMode(Context context) {
+        preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        preferences.edit().putBoolean("isTeacher_key", true).putString("address_key", "0")
+                .apply();
+    }
+
 }

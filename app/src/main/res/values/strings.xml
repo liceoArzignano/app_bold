@@ -155,6 +155,7 @@
     <string name="pref_isTeacher_title">Teacher mode</string>
     <string name="pref_teacher_summary">You\'re a teacher</string>
     <string name="pref_student_summary">You\'re a student</string>
+    <string name="pref_address_teacher">Teacher</string>
     <string name="pref_address_title">Address</string>
     <string name="pref_address_dialog">Pick an address</string>
     <string name="pref_suggestion_title">Suggestions</string>

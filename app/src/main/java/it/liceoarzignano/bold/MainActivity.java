@@ -1,6 +1,7 @@
 package it.liceoarzignano.bold;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
@@ -712,8 +713,8 @@ public class MainActivity extends AppCompatActivity
      *
      * @param context: used to get SharedPreferences
      */
-    private void showWelcomeIfNeeded(Context context) {
-        SharedPreferences prefs = getSharedPreferences("HomePrefs", MODE_PRIVATE);
+    private void showWelcomeIfNeeded(final Context context) {
+        final SharedPreferences prefs = getSharedPreferences("HomePrefs", MODE_PRIVATE);
 
         if (!prefs.getBoolean("introKey", false)) {
             // If we're showing intro, don't display dialog
@@ -751,13 +752,48 @@ public class MainActivity extends AppCompatActivity
         }
 
         if (prefs.getBoolean("drawerIntro", true)) {
-            prefs.edit().putBoolean("drawerIntro", false).apply();
-            new MaterialTapTargetPrompt.Builder(this)
-                    .setTarget(toolbar.getChildAt(1))
-                    .setPrimaryText(getString(R.string.intro_drawer_title))
-                    .setSecondaryText(getString(R.string.intro_drawer))
-                    .setBackgroundColourFromRes(R.color.colorAccentDark)
-                    .setFocalColourFromRes(R.color.colorPrimaryDark)
+            final Activity mActivity = this;
+            String[] mAddresses = new String[] {
+                    getString(R.string.pref_address_1),
+                    getString(R.string.pref_address_2),
+                    getString(R.string.pref_address_3),
+                    getString(R.string.pref_address_4),
+                    getString(R.string.pref_address_5),
+                    getString(R.string.pref_address_teacher)
+            };
+
+            new MaterialDialog.Builder(context)
+                    .title(R.string.pref_address_dialog)
+                    .items((CharSequence[]) mAddresses)
+                    .canceledOnTouchOutside(false)
+                    .positiveText(android.R.string.ok)
+                    .autoDismiss(false)
+                    .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                        @Override
+                        public boolean onSelection(MaterialDialog dialog, View itemView,
+                                                   int which, CharSequence text) {
+                        boolean isAddressValid = which != -1;
+                            if (which == 5) {
+                                Utils.setTeacherMode(context);
+                            } else if (isAddressValid){
+                                Utils.setAddress(context, String.valueOf(which + 1));
+                            }
+                            if (isAddressValid) {
+                                setupNavHeader();
+                                dialog.dismiss();
+                                prefs.edit().putBoolean("drawerIntro", false).apply();
+                                new MaterialTapTargetPrompt.Builder(mActivity)
+                                        .setTarget(toolbar.getChildAt(1))
+                                        .setPrimaryText(getString(R.string.intro_drawer_title))
+                                        .setSecondaryText(getString(R.string.intro_drawer))
+                                        .setBackgroundColourFromRes(R.color.colorAccentDark)
+                                        .setFocalColourFromRes(R.color.colorPrimaryDark)
+                                        .show();
+                            }
+
+                            return true;
+                        }
+                    })
                     .show();
         }
     }

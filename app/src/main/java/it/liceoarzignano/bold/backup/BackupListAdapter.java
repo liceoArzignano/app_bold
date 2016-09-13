@@ -86,7 +86,8 @@ class BackupListAdapter extends ArrayAdapter<BackupData> {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog,
                                                 @NonNull DialogAction which) {
-                                ((BackupActivity) context).downloadFromDrive(id.asDriveFile());
+                                ((BackupActivity) context).downloadFromDrive(id != null ?
+                                        id.asDriveFile() : null);
                             }
                         })
                         .show();

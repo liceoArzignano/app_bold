@@ -152,6 +152,7 @@
     <string name="pref_isTeacher_title">Modalit\u00E0 docente</string>
     <string name="pref_teacher_summary">Sei un docente</string>
     <string name="pref_student_summary">Sei uno studente</string>
+    <string name="pref_address_teacher">Docente</string>
     <string name="pref_address_title">Indirizzo</string>
     <string name="pref_address_dialog">Seleziona un indirizzo</string>
     <string name="pref_suggestion_title">Suggerimenti</string>
