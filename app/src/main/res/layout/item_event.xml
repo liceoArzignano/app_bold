@@ -1,44 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
-    android:orientation="horizontal"
-    android:paddingBottom="4dp"
+    android:layout_height="72dp"
     android:background="?android:attr/selectableItemBackground"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="4dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
     tools:ignore="Overdraw">
 
     <ImageView
         android:id="@+id/row_icon"
-        android:layout_width="0sp"
-        android:layout_height="52dp"
-        android:layout_weight="1"
-        android:gravity="center_vertical"
-        android:contentDescription="@string/accessibility_event_icon"
-        android:scaleType="centerCrop" />
+        android:layout_width="40dp"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/accessibility_event_icon" />
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_toRightOf="@id/row_icon"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="6"
         android:orientation="vertical"
-        android:paddingLeft="8dp">
+        android:paddingLeft="16dp">
 
         <TextView
             android:id="@+id/row_event_title"
-            style="@style/event_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/row_event_value"
-            style="@style/event_style"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#757575" />
+            style="@android:style/TextAppearance.Small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:textColor="@color/text_secondary" />
 
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>
