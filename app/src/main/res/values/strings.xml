@@ -19,8 +19,7 @@
 
     <!-- Home -->
     <string name="welcome">Welcome</string>
-    <string name="welcome_content"><b>Welcome to the Liceo.</b>
-        Swipe from the left edge to open a section.</string>
+    <string name="welcome_content"><b>Welcome to the Liceo.</b> Swipe from the left edge to open a section.</string>
     <string name="upcoming_events">Upcoming events</string>
     <plurals name="more_events">
         <item quantity="one">And one more event</item>
@@ -83,10 +82,10 @@
     <string name="marks_menu_filter">Filter marks</string>
     <string name="marks_all">All</string>
     <string name="hint_title">Your average in %1$s is</string>
-    <string name="hint_content_common">To have sufficiency in %1$s</string>
+    <string name="hint_content_common">To have sufficiency in %1$s,</string>
     <string name="hint_content_under">the next mark might be %1$s or higher</string>
     <string name="hint_content_above">the next mark must be %1$s or higher</string>
-    <string name="error_noaddress">Pick an address from the settings to see averages</string>
+    <string name="error_noaddress">Set a valid address to use this feature</string>
 
     <!-- View -->
     <string name="title_activity_mark_view">Viewer</string>
@@ -208,14 +207,14 @@
     <string name="safe_pc_pwd">Your pc-account password</string>
     <string name="safe_internet_pwd">Your internet password</string>
     <string name="safe_info_title">Security info</string>
-    <string name="safe_info_content">All your passwords are encrypted and decrypted using the AES algorythm with a 128-bit key. This means that your passwords are saved in an unreadable format no one (except this app) can understand. Each time you open this section the saved encrypted text is decrypted and vice versa when you save your data. That\'s why it takes so long.</string>
+    <string name="safe_info_content">All your passwords are encrypted and decrypted using the AES algorythm with a 128-bit key. This means that your passwords are saved in an unreadable format no one (except this app) can understand. Each time you open this section the saved encrypted text is decrypted and vice versa when you save your data.</string>
     <string name="safe_reset_title">Reset password</string>
-    <string name="safe_reset_content">Do you want to reset the password? <b>If you rest your password you\'ll loose the other stored passwords too!\n You cannot undo this.</b> Do you still want to proceed?</string>
-    <string name="safe_encrypting"><b>Encrypting data\u2026</b></string>
-    <string name="safe_decrypting"><b>Decrypting data\u2026</b></string>
-    <string name="safe_first_load"><b>Initializing data\u2026</b></string>
-    <string name="safe_setup_checking_password"><b>Checking password\u2026</b></string>
-    <string name="safe_nomatch"><b>Password does not match.</b></string>
+    <string name="safe_reset_content">Do you want to reset the password? If you rest your password you\'ll loose the other stored passwords too!\n You cannot undo this. Do you still want to proceed?</string>
+    <string name="safe_encrypting">Encrypting data\u2026</string>
+    <string name="safe_decrypting">Decrypting data\u2026</string>
+    <string name="safe_first_load">Initializing data\u2026</string>
+    <string name="safe_setup_checking_password">Checking password\u2026</string>
+    <string name="safe_nomatch">Password does not match.</string>
     <string name="safe_back_title">Quitting Safe</string>
     <string name="safe_back_message">Are you sure you want to quit Safe? Your changes will not be saved.\nTo save and quit, click the V button at the bottom</string>
 

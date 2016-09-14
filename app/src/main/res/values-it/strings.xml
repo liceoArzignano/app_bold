@@ -53,6 +53,8 @@
     <string name="title_activity_manager">Editor</string>
     <string name="update_mark">Modifica voto</string>
     <string name="update_event">Modifica evento</string>
+    <string name="new_mark">Nuovo voto</string>
+    <string name="new_event">Nuovo evento</string>
     <string name="hint_student">Studente</string>
     <string name="hint_event">Evento</string>
     <string name="hint_notes">Note</string>
@@ -80,10 +82,10 @@
     <string name="marks_menu_filter">Filtro voti</string>
     <string name="marks_all">Tutti</string>
     <string name="hint_title">La tua media in %1$s \u00E8</string>
-    <string name="hint_content_common">Per avere la sufficienza in %1$s il prossimo voto</string>
+    <string name="hint_content_common">Per avere la sufficienza in %1$s, il prossimo voto</string>
     <string name="hint_content_under">deve essere %1$s o superiore</string>
     <string name="hint_content_above">puo essere %1$s o superiore</string>
-    <string name="error_noaddress">Per utilizzare questa funzione devi impostare un indirizzo nelle impostazioni</string>
+    <string name="error_noaddress">Imposta un indirizzo per utilizzare questa funzione</string>
 
     <!-- Viewer -->
     <string name="title_activity_mark_view">Visualizzatore</string>
@@ -205,7 +207,7 @@
     <string name="safe_pc_pwd">Password account PC</string>
     <string name="safe_internet_pwd">Password internet</string>
     <string name="safe_info_title">Informazioni sulla sicurezza</string>
-    <string name="safe_info_content">Tutti i tuoi dati vengono criptati e decriptati utilizzando l\'algoritmo AES con chiave a 128bit. Questo significa che sono salvati in un formato che solo quest\'app pu\u00F2 comprendere. Ogni volta che apri Safe i tuoi dati vengono decriptati e avviene un\'operazione inversa quando li salvi. Ecco perch\u00E9 devi attendere per accedere e chiudere Safe.</string>
+    <string name="safe_info_content">Tutti i tuoi dati vengono criptati e decriptati utilizzando l\'algoritmo AES con chiave a 128bit. Questo significa che sono salvati in un formato che solo quest\'app pu\u00F2 comprendere. Ogni volta che apri Safe i tuoi dati vengono decriptati e avviene un\'operazione inversa quando li salvi.</string>
     <string name="safe_reset_title">Reimpostazione password</string>
     <string name="safe_reset_content">Vuoi remipostare la password? Se lo farai anche gli altri dati qui salvati saranno eliminati!\nVoi procedere?</string>
     <string name="safe_encrypting">Criptazione dati\u2026</string>
@@ -247,7 +249,7 @@
     </plurals>
 
     <!-- Backup -->
-    <string name="title_activity_backup">Backup &amp; ripristino</string>
+    <string name="title_activity_backup">Backup &amp; Ripristino</string>
     <string name="backup_created_message">Il backup \u00E8 stato creato con successo</string>
     <string name="backup_failed_message">Impossibile creare il backup, qualcosa \u00E8 andato storto</string>
     <string name="restore_success_message">Il backup \u00E8 stato ripristinato con successo</string>
