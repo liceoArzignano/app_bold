@@ -47,8 +47,6 @@ public class SafeActivity extends AppCompatActivity {
     private static SharedPreferences.Editor editor;
     private static String accessPassword;
     private Encryption.SecretKeys secretKeys = null;
-    private String primKey;
-    private String salt;
     private String crUserName;
     private String crReg;
     private String crPc;
@@ -108,9 +106,6 @@ public class SafeActivity extends AppCompatActivity {
 
         mLoadingLayout.setVisibility(View.VISIBLE);
         isWorking = true;
-
-        primKey = getKey();
-        salt = getSalt();
 
         if (tellMeTheresNoXposed()) {
             mLoadingText.setText(R.string.safe_first_load);
@@ -288,9 +283,8 @@ public class SafeActivity extends AppCompatActivity {
      * Fire encryption stuffs
      */
     private void setupEncryption() {
-        //encryption = Encryption.getDefault(getKey(), getSalt(), new byte[16]);
         try {
-            secretKeys = Encryption.generateKeyFromPassword(primKey, salt.getBytes());
+            secretKeys = Encryption.generateKeyFromPassword(getKey(), getSalt().getBytes());
         } catch (GeneralSecurityException e) {
             Log.e("Safe", e.getMessage(), e);
         }
@@ -303,7 +297,6 @@ public class SafeActivity extends AppCompatActivity {
      * @return encrypted string
      */
     private String encrypt(String s) {
-        //return encryption.encryptOrNull(s);
         try {
             return Encryption.encrypt(s, secretKeys).toString();
         } catch (UnsupportedEncodingException | GeneralSecurityException e) {
@@ -319,7 +312,6 @@ public class SafeActivity extends AppCompatActivity {
      * @return decrypted string
      */
     private String decrypt(String s) {
-        //return encryption.decryptOrNull(s);
         try {
             return Encryption.decryptString(
                     new Encryption.CipherTextIvMac(s), secretKeys);

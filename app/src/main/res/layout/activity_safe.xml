@@ -75,11 +75,10 @@
                     <EditText
                         android:id="@+id/userNamePwd"
                         android:layout_width="match_parent"
-                        android:layout_height="72dp"
+                        android:layout_height="wrap_content"
                         android:ellipsize="start"
                         android:hint="@string/safe_username"
-                        android:inputType="textPassword"
-                        android:paddingBottom="16dp" />
+                        android:inputType="textPassword" />
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -89,11 +88,10 @@
                     <EditText
                         android:id="@+id/regPwd"
                         android:layout_width="match_parent"
-                        android:layout_height="72dp"
+                        android:layout_height="wrap_content"
                         android:ellipsize="start"
                         android:hint="@string/safe_reg_pwd"
-                        android:inputType="textPassword"
-                        android:paddingBottom="16dp" />
+                        android:inputType="textPassword" />
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -103,11 +101,10 @@
                     <EditText
                         android:id="@+id/pcPwd"
                         android:layout_width="match_parent"
-                        android:layout_height="72dp"
+                        android:layout_height="wrap_content"
                         android:ellipsize="start"
                         android:hint="@string/safe_pc_pwd"
-                        android:inputType="textPassword"
-                        android:paddingBottom="16dp" />
+                        android:inputType="textPassword" />
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -117,11 +114,10 @@
                     <EditText
                         android:id="@+id/internetPwd"
                         android:layout_width="match_parent"
-                        android:layout_height="72dp"
+                        android:layout_height="wrap_content"
                         android:ellipsize="start"
                         android:hint="@string/safe_internet_pwd"
-                        android:inputType="textPassword"
-                        android:paddingBottom="16dp" />
+                        android:inputType="textPassword" />
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
         </LinearLayout>
