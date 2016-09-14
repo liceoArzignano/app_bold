@@ -235,8 +235,9 @@ public class ManagerActivity extends AppCompatActivity
             }
 
             // Subject selector
-            mSubjectButton.setText(String.format(getResources()
-                    .getString(R.string.selected_subject), title));
+            mSubjectButton.setText(editMode ? String.format(getResources()
+                    .getString(R.string.selected_subject), title) :
+                    getString(R.string.select_subject));
             mSubjectButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
