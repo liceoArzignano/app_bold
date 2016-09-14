@@ -168,17 +168,20 @@ public class MarkListActivity extends AppCompatActivity {
         if (subjectFilter != null) {
             Intent backIntent = new Intent(this, MarkListActivity.class);
             startActivity(backIntent);
+            finish();
         }
         finish();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.marks, menu);
-        allMarks = menu.findItem(R.id.filter_all);
-        firstQMarks = menu.findItem(R.id.filter_first);
-        secondQMarks = menu.findItem(R.id.filter_second);
-        setSelectedItem();
+        if (!Utils.isFirstQuarterMark(Utils.getToday())) {
+            getMenuInflater().inflate(R.menu.marks, menu);
+            allMarks = menu.findItem(R.id.filter_all);
+            firstQMarks = menu.findItem(R.id.filter_first);
+            secondQMarks = menu.findItem(R.id.filter_second);
+            setSelectedItem();
+        }
         return true;
     }
 

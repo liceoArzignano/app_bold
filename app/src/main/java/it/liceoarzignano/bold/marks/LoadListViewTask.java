@@ -7,6 +7,7 @@ import android.widget.ListView;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import io.realm.Sort;
 import it.liceoarzignano.bold.BoldApp;
 
 class LoadListViewTask extends AsyncTask<Void, Void, Void> {
@@ -61,7 +62,8 @@ class LoadListViewTask extends AsyncTask<Void, Void, Void> {
                     break;
             }
         }
-        ListArrayAdapter listArrayAdapter = new ListArrayAdapter(context, marks);
+        ListArrayAdapter listArrayAdapter = new ListArrayAdapter(context,
+                marks.sort("date", Sort.DESCENDING));
         if (mMarksListView != null) {
             mMarksListView.setAdapter(listArrayAdapter);
         }

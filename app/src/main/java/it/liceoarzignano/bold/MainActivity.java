@@ -584,12 +584,13 @@ public class MainActivity extends AppCompatActivity
      * Show the 3 lastest added marks
      */
     private void loadMarks() {
-        List<Mark> marks = controller.getAllMarks();
+        List<Mark> marks = controller.getAllMarks().sort("date", Sort.DESCENDING);
         int i = 0;
 
         if (!marks.isEmpty()) {
             showMarksCard = true;
             for (Mark mark : marks) {
+
                 if (i == 3) {
                     break;
                 }

@@ -81,7 +81,7 @@ public class Utils {
      *
      * @return today formatted in Locale.ITALIAN (yyyy-mm-dd)
      */
-    static String getToday() {
+    public static String getToday() {
         Calendar calendar = Calendar.getInstance();
         int month = calendar.get(Calendar.MONTH) + 1;
         int day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -150,13 +150,11 @@ public class Utils {
 
     /**
      * Use for adaptive feature discovery
-     * TODO: implement ^^^^
      *
      * @param context: used to call getFirstUsageDate(Context)
      * @return true if user has been using this for more than one week
      */
-    @SuppressWarnings("unused")
-    public static boolean hasUsedForMoreThanOneWeek(Context context) {
+    static boolean hasUsedForMoreThanOneWeek(Context context) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ITALIAN);
         String first = getFirstUsageDate(context);
 
@@ -271,12 +269,12 @@ public class Utils {
     /**
      * Determine if a mark has been assigned during the first or second quarter
      *
-     * @param mark given mark
+     * @param markDate given mark's date
      * @return true if first quarter, else false
      */
-    public static boolean isFirstQuarterMark(Mark mark) {
+    public static boolean isFirstQuarterMark(String markDate) {
         return stringToDate(BoldApp.getBoldContext().getString(R.string.config_quarter_change))
-                .after(stringToDate(mark.getDate()));
+                .after(stringToDate(markDate));
     }
 
     /**

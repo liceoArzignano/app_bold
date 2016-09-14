@@ -41,7 +41,7 @@ public class ManagerActivity extends AppCompatActivity
         implements AdapterView.OnItemSelectedListener {
 
     private Context mContext;
-    private Intent callingIntent;
+    private Intent mCallingIntent;
     private RealmController controller;
 
     private CoordinatorLayout mCoordinatorLayout;
@@ -92,7 +92,7 @@ public class ManagerActivity extends AppCompatActivity
         }
     };
 
-    /**
+    /*
      * Intent-extra:
      * boolean isEditing
      * boolean isMark
@@ -107,10 +107,11 @@ public class ManagerActivity extends AppCompatActivity
         mContext = this;
         controller = RealmController.with(this);
 
-        callingIntent = getIntent();
-        isMark = callingIntent.getBooleanExtra("isMark", true);
-        editMode = callingIntent.getBooleanExtra("isEditing", false);
+        mCallingIntent = getIntent();
+        isMark = mCallingIntent.getBooleanExtra("isMark", true);
+        editMode = mCallingIntent.getBooleanExtra("isEditing", false);
 
+        // Toolbar
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitle(getString(isMark ?
                 (editMode ? R.string.update_mark : R.string.new_mark) :
@@ -121,7 +122,6 @@ public class ManagerActivity extends AppCompatActivity
         }
 
         mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
-
         mTitleLayout = (TextInputLayout) findViewById(R.id.title_layout);
         mTitleInput = (EditText) findViewById(R.id.title_input);
         mSubjectButton = (Button) findViewById(R.id.subjects_selector);
@@ -143,15 +143,19 @@ public class ManagerActivity extends AppCompatActivity
             }
         });
 
+        // Animate layout transition for shared fab animation when editing
+        if (editMode) {
+            LinearLayout mRootLayout = (LinearLayout) findViewById(R.id.manager_layout);
+            mRootLayout.setAlpha(0f);
+            mRootLayout.animate().alpha(1f).setDuration(750).setStartDelay(250).start();
+        }
+
         Utils.animFabIntro(this, fab,
                 getString(isMark ?
                         R.string.intro_fab_save_mark_title : R.string.intro_fab_save_event_title),
                 getString(isMark ? R.string.intro_fab_save_mark : R.string.intro_fab_save_event),
                 isMark ? "markManKey" : "eventManKey");
 
-        LinearLayout mRootLayout = (LinearLayout) findViewById(R.id.manager_layout);
-        mRootLayout.setAlpha(0f);
-        mRootLayout.animate().alpha(1f).setDuration(750).setStartDelay(250).start();
     }
 
     /**
@@ -178,7 +182,7 @@ public class ManagerActivity extends AppCompatActivity
 
         // Load intent data
         if (editMode) {
-            mObjId = callingIntent.getLongExtra("id", -1);
+            mObjId = mCallingIntent.getLongExtra("id", -1);
             String date;
             if (isMark) {
                 loadMark = controller.getMark(mObjId);
@@ -187,7 +191,7 @@ public class ManagerActivity extends AppCompatActivity
                 value = loadMark.getValue();
                 date = loadMark.getDate();
                 double markValuePreview = (double) value / 100;
-                mMarkSeekBar.setProgress((int) markValuePreview * 4);
+                mMarkSeekBar.setProgress((int) markValuePreview * 40);
             } else {
                 loadEvent = controller.getEvent(mObjId);
                 title = loadEvent.getTitle();
@@ -204,6 +208,9 @@ public class ManagerActivity extends AppCompatActivity
         // Setup UI
         if (Utils.isTeacher(mContext) || !isMark) {
             mTitleInput.setHint(getString(isMark ? R.string.hint_student : R.string.hint_event));
+            if (isMark) {
+                mSubjectButton.setVisibility(View.GONE);
+            }
         } else {
             mTitleLayout.setVisibility(View.GONE);
         }

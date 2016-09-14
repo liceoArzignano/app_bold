@@ -47,7 +47,7 @@ class ListArrayAdapter extends RealmBaseAdapter<Mark> {
 
         final Mark mark = marks.get(position);
         markViewHolder.markTitle.setText(mark.getTitle());
-        markViewHolder.markNotes.setText(mark.getContent());
+        markViewHolder.markNotes.setText(mark.getDate());
 
         Double doubleValue = (double) mark.getValue() / 100;
         String mValue = Double.toString(doubleValue);
