@@ -134,10 +134,8 @@ public class MarkListActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (addressOk()) {
-                    Intent i = new Intent(MarkListActivity.this, ManagerActivity.class);
-                    startActivity(i);
-                }
+                Intent i = new Intent(MarkListActivity.this, ManagerActivity.class);
+                startActivity(i);
             }
         });
 
@@ -206,22 +204,6 @@ public class MarkListActivity extends AppCompatActivity {
 
 
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * Check if user defined a valid address (or is a teacher)
-     *
-     * @return read comments to understand
-     */
-    private boolean addressOk() {
-        if (Utils.getAddress(this).equals("0")) {
-            // Students must define a valid address
-            Toast.makeText(getApplicationContext(), getString(R.string.error_noaddress),
-                    Toast.LENGTH_LONG).show();
-            return false;
-        }
-        // Teacher and Student who defined an address are allowed to add marks
-        return true;
     }
 
     private void setSelectedItem() {

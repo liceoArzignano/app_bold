@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import it.liceoarzignano.bold.R;
+import it.liceoarzignano.bold.Utils;
 import it.liceoarzignano.bold.realm.RealmController;
 
 public class AverageListFragment extends Fragment {
@@ -26,11 +27,14 @@ public class AverageListFragment extends Fragment {
     private static Resources res;
     private static RealmController controller;
 
+    private static boolean isTeacher = false;
+
     public AverageListFragment() {
         controller = RealmController.with(getActivity());
     }
 
     static void refresh(Context context, Pair<String, Integer> filter) {
+        isTeacher = Utils.isTeacher(context);
         if (mAvgListview != null) {
             mAvgListview.setAdapter(new AverageArrayAdapter(context, controller, filter.second));
             mAvgListview.setVisibility(filter.first != null ? View.GONE : View.VISIBLE);
@@ -50,11 +54,13 @@ public class AverageListFragment extends Fragment {
     static void setHint(String subject, double avg, double excepted) {
         String msg;
 
-        msg = String.format(res.getString(R.string.hint_title), subject);
+        msg = String.format(res.getString(isTeacher ? R.string.hint_title_teacher :
+                R.string.hint_title_student), subject);
         mTitle.setText(msg);
         msg = String.valueOf(avg);
         mValue.setText(msg);
-        msg = String.format(res.getString(R.string.hint_content_common), subject)
+        msg = String.format(res.getString(isTeacher ? R.string.hint_content_common_teacher :
+                R.string.hint_content_common_student), subject)
                 + " " + String.format(res.getString(excepted < 6 ?
                 R.string.hint_content_above : R.string.hint_content_under), excepted);
         mHint.setText(msg);

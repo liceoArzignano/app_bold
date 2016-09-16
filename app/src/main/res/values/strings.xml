@@ -81,8 +81,10 @@
     <string name="title_fragments_avgs">Averages</string>
     <string name="marks_menu_filter">Filter marks</string>
     <string name="marks_all">All</string>
-    <string name="hint_title">Your average in %1$s is</string>
-    <string name="hint_content_common">To have sufficiency in %1$s,</string>
+    <string name="hint_title_student">Your average in %1$s is</string>
+    <string name="hint_content_common_student">To have sufficiency in %1$s,</string>
+    <string name="hint_title_teacher">%1$s\'s average is</string>
+    <string name="hint_content_common_teacher">To have sufficiency, %1$s,</string>
     <string name="hint_content_under">the next mark might be %1$s or higher</string>
     <string name="hint_content_above">the next mark must be %1$s or higher</string>
     <string name="error_noaddress">Set a valid address to use this feature</string>

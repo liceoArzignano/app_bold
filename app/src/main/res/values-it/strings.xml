@@ -81,8 +81,10 @@
     <string name="title_fragments_avgs">Medie</string>
     <string name="marks_menu_filter">Filtro voti</string>
     <string name="marks_all">Tutti</string>
-    <string name="hint_title">La tua media in %1$s \u00E8</string>
-    <string name="hint_content_common">Per avere la sufficienza in %1$s, il prossimo voto</string>
+    <string name="hint_title_student">La tua media in %1$s \u00E8</string>
+    <string name="hint_content_common_student">Per avere la sufficienza in %1$s, il prossimo voto</string>
+    <string name="hint_title_teacher">La media di %1$s \u00E8</string>
+    <string name="hint_content_common_teacher">Per avere la sufficienza, il prossimo voto di %1$s</string>
     <string name="hint_content_under">deve essere %1$s o superiore</string>
     <string name="hint_content_above">puo essere %1$s o superiore</string>
     <string name="error_noaddress">Imposta un indirizzo per utilizzare questa funzione</string>
