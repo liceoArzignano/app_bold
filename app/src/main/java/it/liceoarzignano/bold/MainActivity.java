@@ -295,7 +295,7 @@ public class MainActivity extends AppCompatActivity
             public void run() {
                 Utils.enableTrackerIfOverlayRequests(sContext,
                         getResources().getBoolean(R.bool.force_tracker));
-                if (Utils.trackerEnabled(sContext)) {
+                if (Utils.hasAnalytics(sContext)) {
                     isAnalyticsEnabled = true;
                     mBoldAnalytics = BoldApp.getBoldAnalytics();
                 }

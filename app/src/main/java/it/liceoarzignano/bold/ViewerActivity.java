@@ -50,7 +50,7 @@ public class ViewerActivity extends AppCompatActivity {
         fContext = this;
         realm = Realm.getInstance(BoldApp.getAppRealmConfiguration());
 
-        hasAnalytics = Utils.trackerEnabled(fContext);
+        hasAnalytics = Utils.hasAnalytics(fContext);
 
         if (hasAnalytics) {
             mBoldAnalytics = BoldApp.getBoldAnalytics();

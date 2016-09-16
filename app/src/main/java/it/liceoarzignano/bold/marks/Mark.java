@@ -74,7 +74,7 @@ public class Mark extends RealmObject {
 
     public void setDate(String date) {
         this.date = date;
-        isFirstQuarter = Utils.isFirstQuarterMark(date);
+        isFirstQuarter = Utils.isFirstQuarter(date);
     }
 
     public boolean getIsFirstQuarter() {

@@ -48,9 +48,7 @@ public class RealmController {
     }
 
     /*
-     *********
-     * Marks *
-     *********
+     * Marks
      */
 
     public RealmResults<Mark> getAllMarks() {
@@ -125,9 +123,7 @@ public class RealmController {
 
 
     /*
-     **********
-     * Events *
-     **********
+     * Events
      */
 
     public RealmResults<Event> getAllEventsInverted() {

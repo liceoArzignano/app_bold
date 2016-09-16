@@ -10,7 +10,6 @@ class BackupData {
     private Date date;
     private long size;
 
-
     public Date getDate() {
         return date;
     }

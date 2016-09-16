@@ -17,7 +17,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +81,11 @@ public class MarkListActivity extends AppCompatActivity {
         fContext.startActivity(filteredList);
     }
 
+    /**
+     * Return subject / student + quarter filter
+     *
+     * @return current list filters
+     */
     static Pair<String, Integer> getSubjectFilter() {
         return new Pair<>(subjectFilter, quarterFilter);
     }
@@ -173,7 +177,7 @@ public class MarkListActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!Utils.isFirstQuarterMark(Utils.getToday())) {
+        if (!Utils.isFirstQuarter(Utils.getToday())) {
             getMenuInflater().inflate(R.menu.marks, menu);
             allMarks = menu.findItem(R.id.filter_all);
             firstQMarks = menu.findItem(R.id.filter_first);
@@ -206,6 +210,9 @@ public class MarkListActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Set the current quarter as checked
+     */
     private void setSelectedItem() {
         quarterFilter = prefs.getInt(PREF_QUARTER_SELECTOR, 0);
         switch (quarterFilter) {

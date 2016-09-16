@@ -12,7 +12,7 @@ public class Event extends RealmObject {
     private String date;
     private int icon;
 
-    /**
+    /*
      * icon values
      * 0 = test
      * 1 = school
@@ -22,7 +22,6 @@ public class Event extends RealmObject {
      */
 
     public Event() {
-
     }
 
     public Event(long id, String title, String date, int icon) {

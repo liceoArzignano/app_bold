@@ -13,11 +13,6 @@ import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
 import it.liceoarzignano.bold.realm.RealmController;
 
-/**
- * TODO:
- * rewrite the quarter logic using sharedPreference boolean livingFirstQuarter
- * also find out why the fuck Mark.isFirstQuarter() returns always true
- */
 class AverageArrayAdapter extends BaseAdapter {
 
     private static LayoutInflater inflater = null;

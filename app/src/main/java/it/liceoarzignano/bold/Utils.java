@@ -25,6 +25,19 @@ import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 import static android.content.Context.MODE_PRIVATE;
 
 public class Utils {
+    private static final String HOME_PREFS = "HomePrefs";
+    private static final String SAFE_PREFS = "SafePrefs";
+    private static final String INITAL_DAY = "initialDayKey";
+    private static final String ANALYTICS = "analytics_key";
+    private static final String ISTEACHER = "isTeacher_key";
+    private static final String SUGGESTIONS = "showSuggestions_key";
+    private static final String NOTIFICATION = "notification_key";
+    private static final String NOTIF_TIME = "notificationtime_key";
+    private static final String ADDRESS = "address_key";
+    private static final String USERNAME = "username_key";
+    private static final String APP_VERSION = "appVersionKey";
+    private static final String SAFE_DONE = "doneSetup";
+
     private static SharedPreferences preferences;
 
     /**
@@ -50,10 +63,9 @@ public class Utils {
      * @param message: showcase message
      * @param key:     showcase key to show it only the first time
      */
-    public static void animFabIntro(final Activity context,
-                                    final FloatingActionButton fab,
+    public static void animFabIntro(final Activity context, final FloatingActionButton fab,
                                     final String title, final String message, final String key) {
-        final SharedPreferences prefs = context.getSharedPreferences("HomePrefs", MODE_PRIVATE);
+        final SharedPreferences prefs = context.getSharedPreferences(HOME_PREFS, MODE_PRIVATE);
         final boolean firstUsage = prefs.getBoolean(key, true);
         if (hasApi21()) {
             fab.show();
@@ -108,7 +120,7 @@ public class Utils {
     static void enableTrackerIfOverlayRequests(Context context, boolean overlay) {
         if (overlay) {
             PreferenceManager.getDefaultSharedPreferences(context)
-                    .edit().putBoolean("analytics_key", true).apply();
+                    .edit().putBoolean(ANALYTICS, true).apply();
         }
     }
 
@@ -119,8 +131,8 @@ public class Utils {
      * @return the date of the day the first usage happened
      */
     private static String getFirstUsageDate(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences("HomePrefs", MODE_PRIVATE);
-        return prefs.getString("initialDayKey", "2000-01-01");
+        SharedPreferences prefs = context.getSharedPreferences(HOME_PREFS, MODE_PRIVATE);
+        return prefs.getString(INITAL_DAY, "2000-01-01");
     }
 
     /**
@@ -272,12 +284,12 @@ public class Utils {
      * @param markDate given mark's date
      * @return true if first quarter, else false
      */
-    public static boolean isFirstQuarterMark(String markDate) {
+    public static boolean isFirstQuarter(String markDate) {
         return stringToDate(BoldApp.getBoldContext().getString(R.string.config_quarter_change))
                 .after(stringToDate(markDate));
     }
 
-    /**
+    /*
      * SharedPreferences getters
      *
      * @param context: used to access SharedPreferences
@@ -286,59 +298,59 @@ public class Utils {
 
     public static boolean isTeacher(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getBoolean("isTeacher_key", false);
+        return preferences.getBoolean(ISTEACHER, false);
     }
 
-    static boolean trackerEnabled(Context context) {
+    static boolean hasAnalytics(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getBoolean("analytics_key", true);
+        return preferences.getBoolean(ANALYTICS, true);
     }
 
     static boolean hasSuggestions(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getBoolean("showSuggestions_key", true);
-    }
-
-    static boolean hasSafe(Context context) {
-        preferences = context.getSharedPreferences("SafePrefs", MODE_PRIVATE);
-        return preferences.getBoolean("doneSetup", false);
+        return preferences.getBoolean(SUGGESTIONS, true);
     }
 
     static boolean hasNotification(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getBoolean("notification_key", true);
-    }
-
-    public static String getAddress(Context context) {
-        preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getString("address_key", "0");
-    }
-
-    static String appVersionKey(Context context) {
-        preferences = context.getSharedPreferences("HomePrefs", MODE_PRIVATE);
-        return preferences.getString("appVersionKey", "0");
-    }
-
-    public static String userNameKey(Context context) {
-        preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getString("username_key", " ");
+        return preferences.getBoolean(NOTIFICATION, true);
     }
 
     static String getNotificationTime(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getString("notificationtime_key", "0");
+        return preferences.getString(NOTIF_TIME, "0");
+    }
+
+    public static String getAddress(Context context) {
+        preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(ADDRESS, "0");
+    }
+
+    static String appVersionKey(Context context) {
+        preferences = context.getSharedPreferences(HOME_PREFS, MODE_PRIVATE);
+        return preferences.getString(APP_VERSION, "0");
+    }
+
+    public static String userNameKey(Context context) {
+        preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(USERNAME, " ");
     }
 
     static void setAddress(Context context, String value) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        preferences.edit().putString("address_key", value).putBoolean("isTeacher_key", false)
+        preferences.edit().putString(ADDRESS, value).putBoolean("isTeacher_key", false)
                 .apply();
     }
 
     static void setTeacherMode(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        preferences.edit().putBoolean("isTeacher_key", true).putString("address_key", "0")
+        preferences.edit().putBoolean(ISTEACHER, true).putString(ADDRESS, "0")
                 .apply();
+    }
+
+    static boolean hasSafe(Context context) {
+        preferences = context.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE);
+        return preferences.getBoolean(SAFE_DONE, false);
     }
 
 }

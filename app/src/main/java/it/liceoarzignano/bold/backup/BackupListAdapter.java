@@ -28,9 +28,17 @@ class BackupListAdapter extends ArrayAdapter<BackupData> {
         this.context = context;
     }
 
+    /**
+     * Convert long bytes format to a human-friendly format (eg: 12kb)
+     *
+     * @param bytes bytes size
+     * @return file size: sth{kMGTPE}b
+     */
     private static String humanReadableByteCount(long bytes) {
         int unit = 1000;
-        if (bytes < unit) return bytes + " B";
+        if (bytes < unit) {
+            return bytes + " B";
+        }
         int exp = (int) (Math.log(bytes) / Math.log(unit));
         char pre = "kMGTPE".charAt(exp - 1);
         return String.format(Locale.ITALIAN, "%.1f %sB", bytes / Math.pow(unit, exp), pre);
