@@ -21,6 +21,7 @@ public class BoldAnalytics {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
         mFirebaseAnalytics.setUserId(strToSHA(
                 Secure.getString(context.getContentResolver(), Secure.ANDROID_ID)));
+        configUser();
     }
 
     /**
@@ -32,5 +33,30 @@ public class BoldAnalytics {
         bundle.putString(FirebaseAnalytics.Param.GROUP_ID, Utils.isTeacher(context) ?
                 "0" : Utils.getAddress(context));
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+    }
+
+    /**
+     * Send firebase analytics when settings are opened
+     *
+     * @param bundle event data
+     */
+    public void sendConfig(Bundle bundle) {
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
+    }
+
+    /**
+     * Setup user props basing on sharedPreferences
+     */
+    private void configUser() {
+        mFirebaseAnalytics.setUserProperty(Utils.ISTEACHER,
+                String.valueOf(Utils.isTeacher(context)));
+        mFirebaseAnalytics.setUserProperty(Utils.SUGGESTIONS,
+                String.valueOf(Utils.hasSuggestions(context)));
+        mFirebaseAnalytics.setUserProperty(Utils.NOTIFICATION,
+                String.valueOf(Utils.hasNotification(context)));
+        mFirebaseAnalytics.setUserProperty(Utils.NOTIF_TIME,
+                Utils.getNotificationTime(context));
+        mFirebaseAnalytics.setUserProperty(Utils.SAFE_DONE,
+                String.valueOf(Utils.hasSafe(context)));
     }
 }

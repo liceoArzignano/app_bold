@@ -29,14 +29,14 @@ public class Utils {
     private static final String SAFE_PREFS = "SafePrefs";
     private static final String INITAL_DAY = "initialDayKey";
     private static final String ANALYTICS = "analytics_key";
-    private static final String ISTEACHER = "isTeacher_key";
-    private static final String SUGGESTIONS = "showSuggestions_key";
-    private static final String NOTIFICATION = "notification_key";
-    private static final String NOTIF_TIME = "notificationtime_key";
-    private static final String ADDRESS = "address_key";
+    public static final String ISTEACHER = "isTeacher_key";
+    public static final String SUGGESTIONS = "showSuggestions_key";
+    public static final String NOTIFICATION = "notification_key";
+    public static final String NOTIF_TIME = "notificationtime_key";
+    public static final String ADDRESS = "address_key";
     private static final String USERNAME = "username_key";
     private static final String APP_VERSION = "appVersionKey";
-    private static final String SAFE_DONE = "doneSetup";
+    public static final String SAFE_DONE = "doneSetup";
 
     private static SharedPreferences preferences;
 
@@ -301,22 +301,22 @@ public class Utils {
         return preferences.getBoolean(ISTEACHER, false);
     }
 
-    static boolean hasAnalytics(Context context) {
+    public static boolean hasAnalytics(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getBoolean(ANALYTICS, true);
     }
 
-    static boolean hasSuggestions(Context context) {
+    public static boolean hasSuggestions(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getBoolean(SUGGESTIONS, true);
     }
 
-    static boolean hasNotification(Context context) {
+    public static boolean hasNotification(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getBoolean(NOTIFICATION, true);
     }
 
-    static String getNotificationTime(Context context) {
+    public static String getNotificationTime(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getString(NOTIF_TIME, "0");
     }
@@ -348,7 +348,7 @@ public class Utils {
                 .apply();
     }
 
-    static boolean hasSafe(Context context) {
+    public static boolean hasSafe(Context context) {
         preferences = context.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE);
         return preferences.getBoolean(SAFE_DONE, false);
     }

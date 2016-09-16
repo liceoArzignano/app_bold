@@ -12,10 +12,13 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
+import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
 import it.liceoarzignano.bold.backup.BackupActivity;
+import it.liceoarzignano.bold.firebase.BoldAnalytics;
 import it.liceoarzignano.bold.safe.SafeActivity;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -123,6 +126,12 @@ public class SettingsActivity extends AppCompatActivity {
                     return true;
                 }
             });
+
+            if (Utils.hasAnalytics(context)) {
+                Bundle mBundle = new Bundle();
+                mBundle.putString(FirebaseAnalytics.Param.LEVEL, "Settings");
+                BoldApp.getBoldAnalytics().sendConfig(mBundle);
+            }
         }
     }
 }
