@@ -6,30 +6,34 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.events.EventListActivity;
@@ -46,22 +50,23 @@ public class ManagerActivity extends AppCompatActivity
 
     private CoordinatorLayout mCoordinatorLayout;
     // Title
-    private TextInputLayout mTitleLayout;
+    private RelativeLayout mTitleLayout;
     private EditText mTitleInput;
     // Subject
-    private Button mSubjectButton;
+    private RelativeLayout mSubjectLayout;
+    private TextView mSubjectSelector;
     // Notes
-    private TextInputLayout mNotesLayout;
+    private RelativeLayout mNotesLayout;
     private EditText mNotesInput;
     // Event category
-    private LinearLayout mEventSpinnerLayout;
+    private RelativeLayout mEventSpinnerLayout;
     private Spinner mEventSpinner;
     // Mark value
-    private LinearLayout mMarkValueLayout;
+    private RelativeLayout mMarkValueLayout;
     private TextView mMarkPreview;
-    private SeekBar mMarkSeekBar;
     // Date picker
-    private Button mDatePicker;
+    private RelativeLayout mDatePickerLayout;
+    private TextView mDatePicker;
 
     private long mObjId;
     private Mark mMark;
@@ -70,6 +75,7 @@ public class ManagerActivity extends AppCompatActivity
     private String[] subjects;
     private String title;
     private String notes;
+    private double dialogValue;
 
     private boolean editMode = false;
     private boolean isMark = true;
@@ -87,8 +93,7 @@ public class ManagerActivity extends AppCompatActivity
             month = monthOfYear + 1;
             day = dayOfMonth;
             mDate = Utils.rightDate(ManagerActivity.this.year, month, day);
-            mDatePicker.setText(String.format(getResources().getString(R.string.current_date),
-                    mDate));
+            mDatePicker.setText(mDate);
         }
     };
 
@@ -122,17 +127,18 @@ public class ManagerActivity extends AppCompatActivity
         }
 
         mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
-        mTitleLayout = (TextInputLayout) findViewById(R.id.title_layout);
+        mTitleLayout = (RelativeLayout) findViewById(R.id.title_layout);
         mTitleInput = (EditText) findViewById(R.id.title_input);
-        mSubjectButton = (Button) findViewById(R.id.subjects_selector);
-        mNotesLayout = (TextInputLayout) findViewById(R.id.notes_layout);
+        mSubjectLayout = (RelativeLayout) findViewById(R.id.subject_layout);
+        mSubjectSelector = (TextView) findViewById(R.id.subjects_selector);
+        mNotesLayout = (RelativeLayout) findViewById(R.id.notes_layout);
         mNotesInput = (EditText) findViewById(R.id.notes_input);
-        mEventSpinnerLayout = (LinearLayout) findViewById(R.id.event_spinner_layout);
+        mEventSpinnerLayout = (RelativeLayout) findViewById(R.id.event_spinner_layout);
         mEventSpinner = (Spinner) findViewById(R.id.event_spinner);
-        mMarkValueLayout = (LinearLayout) findViewById(R.id.mark_value_layout);
+        mMarkValueLayout = (RelativeLayout) findViewById(R.id.mark_value_layout);
         mMarkPreview = (TextView) findViewById(R.id.mark_preview);
-        mMarkSeekBar = (SeekBar) findViewById(R.id.mark_seek);
-        mDatePicker = (Button) findViewById(R.id.datepicker_button);
+        mDatePickerLayout = (RelativeLayout) findViewById(R.id.date_layout);
+        mDatePicker = (TextView) findViewById(R.id.datepicker_button);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
         setupFromIntent();
@@ -170,9 +176,8 @@ public class ManagerActivity extends AppCompatActivity
         month = calendar.get(Calendar.MONTH) + 1;
         day = calendar.get(Calendar.DAY_OF_MONTH);
         mDate = Utils.rightDate(year, month, day);
-        mDatePicker.setText(String.format(getResources().getString(
-                R.string.current_date), mDate));
-        mDatePicker.setOnClickListener(new View.OnClickListener() {
+        mDatePicker.setText(mDate);
+        mDatePickerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //noinspection deprecation
@@ -190,8 +195,9 @@ public class ManagerActivity extends AppCompatActivity
                 notes = loadMark.getContent();
                 value = loadMark.getValue();
                 date = loadMark.getDate();
-                double markValuePreview = (double) value / 100;
-                mMarkSeekBar.setProgress((int) markValuePreview * 40);
+                double dValue = value;
+                mMarkPreview.setText(String.format(Locale.ENGLISH, "%.2f", dValue / 100d));
+
             } else {
                 loadEvent = controller.getEvent(mObjId);
                 title = loadEvent.getTitle();
@@ -201,15 +207,14 @@ public class ManagerActivity extends AppCompatActivity
             }
 
             mTitleInput.setText(title);
-            mDatePicker.setText(String.format(
-                    getResources().getString(R.string.current_date), date));
+            mDatePicker.setText(date);
         }
 
         // Setup UI
         if (Utils.isTeacher(mContext) || !isMark) {
             mTitleInput.setHint(getString(isMark ? R.string.hint_student : R.string.hint_event));
             if (isMark) {
-                mSubjectButton.setVisibility(View.GONE);
+                mSubjectSelector.setVisibility(View.GONE);
             }
         } else {
             mTitleLayout.setVisibility(View.GONE);
@@ -242,10 +247,10 @@ public class ManagerActivity extends AppCompatActivity
             }
 
             // Subject selector
-            mSubjectButton.setText(editMode ? String.format(getResources()
+            mSubjectSelector.setText(editMode ? String.format(getResources()
                     .getString(R.string.selected_subject), title) :
                     getString(R.string.select_subject));
-            mSubjectButton.setOnClickListener(new View.OnClickListener() {
+            mSubjectLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     new MaterialDialog.Builder(mContext)
@@ -255,7 +260,7 @@ public class ManagerActivity extends AppCompatActivity
                                 @Override
                                 public void onSelection(MaterialDialog dialog,
                                                         View view, int which, CharSequence text) {
-                                    mSubjectButton.setText(String.format(getResources().getString(
+                                    mSubjectSelector.setText(String.format(getResources().getString(
                                             R.string.selected_subject), text));
                                     title = text.toString();
                                 }
@@ -265,30 +270,48 @@ public class ManagerActivity extends AppCompatActivity
             });
 
             // Mark value
-            mMarkPreview.setText(String.format(getResources().getString(R.string.current_mark),
-                    editMode ? String.valueOf((double) value / 100) : "0.0"));
-            mMarkSeekBar.setMax(40);
-            mMarkSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            LayoutInflater mInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            ViewGroup mGroup = (ViewGroup) findViewById(R.id.dialog_root);
+            final View mDialogLayout = mInflater.inflate(R.layout.dialog_seekbar, mGroup);
+            final TextView mPreview = (TextView) mDialogLayout.findViewById(R.id.value);
+            final SeekBar mSeekBar = (SeekBar) mDialogLayout.findViewById(R.id.seekBar);
+
+            mPreview.setText(editMode ? String.valueOf((double) value / 100) : "0.0");
+            mSeekBar.setMax(40);
+            mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {
-                }
+                public void onStartTrackingTouch(SeekBar seekBar) {}
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    double progressDouble = (double) progress / 4;
-                    String msg = String.format(getResources().getString(
-                            R.string.current_mark), String.valueOf(progressDouble));
-                    mMarkPreview.setText(msg);
+                    mPreview.setText(String.valueOf((double) progress / 4));
                 }
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {
-                    double progress = mMarkSeekBar.getProgress();
-                    progress *= 25;
-                    value = (int) progress;
-                    progress /= 100;
-                    String msg = String.format(getResources().getString(
-                            R.string.current_mark), String.valueOf(progress));
-                    Snackbar.make(mCoordinatorLayout, msg, Snackbar.LENGTH_LONG);
-                    mMarkPreview.setText(msg);
+                    double progress = mSeekBar.getProgress();
+                    dialogValue = mSeekBar.getProgress();
+                    mPreview.setText(String.valueOf(progress / 4));
+                }
+            });
+
+            mMarkValueLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new MaterialDialog.Builder(mContext)
+                            .title(R.string.dialog_select_mark)
+                            .customView(mDialogLayout, false)
+                            .positiveText(android.R.string.ok)
+                            .negativeText(android.R.string.cancel)
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog,
+                                                    @NonNull DialogAction which) {
+                                    value = (int) (dialogValue * 25);
+                                    // Force English locale to use the "." instead of ","
+                                    mMarkPreview.setText(String.format(Locale.ENGLISH, "%.2f",
+                                            (double) (dialogValue / 4)));
+                                }
+                            })
+                            .show();
                 }
             });
 
@@ -296,7 +319,7 @@ public class ManagerActivity extends AppCompatActivity
             mNotesInput.setText(notes);
         } else {
             // Hide marks-related items
-            mSubjectButton.setVisibility(View.GONE);
+            mSubjectLayout.setVisibility(View.GONE);
             mNotesLayout.setVisibility(View.GONE);
             mMarkValueLayout.setVisibility(View.GONE);
 

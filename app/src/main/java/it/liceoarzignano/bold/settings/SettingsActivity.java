@@ -18,7 +18,6 @@ import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
 import it.liceoarzignano.bold.backup.BackupActivity;
-import it.liceoarzignano.bold.firebase.BoldAnalytics;
 import it.liceoarzignano.bold.safe.SafeActivity;
 
 public class SettingsActivity extends AppCompatActivity {

@@ -28,105 +28,186 @@
                 android:id="@+id/manager_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp">
+                android:orientation="vertical">
 
                 <!-- Title -->
-                <android.support.design.widget.TextInputLayout
+                <RelativeLayout
                     android:id="@+id/title_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="16dp">
+                    android:layout_height="64dp"
+                    android:paddingTop="16dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:background="?selectableItemBackground">
+
+                    <ImageView
+                        android:id="@+id/title_image"
+                        app:srcCompat="@drawable/ic_title"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/accessibility_generic_icon"/>
 
                     <EditText
                         android:id="@+id/title_input"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:textSize="16sp"
                         android:ellipsize="start"
+                        android:background="@android:color/transparent"
+                        android:paddingLeft="16dp"
+                        android:layout_toRightOf="@id/title_image"
                         tools:ignore="TextFields" />
-                </android.support.design.widget.TextInputLayout>
+                </RelativeLayout>
 
                 <!-- Subject picker -->
-                <Button
-                    android:id="@+id/subjects_selector"
-                    style="?borderlessButtonStyle"
-                    android:gravity="left"
-                    android:text="@string/select_subject"
-                    android:layout_width="wrap_content"
-                    android:layout_height="48dp"
-                    android:paddingTop="16dp" />
+                <RelativeLayout
+                    android:id="@+id/subject_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:paddingTop="16dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:clickable="true"
+                    android:background="?selectableItemBackground">
+
+                    <ImageView
+                        android:id="@+id/subject_image"
+                        app:srcCompat="@drawable/ic_title"
+                        android:gravity="center"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/accessibility_generic_icon"/>
+
+                    <TextView
+                        android:id="@+id/subjects_selector"
+                        android:gravity="center_vertical"
+                        android:text="@string/select_subject"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:textSize="16sp"
+                        android:paddingLeft="16dp"
+                        android:layout_toRightOf="@id/subject_image" />
+                </RelativeLayout>
 
                 <!-- Notes -->
-                <android.support.design.widget.TextInputLayout
+                <RelativeLayout
                     android:id="@+id/notes_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="16dp">
+                    android:layout_height="64dp"
+                    android:paddingTop="16dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:background="?selectableItemBackground">
+
+                    <ImageView
+                        android:id="@+id/notes_image"
+                        app:srcCompat="@drawable/ic_notes"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/accessibility_generic_icon"/>
 
                     <EditText
                         android:id="@+id/notes_input"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:textSize="16sp"
                         android:ellipsize="start"
-                        android:hint="@string/hint_notes"/>
-                </android.support.design.widget.TextInputLayout>
+                        android:hint="@string/hint_notes"
+                        android:background="@android:color/transparent"
+                        android:paddingLeft="16dp"
+                        android:layout_toRightOf="@id/notes_image"/>
+                </RelativeLayout>
 
                 <!-- Event category spinner -->
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/event_spinner_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingTop="16dp">
-                    <TextView
-                        style="@style/home_card_text"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="@string/event_kind"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="@dimen/text_secondary_size" />
+                    android:layout_height="64dp"
+                    android:paddingTop="16dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:clickable="true"
+                    android:background="?selectableItemBackground">
+
+                    <ImageView
+                        android:id="@+id/category_image"
+                        app:srcCompat="@drawable/ic_category"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/accessibility_generic_icon"/>
+
                     <Spinner
                         android:id="@+id/event_spinner"
                         android:layout_width="wrap_content"
-                        android:layout_height="72dp"
-                        android:layout_weight="2" />
-                </LinearLayout>
+                        android:layout_height="match_parent"
+                        android:paddingLeft="16dp"
+                        android:layout_toRightOf="@id/category_image"
+                        />
+                </RelativeLayout>
 
                 <!-- Mark value -->
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/mark_value_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="64dp"
                     android:paddingTop="16dp"
-                    android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/mark_preview"
-                        android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:clickable="true"
+                    android:background="?selectableItemBackground">
+
+                    <ImageView
+                        android:id="@+id/mark_value_image"
+                        app:srcCompat="@drawable/ic_trophy"
+                        android:gravity="center"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/accessibility_generic_icon"/>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:text="@string/current_mark"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="13sp" />
-                    <SeekBar
-                        android:id="@+id/mark_seek"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp" />
-                </LinearLayout>
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:paddingLeft="16dp"
+                        android:layout_toRightOf="@id/mark_value_image">
+                        <TextView
+                            android:id="@+id/mark_preview"
+                            android:layout_height="match_parent"
+                            android:layout_width="match_parent"
+                            android:text="@string/default_mark"
+                            android:gravity="center_vertical"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </RelativeLayout>
 
                 <!-- Date picker -->
-                <Button
-                    android:id="@+id/datepicker_button"
-                    style="?borderlessButtonStyle"
-                    android:gravity="left"
-                    android:text="@string/current_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="16dp" />
+                <RelativeLayout
+                    android:id="@+id/date_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:paddingTop="16dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:clickable="true"
+                    android:background="?selectableItemBackground">
 
+                    <ImageView
+                        android:id="@+id/date_image"
+                        app:srcCompat="@drawable/ic_calendar"
+                        android:gravity="center"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/accessibility_generic_icon"/>
+
+                    <TextView
+                        android:id="@+id/datepicker_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:textSize="16sp"
+                        android:paddingLeft="16dp"
+                        android:layout_toRightOf="@id/date_image"/>
+                </RelativeLayout>
             </LinearLayout>
         </ScrollView>
 

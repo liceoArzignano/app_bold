@@ -58,12 +58,10 @@
     <string name="hint_student">Student</string>
     <string name="hint_event">Event</string>
     <string name="hint_notes">Notes</string>
-    <string name="current_date">Date: %1$s</string>
-    <string name="current_mark">Mark: %1$s</string>
+    <string name="dialog_select_mark">Pick a mark</string>
     <string name="manager_invalid">Couldn\'t save. Check the values</string>
     <string name="select_subject">Select subject</string>
     <string name="selected_subject">Selected subject: %1$s</string>
-    <string name="event_kind">Category:</string>
     <string name="event_spinner_test">Test</string>
     <string name="event_spinner_school">At school</string>
     <string name="event_spinner_bday">Birthday</string>
@@ -271,4 +269,5 @@
     <string name="accessibility_event_icon">Event icon</string>
     <string name="accessibility_safe_icon">Safe status icon</string>
     <string name="accessibility_manager">Header picture</string>
+    <string name="accessibility_generic_icon">Icon</string>
 </resources>

@@ -58,5 +58,9 @@ public class BoldAnalytics {
                 Utils.getNotificationTime(context));
         mFirebaseAnalytics.setUserProperty(Utils.SAFE_DONE,
                 String.valueOf(Utils.hasSafe(context)));
+        if (!Utils.isTeacher(context)) {
+            mFirebaseAnalytics.setUserProperty(Utils.ADDRESS,
+                    Utils.getAddress(context));
+        }
     }
 }

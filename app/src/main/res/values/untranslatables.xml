@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- School name -->
     <string translatable="false" name="school_name">Liceo L. Da Vinci</string>
 
@@ -18,6 +18,8 @@
     <string translatable="false" name="pref_address_3">Linguistico</string>
     <string translatable="false" name="pref_address_4">Scienze Umane</string>
     <string translatable="false" name="pref_address_5">Scienze Umane Economico-Sociale</string>
+
+    <string translatable="false" name="default_mark">0.0</string>
 
     <!-- First quarter end date. Format: yyyy-mm-dd -->
     <string translatable="false" name="config_quarter_change">2017-01-31</string>

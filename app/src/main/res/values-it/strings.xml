@@ -58,12 +58,10 @@
     <string name="hint_student">Studente</string>
     <string name="hint_event">Evento</string>
     <string name="hint_notes">Note</string>
-    <string name="current_date">Data: %1$s</string>
-    <string name="current_mark">Voto: %1$s</string>
+    <string name="dialog_select_mark">Seleziona un voto</string>
     <string name="manager_invalid">Impossibile salvare, ricontrolla i valori</string>
     <string name="select_subject">Seleziona materia</string>
     <string name="selected_subject">Materia selezionata: %1$s</string>
-    <string name="event_kind">Categoria:</string>
     <string name="event_spinner_test">Compito</string>
     <string name="event_spinner_school">A scuola</string>
     <string name="event_spinner_bday">Compleanno</string>
@@ -271,4 +269,5 @@
     <string name="accessibility_event_icon">Icona evento</string>
     <string name="accessibility_safe_icon">Immagine status di Safe</string>
     <string name="accessibility_manager">Immagine d\'intestazione</string>
+    <string name="accessibility_generic_icon">Icona</string>
 </resources>
