@@ -64,8 +64,10 @@
     <string name="selected_subject">Materia selezionata: %1$s</string>
     <string name="event_spinner_test">Compito</string>
     <string name="event_spinner_school">A scuola</string>
+    <string name="event_spinner_homework">Compito per casa</string>
+    <string name="event_spinner_reminder">Promemoria</string>
     <string name="event_spinner_bday">Compleanno</string>
-    <string name="event_spinner_hang_out">Colloquio</string>
+    <string name="event_spinner_hang_out">Incontro</string>
     <string name="event_spinner_other">Altro</string>
     <string name="editor_text_too_long">Sta diventando molto lungo</string>
     <string name="editor_text_too_long_fix">Accorcia</string>
@@ -225,7 +227,6 @@
         <item quantity="other">Ci sono %d</item>
     </plurals>
     <string name="notification_message_half">, %1$d</string>
-    <string name="notification_message_last">" e %1$d"</string>
     <string name="notification_message_end">domani</string>
     <plurals name="notification_test">
         <item quantity="one">compito</item>
@@ -239,9 +240,17 @@
         <item quantity="one">compleanno</item>
         <item quantity="other">compleanni</item>
     </plurals>
+    <plurals name="homework_school">
+        <item quantity="one">compito per casa</item>
+        <item quantity="other">compiti per casa</item>
+    </plurals>
+    <plurals name="reminder_school">
+        <item quantity="one">propemoria</item>
+        <item quantity="other">promemoria</item>
+    </plurals>
     <plurals name="notification_meeting">
-        <item quantity="one">colloquio</item>
-        <item quantity="other">colloqui</item>
+        <item quantity="one">incontro</item>
+        <item quantity="other">incontri</item>
     </plurals>
     <plurals name="notification_other">
         <item quantity="one">evento generico</item>

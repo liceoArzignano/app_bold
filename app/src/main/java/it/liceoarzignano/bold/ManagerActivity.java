@@ -201,7 +201,7 @@ public class ManagerActivity extends AppCompatActivity
                 value = loadEvent.getIcon();
                 date = loadEvent.getDate();
                 notes = loadEvent.getNote();
-                mEventSpinner.setSelection(!Utils.isTeacher(mContext) && value == 4 ? 3 : value);
+                mEventSpinner.setSelection(value, true);
             }
 
             mTitleInput.setText(title);
@@ -323,9 +323,9 @@ public class ManagerActivity extends AppCompatActivity
             categories.add(getString(R.string.event_spinner_test));
             categories.add(getString(R.string.event_spinner_school));
             categories.add(getString(R.string.event_spinner_bday));
-            if (Utils.isTeacher(mContext)) {
-                categories.add(getString(R.string.event_spinner_hang_out));
-            }
+            categories.add(getString(R.string.event_spinner_homework));
+            categories.add(getString(R.string.event_spinner_reminder));
+            categories.add(getString(R.string.event_spinner_hang_out));
             categories.add(getString(R.string.event_spinner_other));
 
             // Event spinner

@@ -14,12 +14,14 @@ public class Event extends RealmObject {
     private int icon;
 
     /*
-     * icon values
+     * Icon values
      * 0 = test
      * 1 = school
      * 2 = bday
-     * 3 = hangout
-     * 4 = other
+     * 3 = homework
+     * 4 = reminder
+     * 5 = hangout
+     * 6 = other
      */
 
     public Event() {

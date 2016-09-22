@@ -252,10 +252,15 @@ public class Utils {
                 return context.getString(R.string.event_spinner_school);
             case 2:
                 return context.getString(R.string.event_spinner_bday);
+            case 3:
+                return context.getString(R.string.event_spinner_homework);
+            case 4:
+                return context.getString(R.string.event_spinner_reminder);
+            case 5:
+                return context.getString(R.string.event_spinner_hang_out);
+            default:
+                return context.getString(R.string.event_spinner_other);
         }
-        return category == 3 && isTeacher(context) ?
-                context.getString(R.string.event_spinner_hang_out) :
-                context.getString(R.string.event_spinner_other);
     }
 
     /**

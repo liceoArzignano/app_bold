@@ -60,14 +60,17 @@ class ListArrayAdapter extends RealmBaseAdapter<Event> {
                 eventViewHolder.eventIcon.setBackgroundResource(R.drawable.ic_event_bday);
                 break;
             case 3:
+                eventViewHolder.eventIcon.setBackgroundResource(R.drawable.ic_event_homework);
+                break;
+            case 4:
+                eventViewHolder.eventIcon.setBackgroundResource(R.drawable.ic_event_reminder);
+                break;
+            case 5:
                 eventViewHolder.eventIcon.setBackgroundResource(R.drawable.ic_event_hangout);
                 break;
             default:
                 eventViewHolder.eventIcon.setBackgroundResource(R.drawable.ic_event_other);
                 break;
-        }
-        if (!Utils.isTeacher(context) && event.getIcon() == 3) {
-            eventViewHolder.eventIcon.setBackgroundResource(R.drawable.ic_event_other);
         }
 
         row.setOnClickListener(new View.OnClickListener() {

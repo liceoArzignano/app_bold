@@ -65,6 +65,8 @@
     <string name="event_spinner_test">Test</string>
     <string name="event_spinner_school">At school</string>
     <string name="event_spinner_bday">Birthday</string>
+    <string name="event_spinner_homework">Homework</string>
+    <string name="event_spinner_reminder">Reminder</string>
     <string name="event_spinner_hang_out">Meeting</string>
     <string name="event_spinner_other">Other</string>
     <string name="editor_text_too_long">It\'s getting really long</string>
@@ -225,7 +227,6 @@
         <item quantity="other">There are %d</item>
     </plurals>
     <string name="notification_message_half">, %1$d</string>
-    <string name="notification_message_last">" and %1$d"</string>
     <string name="notification_message_end">tomorrow</string>
     <plurals name="notification_test">
         <item quantity="one">test</item>
@@ -234,6 +235,14 @@
     <plurals name="notification_school">
         <item quantity="one">event at school</item>
         <item quantity="other">events at school</item>
+    </plurals>
+    <plurals name="homework_school">
+        <item quantity="one">homework</item>
+        <item quantity="other">homeworks</item>
+    </plurals>
+    <plurals name="reminder_school">
+        <item quantity="one">reminder</item>
+        <item quantity="other">reminders</item>
     </plurals>
     <plurals name="notification_birthday">
         <item quantity="one">birthday</item>

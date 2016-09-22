@@ -105,10 +105,14 @@ public class MainActivity extends AppCompatActivity
     public static String getTomorrowInfo() {
         Calendar today = Calendar.getInstance();
         String content = null;
+        boolean firstElement = true;
+
         int icon;
         int test = 0;
         int atSchool = 0;
         int birthday = 0;
+        int homework = 0;
+        int reminder = 0;
         int hangout = 0;
         int other = 0;
 
@@ -143,20 +147,18 @@ public class MainActivity extends AppCompatActivity
                 case 2:
                     birthday++;
                     break;
-            }
-            if (Utils.isTeacher(sContext)) {
-                switch (icon) {
-                    case 3:
-                        hangout++;
-                        break;
-                    case 4:
-                        other++;
-                        break;
-                }
-            } else {
-                if (icon == 3) {
+                case 3:
+                    homework++;
+                    break;
+                case 4:
+                    reminder++;
+                    break;
+                case 5:
+                    hangout++;
+                    break;
+                case 6:
                     other++;
-                }
+                    break;
             }
         }
 
@@ -165,17 +167,18 @@ public class MainActivity extends AppCompatActivity
             // First element
             content = res.getQuantityString(R.plurals.notification_message_first, test, test)
                     + " " + res.getQuantityString(R.plurals.notification_test, test, test);
+            firstElement = false;
         }
 
         // School
         if (atSchool > 0) {
-            if (test == 0) {
-                // First element
+            if (firstElement) {
                 content = res.getQuantityString(R.plurals.notification_message_first,
                         atSchool, atSchool) + " ";
+                firstElement = false;
             } else {
                 content += birthday == 0 && hangout == 0 && other == 0 ? " " +
-                        String.format(res.getString(R.string.notification_message_last), atSchool) :
+                        String.format(res.getString(R.string.notification_message_half), atSchool) :
                         String.format(res.getString(R.string.notification_message_half), atSchool);
             }
             content += " " + res.getQuantityString(R.plurals.notification_school,
@@ -184,30 +187,55 @@ public class MainActivity extends AppCompatActivity
 
         // Birthday
         if (birthday > 0) {
-            if (test == 0 && atSchool == 0) {
-                // First element
+            if (firstElement) {
                 content = res.getQuantityString(R.plurals.notification_message_first,
                         birthday, birthday) + " ";
+                firstElement = false;
             } else {
-                content += hangout == 0 && other == 0 ? " " +
-                        String.format(res.getString(R.string.notification_message_last),
-                                birthday) : String.format(res.getString(R.string.notification_message_half),
+                content += String.format(res.getString(R.string.notification_message_half),
                         birthday);
             }
             content += " " + res.getQuantityString(R.plurals.notification_birthday,
                     birthday, birthday);
         }
 
+        // Homework
+        if (homework > 0) {
+            if (firstElement) {
+                content = res.getQuantityString(R.plurals.notification_message_first,
+                        homework, homework) + " ";
+                firstElement = false;
+            } else {
+                content += String.format(res.getString(R.string.notification_message_half),
+                        homework);
+            }
+
+            content += " " + res.getQuantityString(R.plurals.notification_birthday,
+                    homework, homework);
+        }
+
+        // Reminder
+        if (reminder > 0) {
+            if (firstElement) {
+                content = res.getQuantityString(R.plurals.notification_message_first,
+                        reminder, reminder) + " ";
+                firstElement = false;
+            } else {
+                content += String.format(res.getString(R.string.notification_message_half),
+                        reminder);
+            }
+            content += " " + res.getQuantityString(R.plurals.notification_birthday,
+                    reminder, reminder);
+        }
+
         // Hangout
-        if (hangout > 0 && Utils.isTeacher(sContext)) {
-            if (test == 0 && atSchool == 0 && birthday == 0) {
-                // First element
+        if (hangout > 0) {
+            if (firstElement) {
                 content = res.getQuantityString(R.plurals.notification_message_first,
                         hangout, hangout) + " ";
+                firstElement = false;
             } else {
-                content += other == 0 ? " " +
-                        String.format(res.getString(R.string.notification_message_last),
-                                hangout) : String.format(res.getString(R.string.notification_message_half),
+                content += String.format(res.getString(R.string.notification_message_half),
                         atSchool);
             }
             content += " " + res.getQuantityString(R.plurals.notification_meeting,
@@ -216,14 +244,12 @@ public class MainActivity extends AppCompatActivity
 
         // Other
         if (other > 0) {
-            if (test == 0 && atSchool == 0 && birthday == 0 && hangout == 0) {
-                // First element
+            if (firstElement) {
                 content = res.getQuantityString(R.plurals.notification_message_first,
                         other, other);
                 content += " ";
             } else {
-                // Last of us
-                content += String.format(res.getString(R.string.notification_message_last),
+                content += String.format(res.getString(R.string.notification_message_half),
                         other);
             }
             content += " " + res.getQuantityString(R.plurals.notification_other,
