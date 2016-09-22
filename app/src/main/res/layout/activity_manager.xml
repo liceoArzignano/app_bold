@@ -28,185 +28,118 @@
                 android:id="@+id/manager_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="2dp"
                 android:orientation="vertical">
 
                 <!-- Title -->
                 <RelativeLayout
                     android:id="@+id/title_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:paddingTop="16dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:background="?selectableItemBackground">
+                    android:layout_height="48dp"
+                    style="@style/editor_icon">
 
                     <ImageView
                         android:id="@+id/title_image"
                         app:srcCompat="@drawable/ic_title"
-                        android:layout_width="40dp"
-                        android:layout_height="match_parent"
-                        android:contentDescription="@string/accessibility_generic_icon"/>
+                        style="@style/editor_icon"/>
 
                     <EditText
                         android:id="@+id/title_input"
-                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:textSize="16sp"
-                        android:ellipsize="start"
-                        android:background="@android:color/transparent"
-                        android:paddingLeft="16dp"
-                        android:layout_toRightOf="@id/title_image"
-                        tools:ignore="TextFields" />
+                        android:layout_width="wrap_content"
+                        style="@style/editor_editText" />
                 </RelativeLayout>
 
                 <!-- Subject picker -->
                 <RelativeLayout
                     android:id="@+id/subject_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:paddingTop="16dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:clickable="true"
-                    android:background="?selectableItemBackground">
+                    android:layout_height="48dp"
+                    style="@style/editor_icon">
 
                     <ImageView
                         android:id="@+id/subject_image"
                         app:srcCompat="@drawable/ic_title"
-                        android:gravity="center"
-                        android:layout_width="40dp"
-                        android:layout_height="match_parent"
-                        android:contentDescription="@string/accessibility_generic_icon"/>
+                        style="@style/editor_icon"/>
 
                     <TextView
                         android:id="@+id/subjects_selector"
-                        android:gravity="center_vertical"
                         android:text="@string/select_subject"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:textSize="16sp"
-                        android:paddingLeft="16dp"
-                        android:layout_toRightOf="@id/subject_image" />
-                </RelativeLayout>
-
-                <!-- Notes -->
-                <RelativeLayout
-                    android:id="@+id/notes_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:paddingTop="16dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:background="?selectableItemBackground">
-
-                    <ImageView
-                        android:id="@+id/notes_image"
-                        app:srcCompat="@drawable/ic_notes"
-                        android:layout_width="40dp"
-                        android:layout_height="match_parent"
-                        android:contentDescription="@string/accessibility_generic_icon"/>
-
-                    <EditText
-                        android:id="@+id/notes_input"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:textSize="16sp"
-                        android:ellipsize="start"
-                        android:hint="@string/hint_notes"
-                        android:background="@android:color/transparent"
-                        android:paddingLeft="16dp"
-                        android:layout_toRightOf="@id/notes_image"/>
+                        style="@style/editor_textView"/>
                 </RelativeLayout>
 
                 <!-- Event category spinner -->
                 <RelativeLayout
                     android:id="@+id/event_spinner_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:paddingTop="16dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:clickable="true"
-                    android:background="?selectableItemBackground">
+                    android:layout_height="48dp"
+                    style="@style/editor_icon">
 
                     <ImageView
                         android:id="@+id/category_image"
                         app:srcCompat="@drawable/ic_category"
-                        android:layout_width="40dp"
-                        android:layout_height="match_parent"
-                        android:contentDescription="@string/accessibility_generic_icon"/>
+                        style="@style/editor_icon"/>
 
                     <Spinner
                         android:id="@+id/event_spinner"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:paddingLeft="16dp"
-                        android:layout_toRightOf="@id/category_image"
-                        />
+                        android:layout_marginLeft="64dp" />
                 </RelativeLayout>
 
                 <!-- Mark value -->
                 <RelativeLayout
                     android:id="@+id/mark_value_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:paddingTop="16dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:clickable="true"
-                    android:background="?selectableItemBackground">
+                    android:layout_height="48dp"
+                    style="@style/editor_icon">
 
                     <ImageView
                         android:id="@+id/mark_value_image"
                         app:srcCompat="@drawable/ic_trophy"
-                        android:gravity="center"
-                        android:layout_width="40dp"
-                        android:layout_height="match_parent"
-                        android:contentDescription="@string/accessibility_generic_icon"/>
+                        style="@style/editor_icon"/>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/mark_preview"
+                        android:text="@string/default_mark"
+                        style="@style/editor_textView"/>
+                </RelativeLayout>
+
+                <!-- Notes -->
+                <RelativeLayout
+                    android:id="@+id/notes_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    style="@style/editor_icon">
+
+                    <ImageView
+                        android:id="@+id/notes_image"
+                        app:srcCompat="@drawable/ic_notes"
+                        style="@style/editor_icon"/>
+
+                    <EditText
+                        android:id="@+id/notes_input"
                         android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:paddingLeft="16dp"
-                        android:layout_toRightOf="@id/mark_value_image">
-                        <TextView
-                            android:id="@+id/mark_preview"
-                            android:layout_height="match_parent"
-                            android:layout_width="match_parent"
-                            android:text="@string/default_mark"
-                            android:gravity="center_vertical"
-                            android:textSize="16sp" />
-                    </LinearLayout>
+                        android:layout_width="wrap_content"
+                        android:hint="@string/hint_notes"
+                        style="@style/editor_editText" />
                 </RelativeLayout>
 
                 <!-- Date picker -->
                 <RelativeLayout
                     android:id="@+id/date_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:paddingTop="16dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:clickable="true"
-                    android:background="?selectableItemBackground">
+                    android:layout_height="48dp"
+                    style="@style/editor_icon">
 
                     <ImageView
                         android:id="@+id/date_image"
                         app:srcCompat="@drawable/ic_calendar"
-                        android:gravity="center"
-                        android:layout_width="40dp"
-                        android:layout_height="match_parent"
-                        android:contentDescription="@string/accessibility_generic_icon"/>
+                        style="@style/editor_icon"/>
 
                     <TextView
                         android:id="@+id/datepicker_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:textSize="16sp"
-                        android:paddingLeft="16dp"
-                        android:layout_toRightOf="@id/date_image"/>
+                        style="@style/editor_textView"/>
                 </RelativeLayout>
             </LinearLayout>
         </ScrollView>
