@@ -130,23 +130,23 @@
     <string name="intro_fab_backup">Ora che ti sei connesso a Google Drive, tocca questo pulsante per selezionare la cartella di destinazione e creare un primo backup</string>
 
     <!-- Subjects -->
-    <string name="subject_italian">Italiano</string>
-    <string name="subject_math">Matematica</string>
-    <string name="subject_science">Scienze</string>
     <string name="subject_english">Inglese</string>
-    <string name="subject_history">Storia</string>
-    <string name="subject_fil">Filosofia</string>
-    <string name="subject_it">Informatica</string>
-    <string name="subject_ped">Educazione fisica</string>
-    <string name="subject_irc">Religione</string>
-    <string name="subject_arts">Disegno e Storia dell\'arte</string>
-    <string name="subject_physics">Fisica</string>
-    <string name="subject_latin">Latino</string>
-    <string name="subject_spanish">Spagnolo</string>
     <string name="subject_french">Francese</string>
     <string name="subject_german">Tedesco</string>
+    <string name="subject_history">Storia</string>
+    <string name="subject_arts">Storia dell\'arte</string>
     <string name="subject_human">Scienze umane</string>
-    <string name="subject_economy">Economia</string>
+    <string name="subject_irc">Religione</string>
+    <string name="subject_it">Informatica</string>
+    <string name="subject_italian">Italiano</string>
+    <string name="subject_latin">Latino</string>
+    <string name="subject_economy">Diritto ed economia</string>
+    <string name="subject_math">Matematica</string>
+    <string name="subject_philosophy">Filosofia</string>
+    <string name="subject_physics">Fisica</string>
+    <string name="subject_ped">Educazione fisica</string>
+    <string name="subject_science">Scienze</string>
+    <string name="subject_spanish">Spagnolo</string>
 
     <!-- Settings -->
     <string name="title_activity_settings">Impostazioni</string>

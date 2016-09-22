@@ -130,23 +130,23 @@
     <string name="intro_fab_backup">Once you\'ve logged into Google Drive tap this button and select a folder to create and upload your first backup</string>
 
     <!-- Subjects -->
-    <string name="subject_italian">Italian</string>
-    <string name="subject_math">Math</string>
-    <string name="subject_science">Science</string>
     <string name="subject_english">English</string>
-    <string name="subject_history">History</string>
-    <string name="subject_fil">Philosophy</string>
-    <string name="subject_it">IT</string>
-    <string name="subject_ped">Physical education</string>
-    <string name="subject_irc">IRC</string>
-    <string name="subject_arts">Art</string>
-    <string name="subject_physics">Physics</string>
-    <string name="subject_latin">Latin</string>
-    <string name="subject_spanish">Spanish</string>
     <string name="subject_french">French</string>
     <string name="subject_german">German</string>
+    <string name="subject_history">History</string>
+    <string name="subject_arts">History of Art</string>
     <string name="subject_human">Human sciences</string>
-    <string name="subject_economy">Economy</string>
+    <string name="subject_irc">IRC</string>
+    <string name="subject_it">IT</string>
+    <string name="subject_italian">Italian</string>
+    <string name="subject_latin">Latin</string>
+    <string name="subject_economy">Law and economy</string>
+    <string name="subject_math">Math</string>
+    <string name="subject_philosophy">Philosophy</string>
+    <string name="subject_physics">Physics</string>
+    <string name="subject_ped">Physical education</string>
+    <string name="subject_science">Science</string>
+    <string name="subject_spanish">Spanish</string>
 
     <!-- Settings -->
     <string name="title_activity_settings">Settings</string>

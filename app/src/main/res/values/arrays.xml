@@ -4,82 +4,86 @@
         <item>@string/error_noaddress</item>
     </string-array>
 
+    <!-- 1: Scientifico -->
     <string-array name="subjects_lists_1" translatable="false">
         <item>@string/subject_italian</item>
-        <item>@string/subject_math</item>
-        <item>@string/subject_science</item>
+        <item>@string/subject_latin</item>
         <item>@string/subject_english</item>
         <item>@string/subject_history</item>
-        <item>@string/subject_fil</item>
-        <item>@string/subject_ped</item>
-        <item>@string/subject_irc</item>
-        <item>@string/subject_arts</item>
+        <item>@string/subject_philosophy</item>
+        <item>@string/subject_math</item>
+        <item>@string/subject_science</item>
         <item>@string/subject_physics</item>
-        <item>@string/subject_latin</item>
+        <item>@string/subject_arts</item>
+        <item>@string/subject_irc</item>
+        <item>@string/subject_ped</item>
     </string-array>
 
+    <!-- 2: ScApplicate -->
     <string-array name="subjects_lists_2" translatable="false">
         <item>@string/subject_italian</item>
-        <item>@string/subject_math</item>
-        <item>@string/subject_science</item>
         <item>@string/subject_english</item>
         <item>@string/subject_history</item>
-        <item>@string/subject_fil</item>
-        <item>@string/subject_it</item>
-        <item>@string/subject_ped</item>
-        <item>@string/subject_irc</item>
-        <item>@string/subject_arts</item>
+        <item>@string/subject_philosophy</item>
         <item>@string/subject_physics</item>
+        <item>@string/subject_math</item>
+        <item>@string/subject_it</item>
+        <item>@string/subject_science</item>
+        <item>@string/subject_arts</item>
+        <item>@string/subject_irc</item>
+        <item>@string/subject_ped</item>
     </string-array>
 
+    <!-- 3: Linguistico -->
     <string-array name="subjects_lists_3" translatable="false">
         <item>@string/subject_italian</item>
-        <item>@string/subject_math</item>
-        <item>@string/subject_science</item>
         <item>@string/subject_english</item>
-        <item>@string/subject_history</item>
-        <item>@string/subject_fil</item>
-        <item>@string/subject_ped</item>
-        <item>@string/subject_irc</item>
-        <item>@string/subject_arts</item>
-        <item>@string/subject_physics</item>
-        <item>@string/subject_latin</item>
         <item>@string/subject_spanish</item>
         <item>@string/subject_french</item>
         <item>@string/subject_german</item>
+        <item>@string/subject_latin</item>
+        <item>@string/subject_arts</item>
+        <item>@string/subject_history</item>
+        <item>@string/subject_philosophy</item>
+        <item>@string/subject_math</item>
+        <item>@string/subject_science</item>
+        <item>@string/subject_physics</item>
+        <item>@string/subject_irc</item>
+        <item>@string/subject_ped</item>
     </string-array>
 
+    <!-- 4: ScUmane -->
     <string-array name="subjects_lists_4" translatable="false">
         <item>@string/subject_italian</item>
-        <item>@string/subject_math</item>
-        <item>@string/subject_science</item>
+        <item>@string/subject_latin</item>
         <item>@string/subject_english</item>
         <item>@string/subject_history</item>
-        <item>@string/subject_fil</item>
-        <item>@string/subject_ped</item>
-        <item>@string/subject_irc</item>
-        <item>@string/subject_arts</item>
-        <item>@string/subject_physics</item>
-        <item>@string/subject_latin</item>
         <item>@string/subject_human</item>
+        <item>@string/subject_philosophy</item>
         <item>@string/subject_economy</item>
+        <item>@string/subject_science</item>
+        <item>@string/subject_math</item>
+        <item>@string/subject_physics</item>
+        <item>@string/subject_arts</item>
+        <item>@string/subject_irc</item>
+        <item>@string/subject_ped</item>
     </string-array>
 
+    <!-- 6: Economico -->
     <string-array name="subjects_lists_5" translatable="false">
         <item>@string/subject_italian</item>
+        <item>@string/subject_english</item>
+        <item>@string/subject_spanish</item>
+        <item>@string/subject_economy</item>
+        <item>@string/subject_human</item>
+        <item>@string/subject_arts</item>
+        <item>@string/subject_history</item>
+        <item>@string/subject_philosophy</item>
         <item>@string/subject_math</item>
         <item>@string/subject_science</item>
-        <item>@string/subject_english</item>
-        <item>@string/subject_history</item>
-        <item>@string/subject_fil</item>
-        <item>@string/subject_ped</item>
-        <item>@string/subject_irc</item>
-        <item>@string/subject_arts</item>
         <item>@string/subject_physics</item>
-        <item>@string/subject_latin</item>
-        <item>@string/subject_spanish</item>
-        <item>@string/subject_human</item>
-        <item>@string/subject_economy</item>
+        <item>@string/subject_irc</item>
+        <item>@string/subject_ped</item>
     </string-array>
 
     <string-array name="pref_entryvalues_address" translatable="false">
