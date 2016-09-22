@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,7 +57,6 @@ public class ManagerActivity extends AppCompatActivity
     private RelativeLayout mSubjectLayout;
     private TextView mSubjectSelector;
     // Notes
-    private RelativeLayout mNotesLayout;
     private EditText mNotesInput;
     // Event category
     private RelativeLayout mEventSpinnerLayout;
@@ -131,7 +131,6 @@ public class ManagerActivity extends AppCompatActivity
         mTitleInput = (EditText) findViewById(R.id.title_input);
         mSubjectLayout = (RelativeLayout) findViewById(R.id.subject_layout);
         mSubjectSelector = (TextView) findViewById(R.id.subjects_selector);
-        mNotesLayout = (RelativeLayout) findViewById(R.id.notes_layout);
         mNotesInput = (EditText) findViewById(R.id.notes_input);
         mEventSpinnerLayout = (RelativeLayout) findViewById(R.id.event_spinner_layout);
         mEventSpinner = (Spinner) findViewById(R.id.event_spinner);
@@ -171,6 +170,7 @@ public class ManagerActivity extends AppCompatActivity
         Calendar calendar = Calendar.getInstance();
         Mark loadMark;
         Event loadEvent;
+        String date;
 
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH) + 1;
@@ -188,7 +188,6 @@ public class ManagerActivity extends AppCompatActivity
         // Load intent data
         if (editMode) {
             mObjId = mCallingIntent.getLongExtra("id", -1);
-            String date;
             if (isMark) {
                 loadMark = controller.getMark(mObjId);
                 title = loadMark.getTitle();
@@ -197,17 +196,18 @@ public class ManagerActivity extends AppCompatActivity
                 date = loadMark.getDate();
                 double dValue = value;
                 mMarkPreview.setText(String.format(Locale.ENGLISH, "%.2f", dValue / 100d));
-
             } else {
                 loadEvent = controller.getEvent(mObjId);
                 title = loadEvent.getTitle();
                 value = loadEvent.getIcon();
                 date = loadEvent.getDate();
+                notes = loadEvent.getNote();
                 mEventSpinner.setSelection(!Utils.isTeacher(mContext) && value == 4 ? 3 : value);
             }
 
             mTitleInput.setText(title);
             mDatePicker.setText(date);
+            mNotesInput.setText(notes);
         }
 
         // Setup UI
@@ -314,13 +314,9 @@ public class ManagerActivity extends AppCompatActivity
                             .show();
                 }
             });
-
-            // Notes
-            mNotesInput.setText(notes);
         } else {
             // Hide marks-related items
             mSubjectLayout.setVisibility(View.GONE);
-            mNotesLayout.setVisibility(View.GONE);
             mMarkValueLayout.setVisibility(View.GONE);
 
             // Event categories
@@ -473,6 +469,7 @@ public class ManagerActivity extends AppCompatActivity
             mEvent.setTitle(title);
             mEvent.setIcon(mEventSpinner.getSelectedItemPosition());
             mEvent.setDate(mDate);
+            mEvent.setNote(mNotesInput.getText().toString());
 
             mObjId = editMode ? controller.updateEvent(mEvent) : controller.addEvent(mEvent);
 
@@ -485,7 +482,6 @@ public class ManagerActivity extends AppCompatActivity
                     onBackPressed();
                 }
             }, 1000);
-
         }
     }
 }

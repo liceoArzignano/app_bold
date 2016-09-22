@@ -152,6 +152,7 @@ public class RealmController {
         oldEvent.setTitle(event.getTitle());
         oldEvent.setDate(event.getDate());
         oldEvent.setIcon(event.getIcon());
+        oldEvent.setNote(event.getNote());
         realm.commitTransaction();
         return id;
     }

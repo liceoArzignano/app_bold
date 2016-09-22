@@ -89,14 +89,14 @@ public class ViewerActivity extends AppCompatActivity {
         TextView mValueTitle = (TextView) findViewById(R.id.value_title);
         TextView mDate = (TextView) findViewById(R.id.dates);
         TextView mNotes = (TextView) findViewById(R.id.notes);
-        TextView mNotesTitle = (TextView) findViewById(R.id.notes_title);
 
         mDate.setText(date);
         int value = isMark ? mark.getValue() : 0;
         final String sVal = isMark ? String.valueOf((double) value / 100) : "0";
+        String note;
 
         if (isMark) {
-            String note = mark.getContent();
+            note = mark.getContent();
             mValueTitle.setText(getString(R.string.viewer_values));
             mView.setText(
                     String.format(getResources().getString(R.string.viewer_more_marks), title));
@@ -112,8 +112,9 @@ public class ViewerActivity extends AppCompatActivity {
         } else {
             mValueTitle.setText(getString(R.string.viewer_category));
             mValue.setText(Utils.eventCategoryToString(event.getIcon()));
+            note = event.getNote();
+            mNotes.setText(note);
             mView.setVisibility(View.GONE);
-            mNotesTitle.setVisibility(View.GONE);
         }
 
 
