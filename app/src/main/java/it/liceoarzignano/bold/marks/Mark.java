@@ -9,25 +9,24 @@ public class Mark extends RealmObject {
     private long id = 0;
 
     private String title;
-    private String content;
+    private String note;
     private String date;
     private int value;
     private boolean isFirstQuarter;
 
     public Mark() {
-
     }
 
-    public Mark(long id, String title, int value, String content) {
+    public Mark(long id, String title, int value, String note) {
         this.id = id;
         this.title = title;
-        this.content = content;
+        this.note = note;
         this.value = value;
     }
 
-    public Mark(String title, int value, String content) {
+    public Mark(String title, int value, String note) {
         this.title = title;
-        this.content = content;
+        this.note = note;
         this.value = value;
     }
 
@@ -44,12 +43,12 @@ public class Mark extends RealmObject {
         this.title = title;
     }
 
-    public String getContent() {
-        return content;
+    public String getNote() {
+        return note;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public int getValue() {

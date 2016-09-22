@@ -14,7 +14,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -191,7 +190,7 @@ public class ManagerActivity extends AppCompatActivity
             if (isMark) {
                 loadMark = controller.getMark(mObjId);
                 title = loadMark.getTitle();
-                notes = loadMark.getContent();
+                notes = loadMark.getNote();
                 value = loadMark.getValue();
                 date = loadMark.getDate();
                 double dValue = value;
@@ -431,7 +430,7 @@ public class ManagerActivity extends AppCompatActivity
 
             mMark.setId(mObjId);
             mMark.setTitle(title);
-            mMark.setContent(mNotesInput.getText().toString());
+            mMark.setNote(mNotesInput.getText().toString());
             mMark.setValue(value);
             mMark.setDate(mDate);
 

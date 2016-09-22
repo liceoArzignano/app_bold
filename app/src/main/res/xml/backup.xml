@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<full-backup-content>
+<full-backup-note>
     <!-- Shared preferences -->
     <include domain="sharedpref" path="com.google.android.gms.analytics.prefs.xml" />
     <include domain="sharedpref" path="com.google.android.gms.measurement.prefs.xml" />
@@ -13,4 +13,4 @@
     <include domain="database" path="google_app_measurement.db" />
     <include domain="database" path="google_app_measurement.db-journal" />
 
-</full-backup-content>
+</full-backup-note>

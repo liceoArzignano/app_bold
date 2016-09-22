@@ -88,7 +88,7 @@ public class RealmController {
         realm.beginTransaction();
         oldMark.setTitle(mark.getTitle());
         oldMark.setValue(mark.getValue());
-        oldMark.setContent(mark.getContent());
+        oldMark.setNote(mark.getNote());
         realm.commitTransaction();
         return id;
     }

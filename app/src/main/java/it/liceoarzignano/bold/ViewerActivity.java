@@ -96,7 +96,7 @@ public class ViewerActivity extends AppCompatActivity {
         String note;
 
         if (isMark) {
-            note = mark.getContent();
+            note = mark.getNote();
             mValueTitle.setText(getString(R.string.viewer_values));
             mView.setText(
                     String.format(getResources().getString(R.string.viewer_more_marks), title));
