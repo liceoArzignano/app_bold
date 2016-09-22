@@ -3,6 +3,8 @@ package it.liceoarzignano.bold;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -287,6 +289,18 @@ public class Utils {
     public static boolean isFirstQuarter(String markDate) {
         return stringToDate(BoldApp.getBoldContext().getString(R.string.config_quarter_change))
                 .after(stringToDate(markDate));
+    }
+
+    public static boolean hasPackage(Context context, String pkg) {
+        try {
+            PackageInfo pi = context.getPackageManager()
+                    .getPackageInfo(pkg, 0);
+            return pi.applicationInfo.enabled;
+        } catch (PackageManager.NameNotFoundException e) {
+            // Gotta catch 'em all
+            return false;
+        }
+
     }
 
     /*

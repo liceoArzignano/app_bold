@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -34,7 +32,6 @@ import it.liceoarzignano.bold.Utils;
 
 public class SafeActivity extends AppCompatActivity {
 
-    private static final String TAG = "Bold_safe";
     private static final String SAFE_PREFS = "SafePrefs";
     private static final String XPOSED_INSTALLER_PACAKGE = "de.robv.android.xposed.installer";
     private static final String accessKey = "access_pwd";
@@ -107,7 +104,11 @@ public class SafeActivity extends AppCompatActivity {
         mLoadingLayout.setVisibility(View.VISIBLE);
         isWorking = true;
 
-        if (tellMeTheresNoXposed()) {
+        // Xposed can inject code by doing shitty stuffs in the runtime.
+        // If xposed is installed, do not allow user to open this activity for security reasons
+        if (Utils.hasPackage(context, XPOSED_INSTALLER_PACAKGE)) {
+            mLoadingText.setText(getString(R.string.safe_security_issue_xposed));
+        } else {
             mLoadingText.setText(R.string.safe_first_load);
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -197,29 +198,6 @@ public class SafeActivity extends AppCompatActivity {
                         }
                     })
                     .show();
-        }
-    }
-
-    /**
-     * Xposed can inject code by hacking the runtime, if xposed is installed
-     * do not allow user to open this activity for security reasons
-     *
-     * @return false if Xposed is installed, true if the device is safe
-     */
-    private boolean tellMeTheresNoXposed() {
-        try {
-            PackageInfo pi = getApplicationContext().getPackageManager()
-                    .getPackageInfo(XPOSED_INSTALLER_PACAKGE, 0);
-            if (pi.applicationInfo.enabled) {
-                mLoadingText.setText(getString(R.string.safe_security_issue_xposed));
-                Log.e(TAG, "Shit! There\'s xposed in this device");
-                return false;
-            } else {
-                return true;
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            // Gotta catch 'em all
-            return true;
         }
     }
 

@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import it.liceoarzignano.bold.BoldApp;
@@ -71,6 +73,9 @@ public class SettingsActivity extends AppCompatActivity {
                 trackerPref.setSummary(getString(R.string.pref_metrics_summary_forced));
             }
 
+            backupPref.setEnabled(GoogleApiAvailability.getInstance()
+                    .isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS &&
+                    Utils.hasPackage(context, "com.google.android.apps.docs"));
             backupPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
