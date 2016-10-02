@@ -29,7 +29,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class Utils {
     private static final String HOME_PREFS = "HomePrefs";
     private static final String SAFE_PREFS = "SafePrefs";
-    private static final String INITAL_DAY = "initialDayKey";
+    private static final String INITIAL_DAY = "initialDayKey";
     private static final String ANALYTICS = "analytics_key";
     public static final String ISTEACHER = "isTeacher_key";
     public static final String SUGGESTIONS = "showSuggestions_key";
@@ -134,7 +134,7 @@ public class Utils {
      */
     private static String getFirstUsageDate(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(HOME_PREFS, MODE_PRIVATE);
-        return prefs.getString(INITAL_DAY, "2000-01-01");
+        return prefs.getString(INITIAL_DAY, "2000-01-01");
     }
 
     /**
@@ -296,6 +296,13 @@ public class Utils {
                 .after(stringToDate(markDate));
     }
 
+    /**
+     * Determine if given package is installed
+     *
+     * @param context to invoke pm
+     * @param pkg package name
+     * @return true if installed
+     */
     public static boolean hasPackage(Context context, String pkg) {
         try {
             PackageInfo pi = context.getPackageManager()

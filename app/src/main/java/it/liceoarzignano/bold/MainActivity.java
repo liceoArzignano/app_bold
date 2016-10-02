@@ -76,8 +76,6 @@ public class MainActivity extends AppCompatActivity
     private CustomTabsSession mCustomTabsSession;
     private CustomTabsIntent customTabsIntent;
     private String mUrl;
-    // Welcome card
-    private CardView mWelcomeCard;
     // Event card
     private View mEventsCardSeparatorView;
     private CardView mEventsCard;
@@ -98,6 +96,182 @@ public class MainActivity extends AppCompatActivity
     private boolean showEventsCard;
     private boolean showMarksCard;
     private boolean showSuggestionCard;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        res = getResources();
+        sContext = getApplicationContext();
+        controller = RealmController.with(this);
+
+        // Analytics
+        setupAnalytics();
+
+        // Intro
+        showIntroIfNeeded();
+
+        setContentView(R.layout.activity_main);
+
+        // Toolbar and NavDrawer
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        //noinspection deprecation
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        View mHeaderView = navigationView.getHeaderView(0);
+        mUserName = (TextView) mHeaderView.findViewById(R.id.username_drawer);
+        mAddressLogo = (ImageView) mHeaderView.findViewById(R.id.address_logo);
+        setupNavHeader();
+
+        // Events Card
+        mEventsCard = (CardView) findViewById(R.id.events_card);
+        mEventsCardSeparatorView = findViewById(R.id.events_separator);
+        mEventTitles[0] = (TextView) findViewById(R.id.events_title_1);
+        mEventTitles[1] = (TextView) findViewById(R.id.events_title_2);
+        mEventTitles[2] = (TextView) findViewById(R.id.events_title_3);
+        mEventDates[0] = (TextView) findViewById(R.id.events_sec_1);
+        mEventDates[1] = (TextView) findViewById(R.id.events_sec_2);
+        mEventDates[2] = (TextView) findViewById(R.id.events_sec_3);
+        mEventLayouts[0] = (LinearLayout) findViewById(R.id.events_layout_1);
+        mEventLayouts[1] = (LinearLayout) findViewById(R.id.events_layout_2);
+        mEventLayouts[2] = (LinearLayout) findViewById(R.id.events_layout_3);
+        mMoreEventsButton = (Button) findViewById(R.id.more_events_button);
+        mMoreEventsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent eventIntent = new Intent(MainActivity.this, EventListActivity.class);
+                startActivity(eventIntent);
+            }
+        });
+
+        // Marks Card
+        mMarksCard = (CardView) findViewById(R.id.marks_card);
+        mMarksCardSeparatorView = findViewById(R.id.marks_separator);
+        mMarksTitles[0] = (TextView) findViewById(R.id.marks_title_1);
+        mMarksTitles[1] = (TextView) findViewById(R.id.marks_title_2);
+        mMarksTitles[2] = (TextView) findViewById(R.id.marks_title_3);
+        mMarksDates[0] = (TextView) findViewById(R.id.marks_sec_1);
+        mMarksDates[1] = (TextView) findViewById(R.id.marks_sec_2);
+        mMarksDates[2] = (TextView) findViewById(R.id.marks_sec_3);
+        mMarksLayouts[0] = (LinearLayout) findViewById(R.id.marks_layout1);
+        mMarksLayouts[1] = (LinearLayout) findViewById(R.id.marks_layout2);
+        mMarksLayouts[2] = (LinearLayout) findViewById(R.id.marks_layout3);
+
+        // Suggestions Card
+        mSuggestionCardSeparatorView = findViewById(R.id.suggestions_separator);
+        mSuggestionCard = (CardView) findViewById(R.id.suggestions_card);
+        mSuggestionText = (TextView) findViewById(R.id.suggestions_text);
+        loadSuggestion();
+
+        // Chrome custom tabs
+        setupCCustomTabs();
+
+        // Welcome dialog
+        showWelcomeIfNeeded(this);
+
+        // Show cards
+        populateCards();
+
+        // Notification
+        if (Utils.hasNotification(sContext)) {
+            makeEventNotification();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // Refresh Navigation Drawer header
+        setupNavHeader();
+
+        // Refresh home cards if sth changed
+        boolean hasEventsStatusChanged = showEventsCard;
+        boolean hasMarksStatusChanged = showMarksCard;
+        loadEvents();
+        if (Utils.hasUsedForMoreThanOneWeek(this)) {
+            loadMarks();
+        }
+        if (hasEventsStatusChanged != showEventsCard ||
+                hasMarksStatusChanged != showMarksCard) {
+            // Events or Suggestions card status has changed
+            populateCards();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        int menuVal = 0;
+        switch (id) {
+            case R.id.nav_my_marks:
+                menuVal = 1;
+                Intent intent = new Intent(this, MarkListActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.nav_calendar:
+                menuVal = 2;
+                Intent i = new Intent(this, EventListActivity.class);
+                startActivity(i);
+                break;
+            case R.id.nav_website:
+                menuVal = 3;
+                showWebViewUI(0);
+                break;
+            case R.id.nav_news:
+                menuVal = 4;
+                showWebViewUI(1);
+                break;
+            case R.id.nav_reg:
+                menuVal = 5;
+                showWebViewUI(2);
+                break;
+            case R.id.nav_moodle:
+                menuVal = 6;
+                showWebViewUI(3);
+                break;
+            case R.id.nav_copyboox:
+                menuVal = 7;
+                showWebViewUI(4);
+                break;
+            case R.id.nav_teacherzone:
+                menuVal = 8;
+                showWebViewUI(5);
+                break;
+            case R.id.nav_settings:
+                menuVal = 9;
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
+                break;
+            case R.id.nav_safe:
+                menuVal = 10;
+                Intent safeIntent = new Intent(this, SafeActivity.class);
+                startActivity(safeIntent);
+                break;
+        }
+
+        if (isAnalyticsEnabled) {
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Drawer Item");
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, String.valueOf(menuVal));
+            mBoldAnalytics.sendEvent(bundle);
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
 
     /**
      * @return content for notification
@@ -307,97 +481,10 @@ public class MainActivity extends AppCompatActivity
         alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        res = getResources();
-        sContext = getApplicationContext();
-        controller = RealmController.with(this);
-
-        // Analytics
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Utils.enableTrackerIfOverlayRequests(sContext,
-                        getResources().getBoolean(R.bool.force_tracker));
-                if (Utils.hasAnalytics(sContext)) {
-                    isAnalyticsEnabled = true;
-                    mBoldAnalytics = BoldApp.getBoldAnalytics();
-                }
-            }
-        }).start();
-
-        // Intro
-        showIntroIfNeeded();
-
-        // UI
-        setContentView(R.layout.activity_main);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        // Navigation drawer
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        //noinspection deprecation
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        View mHeaderView = navigationView.getHeaderView(0);
-        mUserName = (TextView) mHeaderView.findViewById(R.id.username_drawer);
-        mAddressLogo = (ImageView) mHeaderView.findViewById(R.id.address_logo);
-        setupNavHeader();
-
-        // Welcome Card
-        mWelcomeCard = (CardView) findViewById(R.id.welcome_card);
-
-        // Events Card
-        mEventsCard = (CardView) findViewById(R.id.events_card);
-        mEventsCardSeparatorView = findViewById(R.id.events_separator);
-        mEventTitles[0] = (TextView) findViewById(R.id.events_title_1);
-        mEventTitles[1] = (TextView) findViewById(R.id.events_title_2);
-        mEventTitles[2] = (TextView) findViewById(R.id.events_title_3);
-        mEventDates[0] = (TextView) findViewById(R.id.events_sec_1);
-        mEventDates[1] = (TextView) findViewById(R.id.events_sec_2);
-        mEventDates[2] = (TextView) findViewById(R.id.events_sec_3);
-        mEventLayouts[0] = (LinearLayout) findViewById(R.id.events_layout_1);
-        mEventLayouts[1] = (LinearLayout) findViewById(R.id.events_layout_2);
-        mEventLayouts[2] = (LinearLayout) findViewById(R.id.events_layout_3);
-        mMoreEventsButton = (Button) findViewById(R.id.more_events_button);
-        mMoreEventsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent eventIntent = new Intent(MainActivity.this, EventListActivity.class);
-                startActivity(eventIntent);
-            }
-        });
-
-        if (Utils.hasNotification(sContext)) {
-            makeEventNotification();
-        }
-
-        // Marks Card
-        mMarksCard = (CardView) findViewById(R.id.marks_card);
-        mMarksCardSeparatorView = findViewById(R.id.marks_separator);
-        mMarksTitles[0] = (TextView) findViewById(R.id.marks_title_1);
-        mMarksTitles[1] = (TextView) findViewById(R.id.marks_title_2);
-        mMarksTitles[2] = (TextView) findViewById(R.id.marks_title_3);
-        mMarksDates[0] = (TextView) findViewById(R.id.marks_sec_1);
-        mMarksDates[1] = (TextView) findViewById(R.id.marks_sec_2);
-        mMarksDates[2] = (TextView) findViewById(R.id.marks_sec_3);
-        mMarksLayouts[0] = (LinearLayout) findViewById(R.id.marks_layout1);
-        mMarksLayouts[1] = (LinearLayout) findViewById(R.id.marks_layout2);
-        mMarksLayouts[2] = (LinearLayout) findViewById(R.id.marks_layout3);
-
-        // Suggestions Card
-        mSuggestionCardSeparatorView = findViewById(R.id.suggestions_separator);
-        mSuggestionCard = (CardView) findViewById(R.id.suggestions_card);
-        mSuggestionText = (TextView) findViewById(R.id.suggestions_text);
-        loadSuggestion();
-
-        // Chrome custom tabs
+    /**
+     * Init Chrome custom tabs
+     */
+    private void setupCCustomTabs() {
         CustomTabsServiceConnection mCustomTabsServiceConnection =
                 new CustomTabsServiceConnection() {
                     @Override
@@ -427,98 +514,6 @@ public class MainActivity extends AppCompatActivity
                         android.R.anim.slide_in_left,
                         android.R.anim.slide_out_right)
                 .build();
-
-        // Welcome dialog
-        showWelcomeIfNeeded(this);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        // Refresh Navigation Drawer header
-        setupNavHeader();
-
-        // Refresh home cards if sth changed
-        boolean hasEventsStatusChanged = showEventsCard;
-        boolean hasMarksStatusChanged = showMarksCard;
-        loadEvents();
-        if (Utils.hasUsedForMoreThanOneWeek(this)) {
-            loadMarks();
-        }
-        if (hasEventsStatusChanged != showEventsCard ||
-                hasMarksStatusChanged != showMarksCard) {
-            // Events or Suggestions card status has changed
-            populateCards();
-        }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        int menuVal = 0;
-        switch (id) {
-            case R.id.nav_my_marks:
-                menuVal = 1;
-                Intent intent = new Intent(this, MarkListActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.nav_calendar:
-                menuVal = 2;
-                Intent i = new Intent(this, EventListActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_website:
-                menuVal = 3;
-                showWebViewUI(0);
-                break;
-            case R.id.nav_news:
-                menuVal = 4;
-                showWebViewUI(1);
-                break;
-            case R.id.nav_reg:
-                menuVal = 5;
-                showWebViewUI(2);
-                break;
-            case R.id.nav_moodle:
-                menuVal = 6;
-                showWebViewUI(3);
-                break;
-            case R.id.nav_copyboox:
-                menuVal = 7;
-                showWebViewUI(4);
-                break;
-            case R.id.nav_teacherzone:
-                menuVal = 8;
-                showWebViewUI(5);
-                break;
-            case R.id.nav_settings:
-                menuVal = 9;
-                Intent settingsIntent = new Intent(this, SettingsActivity.class);
-                startActivity(settingsIntent);
-                break;
-            case R.id.nav_safe:
-                menuVal = 10;
-                Intent safeIntent = new Intent(this, SafeActivity.class);
-                startActivity(safeIntent);
-                break;
-        }
-
-        if (isAnalyticsEnabled) {
-            Bundle bundle = new Bundle();
-            bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Drawer Item");
-            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, String.valueOf(menuVal));
-            mBoldAnalytics.sendEvent(bundle);
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 
     /**
@@ -681,17 +676,10 @@ public class MainActivity extends AppCompatActivity
      */
     private void populateCards() {
         int delay = 50;
-        mWelcomeCard.setVisibility(View.GONE);
         mEventsCard.setVisibility(View.GONE);
         mMarksCard.setVisibility(View.GONE);
         mSuggestionCard.setVisibility(View.GONE);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mWelcomeCard.setVisibility(View.VISIBLE);
-            }
-        }, delay);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -855,6 +843,23 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         }
+    }
+
+    /**
+     * Initialize firebase analytics
+     */
+    private void setupAnalytics() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Utils.enableTrackerIfOverlayRequests(sContext,
+                        getResources().getBoolean(R.bool.force_tracker));
+                if (Utils.hasAnalytics(sContext)) {
+                    isAnalyticsEnabled = true;
+                    mBoldAnalytics = BoldApp.getBoldAnalytics();
+                }
+            }
+        }).start();
     }
 
 }

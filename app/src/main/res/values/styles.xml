@@ -15,9 +15,9 @@
 
     <style name="AppTheme.MarksTheme" parent="@style/AppTheme.NoActionBar"/>
 
-    <style name="AppTheme.HomeCardStyle" />
-
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark" />
 
     <style name="AppTheme.ToolbarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:layout_width">match_parent</item>
@@ -25,30 +25,55 @@
         <item name="android:background">@color/colorPrimary</item>
     </style>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark" />
+    <style name="AppTheme.HomeCard">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+    
+    <style name="AppTheme.HomeTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:visibility">gone</item>
+    </style>
 
-    <style name="AppTheme.HomeText_Title">
+    <style name="AppTheme.HomeCardContent">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingTop">18dp</item>
+        <item name="android:paddingBottom">18dp</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="AppTheme.HomeTextCardTitle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">16sp</item>
     </style>
 
-    <style name="AppTheme.HomeText_Secondary">
+    <style name="AppTheme.HomeTextCardSecondary">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/text_secondary</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
-    <style name="home_card_text">
+    <style name="AppTheme.HomeCardListLayout">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingLeft">8dp</item>
-        <item name="android:paddingRight">8dp</item>
+        <item name="android:orientation">vertical</item>
         <item name="android:paddingBottom">8dp</item>
-        <item name="android:textColor">@color/colorAccent</item>
-        <item name="android:textSize">28sp</item>
+        <item name="android:visibility">gone</item>
     </style>
 
     <style name="InLineButton" parent="@android:style/Widget.Button">
@@ -57,7 +82,7 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
-    <style name="editor_icon">
+    <style name="AppTheme.EditorIcon">
         <item name="android:layout_width">24dp</item>
         <item name="android:layout_height">24dp</item>
         <item name="android:layout_centerVertical">true</item>
@@ -65,7 +90,7 @@
         <item name="android:contentDescription">@string/accessibility_generic_icon</item>
     </style>
 
-    <style name="editor_textView">
+    <style name="AppTheme.EditorTextView">
         <item name="android:layout_width">-1dp</item>
         <item name="android:layout_height">48dp</item>
         <item name="android:gravity">center_vertical</item>
@@ -74,7 +99,7 @@
         <item name="android:textColor">@android:color/black</item>
     </style>
 
-    <style name="editor_editText">
+    <style name="AppTheme.EditorEditText">
         <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">16sp</item>
         <item name="android:ellipsize">start</item>
@@ -83,7 +108,7 @@
         <item name="android:layout_marginRight">16dp</item>
     </style>
 
-    <style name="editor_relative_layout">
+    <style name="AppTheme.EditorLayout">
         <item name="android:paddingTop">16dp</item>
         <item name="android:paddingLeft">16dp</item>
         <item name="android:paddingRight">16dp</item>

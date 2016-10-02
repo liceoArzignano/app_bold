@@ -36,18 +36,18 @@
                     android:id="@+id/title_layout"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    style="@style/editor_icon">
+                    style="@style/AppTheme.EditorIcon">
 
                     <ImageView
                         android:id="@+id/title_image"
                         app:srcCompat="@drawable/ic_title"
-                        style="@style/editor_icon"/>
+                        style="@style/AppTheme.EditorIcon"/>
 
                     <EditText
                         android:id="@+id/title_input"
                         android:layout_height="match_parent"
                         android:layout_width="wrap_content"
-                        style="@style/editor_editText" />
+                        style="@style/AppTheme.EditorEditText" />
                 </RelativeLayout>
 
                 <!-- Subject picker -->
@@ -55,17 +55,17 @@
                     android:id="@+id/subject_layout"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    style="@style/editor_icon">
+                    style="@style/AppTheme.EditorIcon">
 
                     <ImageView
                         android:id="@+id/subject_image"
                         app:srcCompat="@drawable/ic_title"
-                        style="@style/editor_icon"/>
+                        style="@style/AppTheme.EditorIcon"/>
 
                     <TextView
                         android:id="@+id/subjects_selector"
                         android:text="@string/select_subject"
-                        style="@style/editor_textView"/>
+                        style="@style/AppTheme.EditorTextView"/>
                 </RelativeLayout>
 
                 <!-- Event category spinner -->
@@ -73,12 +73,12 @@
                     android:id="@+id/event_spinner_layout"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    style="@style/editor_icon">
+                    style="@style/AppTheme.EditorIcon">
 
                     <ImageView
                         android:id="@+id/category_image"
                         app:srcCompat="@drawable/ic_category"
-                        style="@style/editor_icon"/>
+                        style="@style/AppTheme.EditorIcon"/>
 
                     <Spinner
                         android:id="@+id/event_spinner"
@@ -92,17 +92,17 @@
                     android:id="@+id/mark_value_layout"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    style="@style/editor_icon">
+                    style="@style/AppTheme.EditorIcon">
 
                     <ImageView
                         android:id="@+id/mark_value_image"
                         app:srcCompat="@drawable/ic_trophy"
-                        style="@style/editor_icon"/>
+                        style="@style/AppTheme.EditorIcon"/>
 
                     <TextView
                         android:id="@+id/mark_preview"
                         android:text="@string/default_mark"
-                        style="@style/editor_textView"/>
+                        style="@style/AppTheme.EditorTextView"/>
                 </RelativeLayout>
 
                 <!-- Notes -->
@@ -110,19 +110,19 @@
                     android:id="@+id/notes_layout"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    style="@style/editor_icon">
+                    style="@style/AppTheme.EditorIcon">
 
                     <ImageView
                         android:id="@+id/notes_image"
                         app:srcCompat="@drawable/ic_notes"
-                        style="@style/editor_icon"/>
+                        style="@style/AppTheme.EditorIcon"/>
 
                     <EditText
                         android:id="@+id/notes_input"
                         android:layout_height="match_parent"
                         android:layout_width="wrap_content"
                         android:hint="@string/hint_notes"
-                        style="@style/editor_editText" />
+                        style="@style/AppTheme.EditorEditText" />
                 </RelativeLayout>
 
                 <!-- Date picker -->
@@ -130,16 +130,16 @@
                     android:id="@+id/date_layout"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    style="@style/editor_icon">
+                    style="@style/AppTheme.EditorIcon">
 
                     <ImageView
                         android:id="@+id/date_image"
                         app:srcCompat="@drawable/ic_calendar"
-                        style="@style/editor_icon"/>
+                        style="@style/AppTheme.EditorIcon"/>
 
                     <TextView
                         android:id="@+id/datepicker_button"
-                        style="@style/editor_textView"/>
+                        style="@style/AppTheme.EditorTextView"/>
                 </RelativeLayout>
             </LinearLayout>
         </ScrollView>
