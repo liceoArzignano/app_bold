@@ -63,6 +63,8 @@
                 android:animateLayoutChanges="true"
                 android:orientation="vertical"
                 android:background="@color/home_background"
+                android:paddingLeft="@dimen/card_margin"
+                android:paddingRight="@dimen/card_margin"
                 android:paddingBottom="@dimen/activity_bottom_margin">
 
                 <!-- Events -->

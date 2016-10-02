@@ -73,7 +73,6 @@ public class ManagerActivity extends AppCompatActivity
     private int value;
     private String[] subjects;
     private String title;
-    private String notes;
     private double dialogValue;
 
     private boolean editMode = false;
@@ -187,6 +186,7 @@ public class ManagerActivity extends AppCompatActivity
         // Load intent data
         if (editMode) {
             mObjId = mCallingIntent.getLongExtra("id", -1);
+            String notes;
             if (isMark) {
                 loadMark = controller.getMark(mObjId);
                 title = loadMark.getTitle();

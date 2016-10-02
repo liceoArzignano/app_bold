@@ -39,7 +39,6 @@
                     style="@style/AppTheme.EditorIcon">
 
                     <ImageView
-                        android:id="@+id/title_image"
                         app:srcCompat="@drawable/ic_title"
                         style="@style/AppTheme.EditorIcon"/>
 
@@ -47,7 +46,8 @@
                         android:id="@+id/title_input"
                         android:layout_height="match_parent"
                         android:layout_width="wrap_content"
-                        style="@style/AppTheme.EditorEditText" />
+                        style="@style/AppTheme.EditorEditText"
+                        tools:ignore="TextFields" />
                 </RelativeLayout>
 
                 <!-- Subject picker -->
@@ -58,7 +58,6 @@
                     style="@style/AppTheme.EditorIcon">
 
                     <ImageView
-                        android:id="@+id/subject_image"
                         app:srcCompat="@drawable/ic_title"
                         style="@style/AppTheme.EditorIcon"/>
 
@@ -76,7 +75,6 @@
                     style="@style/AppTheme.EditorIcon">
 
                     <ImageView
-                        android:id="@+id/category_image"
                         app:srcCompat="@drawable/ic_category"
                         style="@style/AppTheme.EditorIcon"/>
 
@@ -95,7 +93,6 @@
                     style="@style/AppTheme.EditorIcon">
 
                     <ImageView
-                        android:id="@+id/mark_value_image"
                         app:srcCompat="@drawable/ic_trophy"
                         style="@style/AppTheme.EditorIcon"/>
 
@@ -107,13 +104,11 @@
 
                 <!-- Notes -->
                 <RelativeLayout
-                    android:id="@+id/notes_layout"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     style="@style/AppTheme.EditorIcon">
 
                     <ImageView
-                        android:id="@+id/notes_image"
                         app:srcCompat="@drawable/ic_notes"
                         style="@style/AppTheme.EditorIcon"/>
 
@@ -133,7 +128,6 @@
                     style="@style/AppTheme.EditorIcon">
 
                     <ImageView
-                        android:id="@+id/date_image"
                         app:srcCompat="@drawable/ic_calendar"
                         style="@style/AppTheme.EditorIcon"/>
 

@@ -10,7 +10,6 @@ import android.widget.TextView;
 import io.realm.RealmBaseAdapter;
 import io.realm.RealmResults;
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.Utils;
 
 class ListArrayAdapter extends RealmBaseAdapter<Event> {
 
