@@ -384,7 +384,7 @@ public class MainActivity extends AppCompatActivity
                         homework);
             }
 
-            content += " " + res.getQuantityString(R.plurals.notification_birthday,
+            content += " " + res.getQuantityString(R.plurals.notification_homework,
                     homework, homework);
         }
 
@@ -398,7 +398,7 @@ public class MainActivity extends AppCompatActivity
                 content += String.format(res.getString(R.string.notification_message_half),
                         reminder);
             }
-            content += " " + res.getQuantityString(R.plurals.notification_birthday,
+            content += " " + res.getQuantityString(R.plurals.notification_reminder,
                     reminder, reminder);
         }
 
