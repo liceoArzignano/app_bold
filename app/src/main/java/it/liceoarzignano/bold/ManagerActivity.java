@@ -212,9 +212,7 @@ public class ManagerActivity extends AppCompatActivity
         // Setup UI
         if (Utils.isTeacher(mContext) || !isMark) {
             mTitleInput.setHint(getString(isMark ? R.string.hint_student : R.string.hint_event));
-            if (isMark) {
-                mSubjectSelector.setVisibility(View.GONE);
-            }
+            mSubjectLayout.setVisibility(View.GONE);
         } else {
             mTitleLayout.setVisibility(View.GONE);
         }
