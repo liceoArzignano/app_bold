@@ -10,11 +10,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -71,16 +72,19 @@ public class ViewerActivity extends AppCompatActivity {
         String date = isMark ? mark.getDate() : event.getDate();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        ImageView toolbarImage = (ImageView) findViewById(R.id.toolbar_image);
-
-        if (toolbarImage != null) {
-            toolbarImage.setImageResource(isMark ? R.drawable.newmark : R.drawable.newevent);
-        }
 
         if (!title.isEmpty() && toolbar != null) {
             toolbar.setTitle(title);
+            toolbar.setNavigationIcon(R.drawable.ic_close);
+            toolbar.setTitleTextColor(getResources().getColor(R.color.text_secondary));
+            setSupportActionBar(toolbar);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    finish();
+                }
+            });
         }
-        setSupportActionBar(toolbar);
 
         mShare = (Button) findViewById(R.id.share);
         mDelete = (Button) findViewById(R.id.delete);
@@ -233,7 +237,6 @@ public class ViewerActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fab.hide();
                 Intent editIntent = new Intent(fContext, ManagerActivity.class);
 
                 editIntent.putExtra("isEditing", true);
@@ -241,14 +244,15 @@ public class ViewerActivity extends AppCompatActivity {
                 editIntent.putExtra("id", id);
 
                 if (Utils.hasApi21()) {
-                    View sharedElement = findViewById(R.id.fab);
+                    View sharedFab = findViewById(R.id.fab);
 
                     ActivityOptionsCompat options = ActivityOptionsCompat
                             .makeSceneTransitionAnimation(ViewerActivity.this,
-                                    sharedElement, "fab");
+                                    sharedFab, "fab");
                     ActivityCompat.startActivity(ViewerActivity.this,
                             editIntent, options.toBundle());
                 } else {
+                    fab.hide();
                     startActivity(editIntent);
                 }
 

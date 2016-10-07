@@ -5,155 +5,99 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".ViewerActivity">
+    android:background="@color/viewer_background"
+    android:fitsSystemWindows="true">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/app_bar_height_view"
-        android:fitsSystemWindows="true"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="match_parent">
 
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-            <ImageView
-                android:id="@+id/toolbar_image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:contentDescription="@string/accessibility_manager"
-                android:fitsSystemWindows="true"
-                app:layout_collapseMode="parallax"
-                tools:targetApi="lollipop" />
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:theme="@style/AppTheme.ToolbarTheme"
-                android:background="@android:color/transparent"
-                android:elevation="0dp"
-                android:titleTextColor="@color/icon"
-                tools:targetApi="m" />
-
-        </android.support.design.widget.CollapsingToolbarLayout>
-    </android.support.design.widget.AppBarLayout>
-
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:paddingTop="?attr/actionBarSize" >
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/white"
                 android:orientation="vertical">
 
-                <!-- Value / Category -->
-                <TextView
-                    android:id="@+id/value_title"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="8dp"
-                    android:text="@string/viewer_values"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textSize="26sp" />
+                    android:paddingLeft="72dp"
+                    android:paddingBottom="24dp"
+                    android:paddingTop="24dp"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/value"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="16dp"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:textSize="16sp" />
+                    <!-- Value / Category -->
+                    <TextView
+                        android:id="@+id/value_title"
+                        android:text="@string/viewer_values"
+                        style="@style/AppTheme.ViewerTitle"/>
 
-                <!-- Date -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="8dp"
-                    android:text="@string/viewer_date"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textSize="26sp" />
+                    <TextView
+                        android:id="@+id/value"
+                        style="@style/AppTheme.ViewerText"/>
 
-                <TextView
-                    android:id="@+id/dates"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="16dp"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:textSize="16sp" />
+                    <!-- Date -->
+                    <TextView
+                        android:text="@string/viewer_date"
+                        style="@style/AppTheme.ViewerTitle" />
 
-                <!-- Notes -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="8dp"
-                    android:text="@string/viewer_notes"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textSize="26sp" />
+                    <TextView
+                        android:id="@+id/dates"
+                        style="@style/AppTheme.ViewerText"/>
 
-                <TextView
-                    android:id="@+id/notes"
+                    <!-- Notes -->
+                    <TextView
+                        android:text="@string/viewer_notes"
+                        style="@style/AppTheme.ViewerTitle" />
+
+                    <TextView
+                        android:id="@+id/notes"
+                        style="@style/AppTheme.ViewerText"/>
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="32dp"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:textSize="16sp" />
+                    android:orientation="horizontal"
+                    android:paddingBottom="4dp">
+
+                    <Button
+                        android:id="@+id/share"
+                        android:drawableTop="@drawable/avd_share"
+                        android:text="@string/viewer_share"
+                        style="@style/AppTheme.ViewerButton"/>
+
+                    <Button
+                         android:id="@+id/more"
+                        android:drawableTop="@drawable/avd_views"
+                        android:text="@string/viewer_remove"
+                        style="@style/AppTheme.ViewerButton"/>
+
+                    <Button
+                        android:id="@+id/delete"
+                        android:drawableTop="@drawable/avd_remove"
+                        android:text="@string/viewer_remove"
+                        style="@style/AppTheme.ViewerButton"/>
+                </LinearLayout>
             </LinearLayout>
+        </ScrollView>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="bottom"
-                android:orientation="horizontal">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_alignParentTop="true"
+            app:theme="@style/AppTheme.ToolbarTheme.LightFlat"
+            android:elevation="0dp"
+            tools:targetApi="lollipop" />
 
-                <Button
-                    android:id="@+id/share"
-                    style="@style/InLineButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableTop="@drawable/avd_share"
-                    android:text="@string/viewer_share" />
+    </RelativeLayout>
 
-                <Button
-                    android:id="@+id/more"
-                    style="@style/InLineButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableTop="@drawable/avd_views"
-                    android:text="@string/viewer_remove" />
-
-                <Button
-                    android:id="@+id/delete"
-                    style="@style/InLineButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableTop="@drawable/avd_remove"
-                    android:text="@string/viewer_remove" />
-
-            </LinearLayout>
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -163,8 +107,7 @@
         app:srcCompat="@drawable/ic_edit"
         android:visibility="gone"
         android:transitionName="fab"
-        app:layout_anchor="@id/app_bar"
-        app:layout_anchorGravity="bottom|end"
+        android:layout_gravity="bottom|end"
         tools:targetApi="lollipop"/>
 
 </android.support.design.widget.CoordinatorLayout>

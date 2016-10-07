@@ -13,6 +13,8 @@
 
     <color name="home_background">#fafafa</color>
     <color name="text_secondary">#8a000000</color>
+    <color name="viewer_title">#42000000</color>
+    <color name="viewer_background">#f1f1f1</color>
 
     <color name="slide_color">@color/colorPrimary</color>
 

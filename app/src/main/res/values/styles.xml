@@ -25,6 +25,13 @@
         <item name="android:background">@color/colorPrimary</item>
     </style>
 
+    <style name="AppTheme.ToolbarTheme.LightFlat" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
     <style name="AppTheme.HomeCard">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -76,12 +83,6 @@
         <item name="android:visibility">gone</item>
     </style>
 
-    <style name="InLineButton" parent="@android:style/Widget.Button">
-        <item name="android:gravity">center_horizontal</item>
-        <item name="android:drawablePadding">4dp</item>
-        <item name="android:background">@android:color/transparent</item>
-    </style>
-
     <style name="AppTheme.EditorIcon">
         <item name="android:layout_width">24dp</item>
         <item name="android:layout_height">24dp</item>
@@ -114,6 +115,32 @@
         <item name="android:paddingRight">16dp</item>
         <item name="android:clickable">true</item>
         <item name="android:background">?selectableItemBackground</item>
+    </style>
+
+    <style name="AppTheme.ViewerTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/viewer_title</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:paddingBottom">2dp</item>
+    </style>
+
+    <style name="AppTheme.ViewerText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:paddingBottom">14dp</item>
+    </style>
+
+    <style name="AppTheme.ViewerButton" parent="@android:style/Widget.Button">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:drawablePadding">4dp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
 </resources>

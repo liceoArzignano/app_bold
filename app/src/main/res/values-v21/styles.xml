@@ -23,11 +23,15 @@
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
     </style>
 
-    <style name="InLineButton" parent="@android:style/Widget.Material.Button">
+    <style name="AppTheme.ViewerButton" parent="@android:style/Widget.Button">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
         <item name="android:gravity">center_horizontal</item>
-        <item name="android:textAppearance">@android:style/TextAppearance.Material.Caption</item>
         <item name="android:drawablePadding">4dp</item>
-        <item name="android:background">?android:selectableItemBackgroundBorderless</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.Material.Caption</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:background">?android:selectableItemBackground</item>
     </style>
 
 </resources>
