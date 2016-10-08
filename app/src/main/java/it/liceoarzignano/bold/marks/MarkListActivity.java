@@ -99,8 +99,7 @@ public class MarkListActivity extends AppCompatActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new MarksListFragment(), getString(R.string.title_fragment_marks));
         adapter.addFragment(new AverageListFragment(), subjectFilter == null ?
-                getString(R.string.title_fragments_avg) :
-                getString(R.string.title_fragments_avgs));
+                getString(R.string.title_fragments_avgs) : getString(R.string.title_fragments_avg));
 
         viewPager.setAdapter(adapter);
     }
@@ -117,6 +116,9 @@ public class MarkListActivity extends AppCompatActivity {
         prefs = getSharedPreferences("HomePrefs", MODE_PRIVATE);
         quarterFilter = prefs.getInt(PREF_QUARTER_SELECTOR, 0);
 
+        Intent thisIntent = getIntent();
+        subjectFilter = thisIntent.getStringExtra("filteredList");
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -130,9 +132,6 @@ public class MarkListActivity extends AppCompatActivity {
         if (tabLayout != null) {
             tabLayout.setupWithViewPager(viewPager);
         }
-
-        Intent thisIntent = getIntent();
-        subjectFilter = thisIntent.getStringExtra("filteredList");
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add_new_mark);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -153,7 +152,8 @@ public class MarkListActivity extends AppCompatActivity {
 
             double avg = controller.getAverage(subjectFilter, 0);
             double excepted = controller.whatShouldIGet(subjectFilter, 0);
-            AverageListFragment.setHint(subjectFilter, avg, excepted);
+            viewPager.setCurrentItem(1);
+            AverageListFragment.setHint(this, avg, excepted);
         }
         refreshList(this);
     }

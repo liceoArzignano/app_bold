@@ -1,4 +1,4 @@
-package it.liceoarzignano.bold.external.inkpageindicator;
+package it.liceoarzignano.bold.external;
 
 /*
  * Copyright 2015 Google Inc.

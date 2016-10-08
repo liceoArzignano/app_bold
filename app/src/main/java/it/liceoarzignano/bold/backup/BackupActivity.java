@@ -51,7 +51,7 @@ import io.realm.Realm;
 import it.liceoarzignano.bold.BuildConfig;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
-import it.liceoarzignano.bold.external.expandableheightlistview.ExpandableHeightListView;
+import it.liceoarzignano.bold.external.ExpandableHeightListView;
 import it.liceoarzignano.bold.realm.RealmController;
 
 public class BackupActivity extends AppCompatActivity {

@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.util.Locale;
+
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
 import it.liceoarzignano.bold.realm.RealmController;
@@ -53,7 +55,7 @@ class AverageArrayAdapter extends BaseAdapter {
         holder.title.setText(result[position]);
 
         final Double doubleAvg = controller.getAverage(result[position], 0);
-        holder.avg.setText(String.format("%.2f", doubleAvg));
+        holder.avg.setText(String.format(Locale.ENGLISH, "%.2f", doubleAvg));
         if (doubleAvg < 6) {
             holder.avg.setTextColor(Color.RED);
         }

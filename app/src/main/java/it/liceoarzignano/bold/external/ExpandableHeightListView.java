@@ -1,4 +1,4 @@
-package it.liceoarzignano.bold.external.expandableheightlistview;
+package it.liceoarzignano.bold.external;
 
 /*
  * Copyright 2015 Paolo Rotolo.

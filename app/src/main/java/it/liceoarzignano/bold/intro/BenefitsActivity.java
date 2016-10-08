@@ -9,7 +9,7 @@ import android.view.View;
 
 import it.liceoarzignano.bold.MainActivity;
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.external.inkpageindicator.InkPageIndicator;
+import it.liceoarzignano.bold.external.InkPageIndicator;
 
 public class BenefitsActivity extends AppCompatActivity {
 

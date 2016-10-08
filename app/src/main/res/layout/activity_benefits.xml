@@ -36,7 +36,7 @@
             tools:targetApi="lollipop" />
 
 
-        <it.liceoarzignano.bold.external.inkpageindicator.InkPageIndicator
+        <it.liceoarzignano.bold.external.InkPageIndicator
             android:id="@+id/indicator"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
