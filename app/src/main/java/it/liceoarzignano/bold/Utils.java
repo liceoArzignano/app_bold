@@ -188,9 +188,7 @@ public class Utils {
 
             return c.get(Calendar.YEAR) == d.get(Calendar.YEAR) && diff > 7;
         } catch (ParseException e) {
-            if (android.support.compat.BuildConfig.DEBUG) {
-                Log.e("Backup", e.getMessage());
-            }
+            Log.e("Utils", e.getMessage());
             return false;
         }
     }
@@ -278,9 +276,7 @@ public class Utils {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ITALIAN);
             return format.parse(string);
         } catch (ParseException e) {
-            if (android.support.compat.BuildConfig.DEBUG) {
-                Log.e("Backup", e.getMessage());
-            }
+            Log.e("Utils", e.getMessage());
             return new Date();
         }
     }

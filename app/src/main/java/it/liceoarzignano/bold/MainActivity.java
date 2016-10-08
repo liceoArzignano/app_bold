@@ -119,8 +119,7 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        //noinspection deprecation
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -194,10 +193,13 @@ public class MainActivity extends AppCompatActivity
         // Refresh home cards if sth changed
         boolean hasEventsStatusChanged = showEventsCard;
         boolean hasMarksStatusChanged = showMarksCard;
+
         loadEvents();
+
         if (Utils.hasUsedForMoreThanOneWeek(this)) {
             loadMarks();
         }
+
         if (hasEventsStatusChanged != showEventsCard ||
                 hasMarksStatusChanged != showMarksCard) {
             // Events or Suggestions card status has changed
@@ -214,6 +216,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         int menuVal = 0;
+
         switch (id) {
             case R.id.nav_my_marks:
                 menuVal = 1;
@@ -262,6 +265,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         if (isAnalyticsEnabled) {
+            // Track this action
             Bundle bundle = new Bundle();
             bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Drawer Item");
             bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, String.valueOf(menuVal));
@@ -277,7 +281,6 @@ public class MainActivity extends AppCompatActivity
      * @return content for notification
      */
     public static String getTomorrowInfo() {
-        Calendar today = Calendar.getInstance();
         String content = null;
         boolean firstElement = true;
 
@@ -298,8 +301,7 @@ public class MainActivity extends AppCompatActivity
 
         // Create tomorrow events list
         for (Event event : events) {
-            if (Utils.rightDate(today.get(Calendar.YEAR), today.get(Calendar.MONTH) + 1,
-                    today.get(Calendar.DAY_OF_MONTH) + 1).equals(event.getDate())) {
+            if (Utils.getToday().equals(event.getDate())) {
                 tomorrowEvents.add(event);
             }
         }
@@ -452,28 +454,26 @@ public class MainActivity extends AppCompatActivity
         switch (Utils.getNotificationTime(sContext)) {
             case "0":
                 if (calendar.get(Calendar.HOUR_OF_DAY) >= 6) {
+                    // If it's too late for today's notification, plan one for tomorrow
                     calendar.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH) + 1);
-
                 }
                 calendar.set(Calendar.HOUR_OF_DAY, 6);
                 break;
             case "1":
                 if (calendar.get(Calendar.HOUR_OF_DAY) >= 15) {
+                    // If it's too late for today's notification, plan one for tomorrow
                     calendar.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH) + 1);
-
                 }
                 calendar.set(Calendar.HOUR_OF_DAY, 15);
                 break;
             case "2":
                 if (calendar.get(Calendar.HOUR_OF_DAY) >= 21) {
+                    // If it's too late for today's notification, plan one for tomorrow
                     calendar.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH) + 1);
-
                 }
                 calendar.set(Calendar.HOUR_OF_DAY, 21);
                 break;
         }
-
-        calendar.set(Calendar.MINUTE, 0);
 
         Intent intent = new Intent(sContext, AlarmService.class);
         AlarmManager alarmManager = (AlarmManager) sContext.getSystemService(ALARM_SERVICE);
@@ -585,7 +585,7 @@ public class MainActivity extends AppCompatActivity
 
         if (c > i) {
             mMoreEventsButton.setVisibility(View.VISIBLE);
-            mMoreEventsButton.setText(res.getQuantityString(R.plurals.more_events, i));
+            mMoreEventsButton.setText(res.getQuantityString(R.plurals.more_events, i, i));
         }
     }
 
@@ -719,8 +719,8 @@ public class MainActivity extends AppCompatActivity
     private void showIntroIfNeeded() {
         SharedPreferences prefs = getSharedPreferences("HomePrefs", MODE_PRIVATE);
         if (!prefs.getBoolean("introKey", false)) {
-            Intent i = new Intent(this, BenefitsActivity.class);
-            startActivity(i);
+            Intent mIntent = new Intent(this, BenefitsActivity.class);
+            startActivity(mIntent);
             finish();
         }
     }
@@ -756,7 +756,7 @@ public class MainActivity extends AppCompatActivity
                 new MaterialDialog.Builder(context)
                         .title(getString(R.string.dialog_updated_title))
                         .content(getString(R.string.dialog_updated_content))
-                        .positiveText(getString(android.R.string.ok))
+                        .positiveText(android.R.string.ok)
                         .negativeText(R.string.dialog_updated_changelog)
                         .canceledOnTouchOutside(false)
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -829,6 +829,7 @@ public class MainActivity extends AppCompatActivity
     /**
      * Update navigation header
      * according to user settings
+     * (api 21+ only)
      */
     private void setupNavHeader() {
         mUserName.setText(Utils.userNameKey(this));
