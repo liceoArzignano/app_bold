@@ -10,10 +10,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v7.app.ActionBar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -76,7 +75,7 @@ public class ViewerActivity extends AppCompatActivity {
         if (!title.isEmpty() && toolbar != null) {
             toolbar.setTitle(title);
             toolbar.setNavigationIcon(R.drawable.ic_close);
-            toolbar.setTitleTextColor(getResources().getColor(R.color.text_secondary));
+            toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.text_secondary));
             setSupportActionBar(toolbar);
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override

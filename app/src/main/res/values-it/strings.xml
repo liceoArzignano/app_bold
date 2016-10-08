@@ -272,6 +272,5 @@
     <string name="accessibility_welcome">Immagine di benvenuto</string>
     <string name="accessibility_event_icon">Icona evento</string>
     <string name="accessibility_safe_icon">Immagine status di Safe</string>
-    <string name="accessibility_manager">Immagine d\'intestazione</string>
     <string name="accessibility_generic_icon">Icona</string>
 </resources>

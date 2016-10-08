@@ -272,6 +272,5 @@
     <string name="accessibility_welcome">Welcome picture</string>
     <string name="accessibility_event_icon">Event icon</string>
     <string name="accessibility_safe_icon">Safe status icon</string>
-    <string name="accessibility_manager">Header picture</string>
     <string name="accessibility_generic_icon">Icon</string>
 </resources>

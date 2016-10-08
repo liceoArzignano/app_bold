@@ -129,9 +129,4 @@ public class CircularProgressBar extends View {
         mProgressColor = color;
         invalidate();
     }
-
-    public void setTextColor(int color) {
-        mTextColor = color;
-        invalidate();
-    }
 }
