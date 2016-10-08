@@ -11,6 +11,7 @@
     <string translatable="false" name="config_url_moodle">https://81.174.32.167:30443/moodle</string>
     <string translatable="false" name="config_url_copybook">https://81.174.32.167:30443/quaderno</string>
     <string translatable="false" name="config_url_teacherzone">http://www.liceoarzignano.it/docenti/docenti.php?sed=1</string>
+    <string translatable="false" name="config_url_changelog">https://gitlab.com/liceoArzignano/project_bold/blob/master/Changelog.md</string>
 
     <!-- Addresses -->
     <string translatable="false" name="pref_address_1">Scientifico</string>

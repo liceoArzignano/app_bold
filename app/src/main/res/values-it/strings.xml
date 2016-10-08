@@ -49,6 +49,7 @@
         \u2022 Miglioramenti: Safe \u00E8 pi\u00F9 veloce nel caricamento.\n
         \u2022 Bug fix.
     </string>
+    <string name="dialog_updated_changelog">Changelog</string>
 
     <!-- Manager -->
     <string name="title_activity_manager">Editor</string>

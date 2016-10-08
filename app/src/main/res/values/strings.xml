@@ -49,6 +49,7 @@
         \u2022 Update: Safe is now faster.\n
         \u2022 Bug fixes.
     </string>
+    <string name="dialog_updated_changelog">Changelog</string>
 
     <!-- Manager -->
     <string name="title_activity_manager">Editor</string>

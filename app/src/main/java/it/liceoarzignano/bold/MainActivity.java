@@ -526,6 +526,9 @@ public class MainActivity extends AppCompatActivity
      */
     private void showWebViewUI(int index) {
         switch (index) {
+            case -1:
+                mUrl = getString(R.string.config_url_changelog);
+                break;
             case 0:
                 mUrl = getString(R.string.config_url_home);
                 break;
@@ -754,6 +757,7 @@ public class MainActivity extends AppCompatActivity
                         .title(getString(R.string.dialog_updated_title))
                         .content(getString(R.string.dialog_updated_content))
                         .positiveText(getString(android.R.string.ok))
+                        .negativeText(R.string.dialog_updated_changelog)
                         .canceledOnTouchOutside(false)
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
@@ -762,6 +766,15 @@ public class MainActivity extends AppCompatActivity
                                 editor.putString("appVersionKey", APP_VERSION).apply();
                             }
                         })
+                        .onNegative(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog,
+                                                @NonNull DialogAction which) {
+                                dialog.hide();
+                                showWebViewUI(-1);
+                            }
+                        })
+
                         .show();
                 break;
         }

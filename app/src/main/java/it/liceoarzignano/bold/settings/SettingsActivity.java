@@ -2,6 +2,7 @@ package it.liceoarzignano.bold.settings;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -63,6 +64,18 @@ public class SettingsActivity extends AppCompatActivity {
                             .title(getString(R.string.pref_changelog))
                             .content(getString(R.string.dialog_updated_content))
                             .positiveText(getString(android.R.string.ok))
+                            .negativeText(R.string.dialog_updated_changelog)
+                            .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog,
+                                                    @NonNull DialogAction which) {
+                                    dialog.hide();
+                                    Intent mIntent = new Intent(Intent.ACTION_VIEW);
+                                    mIntent.setData(
+                                            Uri.parse(getString(R.string.config_url_changelog)));
+                                    startActivity(mIntent);
+                                }
+                            })
                             .show();
                     return true;
                 }
