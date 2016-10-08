@@ -25,5 +25,5 @@
     <string translatable="false" name="config_quarter_change">2017-01-31</string>
 
     <!-- Update APP_VERSION the build.gradle file and strings.xml too when this is changed -->
-    <string translatable="false" name="pref_app_version_summary">Liceo 1.0.14</string>
+    <string translatable="false" name="pref_app_version_summary">Liceo 1.0.15</string>
 </resources>

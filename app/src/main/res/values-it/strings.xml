@@ -40,10 +40,13 @@
     <!-- Updated Dialog -->
     <string name="dialog_updated_title">L\'app \u00E8 stata aggiornata!</string>
     <string name="dialog_updated_content">
-        \u2022 Nuovo: gestione dei voti in base al quadrimestre.\n
-        \u2022 Nuovo: supporto android 7.0 Nougat (Schermo Diviso supportato).\n
-        \u2022 Aggiornata interfaccia feature discovery.\n
-        \u2022 Miglioramenti sicurezza Safe.\n
+        \u2022 Novit\u00E0: nuova interfaccia schermata home.\n
+        \u2022 Novit\u00E0: nuova interfaccia visualizzatore voti ed eventi.\n
+        \u2022 Novit\u00E0: nuova interfaccia editor voti ed eventi.\n
+        \u2022 Novit\u00E0: nuova interfaccia medie voti.\n
+        \u2022 Novit\u00E0: nuove notifiche remote.\n
+        \u2022 Miglioramenti: aggiornamenti gestore statistiche.\n
+        \u2022 Miglioramenti: Safe \u00E8 pi\u00F9 veloce nel caricamento.\n
         \u2022 Bug fix.
     </string>
 

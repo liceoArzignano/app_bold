@@ -40,10 +40,13 @@
     <!-- Updated Dialog -->
     <string name="dialog_updated_title">App has been updated</string>
     <string name="dialog_updated_content">
-        \u2022 New: quarter-based mark management.\n
-        \u2022 New: android 7.0 Nougat support (with Split Screen support).\n
-        \u2022 Updated feature discovery UI.\n
-        \u2022 Improved Safe security.\n
+        \u2022 New: updated home interface.\n
+        \u2022 New: updated viewer interface.\n
+        \u2022 New: updated editor interface.\n
+        \u2022 New: updated average interface.\n
+        \u2022 New: remote notifications.\n
+        \u2022 Update: new analytics engine.\n
+        \u2022 Update: Safe is now faster.\n
         \u2022 Bug fixes.
     </string>
 
