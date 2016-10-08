@@ -86,11 +86,11 @@ public class ManagerActivity extends AppCompatActivity
     private final DatePickerDialog.OnDateSetListener dpickerListener
             = new DatePickerDialog.OnDateSetListener() {
         @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            ManagerActivity.this.year = year;
-            month = monthOfYear + 1;
+        public void onDateSet(DatePicker view, int yearOfSth, int monthOfYear, int dayOfMonth) {
+            year = yearOfSth;
+            month = monthOfYear;
             day = dayOfMonth;
-            mDate = Utils.rightDate(ManagerActivity.this.year, month, day);
+            mDate = Utils.rightDate(year, monthOfYear, dayOfMonth);
             mDatePicker.setText(mDate);
         }
     };
@@ -109,6 +109,12 @@ public class ManagerActivity extends AppCompatActivity
 
         mContext = this;
         controller = RealmController.with(this);
+
+        // Init calendar
+        Calendar mCal = Calendar.getInstance();
+        year = mCal.get(Calendar.YEAR);
+        month = mCal.get(Calendar.MONTH) + 1;
+        day = mCal.get(Calendar.DAY_OF_MONTH);
 
         mCallingIntent = getIntent();
         isMark = mCallingIntent.getBooleanExtra("isMark", true);
@@ -165,15 +171,28 @@ public class ManagerActivity extends AppCompatActivity
      * Parse intent data to set up the UI
      */
     private void setupFromIntent() {
-        Calendar calendar = Calendar.getInstance();
         Mark loadMark;
         Event loadEvent;
         String date;
+        String notes;
+        double dValue = 0;
 
-        year = calendar.get(Calendar.YEAR);
-        month = calendar.get(Calendar.MONTH) + 1;
-        day = calendar.get(Calendar.DAY_OF_MONTH);
-        mDate = Utils.rightDate(year, month, day);
+        // Event categories
+        List<String> categories = new ArrayList<>();
+        categories.add(getString(R.string.event_spinner_test));
+        categories.add(getString(R.string.event_spinner_school));
+        categories.add(getString(R.string.event_spinner_bday));
+        categories.add(getString(R.string.event_spinner_homework));
+        categories.add(getString(R.string.event_spinner_reminder));
+        categories.add(getString(R.string.event_spinner_hang_out));
+        categories.add(getString(R.string.event_spinner_other));
+
+        // Event spinner
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_dropdown_item_1line, categories);
+        mEventSpinner.setAdapter(dataAdapter);
+
+        mDate = Utils.getToday();
         mDatePicker.setText(mDate);
         mDatePickerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,22 +205,22 @@ public class ManagerActivity extends AppCompatActivity
         // Load intent data
         if (editMode) {
             mObjId = mCallingIntent.getLongExtra("id", -1);
-            String notes;
+
             if (isMark) {
                 loadMark = controller.getMark(mObjId);
                 title = loadMark.getTitle();
                 notes = loadMark.getNote();
                 value = loadMark.getValue();
                 date = loadMark.getDate();
-                double dValue = value;
+                dValue = value;
                 mMarkPreview.setText(String.format(Locale.ENGLISH, "%.2f", dValue / 100d));
             } else {
                 loadEvent = controller.getEvent(mObjId);
                 title = loadEvent.getTitle();
+                notes = loadEvent.getNote();
                 value = loadEvent.getIcon();
                 date = loadEvent.getDate();
-                notes = loadEvent.getNote();
-                mEventSpinner.setSelection(value, true);
+                mEventSpinner.setSelection(value);
             }
 
             mTitleInput.setText(title);
@@ -275,6 +294,8 @@ public class ManagerActivity extends AppCompatActivity
 
             mPreview.setText(editMode ? String.valueOf((double) value / 100) : "0.0");
             mSeekBar.setMax(40);
+            mSeekBar.setProgress((int) dValue / 40);
+            dialogValue = value / 25;
             mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onStartTrackingTouch(SeekBar seekBar) {}
@@ -315,21 +336,6 @@ public class ManagerActivity extends AppCompatActivity
             // Hide marks-related items
             mSubjectLayout.setVisibility(View.GONE);
             mMarkValueLayout.setVisibility(View.GONE);
-
-            // Event categories
-            List<String> categories = new ArrayList<>();
-            categories.add(getString(R.string.event_spinner_test));
-            categories.add(getString(R.string.event_spinner_school));
-            categories.add(getString(R.string.event_spinner_bday));
-            categories.add(getString(R.string.event_spinner_homework));
-            categories.add(getString(R.string.event_spinner_reminder));
-            categories.add(getString(R.string.event_spinner_hang_out));
-            categories.add(getString(R.string.event_spinner_other));
-
-            // Event spinner
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(
-                    this, android.R.layout.simple_dropdown_item_1line, categories);
-            mEventSpinner.setAdapter(dataAdapter);
 
             // Title fixer
             mTitleInput.addTextChangedListener(new TextWatcher() {
@@ -383,7 +389,7 @@ public class ManagerActivity extends AppCompatActivity
     @Override
     protected Dialog onCreateDialog(int id) {
         if (id == 33) {
-            return new DatePickerDialog(this, dpickerListener, year, month - 1, day);
+            return new DatePickerDialog(this, dpickerListener, year, month, day);
         }
         return null;
     }
@@ -430,7 +436,7 @@ public class ManagerActivity extends AppCompatActivity
             mMark.setTitle(title);
             mMark.setNote(mNotesInput.getText().toString());
             mMark.setValue(value);
-            mMark.setDate(mDate);
+            mMark.setDate(mDatePicker.getText().toString());
 
             mObjId = editMode ? controller.updateMark(mMark) : controller.addMark(mMark);
 
