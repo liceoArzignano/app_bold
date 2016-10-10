@@ -105,7 +105,7 @@
                 <!-- Notes -->
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="wrap_content"
                     style="@style/AppTheme.EditorIcon">
 
                     <ImageView
@@ -116,6 +116,7 @@
                         android:id="@+id/notes_input"
                         android:layout_height="match_parent"
                         android:layout_width="wrap_content"
+                        android:minHeight="48dp"
                         android:hint="@string/hint_notes"
                         style="@style/AppTheme.EditorEditText" />
                 </RelativeLayout>
