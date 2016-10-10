@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ViewerTheme" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">@color/viewerPrimary</item>
+        <item name="colorPrimaryDark">@color/viewerPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+</resources>

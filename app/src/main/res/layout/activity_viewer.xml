@@ -20,7 +20,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
+                android:background="@color/viewerPrimary"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -35,29 +35,29 @@
                     <TextView
                         android:id="@+id/value_title"
                         android:text="@string/viewer_values"
-                        style="@style/AppTheme.ViewerTitle"/>
+                        style="@style/ViewerTheme.Title"/>
 
                     <TextView
                         android:id="@+id/value"
-                        style="@style/AppTheme.ViewerText"/>
+                        style="@style/ViewerTheme.Text"/>
 
                     <!-- Date -->
                     <TextView
                         android:text="@string/viewer_date"
-                        style="@style/AppTheme.ViewerTitle" />
+                        style="@style/ViewerTheme.Title" />
 
                     <TextView
                         android:id="@+id/dates"
-                        style="@style/AppTheme.ViewerText"/>
+                        style="@style/ViewerTheme.Text"/>
 
                     <!-- Notes -->
                     <TextView
                         android:text="@string/viewer_notes"
-                        style="@style/AppTheme.ViewerTitle" />
+                        style="@style/ViewerTheme.Title" />
 
                     <TextView
                         android:id="@+id/notes"
-                        style="@style/AppTheme.ViewerText"/>
+                        style="@style/ViewerTheme.Text"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -70,19 +70,19 @@
                         android:id="@+id/share"
                         android:drawableTop="@drawable/avd_share"
                         android:text="@string/viewer_share"
-                        style="@style/AppTheme.ViewerButton"/>
+                        style="@style/ViewerTheme.Button"/>
 
                     <Button
                          android:id="@+id/more"
                         android:drawableTop="@drawable/avd_views"
                         android:text="@string/viewer_remove"
-                        style="@style/AppTheme.ViewerButton"/>
+                        style="@style/ViewerTheme.Button"/>
 
                     <Button
                         android:id="@+id/delete"
                         android:drawableTop="@drawable/avd_remove"
                         android:text="@string/viewer_remove"
-                        style="@style/AppTheme.ViewerButton"/>
+                        style="@style/ViewerTheme.Button"/>
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
@@ -92,7 +92,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_alignParentTop="true"
-            app:theme="@style/AppTheme.ToolbarTheme.LightFlat"
+            app:theme="@style/ViewerTheme.ToolbarTheme"
             android:elevation="0dp"
             tools:targetApi="lollipop" />
 
