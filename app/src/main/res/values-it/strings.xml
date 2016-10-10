@@ -269,7 +269,7 @@
     <string name="recent_backups">Backup recenti</string>
     <string name="restore_dialog_title">Ripristino dati precedenti</string>
     <string name="restore_dialog_message">Ripristinando il backup i dati esistenti saranno sovrascritti con quelli presenti nel backup\n<b>Data di creazione del backup</b>: %1$s\nSei sicuro di voler procedere?</string>
-    <string name="backup_error_debug">La creazione di backup non \00E0 consentita mentre utilizzi una build Debug</string>
+    <string name="backup_error_debug">La creazione di backup non \u00E0 consentita mentre utilizzi una build Debug</string>
 
     <!-- Accessibility -->
     <string name="accessibility_drawer">Intestazione</string>
