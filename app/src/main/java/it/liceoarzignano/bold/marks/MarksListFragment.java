@@ -3,16 +3,16 @@ package it.liceoarzignano.bold.marks;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import it.liceoarzignano.bold.R;
 
 public class MarksListFragment extends Fragment {
 
-    static ListView mMarksListView;
+    static RecyclerView mMarksListView;
 
     public MarksListFragment() {
 
@@ -32,7 +32,7 @@ public class MarksListFragment extends Fragment {
                              Bundle savedInstance) {
         View view = inflater.inflate(R.layout.fragment_mark_marks, container, false);
 
-        mMarksListView = (ListView) view.findViewById(R.id.mark_list_view);
+        mMarksListView = (RecyclerView) view.findViewById(R.id.mark_list_view);
 
         refreshList(getContext());
 

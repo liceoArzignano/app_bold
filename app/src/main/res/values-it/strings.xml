@@ -266,7 +266,6 @@
     <string name="backup_title">Backup %1$d</string>
     <string name="backup_explain_title">Informazioni sui backup</string>
     <string name="backup_explain_message">I dati possono essere caricati su Google Drive consentendoti di recuperarli nel caso in cui smarrissi o cambiassi dispositivo. Inoltre potrai sincronizzare i tuoi voti ed eventi anche sugli altri dispositivi che possiedi semplicemente ripristinando un backup.</string>
-    <string name="recent_backups">Backup recenti</string>
     <string name="restore_dialog_title">Ripristino dati precedenti</string>
     <string name="restore_dialog_message">Ripristinando il backup i dati esistenti saranno sovrascritti con quelli presenti nel backup\n<b>Data di creazione del backup</b>: %1$s\nSei sicuro di voler procedere?</string>
     <string name="backup_error_debug">La creazione di backup non \u00E0 consentita mentre utilizzi una build Debug</string>

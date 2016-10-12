@@ -13,6 +13,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.util.Pair;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,12 +24,17 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
 import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.ManagerActivity;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
 import it.liceoarzignano.bold.ViewerActivity;
 import it.liceoarzignano.bold.realm.RealmController;
+import it.liceoarzignano.bold.ui.DividerDecoration;
+import it.liceoarzignano.bold.ui.RecyclerClickListener;
+import it.liceoarzignano.bold.ui.RecyclerTouchListener;
 
 
 public class MarkListActivity extends AppCompatActivity {
@@ -39,70 +47,6 @@ public class MarkListActivity extends AppCompatActivity {
     private static String subjectFilter;
     private static int quarterFilter;
     private SharedPreferences prefs;
-
-    /**
-     * Fire ViewerActivity and pass the selected mark data
-     *
-     * @param id: mark id
-     */
-    public static void viewMark(long id) {
-
-        Intent viewIntent = new Intent(fContext, ViewerActivity.class);
-
-        viewIntent.putExtra("isMark", true);
-        viewIntent.putExtra("id", id);
-
-        fContext.startActivity(viewIntent);
-    }
-
-    /**
-     * Update the ListView content
-     *
-     * @param context: needed to reload database data
-     */
-    public static void refreshList(Context context) {
-        LoadListViewTask loadMarkPostListViewTask = new LoadListViewTask(
-                context, MarksListFragment.mMarksListView,
-                new Pair<>(subjectFilter, quarterFilter));
-        loadMarkPostListViewTask.execute();
-
-        AverageListFragment.refresh(context, new Pair<>(subjectFilter, quarterFilter));
-    }
-
-    /**
-     * Restart this activity with a subjectFilter for the ListView content
-     *
-     * @param filter: title subjectFilter
-     */
-    public static void showFilteredMarks(String filter) {
-        Intent filteredList = new Intent(fContext, MarkListActivity.class);
-        filteredList.putExtra("filteredList", filter);
-
-        fContext.startActivity(filteredList);
-    }
-
-    /**
-     * Return subject / student + quarter filter
-     *
-     * @return current list filters
-     */
-    static Pair<String, Integer> getSubjectFilter() {
-        return new Pair<>(subjectFilter, quarterFilter);
-    }
-
-    /**
-     * Initialize the viewpager and add the needed fragments
-     *
-     * @param viewPager: the viewpager we're going to play with
-     */
-    private void setUpViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new MarksListFragment(), getString(R.string.title_fragment_marks));
-        adapter.addFragment(new AverageListFragment(), subjectFilter == null ?
-                getString(R.string.title_fragments_avgs) : getString(R.string.title_fragments_avg));
-
-        viewPager.setAdapter(adapter);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -225,6 +169,110 @@ public class MarkListActivity extends AppCompatActivity {
             case 2:
                 secondQMarks.setChecked(true);
                 break;
+        }
+    }
+
+    /**
+     * Fire ViewerActivity and pass the selected mark data
+     *
+     * @param id: mark id
+     */
+    private static void viewMark(long id) {
+        Intent viewIntent = new Intent(fContext, ViewerActivity.class);
+
+        viewIntent.putExtra("isMark", true);
+        viewIntent.putExtra("id", id);
+
+        fContext.startActivity(viewIntent);
+    }
+
+    /**
+     * Update the ListView content
+     *
+     * @param mContext: needed to reload database data
+     */
+    public static void refreshList(Context mContext) {
+        final RealmResults<Mark> mMarks = getFilteredMarks();
+
+        MarksAdapter mAdapter = new MarksAdapter(mMarks);
+        RecyclerView.LayoutManager mManager = new LinearLayoutManager(mContext);
+        RecyclerClickListener mListener = new RecyclerClickListener() {
+            @Override
+            public void onClick(View mView, int mPosition) {
+                MarkListActivity.viewMark(mMarks.get(mPosition).getId());
+            }
+        };
+
+        if (MarksListFragment.mMarksListView != null) {
+            MarksListFragment.mMarksListView.setLayoutManager(mManager);
+            MarksListFragment.mMarksListView.setItemAnimator(new DefaultItemAnimator());
+            MarksListFragment.mMarksListView.setAdapter(mAdapter);
+            MarksListFragment.mMarksListView.addItemDecoration(new DividerDecoration(mContext));
+            MarksListFragment.mMarksListView.addOnItemTouchListener(
+                    new RecyclerTouchListener(mContext, mListener));
+            mAdapter.notifyDataSetChanged();
+            AverageListFragment.refresh(mContext, new Pair<>(subjectFilter, quarterFilter));
+        }
+    }
+
+    /**
+     * Restart this activity with a subjectFilter for the ListView content
+     *
+     * @param filter: title subjectFilter
+     */
+    public static void showFilteredMarks(String filter) {
+        Intent filteredList = new Intent(fContext, MarkListActivity.class);
+        filteredList.putExtra("filteredList", filter);
+
+        fContext.startActivity(filteredList);
+    }
+
+    /**
+     * Return subject / student + quarter filter
+     *
+     * @return current list filters
+     */
+    static Pair<String, Integer> getSubjectFilter() {
+        return new Pair<>(subjectFilter, quarterFilter);
+    }
+
+    /**
+     * Initialize the viewpager and add the needed fragments
+     *
+     * @param viewPager: the viewpager we're going to play with
+     */
+    private void setUpViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new MarksListFragment(), getString(R.string.title_fragment_marks));
+        adapter.addFragment(new AverageListFragment(), subjectFilter == null ?
+                getString(R.string.title_fragments_avgs) : getString(R.string.title_fragments_avg));
+
+        viewPager.setAdapter(adapter);
+    }
+
+    private static RealmResults<Mark> getFilteredMarks() {
+        Realm realm = Realm.getInstance(BoldApp.getAppRealmConfiguration());
+
+        if (subjectFilter == null) {
+            switch (quarterFilter) {
+                case 1:
+                    return realm.where(Mark.class).equalTo("isFirstQuarter", true).findAll();
+                case 2:
+                    return realm.where(Mark.class).equalTo("isFirstQuarter", false).findAll();
+                default:
+                    return realm.where(Mark.class).findAll();
+            }
+        } else {
+            switch (quarterFilter) {
+                case 1:
+                    return realm.where(Mark.class).equalTo("title", subjectFilter)
+                            .equalTo("isFirstQuarter", true).findAll();
+                case 2:
+                    return realm.where(Mark.class).equalTo("title", subjectFilter)
+                            .equalTo("isFirstQuarter", false).findAll();
+                default:
+                    return realm.where(Mark.class).equalTo("title", subjectFilter).findAll();
+            }
         }
     }
 

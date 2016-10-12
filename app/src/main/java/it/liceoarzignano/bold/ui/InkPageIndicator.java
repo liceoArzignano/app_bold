@@ -1,4 +1,4 @@
-package it.liceoarzignano.bold.external;
+package it.liceoarzignano.bold.ui;
 
 /*
  * Copyright 2015 Google Inc.

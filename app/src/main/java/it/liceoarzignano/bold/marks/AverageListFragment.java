@@ -6,23 +6,29 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.external.CircularProgressBar;
+import it.liceoarzignano.bold.Utils;
+import it.liceoarzignano.bold.ui.CircularProgressBar;
 import it.liceoarzignano.bold.realm.RealmController;
+import it.liceoarzignano.bold.ui.DividerDecoration;
+import it.liceoarzignano.bold.ui.RecyclerClickListener;
+import it.liceoarzignano.bold.ui.RecyclerTouchListener;
 
 public class AverageListFragment extends Fragment {
 
     private static Resources res;
     private static RealmController controller;
 
-    private static ListView mAvgListview;
+    private static RecyclerView mAvgListview;
     private static LinearLayout mHintLayout;
     private static TextView mHint;
     private static CircularProgressBar mProgressBar;
@@ -31,10 +37,26 @@ public class AverageListFragment extends Fragment {
         controller = RealmController.with(getActivity());
     }
 
-    static void refresh(Context context, Pair<String, Integer> filter) {
+    static void refresh(Context context, final Pair<String, Integer> filter) {
         if (mAvgListview != null) {
-            mAvgListview.setAdapter(new AverageArrayAdapter(context, controller, filter.second));
+            final String[] mResults = Utils.getAverageElements(filter.second);
+
+            final AverageAdapter mAdapter = new AverageAdapter(controller, mResults);
+            RecyclerView.LayoutManager mManager = new LinearLayoutManager(context);
+            RecyclerClickListener mListener = new RecyclerClickListener() {
+                @Override
+                public void onClick(View mView, int mPosition) {
+                    MarkListActivity.showFilteredMarks(mResults[mPosition]);
+                }
+            };
+
+            mAvgListview.setLayoutManager(mManager);
+            mAvgListview.setItemAnimator(new DefaultItemAnimator());
+            mAvgListview.addItemDecoration(new DividerDecoration(context));
+            mAvgListview.setAdapter(mAdapter);
+            mAvgListview.addOnItemTouchListener(new RecyclerTouchListener(context, mListener));
             mAvgListview.setVisibility(filter.first != null ? View.GONE : View.VISIBLE);
+            mAdapter.notifyDataSetChanged();
         }
 
         if (mHintLayout != null) {
@@ -75,7 +97,7 @@ public class AverageListFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_mark_average, container, false);
 
-        mAvgListview = (ListView) view.findViewById(R.id.average_listView);
+        mAvgListview = (RecyclerView) view.findViewById(R.id.average_listView);
         mHintLayout = (LinearLayout) view.findViewById(R.id.hint_layout);
         mHint = (TextView) view.findViewById(R.id.hint);
         mProgressBar = (CircularProgressBar) view.findViewById(R.id.value);

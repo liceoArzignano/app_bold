@@ -20,28 +20,12 @@
             app:theme="@style/AppTheme.ToolbarTheme"
             tools:targetApi="lollipop" />
 
-        <ScrollView
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/backups_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingTop="?attr/actionBarSize">
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="8dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/recent_backups"/>
-
-                <it.liceoarzignano.bold.external.ExpandableHeightListView
-                    android:id="@+id/backupsListView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
-        </ScrollView>
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical" />
 
     </android.support.design.widget.CoordinatorLayout>
 

@@ -1,4 +1,4 @@
-package it.liceoarzignano.bold.external;
+package it.liceoarzignano.bold.ui;
 
 /**
  * Simple single android view component that can be used to showing a round progress bar.

@@ -4,10 +4,11 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical">
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/average_listView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" />
 
     <LinearLayout
         android:id="@+id/hint_layout"
@@ -19,7 +20,7 @@
         android:paddingRight="24dp"
         android:visibility="gone"
         android:gravity="center_horizontal">
-        <it.liceoarzignano.bold.external.CircularProgressBar
+        <it.liceoarzignano.bold.ui.CircularProgressBar
             android:id="@+id/value"
             android:layout_width="240dp"
             android:layout_height="240dp"/>

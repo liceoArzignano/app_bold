@@ -5,29 +5,54 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ListView;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
+import io.realm.Sort;
+import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.ManagerActivity;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
 import it.liceoarzignano.bold.ViewerActivity;
+import it.liceoarzignano.bold.ui.DividerDecoration;
+import it.liceoarzignano.bold.ui.RecyclerClickListener;
+import it.liceoarzignano.bold.ui.RecyclerTouchListener;
 
 public class EventListActivity extends AppCompatActivity {
 
-    private static ListView mEventListView;
+    private static RecyclerView mEventList;
     private static Context fContext;
 
     /**
-     * Update the ListView content
+     * Update the RecyclerView content
      *
-     * @param context: needed to reload database data
+     * @param mContext: needed to reload database data
      */
-    public static void refreshList(Context context) {
-        LoadListViewTask loadListViewTask = new LoadListViewTask(
-                context, mEventListView);
-        loadListViewTask.execute();
+    public static void refreshList(Context mContext) {
+        Realm mRealm = Realm.getInstance(BoldApp.getAppRealmConfiguration());
+        final RealmResults<Event> mEvents =
+                mRealm.where(Event.class).findAllSorted("date", Sort.DESCENDING);
+
+        EventsAdapter mAdapter = new EventsAdapter(mEvents);
+        RecyclerClickListener mListener = new RecyclerClickListener() {
+            @Override
+            public void onClick(View mView, int mPosition) {
+                EventListActivity.viewEvent(mEvents.get(mPosition).getId());
+            }
+        };
+
+        mEventList.setLayoutManager(new LinearLayoutManager(mContext));
+        mEventList.setItemAnimator(new DefaultItemAnimator());
+        mEventList.addItemDecoration(new DividerDecoration(mContext));
+        mEventList.setAdapter(mAdapter);
+        mEventList.addOnItemTouchListener(new RecyclerTouchListener(mContext, mListener));
+
+        mAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -35,7 +60,7 @@ public class EventListActivity extends AppCompatActivity {
      *
      * @param id: event id
      */
-    static void viewEvent(long id) {
+    private static void viewEvent(long id) {
         Intent editIntent = new Intent(fContext, ViewerActivity.class);
 
         editIntent.putExtra("isMark", false);
@@ -57,7 +82,7 @@ public class EventListActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        mEventListView = (ListView) findViewById(R.id.event_list_view);
+        mEventList = (RecyclerView) findViewById(R.id.event_list_view);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

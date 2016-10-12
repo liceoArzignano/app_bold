@@ -1,8 +1,8 @@
 package it.liceoarzignano.bold.backup;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
@@ -13,12 +13,16 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -45,14 +49,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import io.realm.Realm;
 import it.liceoarzignano.bold.BuildConfig;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
-import it.liceoarzignano.bold.external.ExpandableHeightListView;
 import it.liceoarzignano.bold.realm.RealmController;
+import it.liceoarzignano.bold.ui.DividerDecoration;
+import it.liceoarzignano.bold.ui.RecyclerClickListener;
+import it.liceoarzignano.bold.ui.RecyclerTouchListener;
 
 public class BackupActivity extends AppCompatActivity {
 
@@ -61,7 +68,7 @@ public class BackupActivity extends AppCompatActivity {
     private IntentSender mIntentPicker;
     private Realm realm;
     private CoordinatorLayout mCoordinatorLayout;
-    private ExpandableHeightListView mListView;
+    private RecyclerView mBackupsList;
     private SharedPreferences prefs;
 
     private String backupFolder;
@@ -127,7 +134,7 @@ public class BackupActivity extends AppCompatActivity {
         realm = RealmController.with(this).getRealm();
 
         mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
-        mListView = (ExpandableHeightListView) findViewById(R.id.backupsListView);
+        mBackupsList = (RecyclerView) findViewById(R.id.backups_list);
 
         FloatingActionButton mBackupFab = (FloatingActionButton) findViewById(R.id.fab);
         mBackupFab.setOnClickListener(new View.OnClickListener() {
@@ -184,7 +191,7 @@ public class BackupActivity extends AppCompatActivity {
      *
      * @param file selected file
      */
-    void downloadFromDrive(DriveFile file) {
+    private void downloadFromDrive(DriveFile file) {
         file.open(mGoogleApiClient, DriveFile.MODE_READ_ONLY, null)
                 .setResultCallback(new ResultCallback<DriveApi.DriveContentsResult>() {
                     @Override
@@ -361,6 +368,46 @@ public class BackupActivity extends AppCompatActivity {
         }
     }
 
+    private void refreshList(final List<BackupData> mBackups) {
+        final Context mContext = this;
+        BackupsAdapter mAdapter = new BackupsAdapter(mBackups);
+        RecyclerClickListener mListener = new RecyclerClickListener() {
+            @Override
+            public void onClick(View mView, int mPosition) {
+                final DriveId mId = mBackups.get(mPosition).getId();
+                Calendar mCal = Calendar.getInstance();
+                mCal.setTime(mBackups.get(mPosition).getDate());
+                String mDate = Utils.rightDate(mCal.get(Calendar.YEAR),
+                        mCal.get(Calendar.MONTH) + 1, mCal.get(Calendar.DAY_OF_MONTH)) +
+                        " " + mCal.get(Calendar.HOUR_OF_DAY) + ":" + mCal.get(Calendar.MINUTE);
+
+                new MaterialDialog.Builder(mContext)
+                        .title(R.string.restore_dialog_title)
+                        .content(String.format(
+                                mContext.getString(R.string.restore_dialog_message), mDate))
+                        .positiveText(android.R.string.yes)
+                        .negativeText(android.R.string.no)
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog,
+                                                @NonNull DialogAction which) {
+                                ((BackupActivity) mContext).downloadFromDrive(mId != null ?
+                                        mId.asDriveFile() : null);
+                            }
+                        })
+                        .show();
+            }
+        };
+
+        mBackupsList.setLayoutManager(new LinearLayoutManager(mContext));
+        mBackupsList.setItemAnimator(new DefaultItemAnimator());
+        mBackupsList.addItemDecoration(new DividerDecoration(mContext));
+        mBackupsList.setAdapter(mAdapter);
+        mBackupsList.addOnItemTouchListener(new RecyclerTouchListener(mContext, mListener));
+
+        mAdapter.notifyDataSetChanged();
+    }
+
     /**
      * Backup completed successfully, inform the user with a SnackBar
      */
@@ -397,7 +444,6 @@ public class BackupActivity extends AppCompatActivity {
      * @param folder backups location
      */
     private void getBackupsFromDrive(DriveFolder folder) {
-        final Activity activity = this;
         final List<BackupData> backupList = new ArrayList<>();
         SortOrder order = new SortOrder.Builder()
                 .addSortDescending(SortableField.MODIFIED_DATE).build();
@@ -420,8 +466,7 @@ public class BackupActivity extends AppCompatActivity {
                             data.setDate(metadata.getModifiedDate());
                             data.setSize(metadata.getFileSize());
                             backupList.add(data);
-                            mListView.setAdapter(new BackupListAdapter(activity,
-                                    backupList));
+                            refreshList(backupList);
                         }
                     }
                 });

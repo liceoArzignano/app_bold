@@ -148,7 +148,7 @@ public class Utils {
      * @param day:   day of the month from the date picker dialog
      * @return string with formatted date
      */
-    static String rightDate(int year, int month, int day) {
+    public static String rightDate(int year, int month, int day) {
         String ret;
         ret = year + "-";
         if (month < 10) {

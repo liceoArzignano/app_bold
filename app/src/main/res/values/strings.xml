@@ -266,7 +266,6 @@
     <string name="backup_title">Backup %1$d</string>
     <string name="backup_explain_title">Backup info</string>
     <string name="backup_explain_message">Backing up your data to Google Drive allows you to restore all your data in case you lose or change the device. This also allows you to sync data between all your devices.</string>
-    <string name="recent_backups">Recent backups</string>
     <string name="restore_dialog_title">Revert to previous data</string>
     <string name="restore_dialog_message">Restoring the backup will overwrite all the existing data with those in the backup.\n<b>Backup creation date</b>: %1$s\nAre you sure you want to proceed?</string>
     <string name="backup_error_debug">You cannot create backups when you\'re on a debug build</string>

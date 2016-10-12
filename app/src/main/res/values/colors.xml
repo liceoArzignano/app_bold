@@ -6,10 +6,11 @@
     <color name="colorAccentDark">#568B30</color>
 
     <color name="icon">@color/white</color>
-    <color name="editor_icon">#5a595b</color>
+    <color name="editor_icon">@color/grey</color>
 
     <color name="black">#212121</color>
     <color name="white">#fafafa</color>
+    <color name="grey">#5a595b</color>
     <color name="red">#ff4336</color>
     <color name="yellow">#ffc108</color>
     <color name="green">#7DB344</color>
@@ -19,9 +20,9 @@
     <color name="viewer_title">#42000000</color>
     <color name="viewer_background">@color/viewerPrimaryDark</color>
 
-
     <color name="home_background">#fafafa</color>
     <color name="text_secondary">#8a000000</color>
+    <color name="list_divider">@color/grey</color>
 
     <color name="slide_color">@color/colorPrimary</color>
 
