@@ -88,9 +88,9 @@ public class ManagerActivity extends AppCompatActivity
         @Override
         public void onDateSet(DatePicker view, int yearOfSth, int monthOfYear, int dayOfMonth) {
             year = yearOfSth;
-            month = monthOfYear;
+            month = monthOfYear + 1;
             day = dayOfMonth;
-            mDate = Utils.rightDate(year, monthOfYear, dayOfMonth);
+            mDate = Utils.rightDate(year, month, day);
             mDatePicker.setText(mDate);
         }
     };
@@ -383,7 +383,7 @@ public class ManagerActivity extends AppCompatActivity
     @Override
     protected Dialog onCreateDialog(int id) {
         if (id == 33) {
-            return new DatePickerDialog(this, dpickerListener, year, month, day);
+            return new DatePickerDialog(this, dpickerListener, year, month - 1, day);
         }
         return null;
     }
