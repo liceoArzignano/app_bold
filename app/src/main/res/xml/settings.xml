@@ -67,7 +67,6 @@
     <PreferenceCategory android:title="@string/pref_getintouch">
 
         <PreferenceScreen
-            android:summary="@string/pref_mail_summary"
             android:title="@string/pref_mail_title">
             <intent
                 android:action="android.intent.action.SENDTO"
@@ -75,7 +74,6 @@
         </PreferenceScreen>
 
         <PreferenceScreen
-            android:summary="@string/pref_phone_summary"
             android:title="@string/pref_phone_title">
             <intent
                 android:action="android.intent.action.DIAL"
@@ -83,7 +81,6 @@
         </PreferenceScreen>
 
         <PreferenceScreen
-            android:summary="@string/pref_facebook_summary"
             android:title="@string/pref_facebook_title">
             <intent
                 android:action="android.intent.action.VIEW"
@@ -91,7 +88,6 @@
         </PreferenceScreen>
 
         <PreferenceScreen
-            android:summary="@string/pref_instagram_summary"
             android:title="@string/pref_instagram_title">
             <intent
                 android:action="android.intent.action.VIEW"

@@ -658,7 +658,7 @@ public class MainActivity extends AppCompatActivity
             case 4:
                 return getString(R.string.suggestion_edit_event);
             case 5:
-                return getString(R.string.suggestion_mark_helper);
+                return getString(R.string.suggestion_notification_remote);
             case 6:
                 return getString(R.string.suggestion_get_touch);
             case 7:

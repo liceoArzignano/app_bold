@@ -158,13 +158,7 @@ public class ManagerActivity extends AppCompatActivity
             mRootLayout.setAlpha(0f);
             mRootLayout.animate().alpha(1f).setDuration(750).setStartDelay(250).start();
         }
-
-        Utils.animFabIntro(this, fab,
-                getString(isMark ?
-                        R.string.intro_fab_save_mark_title : R.string.intro_fab_save_event_title),
-                getString(isMark ? R.string.intro_fab_save_mark : R.string.intro_fab_save_event),
-                isMark ? "markManKey" : "eventManKey");
-
+        fab.setVisibility(View.VISIBLE);
     }
 
     /**

@@ -25,17 +25,17 @@
     </plurals>
     <string name="lastest_marks">Ultimi voti</string>
     <string name="suggestions">Suggerimenti</string>
-    <string name="suggestion_safe">Utilizza Safe per conservare le tue password scolastiche in un unco posto al sicuro!</string>
+    <string name="suggestion_safe">Utilizza Safe per conservare le tue password scolastiche in un unico posto</string>
     <string name="suggestion_safe_pwd">Qualcuno conosce la tua password di Safe? Puoi cambiarla semplicemente accedendo a Safe</string>
-    <string name="suggestion_avg">Vorresti sapere qual\'\u00E8 il prossimo voto che dovresti prendere per avere la sufficienza in una materia? Selezionala dalle medie e dai un\'occhiata ai suggerimenti!</string>
+    <string name="suggestion_avg">Vorresti sapere qual\'\u00E8 il prossimo voto che dovresti prendere per avere la sufficienza? Seleziona la materia nelle medie e dai un\'occhiata ai suggerimenti</string>
     <string name="suggestion_quarter">Nuovo quadrimestre? Puoi filtrare i voti nell\'omonima sezione</string>
-    <string name="suggestion_edit_event">Evento posticipato? Nessun problema, puoi modificarlo premendo l\'appposito pulsante modifica dal visualizzatore evento</string>
-    <string name="suggestion_mark_helper">Ricordati di scrivere anche l\'argomento delle verifiche nelle note, in questo modo potrai gestire meglio i tuoi voti</string>
+    <string name="suggestion_edit_event">Evento posticipato? Nessun problema, modificalo e aggiorna la data</string>
+    <string name="suggestion_notification_remote">Riceverai notifiche sulle novit\u00E0 pi\u00F9 importanti dalla scuola</string>
     <string name="suggestion_get_touch">Hai bisogno di contattare l\'istituto? Dalle impostazioni potrai scrivere un\'email o telefonare alla segreteria</string>
-    <string name="suggestion_address">Non trovi una materia nella lista? Controlla l\'indirizzo nelle impostazioni</string>
-    <string name="suggestion_suggestions">I suggerimenti ti infastidiscono? Disattivali dalle impostazioni</string>
+    <string name="suggestion_address">Non trovi una materia nella lista? Controlla l\'indirizzo</string>
+    <string name="suggestion_suggestions">I suggerimenti ti infastidiscono? Disattivali</string>
     <string name="suggestion_notification">L\'app ti ricorder\u00E0 ogni giorno gli eventi imminenti</string>
-    <string name="suggestion_backups">Se effetui il backup dei tuoi voti ed eventi su Google Drive, potrai ripristinarli facilmente nel caso in cui cambiassi o perdessi il tuo telefono</string>
+    <string name="suggestion_backups">Crea un backup su Google Drive, potrai ripristinare i tuoi dati nel caso in cui cambiassi o perdessi il telefono</string>
 
     <!-- Updated Dialog -->
     <string name="dialog_updated_title">L\'app \u00E8 stata aggiornata!</string>
@@ -110,25 +110,21 @@
     <!-- Welcome -->
     <string name="slide_button">Inizia</string>
     <string name="slide0_title">Benvenuto</string>
-    <string name="slide0_message">Scorri per scoprire le principali funzionalit\u00E0</string>
-    <string name="slide1_title">La tua vita scolastica, qui</string>
-    <string name="slide1_message">Gestisci facilmente voti, medie, date delle verifiche e promemoria all\'interno dell\'app</string>
+    <string name="slide0_message">Scorri per scoprire le funzioni principali</string>
+    <string name="slide1_title">La tua vita scolastica. Qui</string>
+    <string name="slide1_message">Gestisci voti, medie, date delle verifiche e promemoria</string>
     <string name="slide2_title">Safe</string>
-    <string name="slide2_message">Con Safe, potrai registrare tutte le tue password della scuola in un luogo sicuro</string>
+    <string name="slide2_message">Con Safe, puoi salvare le tue password scolastiche in un luogo sicuro</string>
     <string name="intro_drawer_title">Inizia qui</string>
-    <string name="intro_drawer">Tocca qui per navigare tra le sezioni dell\'app.\nLa schermata Home si riempir\u00E0 man mano che utilizzerai l\'app</string>
-    <string name="intro_fab_mark_title">Prova questo</string>
-    <string name="intro_fab_mark">In questa schermata puoi trovare i tuoi voti e medie. Per aggiungere il tuo primo voto, tocca qui</string>
-    <string name="intro_fab_event_title">I tuoi piani, qui</string>
-    <string name="intro_fab_event">I tuoi eventi appariranno in questa schermata, ordinati per data. Per iniziare, crea un evento toccando qui</string>
-    <string name="intro_fab_save_mark_title">Aggiungi il tuo voto</string>
-    <string name="intro_fab_save_mark">Inserisci le informazioni relative al voto e poi tocca questo pulsante per salvarlo</string>
-    <string name="intro_fab_save_event_title">Registra il tuo evento</string>
-    <string name="intro_fab_save_event">Inserisci le informazioni relative all\'evento e poi quando hai finito tocca questo pulsante per salvarlo</string>
-    <string name="intro_fab_save_safe_title">Benvenuto in un posto Safe</string>
-    <string name="intro_fab_save_safe">Puoi registrare i tuoi dati privati qui, nessuno potr\u00E0 accedervi. Quando hai finito, ricordati di toccare questo pulsante per salvare\nSuggerimento: per vedere ci\u00F2 che scrivi, tocca l\'occhio. </string>
-    <string name="intro_fab_backup_title">Fai il backup dei tuoi dati</string>
-    <string name="intro_fab_backup">Ora che ti sei connesso a Google Drive, tocca questo pulsante per selezionare la cartella di destinazione e creare un primo backup</string>
+    <string name="intro_drawer">Tocca qui per navigare tra le sezioni dell\'app.\nLa schermata Home si popoler\u00E0 quando avrai utilizzato l\'app per un po\'</string>
+    <string name="intro_fab_mark_title">Voti</string>
+    <string name="intro_fab_mark">Qui troverai i tuoi voti e medie. Tocca qui per aggiungere il primo voto</string>
+    <string name="intro_fab_event_title">Eventi</string>
+    <string name="intro_fab_event">Qui troverai i tuoi eventi. Tocca qui per aggiungerne uno</string>
+    <string name="intro_fab_save_safe_title">Benvenuto!</string>
+    <string name="intro_fab_save_safe">Annota le tue credenziali qui, poi tocca qui per salvare</string>
+    <string name="intro_fab_backup_title">Backup</string>
+    <string name="intro_fab_backup">Tocca questo pulsante e selezionare la cartella e creare un primo backup</string>
 
     <!-- Subjects -->
     <string name="subject_english">Inglese</string>
@@ -159,65 +155,61 @@
     <string name="pref_address_title">Indirizzo</string>
     <string name="pref_address_dialog">Seleziona un indirizzo</string>
     <string name="pref_suggestion_title">Suggerimenti</string>
-    <string name="pref_suggestion_summary">Mostra la scheda per scoprire come utilizzare l\'app nella schermata principale</string>
-    <string name="pref_metrics_title">Invia statistiche</string>
-    <string name="pref_metrics_summary">Contribuisci a migliorare l\'app consentento l\'invio di dati d\'utilizzo anonimi</string>
-    <string name="pref_metrics_summary_forced">Stai utilizzando una versione beta. Non puoi disattivare l\'invio delle statistiche</string>
+    <string name="pref_suggestion_summary">Visualizza informazioni sull\'app nella schermata Home</string>
+    <string name="pref_metrics_title">Invia metriche</string>
+    <string name="pref_metrics_summary">Contribuisci a migliorare lo sviluppo dell\'app consentento l\'invio di dati anonimi</string>
+    <string name="pref_metrics_summary_forced">Stai utilizzando una versione beta. Non puoi disattivare l\'invio delle metriche</string>
     <string name="pref_info">Informazioni</string>
     <string name="pref_app_version_title">Versione app</string>
     <string name="pref_dev_info">Sviluppata da Joey</string>
     <string name="pref_getintouch">Contatti</string>
     <string name="pref_mail_title">Email</string>
-    <string name="pref_mail_summary">Invia un\'email al liceo</string>
     <string name="pref_phone_title">Telefono</string>
-    <string name="pref_phone_summary">Telefona alla segreteria didattica</string>
     <string name="pref_facebook_title">Facebook</string>
-    <string name="pref_facebook_summary">Aggiungi un nuovo amico su Facebook</string>
     <string name="pref_instagram_title">Instagram</string>
-    <string name="pref_instagram_summary">Seguici per vedere le nostre foto</string>
     <string name="pref_changelog">Ultimi cambiamenti</string>
     <string name="pref_username">Nome utente</string>
     <string name="pref_username_dialog_title">Imposta nome</string>
-    <string name="pref_username_dialog_msg">Scrivi qui il tuo nome utente</string>
+    <string name="pref_username_dialog_msg">Scrivi qui il tuo nome</string>
     <string name="pref_notif">Notifiche</string>
     <string name="pref_notification_title">Mostra notifiche per eventi</string>
-    <string name="pref_notification_summary">Ottieni informazioni sugli eventi di domani</string>
-    <string name="pref_notification_time_title">Orario comparsa notifiche</string>
+    <string name="pref_notification_summary">Ottieni informazioni sui prossimi eventi</string>
+    <string name="pref_notification_time_title">Orario comparsa</string>
     <string name="pref_notification_time_dialog_title">Scegli quando fare comparire le notifiche</string>
     <string name="pref_notification_time_morning">Mattina</string>
     <string name="pref_notification_time_afternoon">Pomeriggio</string>
     <string name="pref_notification_time_evening">Sera</string>
-    <string name="pref_backup_summary">Backup &amp; Ripristino</string>
-    <string name="pref_backup_title">Salva i tuoi voti ed eventi su Google Drive</string>
-    <string name="pref_secret_export_safe_title">Strumento condivisione password</string>
-    <string name="pref_secret_export_safe_message">Puoi condividere una singola copia della tua password criptata di Safe.\nNon \u00E8 possibile condividere la stessa password due volte.\nLa condivisione della tua password \u00E8 pericolosa in quanto potrebbe essere decriptata e di conseguenza anche qualcun\'altro potrebbe accedere ai tuoi dati di Safe.</string>
+    <string name="pref_backup_summary">Backup e ripristino</string>
+    <string name="pref_backup_title">Salva i tuoi dati su Google Drive</string>
+    <string name="pref_secret_export_safe_title">Condivisione password di Safe</string>
+    <string name="pref_secret_export_safe_message">Puoi condividere la tua password criptata.\nPuoi compiere quest\'operazione una sola volta.\nLa condivisione della password \u00E8 pericolosa in quanto qualcun\'altro potrebbe accedere a Safe.</string>
     <string name="pref_secret_export_message">La mia password criptata \u00E8: %1$s</string>
     <string name="pref_secret_export_title">Condividi password</string>
-    <string name="pref_secret_export_already_shared">La password \u00E8 gi\u00E0 stata condivisa una volta, devi sostituirla con una nuova per condividerla nuovamente</string>
+    <string name="pref_secret_export_already_shared">Non puoi condividere la password fino a quando non la cambierai</string>
 
     <!-- Safe -->
     <string name="title_activity_safe">Safe</string>
-    <string name="safe_dialog_first_title">Benvenuto in Safe</string>
-    <string name="safe_dialog_first_content">Devi impostare una password per accedere a questa sezione. Assicurati di ricordarti la password o non potrai più visualizzare i tuoi dati!</string>
+    <string name="safe_dialog_first_title">Benvenuto!</string>
+    <string name="safe_dialog_first_content">Imposta una password per accedere a Safe e visualizzare le tue credenziali scolastiche</string>
     <string name="safe_dialog_password_input_hint">Password alfanumerica</string>
-    <string name="safe_dialog_title">Autenticazione richiesta</string>
-    <string name="safe_dialog_content">Per accedere a Safe devi inserire la tua password</string>
-    <string name="safe_security_issue_xposed">Non puoi utilizzare Safe mentre Xposed \u00E8 installato per motivi di sicurezza.\nDisinstallalo per assicurarti un miglior livello di sicurezza nel tuo dispositivo e poter utilizzare Safe.</string>
+    <string name="safe_dialog_title">Log in</string>
+    <string name="safe_dialog_content">Inserisci la tua password di Safe per visualizzare alle credenziali scolastiche</string>
+    <string name="safe_security_issue_xposed">Setup fallito.\nNon \u00E8 possibile utilizzare Safe mentre Xposed \u00E8 installato.\nDisinstallalo per poter utilizzare Safe.</string>
     <string name="safe_username">ID utente</string>
     <string name="safe_reg_pwd">Password Registro</string>
     <string name="safe_pc_pwd">Password account PC</string>
     <string name="safe_internet_pwd">Password internet</string>
     <string name="safe_info_title">Informazioni sulla sicurezza</string>
-    <string name="safe_info_content">Tutti i tuoi dati vengono criptati e decriptati utilizzando l\'algoritmo AES con chiave a 128bit. Questo significa che sono salvati in un formato che solo quest\'app pu\u00F2 comprendere. Ogni volta che apri Safe i tuoi dati vengono decriptati e avviene un\'operazione inversa quando li salvi.</string>
+    <string name="safe_info_content">Le credenziali sono criptate e decriptate utilizzando l\'algoritmo AES con chiave a 128-bit. Questo significa che saranno incompresibili per chiunque tranne quest\'app</string>
     <string name="safe_reset_title">Reimpostazione password</string>
-    <string name="safe_reset_content">Vuoi remipostare la password? Se lo farai anche gli altri dati qui salvati saranno eliminati!\nVoi procedere?</string>
-    <string name="safe_encrypting">Criptazione dati\u2026</string>
-    <string name="safe_decrypting">Decriptazione dati\u2026</string>
+    <string name="safe_reset_content">Se reimposti la password anche le credenziali saranno eliminate.\nVuoi procedere?</string>
+    <string name="safe_encrypting">Caricamento dati\u2026</string>
+    <string name="safe_decrypting">Salvataggio dati\u2026</string>
     <string name="safe_first_load">Inizializzazione dati\u2026</string>
     <string name="safe_setup_checking_password">Verifica password\u2026</string>
-    <string name="safe_nomatch">Verifica password fallita.</string>
-    <string name="safe_back_title">Chiusura di Safe</string>
-    <string name="safe_back_message">Vuoi chiudere Safe? I tuoi cambiamenti non verranno applicati.\nPer salvare i dati e chiudere, tocca il pulsante V in basso</string>
+    <string name="safe_nomatch">Password errata</string>
+    <string name="safe_back_title">Esci</string>
+    <string name="safe_back_message">Vuoi uscire? I cambiamenti non verranno applicati.\nTocca il pulsante V in basso per salvare</string>
 
     <!-- Notification -->
     <string name="notification_title">Prossimi eventi</string>
@@ -257,18 +249,18 @@
     </plurals>
 
     <!-- Backup -->
-    <string name="title_activity_backup">Backup &amp; Ripristino</string>
-    <string name="backup_created_message">Il backup \u00E8 stato creato con successo</string>
-    <string name="backup_failed_message">Impossibile creare il backup, qualcosa \u00E8 andato storto</string>
-    <string name="restore_success_message">Il backup \u00E8 stato ripristinato con successo</string>
-    <string name="restore_failed_message">Impossibile ripristinare il backup, qualcosa \u00E8 andato storto</string>
+    <string name="title_activity_backup">Backup e ripristino</string>
+    <string name="backup_created_message">Backup creato</string>
+    <string name="backup_failed_message">Backup fallito</string>
+    <string name="restore_success_message">Backup ripristinato</string>
+    <string name="restore_failed_message">Ripristino fallito</string>
     <string name="backup_retry">Riprova</string>
     <string name="backup_title">Backup %1$d</string>
-    <string name="backup_explain_title">Informazioni sui backup</string>
-    <string name="backup_explain_message">I dati possono essere caricati su Google Drive consentendoti di recuperarli nel caso in cui smarrissi o cambiassi dispositivo. Inoltre potrai sincronizzare i tuoi voti ed eventi anche sugli altri dispositivi che possiedi semplicemente ripristinando un backup.</string>
-    <string name="restore_dialog_title">Ripristino dati precedenti</string>
-    <string name="restore_dialog_message">Ripristinando il backup i dati esistenti saranno sovrascritti con quelli presenti nel backup\n<b>Data di creazione del backup</b>: %1$s\nSei sicuro di voler procedere?</string>
-    <string name="backup_error_debug">La creazione di backup non \u00E0 consentita mentre utilizzi una build Debug</string>
+    <string name="backup_explain_title">Informazioni</string>
+    <string name="backup_explain_message">Crea un backup per salvare i tuoi voti ed eventi su Google Drive. Questo ti torner\u0E00 utile nel caso in cui perdessi, cambiassi o resettasti il tuo dispositivo</string>
+    <string name="restore_dialog_title">Ripristino</string>
+    <string name="restore_dialog_message">Data di creazione del backup: %1$s\nAttenzione: i dati saranno sovrascritti con quelli presenti nel backup\nVuoi procedere?</string>
+    <string name="backup_error_debug">Stai utilizzando una build di debug, la creazione di backup non \u00E0 consentita</string>
 
     <!-- Accessibility -->
     <string name="accessibility_drawer">Intestazione</string>
