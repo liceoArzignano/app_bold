@@ -38,12 +38,16 @@ public class BoldMessagingService extends FirebaseMessagingService {
                 JSONObject mData = mJSON.getJSONObject("data");
                 String mTitle = mData.getString("title");
                 String mMessage = mData.getString("message");
+                String mUrl = mData.getString("url");
                 Intent mIntent;
 
 
                 // TODO: store notifications in a list with realm database
                 mIntent = new Intent(mContext, MainActivity.class);
                 mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                if (mUrl != null && !mUrl.isEmpty()) {
+                    mIntent.putExtra("firebaseUrl", mUrl);
+                }
                 pubblishNotification(mTitle, mMessage, mIntent);
 
             } catch (JSONException e) {

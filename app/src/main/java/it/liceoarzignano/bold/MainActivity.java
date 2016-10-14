@@ -25,6 +25,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -171,6 +172,13 @@ public class MainActivity extends AppCompatActivity
         // Chrome custom tabs
         setupCCustomTabs();
 
+        // Firebase intent
+        Intent mCallingIntent = getIntent();
+        String mFirebaseUrl = mCallingIntent.getStringExtra("firebaseUrl");
+        if (mFirebaseUrl != null && !mFirebaseUrl.isEmpty()) {
+            customTabsIntent.launchUrl(this, Uri.parse(mFirebaseUrl));
+        }
+
         // Welcome dialog
         showWelcomeIfNeeded(this);
 
@@ -181,6 +189,7 @@ public class MainActivity extends AppCompatActivity
         if (Utils.hasNotification(sContext)) {
             makeEventNotification();
         }
+
     }
 
     @Override
