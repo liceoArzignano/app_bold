@@ -5,8 +5,8 @@
     android:layout_height="180dp"
     android:background="@drawable/banner"
     android:gravity="bottom"
-    android:padding="16dp"
     android:orientation="vertical"
+    android:padding="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     tools:ignore="Overdraw">
 
@@ -14,21 +14,19 @@
         android:id="@+id/address_logo"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:contentDescription="@string/accessibility_drawer"
-        />
+        android:contentDescription="@string/accessibility_drawer" />
 
     <TextView
         android:id="@+id/username_drawer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:maxLines="1"
         android:paddingTop="8dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:maxLines="1" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/school_name"
-        android:textColor="@color/white"/>
-
+        android:textColor="@color/white" />
 </LinearLayout>

@@ -12,39 +12,37 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="?attr/actionBarSize"/>
+        android:paddingBottom="?attr/actionBarSize" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
         android:orientation="vertical"
-        android:paddingTop="@dimen/activity_horizontal_margin"
         android:paddingBottom="@dimen/activity_horizontal_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin">
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_horizontal_margin">
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/intro_btn_finish"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textColor="@color/black"
-            android:elevation="8dp"
             android:backgroundTint="@color/white"
+            android:elevation="8dp"
             android:text="@string/slide_button"
+            android:textColor="@color/black"
             tools:targetApi="lollipop" />
 
 
         <it.liceoarzignano.bold.ui.InkPageIndicator
             android:id="@+id/indicator"
-            android:paddingBottom="8dp"
-            android:paddingTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"/>
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp" />
     </LinearLayout>
-
-
 </android.support.design.widget.CoordinatorLayout>

@@ -20,13 +20,11 @@
             app:theme="@style/AppTheme.ToolbarTheme"
             tools:targetApi="lollipop" />
 
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/backups_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="vertical" />
-
     </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.FloatingActionButton
@@ -35,7 +33,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/ic_backup"
-        android:visibility="gone" />
-
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_backup" />
 </android.support.design.widget.CoordinatorLayout>

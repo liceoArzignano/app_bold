@@ -45,8 +45,8 @@
                     android:id="@+id/safe_image"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/accessibility_safe_icon"
-                    android:background="@drawable/safe_decrypt" />
+                    android:background="@drawable/safe_decrypt"
+                    android:contentDescription="@string/accessibility_safe_icon" />
 
                 <TextView
                     android:id="@+id/safe_loading_text"
@@ -57,7 +57,6 @@
                     android:text="@string/safe_setup_checking_password"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="@color/black" />
-
             </LinearLayout>
 
             <LinearLayout
@@ -129,7 +128,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/ic_done"
-        android:visibility="gone" />
-
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_done" />
 </android.support.design.widget.CoordinatorLayout>

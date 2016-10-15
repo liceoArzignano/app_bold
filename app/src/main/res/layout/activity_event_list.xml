@@ -21,9 +21,10 @@
             tools:targetApi="lollipop" />
 
         <RelativeLayout
-            android:paddingTop="?actionBarSize"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:paddingTop="?actionBarSize">
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/event_list_view"
                 android:layout_width="match_parent"
@@ -38,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/ic_add"
-        android:visibility="gone" />
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_add" />
 
 </android.support.design.widget.CoordinatorLayout>

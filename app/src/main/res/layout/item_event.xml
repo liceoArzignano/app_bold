@@ -6,10 +6,10 @@
     android:layout_height="72dp"
     android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
+    android:paddingBottom="16dp"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="16dp"
-    android:paddingBottom="16dp"
     tools:ignore="Overdraw">
 
     <ImageView
@@ -19,9 +19,9 @@
         android:contentDescription="@string/accessibility_event_icon" />
 
     <LinearLayout
-        android:layout_toRightOf="@id/row_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/row_icon"
         android:orientation="vertical"
         android:paddingLeft="16dp">
 
@@ -41,6 +41,5 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:textColor="@color/text_secondary" />
-
     </LinearLayout>
 </RelativeLayout>
