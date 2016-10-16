@@ -8,31 +8,53 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <android.support.design.widget.CoordinatorLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="8dp"
+        app:theme="@style/AppTheme.ToolbarTheme"
+        tools:targetApi="lollipop" />
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:elevation="8dp"
-            app:theme="@style/AppTheme.ToolbarTheme"
-            tools:targetApi="lollipop" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="?actionBarSize">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/backups_list"
+        <TextView
+            android:id="@+id/backup_summary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scrollbars="vertical" />
-    </android.support.design.widget.CoordinatorLayout>
+            android:paddingTop="24dp"
+            android:textColor="@color/text_secondary"
+            android:textSize="16sp" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:visibility="gone"
-        app:srcCompat="@drawable/ic_backup" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/backup_summary"
+            android:orientation="horizontal"
+            android:paddingTop="24dp">
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/restore_button"
+                style="?borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="16dp"
+                android:text="@string/backup_button_restore"
+                android:textColor="@color/colorAccent" />
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/backup_button"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                app:backgroundTint="@color/colorAccent" />
+        </LinearLayout>
+    </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

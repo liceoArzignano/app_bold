@@ -123,8 +123,6 @@
     <string name="intro_fab_event">Qui troverai i tuoi eventi. Tocca qui per aggiungerne uno</string>
     <string name="intro_fab_save_safe_title">Benvenuto!</string>
     <string name="intro_fab_save_safe">Annota le tue credenziali qui, poi tocca qui per salvare</string>
-    <string name="intro_fab_backup_title">Backup</string>
-    <string name="intro_fab_backup">Tocca questo pulsante e selezionare la cartella e creare un primo backup</string>
 
     <!-- Subjects -->
     <string name="subject_english">Inglese</string>
@@ -252,15 +250,18 @@
     <string name="title_activity_backup">Backup e ripristino</string>
     <string name="backup_created_message">Backup creato</string>
     <string name="backup_failed_message">Backup fallito</string>
-    <string name="restore_success_message">Backup ripristinato</string>
+    <string name="restore_success_message">Ripristino completato</string>
     <string name="restore_failed_message">Ripristino fallito</string>
-    <string name="backup_retry">Riprova</string>
-    <string name="backup_title">Backup %1$d</string>
-    <string name="backup_explain_title">Informazioni</string>
-    <string name="backup_explain_message">Crea un backup per salvare i tuoi voti ed eventi su Google Drive. Questo ti torner\u0E00 utile nel caso in cui perdessi, cambiassi o resettasti il tuo dispositivo</string>
+    <string name="backup_summary">Crea un backup per salvare i voti e gli eventi su Google Drive.\nQuesto ti torner\u00E0 utile nel caso perdessi, cambiassi o resettassi il tuo dispositivo. Puoi anche utilizzare i backup per sincronizzare i dati tra i tuoi dispositivi</string>
+    <string name="backup_dialog_list_title">Seleziona un backup</string>
+    <string name="backup_dialog_pick_another">Altri\u2026</string>
+    <string name="backup_button_login">Log in</string>
+    <string name="backup_button_pick">Seleziona cartella</string>
+    <string name="backup_button_backup">Backup</string>
+    <string name="backup_button_restore">Ripristina\u2026</string>
     <string name="restore_dialog_title">Ripristino</string>
-    <string name="restore_dialog_message">Data di creazione del backup: %1$s\nAttenzione: i dati saranno sovrascritti con quelli presenti nel backup\nVuoi procedere?</string>
-    <string name="backup_error_debug">Stai utilizzando una build di debug, la creazione di backup non \u00E0 consentita</string>
+    <string name="restore_dialog_message">Informazioni backup:\nData: %1$s\nDimensione: %2$s\nAttenzione: i voti ed eventi esistenti saranno rimpiazzati con quelli presenti nel backup.\nVuoi continuare?</string>
+    <string name="date_formatting">dd MMMM yyyy</string>
 
     <!-- Accessibility -->
     <string name="accessibility_drawer">Intestazione</string>

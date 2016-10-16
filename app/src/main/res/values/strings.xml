@@ -123,8 +123,6 @@
     <string name="intro_fab_event">Here you will find all your events. Tap this button to add the first event</string>
     <string name="intro_fab_save_safe_title">Welcome!</string>
     <string name="intro_fab_save_safe">Store your credentials here, then tap this to save</string>
-    <string name="intro_fab_backup_title">Backup</string>
-    <string name="intro_fab_backup">Tap this button and select a folder to create and upload your first backup</string>
 
     <!-- Subjects -->
     <string name="subject_english">English</string>
@@ -254,13 +252,18 @@
     <string name="backup_failed_message">Backup failed</string>
     <string name="restore_success_message">Backup restored</string>
     <string name="restore_failed_message">Restore failed</string>
-    <string name="backup_retry">Retry</string>
-    <string name="backup_title">Backup %1$d</string>
-    <string name="backup_explain_title">Info</string>
-    <string name="backup_explain_message">Create a backup to save your marks and events on your Google Drive. This will help in case you loose, change or reset your device</string>
+    <string name="backup_summary">Create a backup to save your marks and events on your Google Drive.\nThis will help in case you loose, change or reset your device. You can use backups to sync data between your devices too</string>
+    <string name="backup_auth_success">Logged in</string>
+    <string name="backup_auth_fail">Log in failed</string>
+    <string name="backup_dialog_list_title">Select a backup</string>
+    <string name="backup_dialog_pick_another">Others\u2026</string>
+    <string name="backup_button_login">Log in</string>
+    <string name="backup_button_pick">Select folder</string>
+    <string name="backup_button_backup">Backup</string>
+    <string name="backup_button_restore">Restore\u2026</string>
     <string name="restore_dialog_title">Restore</string>
-    <string name="restore_dialog_message">Backup creation date: %1$s\nWarning: you will override all the existing marks and events with those in the backup.\nDo you want to continue?</string>
-    <string name="backup_error_debug">You\'re on a debug build, backup creation is not allowed</string>
+    <string name="restore_dialog_message">Backup info:\nDate: %1$s\nSize: %2$s\nWarning: you will override all the existing marks and events with those in the backup.\nDo you want to continue?</string>
+    <string name="date_formatting">MMMM dd, yyyy</string>
 
     <!-- Accessibility -->
     <string name="accessibility_drawer">Header</string>
