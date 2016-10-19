@@ -148,7 +148,7 @@ public class Utils {
      * @param day:   day of the month from the date picker dialog
      * @return string with formatted date
      */
-    public static String rightDate(int year, int month, int day) {
+    static String rightDate(int year, int month, int day) {
         String ret;
         ret = year + "-";
         if (month < 10) {
@@ -309,6 +309,33 @@ public class Utils {
             return false;
         }
 
+    }
+
+    /**
+     * Get notification topic
+     *
+     * @param mContext to read SharedPreferences
+     * @return address-based topic
+     */
+    static String getTopic(Context mContext) {
+        if (isTeacher(mContext)) {
+            return "addr_6";
+        } else {
+            switch (getAddress(mContext)) {
+                case "1":
+                    return "addr_1";
+                case "2":
+                    return "addr_2";
+                case "3":
+                    return "addr_3";
+                case "4":
+                    return "addr_4";
+                case "5":
+                    return "addr_5";
+                default:
+                    return "addr_6";
+            }
+        }
     }
 
     /*

@@ -41,7 +41,6 @@ public class BoldMessagingService extends FirebaseMessagingService {
                 String mUrl = mData.getString("url");
                 Intent mIntent;
 
-
                 // TODO: store notifications in a list with realm database
                 mIntent = new Intent(mContext, MainActivity.class);
                 mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

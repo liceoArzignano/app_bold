@@ -4,11 +4,13 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Build;
 import android.os.StrictMode;
+import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import io.realm.internal.Util;
 import it.liceoarzignano.bold.firebase.BoldAnalytics;
 
 public class BoldApp extends Application {
@@ -45,6 +47,7 @@ public class BoldApp extends Application {
 
         mBoldAnalytics = new BoldAnalytics(context);
         FirebaseMessaging.getInstance().subscribeToTopic("global");
+        FirebaseMessaging.getInstance().subscribeToTopic(Utils.getTopic(context));
 
         // Enable StrictMode
         if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
