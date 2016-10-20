@@ -171,10 +171,12 @@
     <string name="pref_username_dialog_title">Set user name</string>
     <string name="pref_username_dialog_msg">Write your name</string>
     <string name="pref_notif">Notifications</string>
-    <string name="pref_notification_title">Show events notifications</string>
-    <string name="pref_notification_summary">Get notification about upcoming events</string>
-    <string name="pref_notification_time_title">Appearance time</string>
-    <string name="pref_notification_time_dialog_title">Choose when the notification should appear</string>
+    <string name="pref_notification_news_title">Show news notifications</string>
+    <string name="pref_notification_news_summary">Get notification about news as soon as they\'re received</string>
+    <string name="pref_notification_events_title">Show events notifications</string>
+    <string name="pref_notification_events_summary">Get notification about upcoming events</string>
+    <string name="pref_notification_events_time_title">Appearance time</string>
+    <string name="pref_notification_events_time_dialog_title">Choose when the notification should appear</string>
     <string name="pref_notification_time_morning">In the morning</string>
     <string name="pref_notification_time_afternoon">In the afternoon</string>
     <string name="pref_notification_time_evening">In the evening</string>

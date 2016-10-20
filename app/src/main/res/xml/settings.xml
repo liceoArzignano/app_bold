@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="@string/pref_general">
 
         <SwitchPreference
@@ -11,20 +12,20 @@
             android:title="@string/pref_isTeacher_title" />
 
         <ListPreference
+            android:defaultValue="1"
             android:dependency="isTeacher_key"
             android:dialogTitle="@string/pref_address_dialog"
             android:entries="@array/pref_entries_address"
             android:entryValues="@array/pref_entryvalues_address"
             android:key="address_key"
             android:summary="%s"
-            android:defaultValue="1"
             android:title="@string/pref_address_title" />
 
         <EditTextPreference
-            android:key="username_key"
-            android:title="@string/pref_username"
+            android:dialogMessage="@string/pref_username_dialog_msg"
             android:dialogTitle="@string/pref_username_dialog_title"
-            android:dialogMessage="@string/pref_username_dialog_msg" />
+            android:key="username_key"
+            android:title="@string/pref_username" />
 
         <SwitchPreference
             android:defaultValue="true"
@@ -35,8 +36,7 @@
         <Preference
             android:key="backup_key"
             android:summary="@string/pref_backup_title"
-            android:title="@string/pref_backup_summary">
-        </Preference>
+            android:title="@string/pref_backup_summary"></Preference>
 
         <SwitchPreference
             android:defaultValue="true"
@@ -47,53 +47,54 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_notif">
-    <SwitchPreference
-        android:defaultValue="true"
-        android:key="notification_key"
-        android:summary="@string/pref_notification_summary"
-        android:title="@string/pref_notification_title" />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="notification_news_key"
+            android:summary="@string/pref_notification_news_summary"
+            android:title="@string/pref_notification_news_title" />
 
-    <ListPreference
-        android:dependency="notification_key"
-        android:dialogTitle="@string/pref_notification_time_dialog_title"
-        android:entries="@array/pref_entries_notification_time"
-        android:entryValues="@array/pref_entryvalues_notification_time"
-        android:key="notificationtime_key"
-        android:summary="%s"
-        android:defaultValue="2"
-        android:title="@string/pref_notification_time_title" />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="notification_events_key"
+            android:summary="@string/pref_notification_events_summary"
+            android:title="@string/pref_notification_events_title" />
+
+        <ListPreference
+            android:defaultValue="2"
+            android:dependency="notification_events_key"
+            android:dialogTitle="@string/pref_notification_events_time_dialog_title"
+            android:entries="@array/pref_entries_notification_time"
+            android:entryValues="@array/pref_entryvalues_notification_time"
+            android:key="notification_events_time_key"
+            android:summary="%s"
+            android:title="@string/pref_notification_events_time_title" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_getintouch">
 
-        <PreferenceScreen
-            android:title="@string/pref_mail_title">
+        <PreferenceScreen android:title="@string/pref_mail_title">
             <intent
                 android:action="android.intent.action.SENDTO"
                 android:data="mailto:viis00200v@istruzione.it" />
         </PreferenceScreen>
 
-        <PreferenceScreen
-            android:title="@string/pref_phone_title">
+        <PreferenceScreen android:title="@string/pref_phone_title">
             <intent
                 android:action="android.intent.action.DIAL"
                 android:data="tel:0444676125" />
         </PreferenceScreen>
 
-        <PreferenceScreen
-            android:title="@string/pref_facebook_title">
+        <PreferenceScreen android:title="@string/pref_facebook_title">
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="https://www.facebook.com/liceoarzignano" />
         </PreferenceScreen>
 
-        <PreferenceScreen
-            android:title="@string/pref_instagram_title">
+        <PreferenceScreen android:title="@string/pref_instagram_title">
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="https://www.instagram.com/liceoarzignano" />
         </PreferenceScreen>
-
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_info">
@@ -103,7 +104,8 @@
             android:summary="@string/pref_app_version_summary"
             android:title="@string/pref_app_version_title" />
 
-        <Preference android:key="secret_key"
+        <Preference
+            android:key="secret_key"
             android:title="@string/pref_dev_info" />
     </PreferenceCategory>
 </PreferenceScreen>

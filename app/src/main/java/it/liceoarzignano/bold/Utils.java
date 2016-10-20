@@ -33,8 +33,9 @@ public class Utils {
     private static final String ANALYTICS = "analytics_key";
     public static final String ISTEACHER = "isTeacher_key";
     public static final String SUGGESTIONS = "showSuggestions_key";
-    public static final String NOTIFICATION = "notification_key";
-    public static final String NOTIF_TIME = "notificationtime_key";
+    public static final String NOTIF_NEWS = "notification_news_key";
+    public static final String NOTIF_EVENT = "notification_events_key";
+    public static final String NOTIF_EVENT_TIME = "notification_events_time_key";
     public static final String ADDRESS = "address_key";
     private static final String USERNAME = "username_key";
     private static final String APP_VERSION = "appVersionKey";
@@ -360,14 +361,19 @@ public class Utils {
         return preferences.getBoolean(SUGGESTIONS, true);
     }
 
-    public static boolean hasNotification(Context context) {
+    public static boolean hasNewsNotification(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getBoolean(NOTIFICATION, true);
+        return preferences.getBoolean(NOTIF_NEWS, true);
     }
 
-    public static String getNotificationTime(Context context) {
+    public static boolean hasEventsNotification(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getString(NOTIF_TIME, "0");
+        return preferences.getBoolean(NOTIF_EVENT, true);
+    }
+
+    public static String getEventsNotificationTime(Context context) {
+        preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(NOTIF_EVENT_TIME, "0");
     }
 
     public static String getAddress(Context context) {

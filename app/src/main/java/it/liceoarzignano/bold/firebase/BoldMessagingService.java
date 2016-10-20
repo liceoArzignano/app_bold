@@ -59,12 +59,14 @@ public class BoldMessagingService extends FirebaseMessagingService {
 
                 saveNews();
 
-                mIntent = new Intent(mContext, NewsListActivity.class);
-                mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                if (mUrl != null && !mUrl.isEmpty()) {
-                    mIntent.putExtra("newsId", mNews.getId());
+                if (Utils.hasNewsNotification(mContext)) {
+                    mIntent = new Intent(mContext, NewsListActivity.class);
+                    mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    if (mUrl != null && !mUrl.isEmpty()) {
+                        mIntent.putExtra("newsId", mNews.getId());
+                    }
+                    pubblishNotification(mIntent);
                 }
-                pubblishNotification(mIntent);
 
             } catch (JSONException e) {
                 Log.e(TAG, e.getMessage());

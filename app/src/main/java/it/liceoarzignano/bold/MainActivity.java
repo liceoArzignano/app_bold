@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity
         populateCards();
 
         // Notification
-        if (Utils.hasNotification(sContext)) {
+        if (Utils.hasEventsNotification(sContext)) {
             makeEventNotification();
         }
 
@@ -461,7 +461,7 @@ public class MainActivity extends AppCompatActivity
         calendar.set(Calendar.MONTH, c.get(Calendar.MONTH));
         calendar.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH));
 
-        switch (Utils.getNotificationTime(sContext)) {
+        switch (Utils.getEventsNotificationTime(sContext)) {
             case "0":
                 if (calendar.get(Calendar.HOUR_OF_DAY) >= 6) {
                     // If it's too late for today's notification, plan one for tomorrow

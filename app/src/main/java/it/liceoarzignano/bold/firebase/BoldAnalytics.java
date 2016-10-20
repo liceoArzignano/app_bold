@@ -52,10 +52,10 @@ public class BoldAnalytics {
                 String.valueOf(Utils.isTeacher(context)));
         mFirebaseAnalytics.setUserProperty(Utils.SUGGESTIONS,
                 String.valueOf(Utils.hasSuggestions(context)));
-        mFirebaseAnalytics.setUserProperty(Utils.NOTIFICATION,
-                String.valueOf(Utils.hasNotification(context)));
-        mFirebaseAnalytics.setUserProperty(Utils.NOTIF_TIME,
-                Utils.getNotificationTime(context));
+        mFirebaseAnalytics.setUserProperty(Utils.NOTIF_EVENT,
+                String.valueOf(Utils.hasEventsNotification(context)));
+        mFirebaseAnalytics.setUserProperty(Utils.NOTIF_NEWS,
+                String.valueOf(Utils.hasNewsNotification(context)));
         mFirebaseAnalytics.setUserProperty(Utils.SAFE_DONE,
                 String.valueOf(Utils.hasSafe(context)));
         if (!Utils.isTeacher(context)) {
