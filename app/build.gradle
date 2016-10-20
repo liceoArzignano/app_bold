@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'realm-android'
 
 android {
-    compileSdkVersion 24
+    compileSdkVersion 25
     buildToolsVersion "24.0.1"
 
     //noinspection GroovyMissingReturnStatement
@@ -11,7 +11,7 @@ android {
         generatedDensities = []
         applicationId 'it.liceoarzignano.bold'
         minSdkVersion 16
-        targetSdkVersion 24
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0.15"
         vectorDrawables.useSupportLibrary true
