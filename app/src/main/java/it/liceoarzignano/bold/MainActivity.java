@@ -51,6 +51,7 @@ import it.liceoarzignano.bold.firebase.BoldAnalytics;
 import it.liceoarzignano.bold.intro.BenefitsActivity;
 import it.liceoarzignano.bold.marks.Mark;
 import it.liceoarzignano.bold.marks.MarkListActivity;
+import it.liceoarzignano.bold.news.NewsListActivity;
 import it.liceoarzignano.bold.realm.RealmController;
 import it.liceoarzignano.bold.safe.SafeActivity;
 import it.liceoarzignano.bold.settings.SettingsActivity;
@@ -236,29 +237,30 @@ public class MainActivity extends AppCompatActivity
                 Intent i = new Intent(this, EventListActivity.class);
                 startActivity(i);
                 break;
-            case R.id.nav_website:
-                menuVal = 3;
-                showWebViewUI(0);
-                break;
             case R.id.nav_news:
+                menuVal = 3;
+                Intent mNewsIntent = new Intent(this, NewsListActivity.class);
+                startActivity(mNewsIntent);
+                break;
+            case R.id.nav_website:
                 menuVal = 4;
-                showWebViewUI(1);
+                showWebViewUI(0);
                 break;
             case R.id.nav_reg:
                 menuVal = 5;
-                showWebViewUI(2);
+                showWebViewUI(1);
                 break;
             case R.id.nav_moodle:
                 menuVal = 6;
-                showWebViewUI(3);
+                showWebViewUI(2);
                 break;
             case R.id.nav_copyboox:
                 menuVal = 7;
-                showWebViewUI(4);
+                showWebViewUI(3);
                 break;
             case R.id.nav_teacherzone:
                 menuVal = 8;
-                showWebViewUI(5);
+                showWebViewUI(4);
                 break;
             case R.id.nav_settings:
                 menuVal = 9;
@@ -542,19 +544,15 @@ public class MainActivity extends AppCompatActivity
                 break;
             case 1:
                 mUrl = getString(Utils.isTeacher(this) ?
-                        R.string.config_url_news_teacher : R.string.config_url_news_student);
-                break;
-            case 2:
-                mUrl = getString(Utils.isTeacher(this) ?
                         R.string.config_url_reg_teacher : R.string.config_url_reg_student);
                 break;
-            case 3:
+            case 2:
                 mUrl = getString(R.string.config_url_moodle);
                 break;
-            case 4:
+            case 3:
                 mUrl = getString(R.string.config_url_copybook);
                 break;
-            case 5:
+            case 4:
                 mUrl = getString(R.string.config_url_teacherzone);
                 break;
         }

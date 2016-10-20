@@ -36,6 +36,7 @@
     <string name="suggestion_suggestions">Suggestions annoy you? Turn them off</string>
     <string name="suggestion_notification">You will be notified about your events the day before</string>
     <string name="suggestion_backups">Create a backup in Google Drive, you\'ll be able to restore your data in case you lose or change your phone</string>
+    <string name="suggestion_news">You will find the most important news from the right in the app by opening the news section</string>
 
     <!-- Updated Dialog -->
     <string name="dialog_updated_title">App has been updated</string>
@@ -252,7 +253,7 @@
     <string name="backup_failed_message">Backup failed</string>
     <string name="restore_success_message">Backup restored</string>
     <string name="restore_failed_message">Restore failed</string>
-    <string name="backup_summary">Create a backup to save your marks and events on your Google Drive.\nThis will help in case you loose, change or reset your device. You can use backups to sync data between your devices too</string>
+    <string name="backup_summary">Create a backup to save your marks, events and news on your Google Drive.\nThis will help in case you loose, change or reset your device. You can use backups to sync data between your devices too</string>
     <string name="backup_auth_success">Logged in</string>
     <string name="backup_auth_fail">Log in failed</string>
     <string name="backup_dialog_list_title">Select a backup</string>
@@ -262,13 +263,14 @@
     <string name="backup_button_backup">Backup</string>
     <string name="backup_button_restore">Restore\u2026</string>
     <string name="restore_dialog_title">Restore</string>
-    <string name="restore_dialog_message">Backup info:\nDate: %1$s\nSize: %2$s\nWarning: you will override all the existing marks and events with those in the backup.\nDo you want to continue?</string>
+    <string name="restore_dialog_message">Backup info:\nDate: %1$s\nSize: %2$s\nWarning: you will override all the existing marks, events and news with those in the backup.\nDo you want to continue?</string>
     <string name="date_formatting">MMMM dd, yyyy</string>
 
     <!-- Accessibility -->
     <string name="accessibility_drawer">Header</string>
     <string name="accessibility_welcome">Welcome picture</string>
     <string name="accessibility_event_icon">Event icon</string>
+    <string name="accessibility_news_icon">News icon</string>
     <string name="accessibility_safe_icon">Safe status icon</string>
     <string name="accessibility_generic_icon">Icon</string>
 </resources>

@@ -9,7 +9,7 @@
     <string name="nav_events">Eventi</string>
     <string name="nav_links">Collegamenti</string>
     <string name="nav_site">Sito</string>
-    <string name="nav_news">Circolari</string>
+    <string name="nav_news">Notizie</string>
     <string name="nav_register">Registro</string>
     <string name="nav_moodle">Moodle</string>
     <string name="nav_copybook">Quaderno</string>
@@ -36,6 +36,7 @@
     <string name="suggestion_suggestions">I suggerimenti ti infastidiscono? Disattivali</string>
     <string name="suggestion_notification">L\'app ti ricorder\u00E0 ogni giorno gli eventi imminenti</string>
     <string name="suggestion_backups">Crea un backup su Google Drive, potrai ripristinare i tuoi dati nel caso in cui cambiassi o perdessi il telefono</string>
+    <string name="suggestion_news">Troverai le notizie pi\u00F9 importanti della scuola nella sezione Notizie</string>
 
     <!-- Updated Dialog -->
     <string name="dialog_updated_title">L\'app \u00E8 stata aggiornata!</string>
@@ -252,7 +253,7 @@
     <string name="backup_failed_message">Backup fallito</string>
     <string name="restore_success_message">Ripristino completato</string>
     <string name="restore_failed_message">Ripristino fallito</string>
-    <string name="backup_summary">Crea un backup per salvare i voti e gli eventi su Google Drive.\nQuesto ti torner\u00E0 utile nel caso perdessi, cambiassi o resettassi il tuo dispositivo. Puoi anche utilizzare i backup per sincronizzare i dati tra i tuoi dispositivi</string>
+    <string name="backup_summary">Crea un backup per salvare i voti, gli eventi e le notizie su Google Drive.\nQuesto ti torner\u00E0 utile nel caso perdessi, cambiassi o resettassi il tuo dispositivo. Puoi anche utilizzare i backup per sincronizzare i dati tra i tuoi dispositivi</string>
     <string name="backup_dialog_list_title">Seleziona un backup</string>
     <string name="backup_dialog_pick_another">Altri\u2026</string>
     <string name="backup_button_login">Log in</string>
@@ -260,13 +261,14 @@
     <string name="backup_button_backup">Backup</string>
     <string name="backup_button_restore">Ripristina\u2026</string>
     <string name="restore_dialog_title">Ripristino</string>
-    <string name="restore_dialog_message">Informazioni backup:\nData: %1$s\nDimensione: %2$s\nAttenzione: i voti ed eventi esistenti saranno rimpiazzati con quelli presenti nel backup.\nVuoi continuare?</string>
+    <string name="restore_dialog_message">Informazioni backup:\nData: %1$s\nDimensione: %2$s\nAttenzione: i voti, eventi e notizie esistenti saranno rimpiazzati con quelli presenti nel backup.\nVuoi continuare?</string>
     <string name="date_formatting">dd MMMM yyyy</string>
 
     <!-- Accessibility -->
     <string name="accessibility_drawer">Intestazione</string>
     <string name="accessibility_welcome">Immagine di benvenuto</string>
     <string name="accessibility_event_icon">Icona evento</string>
+    <string name="accessibility_news_icon">Icona news</string>
     <string name="accessibility_safe_icon">Immagine status di Safe</string>
     <string name="accessibility_generic_icon">Icona</string>
 </resources>

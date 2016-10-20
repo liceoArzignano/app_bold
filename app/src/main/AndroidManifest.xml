@@ -46,6 +46,13 @@
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <!-- News -->
+        <activity
+            android:name=".news.NewsListActivity"
+            android:label="@string/nav_news"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <!-- Editor -->
         <activity
             android:name=".ManagerActivity"

@@ -17,12 +17,18 @@ import org.json.JSONObject;
 
 import java.util.Calendar;
 
+import io.realm.Realm;
+import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.MainActivity;
 import it.liceoarzignano.bold.R;
+import it.liceoarzignano.bold.Utils;
+import it.liceoarzignano.bold.news.News;
+import it.liceoarzignano.bold.news.NewsListActivity;
 
 public class BoldMessagingService extends FirebaseMessagingService {
     private static final String TAG = "BoldFireBase";
     private Context mContext;
+    private News mNews;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -41,13 +47,24 @@ public class BoldMessagingService extends FirebaseMessagingService {
                 String mUrl = mData.getString("url");
                 Intent mIntent;
 
-                // TODO: store notifications in a list with realm database
-                mIntent = new Intent(mContext, MainActivity.class);
+                if (mMessage == null || mMessage.isEmpty()) {
+                    return;
+                }
+
+                mNews = new News();
+                mNews.setTitle(mTitle);
+                mNews.setMessage(mMessage);
+                mNews.setDate(Utils.getToday());
+                mNews.setUrl(mUrl);
+
+                saveNews();
+
+                mIntent = new Intent(mContext, NewsListActivity.class);
                 mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 if (mUrl != null && !mUrl.isEmpty()) {
-                    mIntent.putExtra("firebaseUrl", mUrl);
+                    mIntent.putExtra("newsId", mNews.getId());
                 }
-                pubblishNotification(mTitle, mMessage, mIntent);
+                pubblishNotification(mIntent);
 
             } catch (JSONException e) {
                 Log.e(TAG, e.getMessage());
@@ -55,16 +72,12 @@ public class BoldMessagingService extends FirebaseMessagingService {
         }
     }
 
-    private void pubblishNotification(String mTitle, String mMessage, Intent mIntent) {
-        if (mMessage == null || mMessage.isEmpty()) {
-            return;
-        }
-
+    private void pubblishNotification(Intent mIntent) {
         mIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent mPendingIntent = PendingIntent.getActivity(mContext, 0,
                 mIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-        String[] mContent = mMessage.split("[\\r\\n]+");
+        String[] mContent = mNews.getMessage().split("[\\r\\n]+");
         NotificationCompat.InboxStyle mStyle = new NotificationCompat.InboxStyle();
         for (String mLine : mContent) {
             mStyle.addLine(mLine);
@@ -73,8 +86,8 @@ public class BoldMessagingService extends FirebaseMessagingService {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mContext)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setAutoCancel(true)
-                .setContentTitle(mTitle)
-                .setContentText(mMessage + '\u2026')
+                .setContentTitle(mNews.getTitle())
+                .setContentText(mNews.getMessage() + '\u2026')
                 .setContentIntent(mPendingIntent)
                 .setStyle(mStyle);
 
@@ -86,6 +99,15 @@ public class BoldMessagingService extends FirebaseMessagingService {
                 mContext.getSystemService(Context.NOTIFICATION_SERVICE);
 
         mManager.notify((int) Calendar.getInstance().getTimeInMillis() * 100000, mBuilder.build());
+    }
+
+    private void saveNews() {
+        mNews.setId(Calendar.getInstance().getTimeInMillis());
+
+        Realm mRealm = Realm.getInstance(BoldApp.getAppRealmConfiguration());
+        mRealm.beginTransaction();
+        mRealm.copyToRealm(mNews);
+        mRealm.commitTransaction();
     }
 
 }
