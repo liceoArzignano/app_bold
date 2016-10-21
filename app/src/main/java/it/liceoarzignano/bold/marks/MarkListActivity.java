@@ -194,6 +194,10 @@ public class MarkListActivity extends AppCompatActivity {
     public static void refreshList(Context mContext) {
         final RealmResults<Mark> mMarks = getFilteredMarks();
 
+        if (MarksListFragment.sEmptyLayout != null) {
+            MarksListFragment.sEmptyLayout.setVisibility(mMarks.isEmpty() ? View.VISIBLE : View.GONE);
+        }
+
         MarksAdapter mAdapter = new MarksAdapter(mMarks);
         RecyclerView.LayoutManager mManager = new LinearLayoutManager(mContext);
         RecyclerClickListener mListener = new RecyclerClickListener() {
@@ -203,12 +207,12 @@ public class MarkListActivity extends AppCompatActivity {
             }
         };
 
-        if (MarksListFragment.mMarksListView != null) {
-            MarksListFragment.mMarksListView.setLayoutManager(mManager);
-            MarksListFragment.mMarksListView.setItemAnimator(new DefaultItemAnimator());
-            MarksListFragment.mMarksListView.setAdapter(mAdapter);
-            MarksListFragment.mMarksListView.addItemDecoration(new DividerDecoration(mContext));
-            MarksListFragment.mMarksListView.addOnItemTouchListener(
+        if (MarksListFragment.sMarksListView != null) {
+            MarksListFragment.sMarksListView.setLayoutManager(mManager);
+            MarksListFragment.sMarksListView.setItemAnimator(new DefaultItemAnimator());
+            MarksListFragment.sMarksListView.setAdapter(mAdapter);
+            MarksListFragment.sMarksListView.addItemDecoration(new DividerDecoration(mContext));
+            MarksListFragment.sMarksListView.addOnItemTouchListener(
                     new RecyclerTouchListener(mContext, mListener));
             mAdapter.notifyDataSetChanged();
             AverageListFragment.refresh(mContext, new Pair<>(sSubjectFilter, sQuarterFilter));

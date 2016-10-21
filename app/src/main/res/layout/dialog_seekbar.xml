@@ -9,14 +9,6 @@
     android:paddingRight="24dp"
     android:paddingTop="24dp">
 
-    <SeekBar
-        android:id="@+id/dialog_seekBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="8dp"
-        android:layout_toLeftOf="@id/avg_value" />
-
     <TextView
         android:id="@+id/dialog_value"
         android:layout_width="wrap_content"
@@ -25,5 +17,13 @@
         android:layout_marginLeft="4dp"
         android:gravity="center_horizontal"
         android:minEms="2" />
+
+    <SeekBar
+        android:id="@+id/dialog_seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="8dp"
+        android:layout_toLeftOf="@id/dialog_value" />
 
 </RelativeLayout>

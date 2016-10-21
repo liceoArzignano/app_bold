@@ -88,6 +88,7 @@
     <string name="hint_content_under">might be %1$s or higher</string>
     <string name="hint_content_above">must be %1$s or higher</string>
     <string name="error_noaddress">Set a valid address to use this feature</string>
+    <string name="marks_empty">You have no marks</string>
 
     <!-- View -->
     <string name="title_activity_mark_view">Viewer</string>
@@ -107,6 +108,10 @@
 
     <!-- My events -->
     <string name="title_activity_event_list">Events</string>
+    <string name="events_empty">You have no events</string>
+
+    <!-- News -->
+    <string name="news_empty">You have received no news so far</string>
 
     <!-- Intro -->
     <string name="slide_button">Get started</string>

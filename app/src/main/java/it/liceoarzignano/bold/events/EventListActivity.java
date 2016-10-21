@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -25,7 +26,8 @@ import it.liceoarzignano.bold.ui.RecyclerTouchListener;
 
 public class EventListActivity extends AppCompatActivity {
 
-    private static RecyclerView mEventList;
+    private static RecyclerView sEventList;
+    private static LinearLayout sEmptyLayout;
     private static Context sContext;
 
     /**
@@ -38,6 +40,8 @@ public class EventListActivity extends AppCompatActivity {
         final RealmResults<Event> mEvents =
                 mRealm.where(Event.class).findAllSorted("date", Sort.DESCENDING);
 
+        sEmptyLayout.setVisibility(mEvents.isEmpty() ? View.VISIBLE : View.GONE);
+
         EventsAdapter mAdapter = new EventsAdapter(mEvents);
         RecyclerClickListener mListener = new RecyclerClickListener() {
             @Override
@@ -46,11 +50,11 @@ public class EventListActivity extends AppCompatActivity {
             }
         };
 
-        mEventList.setLayoutManager(new LinearLayoutManager(mContext));
-        mEventList.setItemAnimator(new DefaultItemAnimator());
-        mEventList.addItemDecoration(new DividerDecoration(mContext));
-        mEventList.setAdapter(mAdapter);
-        mEventList.addOnItemTouchListener(new RecyclerTouchListener(mContext, mListener));
+        sEventList.setLayoutManager(new LinearLayoutManager(mContext));
+        sEventList.setItemAnimator(new DefaultItemAnimator());
+        sEventList.addItemDecoration(new DividerDecoration(mContext));
+        sEventList.setAdapter(mAdapter);
+        sEventList.addOnItemTouchListener(new RecyclerTouchListener(mContext, mListener));
 
         mAdapter.notifyDataSetChanged();
     }
@@ -82,7 +86,8 @@ public class EventListActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        mEventList = (RecyclerView) findViewById(R.id.event_list);
+        sEventList = (RecyclerView) findViewById(R.id.event_list);
+        sEmptyLayout = (LinearLayout) findViewById(R.id.event_empty_layout);
 
         FloatingActionButton mFab = (FloatingActionButton) findViewById(R.id.fab);
         mFab.setOnClickListener(new View.OnClickListener() {

@@ -30,6 +30,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scrollbars="vertical" />
+
+            <LinearLayout
+                android:id="@+id/news_empty_layout"
+                android:paddingTop="128dp"
+                style="@style/AppTheme.EmptyLayout">
+
+                <ImageView
+                    style="@style/AppTheme.EmptyImage"
+                    app:srcCompat="@drawable/ic_news" />
+
+                <TextView
+                    style="@style/AppTheme.EmptyText"
+                    android:text="@string/news_empty" />
+            </LinearLayout>
         </RelativeLayout>
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

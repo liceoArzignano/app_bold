@@ -112,6 +112,31 @@
         <item name="android:background">?selectableItemBackground</item>
     </style>
 
+    <style name="AppTheme.EmptyLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="listPreferredItemPaddingRight">16dp</item>
+    </style>
+
+    <style name="AppTheme.EmptyImage">
+        <item name="android:layout_width">128dp</item>
+        <item name="android:layout_height">128dp</item>
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:tint">@color/empty_image</item>
+    </style>
+
+    <style name="AppTheme.EmptyText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/empty_text</item>
+        <item name="android:paddingTop">16dp</item>
+    </style>
+
     <!-- ViewerTheme -->
 
     <style name="ViewerTheme" parent="Theme.AppCompat.Light">

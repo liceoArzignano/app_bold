@@ -88,6 +88,7 @@
     <string name="hint_content_under">deve essere %1$s o superiore</string>
     <string name="hint_content_above">puo essere %1$s o superiore</string>
     <string name="error_noaddress">Imposta un indirizzo per utilizzare questa funzione</string>
+    <string name="marks_empty">Non hai nessun voto</string>
 
     <!-- Viewer -->
     <string name="title_activity_mark_view">Visualizzatore</string>
@@ -107,6 +108,10 @@
 
     <!-- My events -->
     <string name="title_activity_event_list">I miei eventi</string>
+    <string name="events_empty">Non hai nessun evento</string>
+
+    <!-- News -->
+    <string name="news_empty">Non hai ricevuto nessuna notizia</string>
 
     <!-- Welcome -->
     <string name="slide_button">Inizia</string>

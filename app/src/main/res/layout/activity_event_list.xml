@@ -30,6 +30,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scrollbars="vertical" />
+
+            <LinearLayout
+                android:id="@+id/event_empty_layout"
+                android:paddingTop="128dp"
+                style="@style/AppTheme.EmptyLayout">
+
+                <ImageView
+                    style="@style/AppTheme.EmptyImage"
+                    app:srcCompat="@drawable/ic_event" />
+
+                <TextView
+                    style="@style/AppTheme.EmptyText"
+                    android:text="@string/events_empty" />
+            </LinearLayout>
+
         </RelativeLayout>
     </RelativeLayout>
 

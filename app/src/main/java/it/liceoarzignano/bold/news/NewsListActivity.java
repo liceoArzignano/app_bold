@@ -16,6 +16,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -26,6 +28,7 @@ import it.liceoarzignano.bold.ui.DividerDecoration;
 
 public class NewsListActivity extends AppCompatActivity {
     private static RecyclerView sNewsList;
+    private static LinearLayout sEmptyLayout;
     private static CustomTabsClient sClient;
     private static CustomTabsSession sCustomTabsSession;
     private static CustomTabsIntent sCustomTabIntent = null;
@@ -42,6 +45,7 @@ public class NewsListActivity extends AppCompatActivity {
         }
 
         sNewsList = (RecyclerView) findViewById(R.id.news_list);
+        sEmptyLayout = (LinearLayout) findViewById(R.id.news_empty_layout);
 
         Intent mCallingIntent = getIntent();
         long mId = mCallingIntent.getLongExtra("newsId", -1);
@@ -59,6 +63,8 @@ public class NewsListActivity extends AppCompatActivity {
         Realm mRealm = Realm.getInstance(BoldApp.getAppRealmConfiguration());
         final RealmResults<News> mNews =
                 mRealm.where(News.class).findAllSorted("date", Sort.DESCENDING);
+
+        sEmptyLayout.setVisibility(mNews.isEmpty() ? View.VISIBLE : View.GONE);
 
         NewsAdapter mAdapter = new NewsAdapter(mNews, mContext);
 

@@ -1,7 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.RecyclerView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/mark_list"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:scrollbars="vertical" />
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/mark_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical" />
+
+    <LinearLayout
+        android:id="@+id/mark_empty_layout"
+        android:paddingTop="64dp"
+        style="@style/AppTheme.EmptyLayout">
+
+        <ImageView
+            style="@style/AppTheme.EmptyImage"
+            app:srcCompat="@drawable/ic_my_marks" />
+
+        <TextView
+            style="@style/AppTheme.EmptyText"
+            android:text="@string/marks_empty" />
+    </LinearLayout>
+</RelativeLayout>
