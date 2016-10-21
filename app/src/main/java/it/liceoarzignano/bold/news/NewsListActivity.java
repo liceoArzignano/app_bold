@@ -25,23 +25,23 @@ import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.ui.DividerDecoration;
 
 public class NewsListActivity extends AppCompatActivity {
-    private static RecyclerView mNewsList;
-    private static CustomTabsClient mClient;
-    private static CustomTabsSession mCustomTabsSession;
-    private static CustomTabsIntent mCustomTabIntent = null;
+    private static RecyclerView sNewsList;
+    private static CustomTabsClient sClient;
+    private static CustomTabsSession sCustomTabsSession;
+    private static CustomTabsIntent sCustomTabIntent = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_list);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        mNewsList = (RecyclerView) findViewById(R.id.news_list);
+        sNewsList = (RecyclerView) findViewById(R.id.news_list);
 
         Intent mCallingIntent = getIntent();
         long mId = mCallingIntent.getLongExtra("newsId", -1);
@@ -62,16 +62,16 @@ public class NewsListActivity extends AppCompatActivity {
 
         NewsAdapter mAdapter = new NewsAdapter(mNews, mContext);
 
-        mNewsList.setLayoutManager(new LinearLayoutManager(mContext));
-        mNewsList.setItemAnimator(new DefaultItemAnimator());
-        mNewsList.addItemDecoration(new DividerDecoration(mContext));
-        mNewsList.setAdapter(mAdapter);
+        sNewsList.setLayoutManager(new LinearLayoutManager(mContext));
+        sNewsList.setItemAnimator(new DefaultItemAnimator());
+        sNewsList.addItemDecoration(new DividerDecoration(mContext));
+        sNewsList.setAdapter(mAdapter);
 
         mAdapter.notifyDataSetChanged();
     }
 
     static void setupCCustomTabs() {
-        if (mCustomTabIntent != null) {
+        if (sCustomTabIntent != null) {
             return;
         }
 
@@ -81,21 +81,21 @@ public class NewsListActivity extends AppCompatActivity {
                     @Override
                     public void onCustomTabsServiceConnected(ComponentName componentName,
                                                              CustomTabsClient customTabsClient) {
-                        mClient = customTabsClient;
-                        mClient.warmup(0L);
-                        mCustomTabsSession = mClient.newSession(null);
+                        sClient = customTabsClient;
+                        sClient.warmup(0L);
+                        sCustomTabsSession = sClient.newSession(null);
                     }
 
                     @Override
                     public void onServiceDisconnected(ComponentName name) {
-                        mClient = null;
+                        sClient = null;
                     }
                 };
 
         CustomTabsClient.bindCustomTabsService(mContext, "com.android.chrome",
                 mCustomTabsServiceConnection);
 
-        mCustomTabIntent = new CustomTabsIntent.Builder(mCustomTabsSession)
+        sCustomTabIntent = new CustomTabsIntent.Builder(sCustomTabsSession)
                 .setToolbarColor(ContextCompat.getColor(mContext, R.color.colorPrimary))
                 .setShowTitle(true)
                 .setStartAnimations(mContext, R.anim.slide_in_right, R.anim.slide_out_left)
@@ -106,6 +106,6 @@ public class NewsListActivity extends AppCompatActivity {
 
     static void showUrl(Activity mActivity, String mUrl) {
         setupCCustomTabs();
-        mCustomTabIntent.launchUrl(mActivity, Uri.parse(mUrl));
+        sCustomTabIntent.launchUrl(mActivity, Uri.parse(mUrl));
     }
 }

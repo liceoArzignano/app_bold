@@ -131,7 +131,7 @@ public class ViewerActivity extends AppCompatActivity {
                     mBoldAnalytics.sendEvent(bundle);
                 }
 
-                if (Utils.hasApi21()) {
+                if (Utils.isLegacy()) {
                     ((AnimatedVectorDrawable) mView.getCompoundDrawables()[1]).start();
 
                     new Handler().postDelayed(new Runnable() {
@@ -173,7 +173,7 @@ public class ViewerActivity extends AppCompatActivity {
                 shareIntent.setType("text/plain");
                 shareIntent.putExtra(Intent.EXTRA_TEXT, msg);
 
-                if (Utils.hasApi21()) {
+                if (Utils.isLegacy()) {
                     ((AnimatedVectorDrawable) mShare.getCompoundDrawables()[1]).start();
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -199,7 +199,7 @@ public class ViewerActivity extends AppCompatActivity {
                     mBoldAnalytics.sendEvent(bundle);
                 }
 
-                if (Utils.hasApi21()) {
+                if (Utils.isLegacy()) {
                     ((AnimatedVectorDrawable) mDelete.getCompoundDrawables()[1]).start();
                 }
 
@@ -242,7 +242,7 @@ public class ViewerActivity extends AppCompatActivity {
                 editIntent.putExtra("isMark", isMark);
                 editIntent.putExtra("id", id);
 
-                if (Utils.hasApi21()) {
+                if (Utils.isLegacy()) {
                     View sharedFab = findViewById(R.id.fab);
 
                     ActivityOptionsCompat options = ActivityOptionsCompat

@@ -31,16 +31,16 @@ public class BoldMessagingService extends FirebaseMessagingService {
     private News mNews;
 
     @Override
-    public void onMessageReceived(RemoteMessage remoteMessage) {
-        if (remoteMessage == null) {
+    public void onMessageReceived(RemoteMessage mRemoteMessage) {
+        if (mRemoteMessage == null) {
             return;
         }
 
         mContext = getApplicationContext();
 
-        if (!remoteMessage.getData().isEmpty()) {
+        if (!mRemoteMessage.getData().isEmpty()) {
             try {
-                JSONObject mJSON = new JSONObject(remoteMessage.getData().toString());
+                JSONObject mJSON = new JSONObject(mRemoteMessage.getData().toString());
                 JSONObject mData = mJSON.getJSONObject("data");
                 String mTitle = mData.getString("title");
                 String mMessage = mData.getString("message");

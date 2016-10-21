@@ -25,17 +25,17 @@ public class DividerDecoration extends RecyclerView.ItemDecoration {
 
     @Override
     public void onDrawOver(Canvas mCanvas, RecyclerView mParent, RecyclerView.State mState) {
-        int left = mParent.getPaddingLeft();
-        int right = mParent.getWidth() - mParent.getPaddingRight();
+        int mLeft = mParent.getPaddingLeft();
+        int mRight = mParent.getWidth() - mParent.getPaddingRight();
 
-        int childCount = mParent.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            View child = mParent.getChildAt(i);
-            RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child
+        int mChildCount = mParent.getChildCount();
+        for (int mCounter = 0; mCounter < mChildCount; mCounter++) {
+            View mChild = mParent.getChildAt(mCounter);
+            RecyclerView.LayoutParams mParams = (RecyclerView.LayoutParams) mChild
                     .getLayoutParams();
-            int top = child.getBottom() + params.bottomMargin;
-            int bottom = top + mDivider.getIntrinsicHeight();
-            mDivider.setBounds(left, top, right, bottom);
+            int mTop = mChild.getBottom() + mParams.bottomMargin;
+            int mTottom = mTop + mDivider.getIntrinsicHeight();
+            mDivider.setBounds(mLeft, mTop, mRight, mTottom);
             mDivider.setColorFilter(ContextCompat.getColor(BoldApp.getBoldContext(),
                     R.color.list_divider), PorterDuff.Mode.SRC_ATOP);
             mDivider.draw(mCanvas);

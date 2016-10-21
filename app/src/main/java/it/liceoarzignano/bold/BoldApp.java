@@ -4,50 +4,48 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Build;
 import android.os.StrictMode;
-import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
-import io.realm.internal.Util;
 import it.liceoarzignano.bold.firebase.BoldAnalytics;
 
 public class BoldApp extends Application {
 
-    private static RealmConfiguration configuration;
-    private static Context context;
-    private static BoldAnalytics mBoldAnalytics;
+    private static RealmConfiguration sConfig;
+    private static Context sContext;
+    private static BoldAnalytics sBoldAnalytics;
 
     public static RealmConfiguration getAppRealmConfiguration() {
-        return configuration;
+        return sConfig;
     }
 
     public static Context getBoldContext() {
-        return context;
+        return sContext;
     }
 
     public static BoldAnalytics getBoldAnalytics() {
-        return mBoldAnalytics;
+        return sBoldAnalytics;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        configuration = new RealmConfiguration.Builder(this)
+        sConfig = new RealmConfiguration.Builder(this)
                 .name(Realm.DEFAULT_REALM_NAME)
                 .schemaVersion(0)
                 .deleteRealmIfMigrationNeeded()
                 .build();
 
-        Realm.setDefaultConfiguration(configuration);
+        Realm.setDefaultConfiguration(sConfig);
 
-        context = getApplicationContext();
+        sContext = getApplicationContext();
 
-        mBoldAnalytics = new BoldAnalytics(context);
+        sBoldAnalytics = new BoldAnalytics(sContext);
         FirebaseMessaging.getInstance().subscribeToTopic("global");
-        FirebaseMessaging.getInstance().subscribeToTopic(Utils.getTopic(context));
+        FirebaseMessaging.getInstance().subscribeToTopic(Utils.getTopic(sContext));
 
         // Enable StrictMode
         if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

@@ -120,7 +120,7 @@ public class BackupActivity extends AppCompatActivity {
         mBackup.init(this);
         mBackup.start();
         mGoogleApiClient = mBackup.getClient();
-        mRealm = RealmController.with(this).getRealm();
+        mRealm = RealmController.with(this).getmRealm();
     }
 
     /**
@@ -258,10 +258,10 @@ public class BackupActivity extends AppCompatActivity {
     /**
      * Download the mBackup file from GDrive
      *
-     * @param file selected file
+     * @param mFile selected file
      */
-    private void downloadFromDrive(DriveFile file) {
-        file.open(mGoogleApiClient, DriveFile.MODE_READ_ONLY, null)
+    private void downloadFromDrive(DriveFile mFile) {
+        mFile.open(mGoogleApiClient, DriveFile.MODE_READ_ONLY, null)
                 .setResultCallback(new ResultCallback<DriveApi.DriveContentsResult>() {
                     @Override
                     public void onResult(@NonNull DriveApi.DriveContentsResult result) {
@@ -281,23 +281,23 @@ public class BackupActivity extends AppCompatActivity {
      * file downloaded from GDrive.
      * Once it's done, restart the app
      *
-     * @param result GDrive content result
+     * @param mResult GDrive content result
      */
-    private void restoreRealmBackup(DriveApi.DriveContentsResult result) {
-        DriveContents contents = result.getDriveContents();
-        InputStream inputStream = contents.getInputStream();
+    private void restoreRealmBackup(DriveApi.DriveContentsResult mResult) {
+        DriveContents mContents = mResult.getDriveContents();
+        InputStream mIStream = mContents.getInputStream();
 
         try {
             File mFile = new File(mRealm.getPath());
-            OutputStream outputStream = new FileOutputStream(mFile);
+            OutputStream mOStream = new FileOutputStream(mFile);
 
-            byte[] buffer = new byte[4 * 1024];
-            int read;
-            while ((read = inputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, read);
+            byte[] mBuf = new byte[4 * 1024];
+            int mRead;
+            while ((mRead = mIStream.read(mBuf)) != -1) {
+                mOStream.write(mBuf, 0, mRead);
             }
-            outputStream.flush();
-            outputStream.close();
+            mOStream.flush();
+            mOStream.close();
         } catch (IOException e) {
             if (android.support.compat.BuildConfig.DEBUG) {
                 Log.e("Backup", e.getMessage());
@@ -330,7 +330,7 @@ public class BackupActivity extends AppCompatActivity {
      */
     private void uploadToDrive(DriveId mFolderId) {
         if (mFolderId != null) {
-            final DriveFolder folder = mFolderId.asDriveFolder();
+            final DriveFolder mFolder = mFolderId.asDriveFolder();
             Drive.DriveApi.newDriveContents(mGoogleApiClient)
                     .setResultCallback(new ResultCallback<DriveApi.DriveContentsResult>() {
                         @Override
@@ -339,7 +339,7 @@ public class BackupActivity extends AppCompatActivity {
                                 showResult(false);
                                 return;
                             }
-                            uploadRealmBackup(result, folder);
+                            uploadRealmBackup(result, mFolder);
                         }
                     });
         }
@@ -349,26 +349,26 @@ public class BackupActivity extends AppCompatActivity {
      * Upload mRealm database to the folder
      * selected from the user
      *
-     * @param result GDrive content result
-     * @param folder GDrive destination folder
+     * @param mResult GDrive content result
+     * @param mFolder GDrive destination folder
      */
-    private void uploadRealmBackup(final DriveApi.DriveContentsResult result,
-                                   final DriveFolder folder) {
-        final DriveContents contents = result.getDriveContents();
+    private void uploadRealmBackup(final DriveApi.DriveContentsResult mResult,
+                                   final DriveFolder mFolder) {
+        final DriveContents mContents = mResult.getDriveContents();
 
         new Thread() {
             @Override
             public void run() {
-                OutputStream outputStream = contents.getOutputStream();
+                OutputStream mOStream = mContents.getOutputStream();
 
-                FileInputStream inputStream;
+                FileInputStream mIStream;
                 try {
-                    inputStream = new FileInputStream(new File(mRealm.getPath()));
-                    byte[] buffer = new byte[1024];
-                    int read;
+                    mIStream = new FileInputStream(new File(mRealm.getPath()));
+                    byte[] mBuf = new byte[1024];
+                    int mRead;
 
-                    while ((read = inputStream.read(buffer)) > 0) {
-                        outputStream.write(buffer, 0, read);
+                    while ((mRead = mIStream.read(mBuf)) > 0) {
+                        mOStream.write(mBuf, 0, mRead);
                     }
                 } catch (IOException e) {
                     if (android.support.compat.BuildConfig.DEBUG) {
@@ -376,17 +376,17 @@ public class BackupActivity extends AppCompatActivity {
                     }
                 }
 
-                MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
+                MetadataChangeSet mChangeSet = new MetadataChangeSet.Builder()
                         .setTitle("Liceo.realm")
                         .setMimeType("text/plain")
                         .build();
 
-                folder.createFile(mGoogleApiClient, changeSet, contents)
+                mFolder.createFile(mGoogleApiClient, mChangeSet, mContents)
                         .setResultCallback(new ResultCallback<DriveFolder.DriveFileResult>() {
                             @Override
                             public void onResult(
                                     @NonNull DriveFolder.DriveFileResult driveFileResult) {
-                                showResult(result.getStatus().isSuccess());
+                                showResult(mResult.getStatus().isSuccess());
                             }
                         });
                 mStatus = 2;
@@ -397,26 +397,26 @@ public class BackupActivity extends AppCompatActivity {
     /**
      * Parse results for GDrive api
      *
-     * @param requestCode api request code
-     * @param resultCode  api result code
-     * @param data        data
+     * @param mRequest api request code
+     * @param mResult  api result code
+     * @param mData        data
      */
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
+    protected void onActivityResult(int mRequest, int mResult, Intent mData) {
+        if (mResult == RESULT_OK) {
+            switch (mRequest) {
                 case 1:
                     mBackup.start();
                     break;
                 case 2:
                     mIntentPicker = null;
-                    DriveId mFolderDriveId = data.getParcelableExtra(
+                    DriveId mFolderDriveId = mData.getParcelableExtra(
                             OpenFileActivityBuilder.EXTRA_RESPONSE_DRIVE_ID);
                     mBackupFolder = mFolderDriveId.encodeToString();
                     mPrefs.edit().putString(BACKUP_FOLDER, mBackupFolder).apply();
                     hasValidFolder = true;
                     break;
                 case 3:
-                    DriveId driveId = data.getParcelableExtra(
+                    DriveId driveId = mData.getParcelableExtra(
                             OpenFileActivityBuilder.EXTRA_RESPONSE_DRIVE_ID);
                     downloadFromDrive(driveId.asDriveFile());
                     break;
@@ -427,24 +427,24 @@ public class BackupActivity extends AppCompatActivity {
         }
 
         setUI();
-        showResult(resultCode == RESULT_OK);
+        showResult(mResult == RESULT_OK);
     }
 
     /**
      * Fetch list of backups from Google Drive
      *
-     * @param folder backups location
+     * @param mFolder backups location
      */
-    private void getBackupsFromDrive(DriveFolder folder) {
+    private void getBackupsFromDrive(DriveFolder mFolder) {
         mBackupList = new ArrayList<>();
-        SortOrder order = new SortOrder.Builder()
+        SortOrder mOrder = new SortOrder.Builder()
                 .addSortDescending(SortableField.MODIFIED_DATE).build();
         Query query = new Query.Builder()
                 .addFilter(Filters.eq(SearchableField.TITLE, "Liceo.realm"))
                 .addFilter(Filters.eq(SearchableField.TRASHED, false))
-                .setSortOrder(order)
+                .setSortOrder(mOrder)
                 .build();
-        folder.queryChildren(mGoogleApiClient, query)
+        mFolder.queryChildren(mGoogleApiClient, query)
                 .setResultCallback(new ResultCallback<DriveApi.MetadataBufferResult>() {
                     @Override
                     public void onResult(
@@ -470,13 +470,13 @@ public class BackupActivity extends AppCompatActivity {
      * @return file size: sth{kMGTPE}b
      */
     private static String backupSize(long mBytes) {
-        int unit = 1000;
-        if (mBytes < unit) {
+        int mUnit = 1000;
+        if (mBytes < mUnit) {
             return mBytes + " B";
         }
-        int exp = (int) (Math.log(mBytes) / Math.log(unit));
-        char pre = "kMGTPE".charAt(exp - 1);
-        return String.format(Locale.ITALIAN, "%.1f %sB", mBytes / Math.pow(unit, exp), pre);
+        int mExp = (int) (Math.log(mBytes) / Math.log(mUnit));
+        char mPre = "kMGTPE".charAt(mExp - 1);
+        return String.format(Locale.ITALIAN, "%.1f %sB", mBytes / Math.pow(mUnit, mExp), mPre);
     }
 
     /**

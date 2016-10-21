@@ -6,31 +6,32 @@ import com.google.android.gms.drive.DriveId;
 import java.util.Date;
 
 class BackupData {
-    private DriveId id;
-    private Date date;
-    private long size;
+    private DriveId mId;
+    private Date mDate;
+    private long mSize;
 
-    public Date getDate() {
-        return date;
+    public DriveId getId() {
+        return mId;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setId(DriveId mId) {
+        this.mId = mId;
+    }
+
+    public Date getDate() {
+        return mDate;
+    }
+
+    public void setDate(Date mDate) {
+        this.mDate = mDate;
     }
 
     public long getSize() {
-        return size;
+        return mSize;
     }
 
-    public void setSize(long size) {
-        this.size = size;
+    public void setSize(long mSize) {
+        this.mSize = mSize;
     }
 
-    public DriveId getId() {
-        return id;
-    }
-
-    public void setId(DriveId id) {
-        this.id = id;
-    }
 }

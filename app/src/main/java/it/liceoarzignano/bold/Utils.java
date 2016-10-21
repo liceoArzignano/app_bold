@@ -41,18 +41,18 @@ public class Utils {
     private static final String APP_VERSION = "appVersionKey";
     public static final String SAFE_DONE = "doneSetup";
 
-    private static SharedPreferences preferences;
+    private static SharedPreferences mPrefs;
 
     /**
      * Animate fab with delay
      *
-     * @param fab :  the fab that will be animated
+     * @param mFab :  the fab that will be animated
      */
-    static void animFab(final FloatingActionButton fab) {
+    static void animFab(final FloatingActionButton mFab) {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                fab.hide();
+                mFab.hide();
             }
         }, 500);
     }
@@ -60,29 +60,29 @@ public class Utils {
     /**
      * Animate fab and showcase it
      *
-     * @param context: used to create materialshowcase
-     * @param fab:     fab that will be animated and exposed
-     * @param title:   showcase title
-     * @param message: showcase message
-     * @param key:     showcase key to show it only the first time
+     * @param mContext: used to create materialshowcase
+     * @param mFab:     fab that will be animated and exposed
+     * @param mTitle:   showcase title
+     * @param mMessage: showcase message
+     * @param mKey:     showcase key to show it only the first time
      */
-    public static void animFabIntro(final Activity context, final FloatingActionButton fab,
-                                    final String title, final String message, final String key) {
-        final SharedPreferences prefs = context.getSharedPreferences(HOME_PREFS, MODE_PRIVATE);
-        final boolean firstUsage = prefs.getBoolean(key, true);
-        if (hasApi21()) {
-            fab.show();
+    public static void animFabIntro(final Activity mContext, final FloatingActionButton mFab,
+                                    final String mTitle, final String mMessage, final String mKey) {
+        final SharedPreferences mPrefs = mContext.getSharedPreferences(HOME_PREFS, MODE_PRIVATE);
+        final boolean isFirstTime = mPrefs.getBoolean(mKey, true);
+        if (isLegacy()) {
+            mFab.show();
         }
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                fab.setVisibility(View.VISIBLE);
-                if (firstUsage) {
-                    prefs.edit().putBoolean(key, false).apply();
-                    new MaterialTapTargetPrompt.Builder(context)
-                            .setTarget(fab)
-                            .setPrimaryText(title)
-                            .setSecondaryText(message)
+                mFab.setVisibility(View.VISIBLE);
+                if (isFirstTime) {
+                    mPrefs.edit().putBoolean(mKey, false).apply();
+                    new MaterialTapTargetPrompt.Builder(mContext)
+                            .setTarget(mFab)
+                            .setPrimaryText(mTitle)
+                            .setSecondaryText(mMessage)
                             .setBackgroundColourFromRes(R.color.colorAccentDark)
                             .show();
                 }
@@ -97,32 +97,32 @@ public class Utils {
      * @return today formatted in Locale.ITALIAN (yyyy-mm-dd)
      */
     public static String getToday() {
-        Calendar calendar = Calendar.getInstance();
-        int month = calendar.get(Calendar.MONTH) + 1;
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        StringBuilder builder = new StringBuilder();
-        builder.append(calendar.get(Calendar.YEAR)).append("-");
-        if (month < 10) {
-            builder.append("0");
+        Calendar mCal = Calendar.getInstance();
+        int mMonth = mCal.get(Calendar.MONTH) + 1;
+        int mDay = mCal.get(Calendar.DAY_OF_MONTH);
+        StringBuilder mBuilder = new StringBuilder();
+        mBuilder.append(mCal.get(Calendar.YEAR)).append("-");
+        if (mMonth < 10) {
+            mBuilder.append("0");
         }
-        builder.append(month).append("-");
-        if (day < 10) {
-            builder.append("0");
+        mBuilder.append(mMonth).append("-");
+        if (mDay < 10) {
+            mBuilder.append("0");
         }
-        builder.append(day);
-        return builder.toString();
+        mBuilder.append(mDay);
+        return mBuilder.toString();
     }
 
     /**
      * Force enable Google Analytics Tracker
      * if overlay requires it (used for test builds)
      *
-     * @param context: used to access SharedPreferences
-     * @param overlay: boolean xml overlay value
+     * @param mContext: used to access SharedPreferences
+     * @param mOverlay: boolean xml overlay value
      */
-    static void enableTrackerIfOverlayRequests(Context context, boolean overlay) {
-        if (overlay) {
-            PreferenceManager.getDefaultSharedPreferences(context)
+    static void enableTrackerIfOverlayRequests(Context mContext, boolean mOverlay) {
+        if (mOverlay) {
+            PreferenceManager.getDefaultSharedPreferences(mContext)
                     .edit().putBoolean(ANALYTICS, true).apply();
         }
     }
@@ -130,12 +130,12 @@ public class Utils {
     /**
      * Getter for HomePrefs' initialDayKey
      *
-     * @param context: used to get sharedprefs
+     * @param mCOntext: used to get sharedprefs
      * @return the date of the day the first usage happened
      */
-    private static String getFirstUsageDate(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(HOME_PREFS, MODE_PRIVATE);
-        return prefs.getString(INITIAL_DAY, "2000-01-01");
+    private static String getFirstUsageDate(Context mCOntext) {
+        SharedPreferences mPrefs = mCOntext.getSharedPreferences(HOME_PREFS, MODE_PRIVATE);
+        return mPrefs.getString(INITIAL_DAY, "2000-01-01");
     }
 
     /**
@@ -144,50 +144,50 @@ public class Utils {
      * </br>
      * Format: yyyy-mm-dd (Locale.IT format)
      *
-     * @param year:  year from the date picker dialog
-     * @param month: month from the date picker dialog
-     * @param day:   day of the month from the date picker dialog
+     * @param mYear:  year from the date picker dialog
+     * @param mMonth: month from the date picker dialog
+     * @param mDay:   day of the month from the date picker dialog
      * @return string with formatted date
      */
-    static String rightDate(int year, int month, int day) {
-        String ret;
-        ret = year + "-";
-        if (month < 10) {
-            ret += "0";
+    static String rightDate(int mYear, int mMonth, int mDay) {
+        String mDate;
+        mDate = mYear + "-";
+        if (mMonth < 10) {
+            mDate += "0";
         }
-        ret = ret + month + "-";
-        if (day < 10) {
-            ret += "0";
+        mDate = mDate + mMonth + "-";
+        if (mDay < 10) {
+            mDate += "0";
         }
-        ret += day;
-        return ret;
+        mDate += mDay;
+        return mDate;
     }
 
     /**
      * Use for adaptive feature discovery
      *
-     * @param context: used to call getFirstUsageDate(Context)
+     * @param mContext: used to call getFirstUsageDate(Context)
      * @return true if user has been using this for more than one week
      */
-    static boolean hasUsedForMoreThanOneWeek(Context context) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ITALIAN);
-        String first = getFirstUsageDate(context);
+    static boolean hasUsedForMoreThanOneWeek(Context mContext) {
+        SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ITALIAN);
+        String mFirstDay = getFirstUsageDate(mContext);
 
-        if (first.equals("2000-01-01")) {
+        if (mFirstDay.equals("2000-01-01")) {
             return false;
         }
 
         try {
-            Date date = format.parse(getToday());
-            Calendar c = Calendar.getInstance();
-            Calendar d = Calendar.getInstance();
-            d.setTimeInMillis(date.getTime());
-            date = format.parse(first);
-            c.setTimeInMillis(date.getTime());
+            Date mDate = mFormat.parse(getToday());
+            Calendar mFirstCal = Calendar.getInstance();
+            Calendar mSecondCal = Calendar.getInstance();
+            mSecondCal.setTimeInMillis(mDate.getTime());
+            mDate = mFormat.parse(mFirstDay);
+            mFirstCal.setTimeInMillis(mDate.getTime());
 
-            int diff = d.get(Calendar.DAY_OF_YEAR) - c.get(Calendar.DAY_OF_YEAR);
+            int mDiff = mSecondCal.get(Calendar.DAY_OF_YEAR) - mFirstCal.get(Calendar.DAY_OF_YEAR);
 
-            return c.get(Calendar.YEAR) == d.get(Calendar.YEAR) && diff > 7;
+            return mFirstCal.get(Calendar.YEAR) == mSecondCal.get(Calendar.YEAR) && mDiff > 7;
         } catch (ParseException e) {
             Log.e("Utils", e.getMessage());
             return false;
@@ -200,7 +200,7 @@ public class Utils {
      *
      * @return true if there's api21+
      */
-    static boolean hasApi21() {
+    static boolean isLegacy() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
 
@@ -209,73 +209,74 @@ public class Utils {
      *
      * @return array of subjects
      */
-    public static String[] getAverageElements(int filter) {
-        int size = 0;
-        Realm realm = Realm.getInstance(BoldApp.getAppRealmConfiguration());
-        List<Mark> marks;
-        switch (filter) {
+    public static String[] getAverageElements(int mFilter) {
+        int mSize = 0;
+        Realm mRealm = Realm.getInstance(BoldApp.getAppRealmConfiguration());
+        List<Mark> mMarks;
+        switch (mFilter) {
             case 1:
-                marks = realm.where(Mark.class).equalTo("isFirstQuarter", true).findAll();
+                mMarks = mRealm.where(Mark.class).equalTo("isFirstQuarter", true).findAll();
                 break;
             case 2:
-                marks = realm.where(Mark.class).equalTo("isFirstQuarter", false).findAll();
+                mMarks = mRealm.where(Mark.class).equalTo("isFirstQuarter", false).findAll();
                 break;
             default:
-                marks = realm.where(Mark.class).findAll();
+                mMarks = mRealm.where(Mark.class).findAll();
         }
 
-        ArrayList<String> elements = new ArrayList<>();
+        ArrayList<String> mElements = new ArrayList<>();
 
-        for (Mark mark : marks) {
-            if (!elements.contains(mark.getTitle())) {
-                elements.add(mark.getTitle());
-                size++;
+        for (Mark mMark : mMarks) {
+            if (!mElements.contains(mMark.getTitle())) {
+                mElements.add(mMark.getTitle());
+                mSize++;
             }
         }
 
-        return elements.toArray(new String[size]);
+        return mElements.toArray(new String[mSize]);
     }
 
     /**
      * Get event category description from int
      *
-     * @param category: event icon value
+     * @param mCategory: event icon value
      * @return category name
      */
-    static String eventCategoryToString(int category) {
-        Context context = BoldApp.getBoldContext();
-        switch (category) {
+    static String eventCategoryToString(int mCategory) {
+        Context mContext = BoldApp.getBoldContext();
+        switch (mCategory) {
             case 0:
-                return context.getString(R.string.event_spinner_test);
+                return mContext.getString(R.string.event_spinner_test);
             case 1:
-                return context.getString(R.string.event_spinner_school);
+                return mContext.getString(R.string.event_spinner_school);
             case 2:
-                return context.getString(R.string.event_spinner_bday);
+                return mContext.getString(R.string.event_spinner_bday);
             case 3:
-                return context.getString(R.string.event_spinner_homework);
+                return mContext.getString(R.string.event_spinner_homework);
             case 4:
-                return context.getString(R.string.event_spinner_reminder);
+                return mContext.getString(R.string.event_spinner_reminder);
             case 5:
-                return context.getString(R.string.event_spinner_hang_out);
+                return mContext.getString(R.string.event_spinner_hang_out);
             default:
-                return context.getString(R.string.event_spinner_other);
+                return mContext.getString(R.string.event_spinner_other);
         }
     }
 
     /**
      * Convert string to date
      *
-     * @param string yyyy-MM-dd date
+     * @param mStringDate yyyy-MM-dd date
      * @return java date
      */
-    static Date stringToDate(String string) {
-        if (string == null || string.length() != 10 || !string.contains("-")) {
-            throw new IllegalArgumentException(string + ": invalid format. Must be yyyy-MM-dd");
+    static Date stringToDate(String mStringDate) {
+        if (mStringDate == null || mStringDate.length() != 10 || !mStringDate.contains("-")) {
+            throw new IllegalArgumentException(mStringDate
+                    + ": invalid format. Must be yyyy-MM-dd");
         }
 
         try {
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ITALIAN);
-            return format.parse(string);
+            SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ITALIAN);
+            return mFormat.parse(mStringDate);
         } catch (ParseException e) {
             Log.e("Utils", e.getMessage());
             return new Date();
@@ -285,26 +286,26 @@ public class Utils {
     /**
      * Determine if a mark has been assigned during the first or second quarter
      *
-     * @param markDate given mark's date
+     * @param mDate given mark's date
      * @return true if first quarter, else false
      */
-    public static boolean isFirstQuarter(String markDate) {
+    public static boolean isFirstQuarter(String mDate) {
         return stringToDate(BoldApp.getBoldContext().getString(R.string.config_quarter_change))
-                .after(stringToDate(markDate));
+                .after(stringToDate(mDate));
     }
 
     /**
      * Determine if given package is installed
      *
-     * @param context to invoke pm
-     * @param pkg package name
+     * @param mContext to invoke pm
+     * @param mPkg package name
      * @return true if installed
      */
-    public static boolean hasPackage(Context context, String pkg) {
+    public static boolean hasPackage(Context mContext, String mPkg) {
         try {
-            PackageInfo pi = context.getPackageManager()
-                    .getPackageInfo(pkg, 0);
-            return pi.applicationInfo.enabled;
+            PackageInfo mPackageInfo = mContext.getPackageManager()
+                    .getPackageInfo(mPkg, 0);
+            return mPackageInfo.applicationInfo.enabled;
         } catch (PackageManager.NameNotFoundException e) {
             // Gotta catch 'em all
             return false;
@@ -346,66 +347,66 @@ public class Utils {
      * @return the value from SharedPreferences
      */
 
-    public static boolean isTeacher(Context context) {
-        preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getBoolean(ISTEACHER, false);
+    public static boolean isTeacher(Context mContext) {
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        return mPrefs.getBoolean(ISTEACHER, false);
     }
 
-    public static boolean hasAnalytics(Context context) {
-        preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getBoolean(ANALYTICS, true);
+    public static boolean hasAnalytics(Context mContext) {
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        return mPrefs.getBoolean(ANALYTICS, true);
     }
 
-    public static boolean hasSuggestions(Context context) {
-        preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getBoolean(SUGGESTIONS, true);
+    public static boolean hasSuggestions(Context mContext) {
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        return mPrefs.getBoolean(SUGGESTIONS, true);
     }
 
-    public static boolean hasNewsNotification(Context context) {
-        preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getBoolean(NOTIF_NEWS, true);
+    public static boolean hasNewsNotification(Context mContext) {
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        return mPrefs.getBoolean(NOTIF_NEWS, true);
     }
 
-    public static boolean hasEventsNotification(Context context) {
-        preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getBoolean(NOTIF_EVENT, true);
+    public static boolean hasEventsNotification(Context mContext) {
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        return mPrefs.getBoolean(NOTIF_EVENT, true);
     }
 
-    public static String getEventsNotificationTime(Context context) {
-        preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getString(NOTIF_EVENT_TIME, "0");
+    public static String getEventsNotificationTime(Context mContext) {
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        return mPrefs.getString(NOTIF_EVENT_TIME, "0");
     }
 
-    public static String getAddress(Context context) {
-        preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getString(ADDRESS, "0");
+    public static String getAddress(Context mContext) {
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        return mPrefs.getString(ADDRESS, "0");
     }
 
-    static String appVersionKey(Context context) {
-        preferences = context.getSharedPreferences(HOME_PREFS, MODE_PRIVATE);
-        return preferences.getString(APP_VERSION, "0");
+    static String appVersionKey(Context mContext) {
+        mPrefs = mContext.getSharedPreferences(HOME_PREFS, MODE_PRIVATE);
+        return mPrefs.getString(APP_VERSION, "0");
     }
 
-    public static String userNameKey(Context context) {
-        preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getString(USERNAME, " ");
+    public static String userNameKey(Context mContext) {
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        return mPrefs.getString(USERNAME, " ");
     }
 
-    static void setAddress(Context context, String value) {
-        preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        preferences.edit().putString(ADDRESS, value).putBoolean("isTeacher_key", false)
+    static void setAddress(Context mContext, String mValue) {
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        mPrefs.edit().putString(ADDRESS, mValue).putBoolean("isTeacher_key", false)
                 .apply();
     }
 
-    static void setTeacherMode(Context context) {
-        preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        preferences.edit().putBoolean(ISTEACHER, true).putString(ADDRESS, "0")
+    static void setTeacherMode(Context mContext) {
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        mPrefs.edit().putBoolean(ISTEACHER, true).putString(ADDRESS, "0")
                 .apply();
     }
 
-    public static boolean hasSafe(Context context) {
-        preferences = context.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE);
-        return preferences.getBoolean(SAFE_DONE, false);
+    public static boolean hasSafe(Context mContext) {
+        mPrefs = mContext.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE);
+        return mPrefs.getBoolean(SAFE_DONE, false);
     }
 
 }

@@ -15,31 +15,31 @@ public class AlarmService extends Service {
 
     @Override
     public void onCreate() {
-        Context context = getApplicationContext();
-        String message = MainActivity.getTomorrowInfo();
-        Intent notifIntent = new Intent(context, EventListActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
-                notifIntent, 0);
-        NotificationManager manager = (NotificationManager) getSystemService(
+        Context mContext = getApplicationContext();
+        String mMessage = MainActivity.getTomorrowInfo();
+        Intent mIntent = new Intent(mContext, EventListActivity.class);
+        PendingIntent mPendingIntent = PendingIntent.getActivity(mContext, 0,
+                mIntent, 0);
+        NotificationManager mManager = (NotificationManager) getSystemService(
                 NOTIFICATION_SERVICE);
 
-        if (message != null) {
+        if (mMessage != null) {
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
                     getApplicationContext())
                     .setSmallIcon(R.drawable.ic_notification)
                     .setContentTitle(getString(R.string.notification_title))
-                    .setContentText(message)
+                    .setContentText(mMessage)
                     .setStyle(new NotificationCompat.BigTextStyle()
-                            .bigText(message))
-                    .setContentIntent(pendingIntent)
+                            .bigText(mMessage))
+                    .setContentIntent(mPendingIntent)
                     .setAutoCancel(true);
 
-            manager.notify(21, mBuilder.build());
+            mManager.notify(21, mBuilder.build());
         }
     }
 
     @Override
-    public IBinder onBind(Intent intent) {
+    public IBinder onBind(Intent mIntent) {
         return null;
     }
 }

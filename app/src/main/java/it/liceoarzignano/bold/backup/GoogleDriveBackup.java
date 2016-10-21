@@ -16,16 +16,16 @@ import java.lang.ref.WeakReference;
 
 class GoogleDriveBackup implements Backup, GoogleApiClient.OnConnectionFailedListener {
     @Nullable
-    private GoogleApiClient googleApiClient;
+    private GoogleApiClient mClient;
 
     @Nullable
-    private WeakReference<Activity> activityRef;
+    private WeakReference<Activity> mReference;
 
     @Override
-    public void init(@NonNull Activity activity) {
-        activityRef = new WeakReference<>(activity);
+    public void init(@NonNull Activity mActivity) {
+        mReference = new WeakReference<>(mActivity);
 
-        googleApiClient = new GoogleApiClient.Builder(activity)
+        mClient = new GoogleApiClient.Builder(mActivity)
                 .addApi(Drive.API)
                 .addScope(Drive.SCOPE_FILE)
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
@@ -44,13 +44,13 @@ class GoogleDriveBackup implements Backup, GoogleApiClient.OnConnectionFailedLis
 
     @Override
     public GoogleApiClient getClient() {
-        return googleApiClient;
+        return mClient;
     }
 
     @Override
     public void start() {
-        if (googleApiClient != null) {
-            googleApiClient.connect();
+        if (mClient != null) {
+            mClient.connect();
         } else {
             throw new IllegalStateException("You should call init before start");
         }
@@ -58,31 +58,31 @@ class GoogleDriveBackup implements Backup, GoogleApiClient.OnConnectionFailedLis
 
     @Override
     public void stop() {
-        if (googleApiClient != null) {
-            googleApiClient.disconnect();
+        if (mClient != null) {
+            mClient.disconnect();
         } else {
             throw new IllegalStateException("You should call init before start");
         }
     }
 
     @Override
-    public void onConnectionFailed(@NonNull ConnectionResult result) {
-        if (result.hasResolution() && activityRef != null && activityRef.get() != null) {
-            Activity a = activityRef.get();
+    public void onConnectionFailed(@NonNull ConnectionResult mResult) {
+        if (mResult.hasResolution() && mReference != null && mReference.get() != null) {
+            Activity mActivity = mReference.get();
             // show the localized error dialog.
             try {
-                result.startResolutionForResult(a, 1);
+                mResult.startResolutionForResult(mActivity, 1);
             } catch (IntentSender.SendIntentException e) {
                 if (android.support.compat.BuildConfig.DEBUG) {
                     Log.e("Backup", e.getMessage());
                 }
                 GoogleApiAvailability.getInstance()
-                        .getErrorDialog(a, result.getErrorCode(), 0).show();
+                        .getErrorDialog(mActivity, mResult.getErrorCode(), 0).show();
             }
         } else {
             Log.e("GoogleDriveAPI", "Unable to connect!");
-            Log.e("GoogleDriveAPI", "Error code: " + result.getErrorCode());
-            Log.e("GoogleDriveAPI", "Error message: " +  result.getErrorMessage());
+            Log.e("GoogleDriveAPI", "Error code: " + mResult.getErrorCode());
+            Log.e("GoogleDriveAPI", "Error message: " +  mResult.getErrorMessage());
         }
     }
 }

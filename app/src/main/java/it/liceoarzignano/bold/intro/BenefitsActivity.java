@@ -54,8 +54,8 @@ public class BenefitsActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     getSharedPreferences("HomePrefs", MODE_PRIVATE).edit().putBoolean("introKey",
                             true).apply();
-                    Intent intent = new Intent(BenefitsActivity.this, MainActivity.class);
-                    startActivity(intent);
+                    Intent mIntent = new Intent(BenefitsActivity.this, MainActivity.class);
+                    startActivity(mIntent);
                     finish();
                 }
             });

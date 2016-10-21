@@ -24,15 +24,15 @@ import it.liceoarzignano.bold.backup.BackupActivity;
 import it.liceoarzignano.bold.safe.SafeActivity;
 
 public class SettingsActivity extends AppCompatActivity {
-    private static int counter = 0;
+    private static int mCounter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
         setContentView(R.layout.activity_settings);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -42,25 +42,25 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public static class MyPreferenceFragment extends PreferenceFragment {
-        Context context;
+        Context mContext;
 
         @Override
         public void onCreate(Bundle savedInstance) {
             super.onCreate(savedInstance);
             addPreferencesFromResource(R.xml.settings);
 
-            context = getActivity();
+            mContext = getActivity();
 
-            Preference changelogPref = findPreference("changelog_key");
-            final Preference trackerPref = findPreference("analytics_key");
-            Preference backupPref = findPreference("backup_key");
-            final Preference namePref = findPreference("username_key");
-            final Preference secretPref = findPreference("secret_key");
+            Preference mChangelog = findPreference("changelog_key");
+            final Preference mAnalytics = findPreference("analytics_key");
+            Preference mBackup = findPreference("backup_key");
+            final Preference mName = findPreference("username_key");
+            final Preference mSecret = findPreference("secret_key");
 
-            changelogPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            mChangelog.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    new MaterialDialog.Builder(context)
+                    new MaterialDialog.Builder(mContext)
                             .title(getString(R.string.pref_changelog))
                             .content(getString(R.string.dialog_updated_content))
                             .positiveText(getString(android.R.string.ok))
@@ -81,43 +81,43 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             });
 
-            trackerPref.setEnabled(!getResources().getBoolean(R.bool.force_tracker));
-            if (!trackerPref.isEnabled()) {
-                trackerPref.setSummary(getString(R.string.pref_metrics_summary_forced));
+            mAnalytics.setEnabled(!getResources().getBoolean(R.bool.force_tracker));
+            if (!mAnalytics.isEnabled()) {
+                mAnalytics.setSummary(getString(R.string.pref_metrics_summary_forced));
             }
 
-            backupPref.setEnabled(GoogleApiAvailability.getInstance()
-                    .isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS &&
-                    Utils.hasPackage(context, "com.google.android.apps.docs"));
-            backupPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            mBackup.setEnabled(GoogleApiAvailability.getInstance()
+                    .isGooglePlayServicesAvailable(mContext) == ConnectionResult.SUCCESS &&
+                    Utils.hasPackage(mContext, "com.google.android.apps.docs"));
+            mBackup.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    Intent intent = new Intent(context, BackupActivity.class);
-                    startActivity(intent);
+                    Intent mIntent = new Intent(mContext, BackupActivity.class);
+                    startActivity(mIntent);
                     return true;
                 }
             });
 
-            namePref.setSummary(Utils.userNameKey(context));
-            namePref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            mName.setSummary(Utils.userNameKey(mContext));
+            mName.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    namePref.setSummary(newValue.toString());
+                    mName.setSummary(newValue.toString());
                     return true;
                 }
             });
 
-            secretPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            mSecret.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    counter++;
-                    if (counter == 9) {
-                        if (SafeActivity.hasSharedPassword(context)) {
-                            Toast.makeText(context, getString(
+                    mCounter++;
+                    if (mCounter == 9) {
+                        if (SafeActivity.hasSharedPassword(mContext)) {
+                            Toast.makeText(mContext, getString(
                                     R.string.pref_secret_export_already_shared), Toast.LENGTH_LONG)
                                     .show();
                         } else {
-                            new MaterialDialog.Builder(context)
+                            new MaterialDialog.Builder(mContext)
                                     .title(getString(R.string.pref_secret_export_safe_title))
                                     .content(getString(R.string.pref_secret_export_safe_message))
                                     .negativeText(getString(android.R.string.cancel))
@@ -126,14 +126,14 @@ public class SettingsActivity extends AppCompatActivity {
                                         @Override
                                         public void onClick(@NonNull MaterialDialog dialog,
                                                             @NonNull DialogAction which) {
-                                            final Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                                            shareIntent.setType("text/plain");
-                                            shareIntent.putExtra(Intent.EXTRA_TEXT, String.format(
+                                            final Intent mIntent = new Intent(Intent.ACTION_SEND);
+                                            mIntent.setType("text/plain");
+                                            mIntent.putExtra(Intent.EXTRA_TEXT, String.format(
                                                     getString(R.string.pref_secret_export_message),
-                                                    SafeActivity.getEncryptedPassword(context)));
-                                            startActivity(Intent.createChooser(shareIntent,
+                                                    SafeActivity.getEncryptedPassword(mContext)));
+                                            startActivity(Intent.createChooser(mIntent,
                                                     getString(R.string.pref_secret_export_title)));
-                                            SafeActivity.setSharedPassword(context);
+                                            SafeActivity.setSharedPassword(mContext);
                                         }
                                     })
                                     .show();
@@ -144,7 +144,7 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             });
 
-            if (Utils.hasAnalytics(context)) {
+            if (Utils.hasAnalytics(mContext)) {
                 Bundle mBundle = new Bundle();
                 mBundle.putString(FirebaseAnalytics.Param.LEVEL, "Settings");
                 BoldApp.getBoldAnalytics().sendConfig(mBundle);

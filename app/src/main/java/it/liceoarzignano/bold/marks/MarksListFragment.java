@@ -21,22 +21,22 @@ public class MarksListFragment extends Fragment {
     /**
      * Update the ListView content
      *
-     * @param context: needed to reload database data
+     * @param mContext: needed to reload database data
      */
-    private static void refreshList(Context context) {
-        MarkListActivity.refreshList(context);
+    private static void refreshList(Context mContext) {
+        MarkListActivity.refreshList(mContext);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstance) {
-        View view = inflater.inflate(R.layout.fragment_mark_marks, container, false);
+    public View onCreateView(LayoutInflater mInflater, ViewGroup mContainer,
+                             Bundle mSavedInstance) {
+        View mView = mInflater.inflate(R.layout.fragment_mark_marks, mContainer, false);
 
-        mMarksListView = (RecyclerView) view.findViewById(R.id.mark_list);
+        mMarksListView = (RecyclerView) mView.findViewById(R.id.mark_list);
 
         refreshList(getContext());
 
-        return view;
+        return mView;
     }
 
 }

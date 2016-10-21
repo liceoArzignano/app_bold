@@ -14,37 +14,37 @@ import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.marks.Mark;
 
 public class RealmController {
-    private static RealmController instance;
-    private final Realm realm;
+    private static RealmController sInstance;
+    private final Realm mRealm;
 
     @SuppressWarnings("UnusedParameters")
-    private RealmController(Application application) {
-        realm = Realm.getDefaultInstance();
+    private RealmController(Application mApplication) {
+        mRealm = Realm.getDefaultInstance();
     }
 
-    public static RealmController with(Activity activity) {
-        if (instance == null) {
-            instance = new RealmController(activity.getApplication());
+    public static RealmController with(Activity mActivity) {
+        if (sInstance == null) {
+            sInstance = new RealmController(mActivity.getApplication());
         }
-        return instance;
+        return sInstance;
     }
 
-    public static RealmController with(Fragment fragment) {
-        if (instance == null) {
-            instance = new RealmController(fragment.getActivity().getApplication());
+    public static RealmController with(Fragment mFragment) {
+        if (sInstance == null) {
+            sInstance = new RealmController(mFragment.getActivity().getApplication());
         }
-        return instance;
+        return sInstance;
     }
 
-    public static RealmController with(Application application) {
-        if (instance == null) {
-            instance = new RealmController(application);
+    public static RealmController with(Application mApplication) {
+        if (sInstance == null) {
+            sInstance = new RealmController(mApplication);
         }
-        return instance;
+        return sInstance;
     }
 
-    public Realm getRealm() {
-        return realm;
+    public Realm getmRealm() {
+        return mRealm;
     }
 
     /*
@@ -52,74 +52,74 @@ public class RealmController {
      */
 
     public RealmResults<Mark> getAllMarks() {
-        return realm.where(Mark.class).findAllSorted("date", Sort.ASCENDING);
+        return mRealm.where(Mark.class).findAllSorted("date", Sort.ASCENDING);
     }
 
-    private RealmResults<Mark> getFilteredMarks(String title, int quarter) {
-        switch (quarter) {
+    private RealmResults<Mark> getFilteredMarks(String mTitle, int mQuarter) {
+        switch (mQuarter) {
             case 1:
-                return realm.where(Mark.class).equalTo("title", title)
+                return mRealm.where(Mark.class).equalTo("title", mTitle)
                         .equalTo("isFirstQuarter", true).findAll();
             case 2:
-                return realm.where(Mark.class).equalTo("title", title)
+                return mRealm.where(Mark.class).equalTo("title", mTitle)
                         .equalTo("isFirstQuarter", false).findAll();
             default:
-                return realm.where(Mark.class).equalTo("title", title).findAll();
+                return mRealm.where(Mark.class).equalTo("title", mTitle).findAll();
         }
     }
 
-    public Mark getMark(long id) {
-        return realm.where(Mark.class).equalTo("id", id).findFirst();
+    public Mark getMark(long mId) {
+        return mRealm.where(Mark.class).equalTo("id", mId).findFirst();
     }
 
-    public long addMark(Mark mark) {
-        long id = Calendar.getInstance().getTimeInMillis();
-        mark.setId(id);
-        realm.beginTransaction();
-        realm.copyToRealm(mark);
-        realm.commitTransaction();
-        return id;
+    public long addMark(Mark mMark) {
+        long mId = Calendar.getInstance().getTimeInMillis();
+        mMark.setId(mId);
+        mRealm.beginTransaction();
+        mRealm.copyToRealm(mMark);
+        mRealm.commitTransaction();
+        return mId;
     }
 
-    public long updateMark(Mark mark) {
-        long id = mark.getId();
+    public long updateMark(Mark mMark) {
+        long mId = mMark.getId();
 
-        Mark oldMark = getMark(id);
-        realm.beginTransaction();
-        oldMark.setTitle(mark.getTitle());
-        oldMark.setValue(mark.getValue());
-        oldMark.setDate(mark.getDate());
-        oldMark.setNote(mark.getNote());
-        realm.commitTransaction();
-        return id;
+        Mark mOldMark = getMark(mId);
+        mRealm.beginTransaction();
+        mOldMark.setTitle(mMark.getTitle());
+        mOldMark.setValue(mMark.getValue());
+        mOldMark.setDate(mMark.getDate());
+        mOldMark.setNote(mMark.getNote());
+        mRealm.commitTransaction();
+        return mId;
     }
 
-    public double getAverage(String title, int quarter) {
-        List<Mark> marks = getFilteredMarks(title, quarter);
-        double sum = 0;
-        if (marks.isEmpty()) {
+    public double getAverage(String mTitle, int mQuarter) {
+        List<Mark> mMarks = getFilteredMarks(mTitle, mQuarter);
+        double mSum = 0;
+        if (mMarks.isEmpty()) {
             return 0;
         } else {
-            for (Mark mark : marks) {
-                sum += mark.getValue();
+            for (Mark mark : mMarks) {
+                mSum += mark.getValue();
             }
-            sum /= 100;
+            mSum /= 100;
 
-            return sum / marks.size();
+            return mSum / mMarks.size();
         }
     }
 
-    public double whatShouldIGet(String title, int quarter) {
-        double sum = 0;
+    public double whatShouldIGet(String mTitle, int mQuarter) {
+        double mSum = 0;
 
-        List<Mark> marks = getFilteredMarks(title, quarter);
+        List<Mark> mMarks = getFilteredMarks(mTitle, mQuarter);
 
-        for (Mark markInList : marks) {
-            sum += markInList.getValue();
+        for (Mark mMark : mMarks) {
+            mSum += mMark.getValue();
         }
-        sum /= 100;
+        mSum /= 100;
 
-        return !marks.isEmpty() ? 6 * (marks.size() + 1) - sum : 0;
+        return !mMarks.isEmpty() ? 6 * (mMarks.size() + 1) - mSum : 0;
     }
 
 
@@ -128,33 +128,33 @@ public class RealmController {
      */
 
     public RealmResults<Event> getAllEventsInverted() {
-        return realm.where(Event.class).findAllSorted("date", Sort.ASCENDING);
+        return mRealm.where(Event.class).findAllSorted("date", Sort.ASCENDING);
     }
 
-    public Event getEvent(long id) {
-        return realm.where(Event.class).equalTo("id", id).findFirst();
+    public Event getEvent(long mId) {
+        return mRealm.where(Event.class).equalTo("id", mId).findFirst();
     }
 
-    public long addEvent(Event event) {
-        long id = Calendar.getInstance().getTimeInMillis();
+    public long addEvent(Event mEvent) {
+        long mId = Calendar.getInstance().getTimeInMillis();
 
-        event.setId(id);
-        realm.beginTransaction();
-        realm.copyToRealm(event);
-        realm.commitTransaction();
-        return id;
+        mEvent.setId(mId);
+        mRealm.beginTransaction();
+        mRealm.copyToRealm(mEvent);
+        mRealm.commitTransaction();
+        return mId;
     }
 
-    public long updateEvent(Event event) {
-        long id = event.getId();
+    public long updateEvent(Event mEvent) {
+        long mId = mEvent.getId();
 
-        Event oldEvent = getEvent(id);
-        realm.beginTransaction();
-        oldEvent.setTitle(event.getTitle());
-        oldEvent.setDate(event.getDate());
-        oldEvent.setIcon(event.getIcon());
-        oldEvent.setNote(event.getNote());
-        realm.commitTransaction();
-        return id;
+        Event mOldEvent = getEvent(mId);
+        mRealm.beginTransaction();
+        mOldEvent.setTitle(mEvent.getTitle());
+        mOldEvent.setDate(mEvent.getDate());
+        mOldEvent.setIcon(mEvent.getIcon());
+        mOldEvent.setNote(mEvent.getNote());
+        mRealm.commitTransaction();
+        return mId;
     }
 }

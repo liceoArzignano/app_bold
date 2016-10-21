@@ -6,13 +6,13 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 class BenefitPageAdapter extends FragmentPagerAdapter {
 
-    BenefitPageAdapter(FragmentManager fm) {
-        super(fm);
+    BenefitPageAdapter(FragmentManager mFragmentManager) {
+        super(mFragmentManager);
     }
 
     @Override
-    public Fragment getItem(int position) {
-        return BenefitFragment.newInstance(position + 1);
+    public Fragment getItem(int mPostion) {
+        return BenefitFragment.newInstance(mPostion + 1);
     }
 
     @Override

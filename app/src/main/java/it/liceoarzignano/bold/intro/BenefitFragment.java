@@ -24,16 +24,16 @@ public class BenefitFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        int position = getArguments().getInt("section_number");
-        View view = inflater.inflate(R.layout.fragment_benefits_contents, container, false);
+    public View onCreateView(LayoutInflater mInflater, ViewGroup mContainer,
+                             Bundle mSavedInstance) {
+        int mPosition = getArguments().getInt("section_number");
+        View mView = mInflater.inflate(R.layout.fragment_benefits_contents, mContainer, false);
 
-        TextView mTitle = (TextView) view.findViewById(R.id.benefits_title);
-        TextView mDescription = (TextView) view.findViewById(R.id.benefits_message);
-        ImageView mImage = (ImageView) view.findViewById(R.id.benefits_img);
+        TextView mTitle = (TextView) mView.findViewById(R.id.benefits_title);
+        TextView mDescription = (TextView) mView.findViewById(R.id.benefits_message);
+        ImageView mImage = (ImageView) mView.findViewById(R.id.benefits_img);
 
-        switch (position) {
+        switch (mPosition) {
             case 1:
                 mTitle.setText(getString(R.string.slide0_title));
                 mDescription.setText(getString(R.string.slide0_message));
@@ -51,6 +51,6 @@ public class BenefitFragment extends Fragment {
                 break;
         }
 
-        return view;
+        return mView;
     }
 }

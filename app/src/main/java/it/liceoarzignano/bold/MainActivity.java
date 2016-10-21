@@ -61,21 +61,21 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String APP_VERSION = BuildConfig.VERSION_NAME;
-    private static final Calendar c = Calendar.getInstance();
-    private static Resources res;
+    private static final Calendar sCal = Calendar.getInstance();
+    private static Resources sRes;
     private static Context sContext;
-    private static RealmController controller;
+    private static RealmController sController;
     // Firebase
     private BoldAnalytics mBoldAnalytics;
     private boolean isAnalyticsEnabled = false;
     // Header
-    private Toolbar toolbar;
+    private Toolbar mToolbar;
     private TextView mUserName;
     private ImageView mAddressLogo;
     // Chrome custom tabs
     private CustomTabsClient mClient;
     private CustomTabsSession mCustomTabsSession;
-    private CustomTabsIntent customTabsIntent;
+    private CustomTabsIntent mCustomTabsIntent;
     private String mUrl;
     // Event card
     private View mEventsCardSeparatorView;
@@ -94,17 +94,17 @@ public class MainActivity extends AppCompatActivity
     private View mSuggestionCardSeparatorView;
     private CardView mSuggestionCard;
     private TextView mSuggestionText;
-    private boolean showEventsCard;
-    private boolean showMarksCard;
-    private boolean showSuggestionCard;
+    private boolean isEventCardShown;
+    private boolean isMarksCardShown;
+    private boolean isNewsCardShown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        res = getResources();
+        sRes = getResources();
         sContext = getApplicationContext();
-        controller = RealmController.with(this);
+        sController = RealmController.with(this);
 
         // Analytics
         setupAnalytics();
@@ -115,10 +115,10 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         // Toolbar and NavDrawer
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, mToolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity
         Intent mCallingIntent = getIntent();
         String mFirebaseUrl = mCallingIntent.getStringExtra("firebaseUrl");
         if (mFirebaseUrl != null && !mFirebaseUrl.isEmpty()) {
-            customTabsIntent.launchUrl(this, Uri.parse(mFirebaseUrl));
+            mCustomTabsIntent.launchUrl(this, Uri.parse(mFirebaseUrl));
         }
 
         // Welcome dialog
@@ -200,8 +200,8 @@ public class MainActivity extends AppCompatActivity
         setupNavHeader();
 
         // Refresh home cards if sth changed
-        boolean hasEventsStatusChanged = showEventsCard;
-        boolean hasMarksStatusChanged = showMarksCard;
+        boolean hasEventsStatusChanged = isEventCardShown;
+        boolean hasMarksStatusChanged = isMarksCardShown;
 
         loadEvents();
 
@@ -209,8 +209,8 @@ public class MainActivity extends AppCompatActivity
             loadMarks();
         }
 
-        if (hasEventsStatusChanged != showEventsCard ||
-                hasMarksStatusChanged != showMarksCard) {
+        if (hasEventsStatusChanged != isEventCardShown ||
+                hasMarksStatusChanged != isMarksCardShown) {
             // Events or Suggestions card status has changed
             populateCards();
         }
@@ -222,53 +222,53 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        int menuVal = 0;
+    public boolean onNavigationItemSelected(@NonNull MenuItem mItem) {
+        int mId = mItem.getItemId();
+        int mMenuVal = 0;
 
-        switch (id) {
+        switch (mId) {
             case R.id.nav_my_marks:
-                menuVal = 1;
-                Intent intent = new Intent(this, MarkListActivity.class);
-                startActivity(intent);
+                mMenuVal = 1;
+                Intent mMarksIntent = new Intent(this, MarkListActivity.class);
+                startActivity(mMarksIntent);
                 break;
             case R.id.nav_calendar:
-                menuVal = 2;
-                Intent i = new Intent(this, EventListActivity.class);
-                startActivity(i);
+                mMenuVal = 2;
+                Intent mEventsIntent = new Intent(this, EventListActivity.class);
+                startActivity(mEventsIntent);
                 break;
             case R.id.nav_news:
-                menuVal = 3;
+                mMenuVal = 3;
                 Intent mNewsIntent = new Intent(this, NewsListActivity.class);
                 startActivity(mNewsIntent);
                 break;
             case R.id.nav_website:
-                menuVal = 4;
+                mMenuVal = 4;
                 showWebViewUI(0);
                 break;
             case R.id.nav_reg:
-                menuVal = 5;
+                mMenuVal = 5;
                 showWebViewUI(1);
                 break;
             case R.id.nav_moodle:
-                menuVal = 6;
+                mMenuVal = 6;
                 showWebViewUI(2);
                 break;
             case R.id.nav_copyboox:
-                menuVal = 7;
+                mMenuVal = 7;
                 showWebViewUI(3);
                 break;
             case R.id.nav_teacherzone:
-                menuVal = 8;
+                mMenuVal = 8;
                 showWebViewUI(4);
                 break;
             case R.id.nav_settings:
-                menuVal = 9;
+                mMenuVal = 9;
                 Intent settingsIntent = new Intent(this, SettingsActivity.class);
                 startActivity(settingsIntent);
                 break;
             case R.id.nav_safe:
-                menuVal = 10;
+                mMenuVal = 10;
                 Intent safeIntent = new Intent(this, SafeActivity.class);
                 startActivity(safeIntent);
                 break;
@@ -276,14 +276,14 @@ public class MainActivity extends AppCompatActivity
 
         if (isAnalyticsEnabled) {
             // Track this action
-            Bundle bundle = new Bundle();
-            bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Drawer Item");
-            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, String.valueOf(menuVal));
-            mBoldAnalytics.sendEvent(bundle);
+            Bundle mBundle = new Bundle();
+            mBundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Drawer Item");
+            mBundle.putString(FirebaseAnalytics.Param.ITEM_NAME, String.valueOf(mMenuVal));
+            mBoldAnalytics.sendEvent(mBundle);
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        DrawerLayout mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -291,160 +291,160 @@ public class MainActivity extends AppCompatActivity
      * @return content for notification
      */
     public static String getTomorrowInfo() {
-        String content = null;
-        boolean firstElement = true;
+        String mContent = null;
+        boolean isFirstElement = true;
 
-        int icon;
-        int test = 0;
-        int atSchool = 0;
-        int birthday = 0;
-        int homework = 0;
-        int reminder = 0;
-        int hangout = 0;
-        int other = 0;
+        int mIcon;
+        int mTest = 0;
+        int mAtSchool = 0;
+        int mBirthday = 0;
+        int mHomework = 0;
+        int mReminder = 0;
+        int mHangout = 0;
+        int mOther = 0;
 
         // Use realm instead of RealmController to avoid NPE when onBoot intent is broadcast'ed
-        List<Event> events = Realm.getInstance(BoldApp.getAppRealmConfiguration())
+        List<Event> mEvents = Realm.getInstance(BoldApp.getAppRealmConfiguration())
                 .where(Event.class).findAllSorted("date", Sort.DESCENDING);
 
-        List<Event> tomorrowEvents = new ArrayList<>();
+        List<Event> mUpcomingEvents = new ArrayList<>();
 
         // Create tomorrow events list
-        for (Event event : events) {
-            if (Utils.getToday().equals(event.getDate())) {
-                tomorrowEvents.add(event);
+        for (Event mEvent : mEvents) {
+            if (Utils.getToday().equals(mEvent.getDate())) {
+                mUpcomingEvents.add(mEvent);
             }
         }
 
-        if (tomorrowEvents.isEmpty()) {
+        if (mUpcomingEvents.isEmpty()) {
             return null;
         }
 
         // Get data
-        for (Event event : tomorrowEvents) {
-            icon = event.getIcon();
-            switch (icon) {
+        for (Event mEvent : mUpcomingEvents) {
+            mIcon = mEvent.getIcon();
+            switch (mIcon) {
                 case 0:
-                    test++;
+                    mTest++;
                     break;
                 case 1:
-                    atSchool++;
+                    mAtSchool++;
                     break;
                 case 2:
-                    birthday++;
+                    mBirthday++;
                     break;
                 case 3:
-                    homework++;
+                    mHomework++;
                     break;
                 case 4:
-                    reminder++;
+                    mReminder++;
                     break;
                 case 5:
-                    hangout++;
+                    mHangout++;
                     break;
                 case 6:
-                    other++;
+                    mOther++;
                     break;
             }
         }
 
         // Test
-        if (test > 0) {
+        if (mTest > 0) {
             // First element
-            content = res.getQuantityString(R.plurals.notification_message_first, test, test)
-                    + " " + res.getQuantityString(R.plurals.notification_test, test, test);
-            firstElement = false;
+            mContent = sRes.getQuantityString(R.plurals.notification_message_first, mTest, mTest)
+                    + " " + sRes.getQuantityString(R.plurals.notification_test, mTest, mTest);
+            isFirstElement = false;
         }
 
         // School
-        if (atSchool > 0) {
-            if (firstElement) {
-                content = res.getQuantityString(R.plurals.notification_message_first,
-                        atSchool, atSchool) + " ";
-                firstElement = false;
+        if (mAtSchool > 0) {
+            if (isFirstElement) {
+                mContent = sRes.getQuantityString(R.plurals.notification_message_first,
+                        mAtSchool, mAtSchool) + " ";
+                isFirstElement = false;
             } else {
-                content += birthday == 0 && hangout == 0 && other == 0 ? " " +
-                        String.format(res.getString(R.string.notification_message_half), atSchool) :
-                        String.format(res.getString(R.string.notification_message_half), atSchool);
+                mContent += mBirthday == 0 && mHangout == 0 && mOther == 0 ? " " +
+                        String.format(sRes.getString(R.string.notification_message_half), mAtSchool) :
+                        String.format(sRes.getString(R.string.notification_message_half), mAtSchool);
             }
-            content += " " + res.getQuantityString(R.plurals.notification_school,
-                    atSchool, atSchool);
+            mContent += " " + sRes.getQuantityString(R.plurals.notification_school,
+                    mAtSchool, mAtSchool);
         }
 
         // Birthday
-        if (birthday > 0) {
-            if (firstElement) {
-                content = res.getQuantityString(R.plurals.notification_message_first,
-                        birthday, birthday) + " ";
-                firstElement = false;
+        if (mBirthday > 0) {
+            if (isFirstElement) {
+                mContent = sRes.getQuantityString(R.plurals.notification_message_first,
+                        mBirthday, mBirthday) + " ";
+                isFirstElement = false;
             } else {
-                content += String.format(res.getString(R.string.notification_message_half),
-                        birthday);
+                mContent += String.format(sRes.getString(R.string.notification_message_half),
+                        mBirthday);
             }
-            content += " " + res.getQuantityString(R.plurals.notification_birthday,
-                    birthday, birthday);
+            mContent += " " + sRes.getQuantityString(R.plurals.notification_birthday,
+                    mBirthday, mBirthday);
         }
 
         // Homework
-        if (homework > 0) {
-            if (firstElement) {
-                content = res.getQuantityString(R.plurals.notification_message_first,
-                        homework, homework) + " ";
-                firstElement = false;
+        if (mHomework > 0) {
+            if (isFirstElement) {
+                mContent = sRes.getQuantityString(R.plurals.notification_message_first,
+                        mHomework, mHomework) + " ";
+                isFirstElement = false;
             } else {
-                content += String.format(res.getString(R.string.notification_message_half),
-                        homework);
+                mContent += String.format(sRes.getString(R.string.notification_message_half),
+                        mHomework);
             }
 
-            content += " " + res.getQuantityString(R.plurals.notification_homework,
-                    homework, homework);
+            mContent += " " + sRes.getQuantityString(R.plurals.notification_homework,
+                    mHomework, mHomework);
         }
 
         // Reminder
-        if (reminder > 0) {
-            if (firstElement) {
-                content = res.getQuantityString(R.plurals.notification_message_first,
-                        reminder, reminder) + " ";
-                firstElement = false;
+        if (mReminder > 0) {
+            if (isFirstElement) {
+                mContent = sRes.getQuantityString(R.plurals.notification_message_first,
+                        mReminder, mReminder) + " ";
+                isFirstElement = false;
             } else {
-                content += String.format(res.getString(R.string.notification_message_half),
-                        reminder);
+                mContent += String.format(sRes.getString(R.string.notification_message_half),
+                        mReminder);
             }
-            content += " " + res.getQuantityString(R.plurals.notification_reminder,
-                    reminder, reminder);
+            mContent += " " + sRes.getQuantityString(R.plurals.notification_reminder,
+                    mReminder, mReminder);
         }
 
         // Hangout
-        if (hangout > 0) {
-            if (firstElement) {
-                content = res.getQuantityString(R.plurals.notification_message_first,
-                        hangout, hangout) + " ";
-                firstElement = false;
+        if (mHangout > 0) {
+            if (isFirstElement) {
+                mContent = sRes.getQuantityString(R.plurals.notification_message_first,
+                        mHangout, mHangout) + " ";
+                isFirstElement = false;
             } else {
-                content += String.format(res.getString(R.string.notification_message_half),
-                        atSchool);
+                mContent += String.format(sRes.getString(R.string.notification_message_half),
+                        mAtSchool);
             }
-            content += " " + res.getQuantityString(R.plurals.notification_meeting,
-                    hangout, hangout);
+            mContent += " " + sRes.getQuantityString(R.plurals.notification_meeting,
+                    mHangout, mHangout);
         }
 
         // Other
-        if (other > 0) {
-            if (firstElement) {
-                content = res.getQuantityString(R.plurals.notification_message_first,
-                        other, other);
-                content += " ";
+        if (mOther > 0) {
+            if (isFirstElement) {
+                mContent = sRes.getQuantityString(R.plurals.notification_message_first,
+                        mOther, mOther);
+                mContent += " ";
             } else {
-                content += String.format(res.getString(R.string.notification_message_half),
-                        other);
+                mContent += String.format(sRes.getString(R.string.notification_message_half),
+                        mOther);
             }
-            content += " " + res.getQuantityString(R.plurals.notification_other,
-                    other, other);
+            mContent += " " + sRes.getQuantityString(R.plurals.notification_other,
+                    mOther, mOther);
         }
 
-        content += " " + res.getString(R.string.notification_message_end);
+        mContent += " " + sRes.getString(R.string.notification_message_end);
 
-        return content;
+        return mContent;
     }
 
     /**
@@ -456,39 +456,39 @@ public class MainActivity extends AppCompatActivity
             sContext = BoldApp.getBoldContext();
         }
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, c.get(Calendar.YEAR));
-        calendar.set(Calendar.MONTH, c.get(Calendar.MONTH));
-        calendar.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH));
+        Calendar mCalendar = Calendar.getInstance();
+        mCalendar.set(Calendar.YEAR, sCal.get(Calendar.YEAR));
+        mCalendar.set(Calendar.MONTH, sCal.get(Calendar.MONTH));
+        mCalendar.set(Calendar.DAY_OF_MONTH, sCal.get(Calendar.DAY_OF_MONTH));
 
         switch (Utils.getEventsNotificationTime(sContext)) {
             case "0":
-                if (calendar.get(Calendar.HOUR_OF_DAY) >= 6) {
+                if (mCalendar.get(Calendar.HOUR_OF_DAY) >= 6) {
                     // If it's too late for today's notification, plan one for tomorrow
-                    calendar.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH) + 1);
+                    mCalendar.set(Calendar.DAY_OF_MONTH, sCal.get(Calendar.DAY_OF_MONTH) + 1);
                 }
-                calendar.set(Calendar.HOUR_OF_DAY, 6);
+                mCalendar.set(Calendar.HOUR_OF_DAY, 6);
                 break;
             case "1":
-                if (calendar.get(Calendar.HOUR_OF_DAY) >= 15) {
+                if (mCalendar.get(Calendar.HOUR_OF_DAY) >= 15) {
                     // If it's too late for today's notification, plan one for tomorrow
-                    calendar.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH) + 1);
+                    mCalendar.set(Calendar.DAY_OF_MONTH, sCal.get(Calendar.DAY_OF_MONTH) + 1);
                 }
-                calendar.set(Calendar.HOUR_OF_DAY, 15);
+                mCalendar.set(Calendar.HOUR_OF_DAY, 15);
                 break;
             case "2":
-                if (calendar.get(Calendar.HOUR_OF_DAY) >= 21) {
+                if (mCalendar.get(Calendar.HOUR_OF_DAY) >= 21) {
                     // If it's too late for today's notification, plan one for tomorrow
-                    calendar.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH) + 1);
+                    mCalendar.set(Calendar.DAY_OF_MONTH, sCal.get(Calendar.DAY_OF_MONTH) + 1);
                 }
-                calendar.set(Calendar.HOUR_OF_DAY, 21);
+                mCalendar.set(Calendar.HOUR_OF_DAY, 21);
                 break;
         }
 
-        Intent intent = new Intent(sContext, AlarmService.class);
-        AlarmManager alarmManager = (AlarmManager) sContext.getSystemService(ALARM_SERVICE);
-        PendingIntent pendingIntent = PendingIntent.getService(sContext, 0, intent, 0);
-        alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+        Intent mNotifIntent = new Intent(sContext, AlarmService.class);
+        AlarmManager mAlarmManager = (AlarmManager) sContext.getSystemService(ALARM_SERVICE);
+        PendingIntent mPendingIntent = PendingIntent.getService(sContext, 0, mNotifIntent, 0);
+        mAlarmManager.set(AlarmManager.RTC, mCalendar.getTimeInMillis(), mPendingIntent);
     }
 
     /**
@@ -514,7 +514,7 @@ public class MainActivity extends AppCompatActivity
         CustomTabsClient.bindCustomTabsService(sContext, "com.android.chrome",
                 mCustomTabsServiceConnection);
 
-        customTabsIntent = new CustomTabsIntent.Builder(mCustomTabsSession)
+        mCustomTabsIntent = new CustomTabsIntent.Builder(mCustomTabsSession)
                 .setToolbarColor(ContextCompat.getColor(this, R.color.colorPrimary))
                 .setShowTitle(true)
                 .setStartAnimations(this,
@@ -532,10 +532,10 @@ public class MainActivity extends AppCompatActivity
      * If there's no chrome / chromium 46+ it will
      * just open the browser
      *
-     * @param index: the selected item from the nav drawer menu
+     * @param mIndex: the selected item from the nav drawer menu
      */
-    private void showWebViewUI(int index) {
-        switch (index) {
+    private void showWebViewUI(int mIndex) {
+        switch (mIndex) {
             case -1:
                 mUrl = getString(R.string.config_url_changelog);
                 break;
@@ -558,7 +558,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         if (mUrl != null) {
-            customTabsIntent.launchUrl(this, Uri.parse(mUrl));
+            mCustomTabsIntent.launchUrl(this, Uri.parse(mUrl));
         }
     }
 
@@ -569,29 +569,29 @@ public class MainActivity extends AppCompatActivity
      * the user there are more events
      */
     private void loadEvents() {
-        int i = 0;
-        int c = 0;
+        int mShownCounter = 0;
+        int mTotalCounter = 0;
 
         // Show closest events first
-        List<Event> events = controller.getAllEventsInverted();
-        showEventsCard = false;
+        List<Event> events = sController.getAllEventsInverted();
+        isEventCardShown = false;
 
         for (Event eventInList : events) {
             if (isThisWeek(eventInList.getDate())) {
-                showEventsCard = true;
-                if (i < 3) {
-                    mEventTitles[i].setText(eventInList.getTitle());
-                    mEventDates[i].setText(eventInList.getDate());
-                    mEventLayouts[i].setVisibility(View.VISIBLE);
-                    i++;
+                isEventCardShown = true;
+                if (mShownCounter < 3) {
+                    mEventTitles[mShownCounter].setText(eventInList.getTitle());
+                    mEventDates[mShownCounter].setText(eventInList.getDate());
+                    mEventLayouts[mShownCounter].setVisibility(View.VISIBLE);
+                    mShownCounter++;
                 }
-                c++;
+                mTotalCounter++;
             }
         }
 
-        if (c > i) {
+        if (mTotalCounter > mShownCounter) {
             mMoreEventsButton.setVisibility(View.VISIBLE);
-            mMoreEventsButton.setText(res.getQuantityString(R.plurals.more_events, i, i));
+            mMoreEventsButton.setText(sRes.getQuantityString(R.plurals.more_events, mShownCounter, mShownCounter));
         }
     }
 
@@ -602,32 +602,32 @@ public class MainActivity extends AppCompatActivity
      * @return true if it's within 7 days, false if not
      */
     private boolean isThisWeek(String stringDate) {
-        Calendar dateCalendar = Calendar.getInstance();
-        dateCalendar.setTimeInMillis(Utils.stringToDate(stringDate).getTime());
+        Calendar mCalendar = Calendar.getInstance();
+        mCalendar.setTimeInMillis(Utils.stringToDate(stringDate).getTime());
 
-        int diff = dateCalendar.get(Calendar.DAY_OF_YEAR) - c.get(Calendar.DAY_OF_YEAR);
+        int mDiff = mCalendar.get(Calendar.DAY_OF_YEAR) - sCal.get(Calendar.DAY_OF_YEAR);
 
-        return c.get(Calendar.YEAR) == dateCalendar.get(Calendar.YEAR) && diff >= 0 && diff < 8;
+        return sCal.get(Calendar.YEAR) == mCalendar.get(Calendar.YEAR) && mDiff >= 0 && mDiff < 8;
     }
 
     /**
      * Show the 3 lastest added marks
      */
     private void loadMarks() {
-        List<Mark> marks = controller.getAllMarks().sort("date", Sort.DESCENDING);
-        int i = 0;
+        List<Mark> mMarks = sController.getAllMarks().sort("date", Sort.DESCENDING);
+        int mCounter = 0;
 
-        if (!marks.isEmpty()) {
-            showMarksCard = true;
-            for (Mark mark : marks) {
+        if (!mMarks.isEmpty()) {
+            isMarksCardShown = true;
+            for (Mark mMark : mMarks) {
 
-                if (i == 3) {
+                if (mCounter == 3) {
                     break;
                 }
-                mMarksTitles[i].setText(mark.getTitle() + ": " + ((double) mark.getValue() / 100));
-                mMarksDates[i].setText(mark.getDate());
-                mMarksLayouts[i].setVisibility(View.VISIBLE);
-                i++;
+                mMarksTitles[mCounter].setText(mMark.getTitle() + ": " + ((double) mMark.getValue() / 100));
+                mMarksDates[mCounter].setText(mMark.getDate());
+                mMarksLayouts[mCounter].setVisibility(View.VISIBLE);
+                mCounter++;
             }
         }
     }
@@ -638,10 +638,10 @@ public class MainActivity extends AppCompatActivity
      */
     private void loadSuggestion() {
         if (Utils.hasSuggestions(this)) {
-            showSuggestionCard = true;
+            isNewsCardShown = true;
             mSuggestionText.setText(getSuggestion());
         } else {
-            showSuggestionCard = false;
+            isNewsCardShown = false;
         }
     }
 
@@ -652,8 +652,8 @@ public class MainActivity extends AppCompatActivity
      * @return string with text for suggestion card
      */
     private String getSuggestion() {
-        Random random = new SecureRandom();
-        switch (random.nextInt(10) + 1) {
+        Random mRandom = new SecureRandom();
+        switch (mRandom.nextInt(10) + 1) {
             case 1:
                 return getString(Utils.hasSafe(this) ?
                         R.string.suggestion_safe_pwd : R.string.suggestion_safe);
@@ -684,7 +684,7 @@ public class MainActivity extends AppCompatActivity
      * a nice enter effect
      */
     private void populateCards() {
-        int delay = 50;
+        int mDelay = 50;
         mEventsCard.setVisibility(View.GONE);
         mMarksCard.setVisibility(View.GONE);
         mSuggestionCard.setVisibility(View.GONE);
@@ -692,30 +692,30 @@ public class MainActivity extends AppCompatActivity
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (showEventsCard) {
+                if (isEventCardShown) {
                     mEventsCard.setVisibility(View.VISIBLE);
                     mEventsCardSeparatorView.setVisibility(View.VISIBLE);
                 }
             }
-        }, delay = delay + 20);
+        }, mDelay = mDelay + 20);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (showMarksCard) {
+                if (isMarksCardShown) {
                     mMarksCard.setVisibility(View.VISIBLE);
                     mMarksCardSeparatorView.setVisibility(View.VISIBLE);
                 }
             }
-        }, delay = delay + 20);
+        }, mDelay = mDelay + 20);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (showSuggestionCard) {
+                if (isNewsCardShown) {
                     mSuggestionCard.setVisibility(View.VISIBLE);
                     mSuggestionCardSeparatorView.setVisibility(View.VISIBLE);
                 }
             }
-        }, delay + 20);
+        }, mDelay + 20);
     }
 
     /**
@@ -723,8 +723,8 @@ public class MainActivity extends AppCompatActivity
      * if it's the first time we fire the app
      */
     private void showIntroIfNeeded() {
-        SharedPreferences prefs = getSharedPreferences("HomePrefs", MODE_PRIVATE);
-        if (!prefs.getBoolean("introKey", false)) {
+        SharedPreferences mPrefs = getSharedPreferences("HomePrefs", MODE_PRIVATE);
+        if (!mPrefs.getBoolean("introKey", false)) {
             Intent mIntent = new Intent(this, BenefitsActivity.class);
             startActivity(mIntent);
             finish();
@@ -735,18 +735,18 @@ public class MainActivity extends AppCompatActivity
      * Show welcome / changelog dialog
      * when the app is installed / updated
      *
-     * @param context: used to get SharedPreferences
+     * @param mContext: used to get SharedPreferences
      */
-    private void showWelcomeIfNeeded(final Context context) {
-        final SharedPreferences prefs = getSharedPreferences("HomePrefs", MODE_PRIVATE);
+    private void showWelcomeIfNeeded(final Context mContext) {
+        final SharedPreferences mPrefs = getSharedPreferences("HomePrefs", MODE_PRIVATE);
 
-        if (!prefs.getBoolean("introKey", false)) {
+        if (!mPrefs.getBoolean("introKey", false)) {
             // If we're showing intro, don't display dialog
             return;
         }
 
         @SuppressLint("CommitPrefEdits")
-        final SharedPreferences.Editor editor =
+        final SharedPreferences.Editor mEditor =
                 getSharedPreferences("HomePrefs", MODE_PRIVATE).edit();
 
         switch (Utils.appVersionKey(this)) {
@@ -755,13 +755,13 @@ public class MainActivity extends AppCompatActivity
             case "0":
                 // Used for feature discovery
                 final String today = Utils.getToday();
-                editor.putString("appVersionKey", APP_VERSION).apply();
-                editor.putString("initialDayKey", today).apply();
+                mEditor.putString("appVersionKey", APP_VERSION).apply();
+                mEditor.putString("initialDayKey", today).apply();
                 break;
             default:
-                new MaterialDialog.Builder(context)
-                        .title(getString(R.string.dialog_updated_title))
-                        .content(getString(R.string.dialog_updated_content))
+                new MaterialDialog.Builder(mContext)
+                        .title(R.string.dialog_updated_title)
+                        .content(R.string.dialog_updated_content)
                         .positiveText(android.R.string.ok)
                         .negativeText(R.string.dialog_updated_changelog)
                         .canceledOnTouchOutside(false)
@@ -769,7 +769,7 @@ public class MainActivity extends AppCompatActivity
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog,
                                                 @NonNull DialogAction which) {
-                                editor.putString("appVersionKey", APP_VERSION).apply();
+                                mEditor.putString("appVersionKey", APP_VERSION).apply();
                             }
                         })
                         .onNegative(new MaterialDialog.SingleButtonCallback() {
@@ -785,7 +785,7 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
 
-        if (prefs.getBoolean("drawerIntro", true)) {
+        if (mPrefs.getBoolean("drawerIntro", true)) {
             final Activity mActivity = this;
             String[] mAddresses = new String[] {
                     getString(R.string.pref_address_1),
@@ -796,7 +796,7 @@ public class MainActivity extends AppCompatActivity
                     getString(R.string.pref_address_teacher)
             };
 
-            new MaterialDialog.Builder(context)
+            new MaterialDialog.Builder(mContext)
                     .title(R.string.pref_address_dialog)
                     .items((CharSequence[]) mAddresses)
                     .canceledOnTouchOutside(false)
@@ -808,16 +808,16 @@ public class MainActivity extends AppCompatActivity
                                                    int which, CharSequence text) {
                         boolean isAddressValid = which != -1;
                             if (which == 5) {
-                                Utils.setTeacherMode(context);
+                                Utils.setTeacherMode(mContext);
                             } else if (isAddressValid){
-                                Utils.setAddress(context, String.valueOf(which + 1));
+                                Utils.setAddress(mContext, String.valueOf(which + 1));
                             }
                             if (isAddressValid) {
                                 setupNavHeader();
                                 dialog.dismiss();
-                                prefs.edit().putBoolean("drawerIntro", false).apply();
+                                mPrefs.edit().putBoolean("drawerIntro", false).apply();
                                 new MaterialTapTargetPrompt.Builder(mActivity)
-                                        .setTarget(toolbar.getChildAt(1))
+                                        .setTarget(mToolbar.getChildAt(1))
                                         .setPrimaryText(getString(R.string.intro_drawer_title))
                                         .setSecondaryText(getString(R.string.intro_drawer))
                                         .setBackgroundColourFromRes(R.color.colorAccentDark)
@@ -840,7 +840,7 @@ public class MainActivity extends AppCompatActivity
     private void setupNavHeader() {
         mUserName.setText(Utils.userNameKey(this));
 
-        if (Utils.hasApi21()) {
+        if (Utils.isLegacy()) {
             if (Utils.isTeacher(this)) {
                 mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_6));
             } else {

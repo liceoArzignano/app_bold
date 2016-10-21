@@ -13,7 +13,7 @@ public class BootReceiverService extends Service {
     }
 
     @Override
-    public IBinder onBind(Intent intent) {
+    public IBinder onBind(Intent mIntent) {
         return null;
     }
 }

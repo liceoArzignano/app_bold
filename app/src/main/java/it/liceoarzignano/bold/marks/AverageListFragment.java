@@ -25,24 +25,24 @@ import it.liceoarzignano.bold.ui.RecyclerTouchListener;
 
 public class AverageListFragment extends Fragment {
 
-    private static Resources res;
-    private static RealmController controller;
+    private static Resources sRes;
+    private static RealmController sController;
 
-    private static RecyclerView mAvgListview;
-    private static LinearLayout mHintLayout;
-    private static TextView mHint;
-    private static CircularProgressBar mProgressBar;
+    private static RecyclerView sAvgListview;
+    private static LinearLayout sHintLayout;
+    private static TextView sHint;
+    private static CircularProgressBar sProgressBar;
 
     public AverageListFragment() {
-        controller = RealmController.with(getActivity());
+        sController = RealmController.with(getActivity());
     }
 
-    static void refresh(Context context, final Pair<String, Integer> filter) {
-        if (mAvgListview != null) {
-            final String[] mResults = Utils.getAverageElements(filter.second);
+    static void refresh(Context mContext, final Pair<String, Integer> mFilter) {
+        if (sAvgListview != null) {
+            final String[] mResults = Utils.getAverageElements(mFilter.second);
 
-            final AverageAdapter mAdapter = new AverageAdapter(controller, mResults);
-            RecyclerView.LayoutManager mManager = new LinearLayoutManager(context);
+            final AverageAdapter mAdapter = new AverageAdapter(sController, mResults);
+            RecyclerView.LayoutManager mManager = new LinearLayoutManager(mContext);
             RecyclerClickListener mListener = new RecyclerClickListener() {
                 @Override
                 public void onClick(View mView, int mPosition) {
@@ -50,61 +50,62 @@ public class AverageListFragment extends Fragment {
                 }
             };
 
-            mAvgListview.setLayoutManager(mManager);
-            mAvgListview.setItemAnimator(new DefaultItemAnimator());
-            mAvgListview.addItemDecoration(new DividerDecoration(context));
-            mAvgListview.setAdapter(mAdapter);
-            mAvgListview.addOnItemTouchListener(new RecyclerTouchListener(context, mListener));
-            mAvgListview.setVisibility(filter.first != null ? View.GONE : View.VISIBLE);
+            sAvgListview.setLayoutManager(mManager);
+            sAvgListview.setItemAnimator(new DefaultItemAnimator());
+            sAvgListview.addItemDecoration(new DividerDecoration(mContext));
+            sAvgListview.setAdapter(mAdapter);
+            sAvgListview.addOnItemTouchListener(new RecyclerTouchListener(mContext, mListener));
+            sAvgListview.setVisibility(mFilter.first != null ? View.GONE : View.VISIBLE);
             mAdapter.notifyDataSetChanged();
         }
 
-        if (mHintLayout != null) {
-            if (filter.first != null) {
-                double avg = controller.getAverage(filter.first, filter.second);
-                double excepted = controller.whatShouldIGet(filter.first, filter.second);
-                setHint(context, avg, excepted);
-                mHintLayout.setVisibility(View.VISIBLE);
+        if (sHintLayout != null) {
+            if (mFilter.first != null) {
+                double avg = sController.getAverage(mFilter.first, mFilter.second);
+                double excepted = sController.whatShouldIGet(mFilter.first, mFilter.second);
+                setHint(mContext, avg, excepted);
+                sHintLayout.setVisibility(View.VISIBLE);
             } else {
-                mHintLayout.setVisibility(View.GONE);
+                sHintLayout.setVisibility(View.GONE);
             }
         }
     }
 
-    static void setHint(Context context, double avg, double excepted) {
-        String msg = res.getString(R.string.hint_content_common) + " " +
-                String.format(res.getString(excepted < 6 ? R.string.hint_content_above :
-                        R.string.hint_content_under), excepted);
-        mHint.setText(msg);
+    static void setHint(Context mContext, double mAvg, double mExcepted) {
+        String mMessage = sRes.getString(R.string.hint_content_common) + " " +
+                String.format(sRes.getString(mExcepted < 6 ? R.string.hint_content_above :
+                        R.string.hint_content_under), mExcepted);
+        sHint.setText(mMessage);
 
-        int colorAddress;
-        if (avg < 5.5) {
-             colorAddress = R.color.red;
-        } else if (avg < 6) {
-            colorAddress = R.color.yellow;
+        int mColor;
+
+        if (mAvg < 5.5) {
+             mColor = R.color.red;
+        } else if (mAvg < 6) {
+            mColor = R.color.yellow;
         } else {
-            colorAddress = R.color.green;
+            mColor = R.color.green;
         }
-        mProgressBar.setProgressColor(ContextCompat.getColor(context, colorAddress));
-        mProgressBar.setProgress(avg);
+        sProgressBar.setProgressColor(ContextCompat.getColor(mContext, mColor));
+        sProgressBar.setProgress(mAvg);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstance) {
-        Context context = container.getContext();
-        res = getResources();
+    public View onCreateView(LayoutInflater mInflater, ViewGroup mContainer,
+                             Bundle mSavedInstance) {
+        Context mContext = mContainer.getContext();
+        sRes = getResources();
 
-        View view = inflater.inflate(R.layout.fragment_mark_average, container, false);
+        View mView = mInflater.inflate(R.layout.fragment_mark_average, mContainer, false);
 
-        mAvgListview = (RecyclerView) view.findViewById(R.id.average_listView);
-        mHintLayout = (LinearLayout) view.findViewById(R.id.hint_layout);
-        mHint = (TextView) view.findViewById(R.id.avg_hint);
-        mProgressBar = (CircularProgressBar) view.findViewById(R.id.avg_value);
+        sAvgListview = (RecyclerView) mView.findViewById(R.id.average_listView);
+        sHintLayout = (LinearLayout) mView.findViewById(R.id.hint_layout);
+        sHint = (TextView) mView.findViewById(R.id.avg_hint);
+        sProgressBar = (CircularProgressBar) mView.findViewById(R.id.avg_value);
 
-        refresh(context, MarkListActivity.getSubjectFilter());
+        refresh(mContext, MarkListActivity.getsSubjectFilter());
 
-        return view;
+        return mView;
     }
 
 

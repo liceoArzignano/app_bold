@@ -26,7 +26,7 @@ import it.liceoarzignano.bold.ui.RecyclerTouchListener;
 public class EventListActivity extends AppCompatActivity {
 
     private static RecyclerView mEventList;
-    private static Context fContext;
+    private static Context sContext;
 
     /**
      * Update the RecyclerView content
@@ -61,12 +61,12 @@ public class EventListActivity extends AppCompatActivity {
      * @param id: event id
      */
     private static void viewEvent(long id) {
-        Intent editIntent = new Intent(fContext, ViewerActivity.class);
+        Intent mIntent = new Intent(sContext, ViewerActivity.class);
 
-        editIntent.putExtra("isMark", false);
-        editIntent.putExtra("id", id);
+        mIntent.putExtra("isMark", false);
+        mIntent.putExtra("id", id);
 
-        fContext.startActivity(editIntent);
+        sContext.startActivity(mIntent);
     }
 
     @Override
@@ -74,35 +74,35 @@ public class EventListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_list);
 
-        fContext = this;
+        sContext = this;
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         mEventList = (RecyclerView) findViewById(R.id.event_list);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton mFab = (FloatingActionButton) findViewById(R.id.fab);
+        mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(EventListActivity.this, ManagerActivity.class);
-                intent.putExtra("isMark", false);
-                startActivity(intent);
+                Intent mIntent = new Intent(EventListActivity.this, ManagerActivity.class);
+                mIntent.putExtra("isMark", false);
+                startActivity(mIntent);
             }
         });
 
-        refreshList(fContext);
-        Utils.animFabIntro(this, fab, getString(R.string.intro_fab_event_title),
+        refreshList(sContext);
+        Utils.animFabIntro(this, mFab, getString(R.string.intro_fab_event_title),
                 getString(R.string.intro_fab_event), "eventKey");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        refreshList(fContext);
+        refreshList(sContext);
     }
 
     @Override
