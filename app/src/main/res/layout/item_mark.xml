@@ -34,7 +34,7 @@
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/row_mark_notes"
+            android:id="@+id/row_mark_date"
             style="@android:style/TextAppearance.Small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

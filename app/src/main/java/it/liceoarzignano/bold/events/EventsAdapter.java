@@ -46,7 +46,7 @@ class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventHolder> {
             super(mView);
             mTitle = (TextView) mView.findViewById(R.id.row_event_title);
             mValue = (TextView) mView.findViewById(R.id.row_event_value);
-            mIcon = (ImageView) mView.findViewById(R.id.row_icon);
+            mIcon = (ImageView) mView.findViewById(R.id.row_event_icon);
         }
 
         void setData(Event mEvent) {

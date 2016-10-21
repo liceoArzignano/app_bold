@@ -130,18 +130,18 @@ public class ManagerActivity extends AppCompatActivity
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
-        mTitleLayout = (RelativeLayout) findViewById(R.id.title_layout);
-        mTitleInput = (EditText) findViewById(R.id.title_input);
-        mSubjectLayout = (RelativeLayout) findViewById(R.id.subject_layout);
-        mSubjectSelector = (TextView) findViewById(R.id.subjects_selector);
-        mNotesInput = (EditText) findViewById(R.id.notes_input);
-        mEventSpinnerLayout = (RelativeLayout) findViewById(R.id.event_spinner_layout);
-        mEventSpinner = (Spinner) findViewById(R.id.event_spinner);
-        mMarkValueLayout = (RelativeLayout) findViewById(R.id.mark_value_layout);
-        mMarkPreview = (TextView) findViewById(R.id.mark_preview);
-        mDatePickerLayout = (RelativeLayout) findViewById(R.id.date_layout);
-        mDatePicker = (TextView) findViewById(R.id.datepicker_button);
+        mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
+        mTitleLayout = (RelativeLayout) findViewById(R.id.manager_title_layout);
+        mTitleInput = (EditText) findViewById(R.id.manager_title_input);
+        mSubjectLayout = (RelativeLayout) findViewById(R.id.manager_subject_layout);
+        mSubjectSelector = (TextView) findViewById(R.id.manager_subjects_selector);
+        mNotesInput = (EditText) findViewById(R.id.manager_notes_input);
+        mEventSpinnerLayout = (RelativeLayout) findViewById(R.id.manager_event_spinner_layout);
+        mEventSpinner = (Spinner) findViewById(R.id.manager_event_spinner);
+        mMarkValueLayout = (RelativeLayout) findViewById(R.id.manager_mark_value_layout);
+        mMarkPreview = (TextView) findViewById(R.id.manager_mark_preview);
+        mDatePickerLayout = (RelativeLayout) findViewById(R.id.manager_date_layout);
+        mDatePicker = (TextView) findViewById(R.id.manager_datepicker_button);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
         setupFromIntent();
@@ -283,8 +283,8 @@ public class ManagerActivity extends AppCompatActivity
             LayoutInflater mInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
             ViewGroup mGroup = (ViewGroup) findViewById(R.id.dialog_root);
             final View mDialogLayout = mInflater.inflate(R.layout.dialog_seekbar, mGroup);
-            final TextView mPreview = (TextView) mDialogLayout.findViewById(R.id.value);
-            final SeekBar mSeekBar = (SeekBar) mDialogLayout.findViewById(R.id.seekBar);
+            final TextView mPreview = (TextView) mDialogLayout.findViewById(R.id.dialog_value);
+            final SeekBar mSeekBar = (SeekBar) mDialogLayout.findViewById(R.id.dialog_seekBar);
 
             mPreview.setText(editMode ? String.valueOf((double) value / 100) : "0.0");
             mSeekBar.setMax(40);

@@ -32,7 +32,7 @@ public class MarksListFragment extends Fragment {
                              Bundle savedInstance) {
         View view = inflater.inflate(R.layout.fragment_mark_marks, container, false);
 
-        mMarksListView = (RecyclerView) view.findViewById(R.id.mark_list_view);
+        mMarksListView = (RecyclerView) view.findViewById(R.id.mark_list);
 
         refreshList(getContext());
 

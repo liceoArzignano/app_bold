@@ -86,7 +86,7 @@ public class BackupActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+        mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
         mSummary = (TextView) findViewById(R.id.backup_summary);
         mBackupButton = (AppCompatButton) findViewById(R.id.backup_button);
         mRestoreButton = (AppCompatButton) findViewById(R.id.restore_button);

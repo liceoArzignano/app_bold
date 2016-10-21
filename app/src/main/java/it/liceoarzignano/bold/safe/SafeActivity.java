@@ -91,14 +91,14 @@ public class SafeActivity extends AppCompatActivity {
         prefs = getSharedPreferences(SAFE_PREFS, MODE_PRIVATE);
         editor = getSharedPreferences(SAFE_PREFS, MODE_PRIVATE).edit();
 
-        mLoadingLayout = (LinearLayout) findViewById(R.id.safe_loading);
-        mContentLayout = (LinearLayout) findViewById(R.id.safe_content);
+        mLoadingLayout = (LinearLayout) findViewById(R.id.safe_loading_layout);
+        mContentLayout = (LinearLayout) findViewById(R.id.safe_layout_content);
         mLoadingText = (TextView) findViewById(R.id.safe_loading_text);
-        mUserEdit = (EditText) findViewById(R.id.userNamePwd);
-        mRegEdit = (EditText) findViewById(R.id.regPwd);
-        mPcEdit = (EditText) findViewById(R.id.pcPwd);
-        mInternetEdit = (EditText) findViewById(R.id.internetPwd);
-        mImage = (ImageView) findViewById(R.id.safe_image);
+        mUserEdit = (EditText) findViewById(R.id.safe_username);
+        mRegEdit = (EditText) findViewById(R.id.safe_register);
+        mPcEdit = (EditText) findViewById(R.id.safe_pc);
+        mInternetEdit = (EditText) findViewById(R.id.safe_internet);
+        mImage = (ImageView) findViewById(R.id.safe_loading_image);
         mFab = (FloatingActionButton) findViewById(R.id.fab);
 
         mLoadingLayout.setVisibility(View.VISIBLE);

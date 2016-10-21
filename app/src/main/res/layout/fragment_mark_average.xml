@@ -23,12 +23,12 @@
         android:visibility="gone">
 
         <it.liceoarzignano.bold.ui.CircularProgressBar
-            android:id="@+id/value"
+            android:id="@+id/avg_value"
             android:layout_width="240dp"
             android:layout_height="240dp" />
 
         <TextView
-            android:id="@+id/hint"
+            android:id="@+id/avg_hint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="16dp"

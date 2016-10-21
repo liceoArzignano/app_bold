@@ -29,9 +29,9 @@ public class BenefitFragment extends Fragment {
         int position = getArguments().getInt("section_number");
         View view = inflater.inflate(R.layout.fragment_benefits_contents, container, false);
 
-        TextView mTitle = (TextView) view.findViewById(R.id.title);
-        TextView mDescription = (TextView) view.findViewById(R.id.message);
-        ImageView mImage = (ImageView) view.findViewById(R.id.section_img);
+        TextView mTitle = (TextView) view.findViewById(R.id.benefits_title);
+        TextView mDescription = (TextView) view.findViewById(R.id.benefits_message);
+        ImageView mImage = (ImageView) view.findViewById(R.id.benefits_img);
 
         switch (position) {
             case 1:

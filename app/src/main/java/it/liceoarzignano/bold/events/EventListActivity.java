@@ -82,7 +82,7 @@ public class EventListActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        mEventList = (RecyclerView) findViewById(R.id.event_list_view);
+        mEventList = (RecyclerView) findViewById(R.id.event_list);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

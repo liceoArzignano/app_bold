@@ -20,7 +20,7 @@
     <color name="viewer_title">#42000000</color>
     <color name="viewer_background">@color/viewerPrimaryDark</color>
 
-    <color name="home_background">#fafafa</color>
+    <color name="home_bg">#fafafa</color>
     <color name="text_secondary">#8a000000</color>
     <color name="list_divider">@color/grey</color>
 

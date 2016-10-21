@@ -32,7 +32,7 @@
 
 
             <LinearLayout
-                android:id="@+id/safe_loading"
+                android:id="@+id/safe_loading_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -42,7 +42,7 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <ImageView
-                    android:id="@+id/safe_image"
+                    android:id="@+id/safe_loading_image"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/safe_decrypt"
@@ -60,7 +60,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/safe_content"
+                android:id="@+id/safe_layout_content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -72,7 +72,7 @@
                     android:paddingTop="16dp">
 
                     <EditText
-                        android:id="@+id/userNamePwd"
+                        android:id="@+id/safe_username"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="start"
@@ -85,7 +85,7 @@
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:id="@+id/regPwd"
+                        android:id="@+id/safe_register"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="start"
@@ -98,7 +98,7 @@
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:id="@+id/pcPwd"
+                        android:id="@+id/safe_pc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="start"
@@ -111,7 +111,7 @@
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:id="@+id/internetPwd"
+                        android:id="@+id/safe_internet"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="start"

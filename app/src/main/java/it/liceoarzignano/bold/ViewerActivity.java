@@ -85,13 +85,13 @@ public class ViewerActivity extends AppCompatActivity {
             });
         }
 
-        mShare = (Button) findViewById(R.id.share);
-        mDelete = (Button) findViewById(R.id.delete);
-        mView = (Button) findViewById(R.id.more);
-        TextView mValue = (TextView) findViewById(R.id.value);
-        TextView mValueTitle = (TextView) findViewById(R.id.value_title);
-        TextView mDate = (TextView) findViewById(R.id.dates);
-        TextView mNotes = (TextView) findViewById(R.id.notes);
+        mShare = (Button) findViewById(R.id.viewer_btn_share);
+        mDelete = (Button) findViewById(R.id.viewer_btn_delete);
+        mView = (Button) findViewById(R.id.viewer_btn_more);
+        TextView mValue = (TextView) findViewById(R.id.viewer_value);
+        TextView mValueTitle = (TextView) findViewById(R.id.viewer_value_title);
+        TextView mDate = (TextView) findViewById(R.id.viewer_dates);
+        TextView mNotes = (TextView) findViewById(R.id.viewer_notes);
 
         mDate.setText(date);
         int value = isMark ? mark.getValue() : 0;

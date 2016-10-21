@@ -99,8 +99,8 @@ public class AverageListFragment extends Fragment {
 
         mAvgListview = (RecyclerView) view.findViewById(R.id.average_listView);
         mHintLayout = (LinearLayout) view.findViewById(R.id.hint_layout);
-        mHint = (TextView) view.findViewById(R.id.hint);
-        mProgressBar = (CircularProgressBar) view.findViewById(R.id.value);
+        mHint = (TextView) view.findViewById(R.id.avg_hint);
+        mProgressBar = (CircularProgressBar) view.findViewById(R.id.avg_value);
 
         refresh(context, MarkListActivity.getSubjectFilter());
 

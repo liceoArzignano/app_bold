@@ -125,23 +125,23 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
         View mHeaderView = navigationView.getHeaderView(0);
-        mUserName = (TextView) mHeaderView.findViewById(R.id.username_drawer);
-        mAddressLogo = (ImageView) mHeaderView.findViewById(R.id.address_logo);
+        mUserName = (TextView) mHeaderView.findViewById(R.id.header_username);
+        mAddressLogo = (ImageView) mHeaderView.findViewById(R.id.header_logo);
         setupNavHeader();
 
         // Events Card
-        mEventsCard = (CardView) findViewById(R.id.events_card);
-        mEventsCardSeparatorView = findViewById(R.id.events_separator);
-        mEventTitles[0] = (TextView) findViewById(R.id.events_title_1);
-        mEventTitles[1] = (TextView) findViewById(R.id.events_title_2);
-        mEventTitles[2] = (TextView) findViewById(R.id.events_title_3);
-        mEventDates[0] = (TextView) findViewById(R.id.events_sec_1);
-        mEventDates[1] = (TextView) findViewById(R.id.events_sec_2);
-        mEventDates[2] = (TextView) findViewById(R.id.events_sec_3);
-        mEventLayouts[0] = (LinearLayout) findViewById(R.id.events_layout_1);
-        mEventLayouts[1] = (LinearLayout) findViewById(R.id.events_layout_2);
-        mEventLayouts[2] = (LinearLayout) findViewById(R.id.events_layout_3);
-        mMoreEventsButton = (Button) findViewById(R.id.more_events_button);
+        mEventsCard = (CardView) findViewById(R.id.home_events_card);
+        mEventsCardSeparatorView = findViewById(R.id.home_events_title);
+        mEventTitles[0] = (TextView) findViewById(R.id.home_events_title_1);
+        mEventTitles[1] = (TextView) findViewById(R.id.home_events_title_2);
+        mEventTitles[2] = (TextView) findViewById(R.id.home_events_title_3);
+        mEventDates[0] = (TextView) findViewById(R.id.home_events_sec_1);
+        mEventDates[1] = (TextView) findViewById(R.id.home_events_sec_2);
+        mEventDates[2] = (TextView) findViewById(R.id.home_events_sec_3);
+        mEventLayouts[0] = (LinearLayout) findViewById(R.id.home_events_layout_1);
+        mEventLayouts[1] = (LinearLayout) findViewById(R.id.home_events_layout_2);
+        mEventLayouts[2] = (LinearLayout) findViewById(R.id.home_events_layout_3);
+        mMoreEventsButton = (Button) findViewById(R.id.home_events_button);
         mMoreEventsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,22 +151,22 @@ public class MainActivity extends AppCompatActivity
         });
 
         // Marks Card
-        mMarksCard = (CardView) findViewById(R.id.marks_card);
-        mMarksCardSeparatorView = findViewById(R.id.marks_separator);
-        mMarksTitles[0] = (TextView) findViewById(R.id.marks_title_1);
-        mMarksTitles[1] = (TextView) findViewById(R.id.marks_title_2);
-        mMarksTitles[2] = (TextView) findViewById(R.id.marks_title_3);
-        mMarksDates[0] = (TextView) findViewById(R.id.marks_sec_1);
-        mMarksDates[1] = (TextView) findViewById(R.id.marks_sec_2);
-        mMarksDates[2] = (TextView) findViewById(R.id.marks_sec_3);
-        mMarksLayouts[0] = (LinearLayout) findViewById(R.id.marks_layout1);
-        mMarksLayouts[1] = (LinearLayout) findViewById(R.id.marks_layout2);
-        mMarksLayouts[2] = (LinearLayout) findViewById(R.id.marks_layout3);
+        mMarksCard = (CardView) findViewById(R.id.home_marks_card);
+        mMarksCardSeparatorView = findViewById(R.id.home_marks_title);
+        mMarksTitles[0] = (TextView) findViewById(R.id.home_marks_title_1);
+        mMarksTitles[1] = (TextView) findViewById(R.id.home_marks_title_2);
+        mMarksTitles[2] = (TextView) findViewById(R.id.home_marks_title_3);
+        mMarksDates[0] = (TextView) findViewById(R.id.home_marks_sec_1);
+        mMarksDates[1] = (TextView) findViewById(R.id.home_marks_sec_2);
+        mMarksDates[2] = (TextView) findViewById(R.id.home_marks_sec_3);
+        mMarksLayouts[0] = (LinearLayout) findViewById(R.id.home_marks_layout_1);
+        mMarksLayouts[1] = (LinearLayout) findViewById(R.id.home_marks_layout_2);
+        mMarksLayouts[2] = (LinearLayout) findViewById(R.id.home_marks_layout_3);
 
         // Suggestions Card
-        mSuggestionCardSeparatorView = findViewById(R.id.suggestions_separator);
-        mSuggestionCard = (CardView) findViewById(R.id.suggestions_card);
-        mSuggestionText = (TextView) findViewById(R.id.suggestions_text);
+        mSuggestionCardSeparatorView = findViewById(R.id.home_suggestions_title);
+        mSuggestionCard = (CardView) findViewById(R.id.home_suggestions_card);
+        mSuggestionText = (TextView) findViewById(R.id.home_suggestions_text);
         loadSuggestion();
 
         // Chrome custom tabs

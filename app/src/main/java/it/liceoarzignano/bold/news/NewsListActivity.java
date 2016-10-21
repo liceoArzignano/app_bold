@@ -41,7 +41,7 @@ public class NewsListActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        mNewsList = (RecyclerView) findViewById(R.id.news_list_view);
+        mNewsList = (RecyclerView) findViewById(R.id.news_list);
 
         Intent mCallingIntent = getIntent();
         long mId = mCallingIntent.getLongExtra("newsId", -1);

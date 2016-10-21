@@ -11,13 +11,13 @@
     tools:ignore="Overdraw">
 
     <ImageView
-        android:id="@+id/address_logo"
+        android:id="@+id/header_logo"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:contentDescription="@string/accessibility_drawer" />
 
     <TextView
-        android:id="@+id/username_drawer"
+        android:id="@+id/header_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:maxLines="1"

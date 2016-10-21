@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/coordinatorLayout"
+    android:id="@+id/coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -34,7 +34,7 @@
 
                 <!-- Title -->
                 <RelativeLayout
-                    android:id="@+id/title_layout"
+                    android:id="@+id/manager_title_layout"
                     style="@style/AppTheme.EditorIcon"
                     android:layout_width="match_parent"
                     android:layout_height="48dp">
@@ -44,7 +44,7 @@
                         app:srcCompat="@drawable/ic_title" />
 
                     <EditText
-                        android:id="@+id/title_input"
+                        android:id="@+id/manager_title_input"
                         style="@style/AppTheme.EditorEditText"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
@@ -53,7 +53,7 @@
 
                 <!-- Subject picker -->
                 <RelativeLayout
-                    android:id="@+id/subject_layout"
+                    android:id="@+id/manager_subject_layout"
                     style="@style/AppTheme.EditorIcon"
                     android:layout_width="match_parent"
                     android:layout_height="48dp">
@@ -63,14 +63,14 @@
                         app:srcCompat="@drawable/ic_title" />
 
                     <TextView
-                        android:id="@+id/subjects_selector"
+                        android:id="@+id/manager_subjects_selector"
                         style="@style/AppTheme.EditorTextView"
                         android:text="@string/select_subject" />
                 </RelativeLayout>
 
                 <!-- Event category spinner -->
                 <RelativeLayout
-                    android:id="@+id/event_spinner_layout"
+                    android:id="@+id/manager_event_spinner_layout"
                     style="@style/AppTheme.EditorIcon"
                     android:layout_width="match_parent"
                     android:layout_height="48dp">
@@ -80,7 +80,7 @@
                         app:srcCompat="@drawable/ic_category" />
 
                     <Spinner
-                        android:id="@+id/event_spinner"
+                        android:id="@+id/manager_event_spinner"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="64dp" />
@@ -88,7 +88,7 @@
 
                 <!-- Mark value -->
                 <RelativeLayout
-                    android:id="@+id/mark_value_layout"
+                    android:id="@+id/manager_mark_value_layout"
                     style="@style/AppTheme.EditorIcon"
                     android:layout_width="match_parent"
                     android:layout_height="48dp">
@@ -98,7 +98,7 @@
                         app:srcCompat="@drawable/ic_trophy" />
 
                     <TextView
-                        android:id="@+id/mark_preview"
+                        android:id="@+id/manager_mark_preview"
                         style="@style/AppTheme.EditorTextView"
                         android:text="@string/default_mark" />
                 </RelativeLayout>
@@ -114,7 +114,7 @@
                         app:srcCompat="@drawable/ic_notes" />
 
                     <EditText
-                        android:id="@+id/notes_input"
+                        android:id="@+id/manager_notes_input"
                         style="@style/AppTheme.EditorEditText"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
@@ -124,7 +124,7 @@
 
                 <!-- Date picker -->
                 <RelativeLayout
-                    android:id="@+id/date_layout"
+                    android:id="@+id/manager_date_layout"
                     style="@style/AppTheme.EditorIcon"
                     android:layout_width="match_parent"
                     android:layout_height="48dp">
@@ -134,7 +134,7 @@
                         app:srcCompat="@drawable/ic_calendar" />
 
                     <TextView
-                        android:id="@+id/datepicker_button"
+                        android:id="@+id/manager_datepicker_button"
                         style="@style/AppTheme.EditorTextView" />
                 </RelativeLayout>
             </LinearLayout>

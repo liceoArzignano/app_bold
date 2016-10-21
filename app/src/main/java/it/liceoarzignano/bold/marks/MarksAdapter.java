@@ -47,7 +47,7 @@ class MarksAdapter extends RecyclerView.Adapter<MarksAdapter.MarkHolder> {
             super(mView);
             mTitle = (TextView) mView.findViewById(R.id.row_mark_title);
             mValue = (TextView) mView.findViewById(R.id.row_mark_value);
-            mDate = (TextView) mView.findViewById(R.id.row_mark_notes);
+            mDate = (TextView) mView.findViewById(R.id.row_mark_date);
         }
 
         void setData(Mark mMark) {
