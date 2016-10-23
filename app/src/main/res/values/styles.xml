@@ -30,20 +30,18 @@
     <style name="AppTheme.HomeCard">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:visibility">gone</item>
         <item name="android:orientation">vertical</item>
     </style>
     
     <style name="AppTheme.HomeTitle">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">48dp</item>
-        <item name="android:paddingTop">15dp</item>
+        <item name="android:layout_height">47dp</item>
+        <item name="android:paddingTop">14dp</item>
         <item name="android:paddingBottom">15dp</item>
         <item name="android:paddingLeft">16dp</item>
         <item name="android:paddingRight">16dp</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/text_secondary</item>
-        <item name="android:visibility">gone</item>
     </style>
 
     <style name="AppTheme.HomeCardContent">
@@ -61,6 +59,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">16sp</item>
+        <item name="android:visibility">gone</item>
     </style>
 
     <style name="AppTheme.HomeTextCardSecondary">

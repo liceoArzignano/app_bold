@@ -11,7 +11,6 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.customtabs.CustomTabsClient;
 import android.support.customtabs.CustomTabsIntent;
@@ -23,13 +22,13 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -48,6 +47,8 @@ import it.liceoarzignano.bold.events.AlarmService;
 import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.events.EventListActivity;
 import it.liceoarzignano.bold.firebase.BoldAnalytics;
+import it.liceoarzignano.bold.home.HomeAdapter;
+import it.liceoarzignano.bold.home.HomeCard;
 import it.liceoarzignano.bold.intro.BenefitsActivity;
 import it.liceoarzignano.bold.marks.Mark;
 import it.liceoarzignano.bold.marks.MarkListActivity;
@@ -55,6 +56,7 @@ import it.liceoarzignano.bold.news.NewsListActivity;
 import it.liceoarzignano.bold.realm.RealmController;
 import it.liceoarzignano.bold.safe.SafeActivity;
 import it.liceoarzignano.bold.settings.SettingsActivity;
+import it.liceoarzignano.bold.ui.DividerDecoration;
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 public class MainActivity extends AppCompatActivity
@@ -72,31 +74,13 @@ public class MainActivity extends AppCompatActivity
     private Toolbar mToolbar;
     private TextView mUserName;
     private ImageView mAddressLogo;
+    // Cards
+    private RecyclerView mCardsList;
     // Chrome custom tabs
     private CustomTabsClient mClient;
     private CustomTabsSession mCustomTabsSession;
     private CustomTabsIntent mCustomTabsIntent;
     private String mUrl;
-    // Event card
-    private View mEventsCardSeparatorView;
-    private CardView mEventsCard;
-    private final TextView[] mEventTitles = new TextView[3];
-    private final TextView[] mEventDates = new TextView[3];
-    private final LinearLayout[] mEventLayouts = new LinearLayout[3];
-    private Button mMoreEventsButton;
-    // Marks card
-    private View mMarksCardSeparatorView;
-    private CardView mMarksCard;
-    private final TextView[] mMarksTitles = new TextView[3];
-    private final TextView[] mMarksDates = new TextView[3];
-    private final LinearLayout[] mMarksLayouts = new LinearLayout[3];
-    // Suggestions card
-    private View mSuggestionCardSeparatorView;
-    private CardView mSuggestionCard;
-    private TextView mSuggestionText;
-    private boolean isEventCardShown;
-    private boolean isMarksCardShown;
-    private boolean isNewsCardShown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,47 +111,12 @@ public class MainActivity extends AppCompatActivity
         View mHeaderView = navigationView.getHeaderView(0);
         mUserName = (TextView) mHeaderView.findViewById(R.id.header_username);
         mAddressLogo = (ImageView) mHeaderView.findViewById(R.id.header_logo);
-        setupNavHeader();
 
-        // Events Card
-        mEventsCard = (CardView) findViewById(R.id.home_events_card);
-        mEventsCardSeparatorView = findViewById(R.id.home_events_title);
-        mEventTitles[0] = (TextView) findViewById(R.id.home_events_title_1);
-        mEventTitles[1] = (TextView) findViewById(R.id.home_events_title_2);
-        mEventTitles[2] = (TextView) findViewById(R.id.home_events_title_3);
-        mEventDates[0] = (TextView) findViewById(R.id.home_events_sec_1);
-        mEventDates[1] = (TextView) findViewById(R.id.home_events_sec_2);
-        mEventDates[2] = (TextView) findViewById(R.id.home_events_sec_3);
-        mEventLayouts[0] = (LinearLayout) findViewById(R.id.home_events_layout_1);
-        mEventLayouts[1] = (LinearLayout) findViewById(R.id.home_events_layout_2);
-        mEventLayouts[2] = (LinearLayout) findViewById(R.id.home_events_layout_3);
-        mMoreEventsButton = (Button) findViewById(R.id.home_events_button);
-        mMoreEventsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent eventIntent = new Intent(MainActivity.this, EventListActivity.class);
-                startActivity(eventIntent);
-            }
-        });
-
-        // Marks Card
-        mMarksCard = (CardView) findViewById(R.id.home_marks_card);
-        mMarksCardSeparatorView = findViewById(R.id.home_marks_title);
-        mMarksTitles[0] = (TextView) findViewById(R.id.home_marks_title_1);
-        mMarksTitles[1] = (TextView) findViewById(R.id.home_marks_title_2);
-        mMarksTitles[2] = (TextView) findViewById(R.id.home_marks_title_3);
-        mMarksDates[0] = (TextView) findViewById(R.id.home_marks_sec_1);
-        mMarksDates[1] = (TextView) findViewById(R.id.home_marks_sec_2);
-        mMarksDates[2] = (TextView) findViewById(R.id.home_marks_sec_3);
-        mMarksLayouts[0] = (LinearLayout) findViewById(R.id.home_marks_layout_1);
-        mMarksLayouts[1] = (LinearLayout) findViewById(R.id.home_marks_layout_2);
-        mMarksLayouts[2] = (LinearLayout) findViewById(R.id.home_marks_layout_3);
-
-        // Suggestions Card
-        mSuggestionCardSeparatorView = findViewById(R.id.home_suggestions_title);
-        mSuggestionCard = (CardView) findViewById(R.id.home_suggestions_card);
-        mSuggestionText = (TextView) findViewById(R.id.home_suggestions_text);
-        loadSuggestion();
+        // Cards List
+        mCardsList = (RecyclerView) findViewById(R.id.home_list);
+        mCardsList.setLayoutManager(new LinearLayoutManager(sContext));
+        mCardsList.setItemAnimator(new DefaultItemAnimator());
+        mCardsList.addItemDecoration(new DividerDecoration(sContext));
 
         // Chrome custom tabs
         setupCCustomTabs();
@@ -182,14 +131,10 @@ public class MainActivity extends AppCompatActivity
         // Welcome dialog
         showWelcomeIfNeeded(this);
 
-        // Show cards
-        populateCards();
-
         // Notification
         if (Utils.hasEventsNotification(sContext)) {
             makeEventNotification();
         }
-
     }
 
     @Override
@@ -199,21 +144,8 @@ public class MainActivity extends AppCompatActivity
         // Refresh Navigation Drawer header
         setupNavHeader();
 
-        // Refresh search cards if sth changed
-        boolean hasEventsStatusChanged = isEventCardShown;
-        boolean hasMarksStatusChanged = isMarksCardShown;
-
-        loadEvents();
-
-        if (Utils.hasUsedForMoreThanOneWeek(this)) {
-            loadMarks();
-        }
-
-        if (hasEventsStatusChanged != isEventCardShown ||
-                hasMarksStatusChanged != isMarksCardShown) {
-            // Events or Suggestions card status has changed
-            populateCards();
-        }
+        // Show cards
+        populateCards();
     }
 
     @Override
@@ -568,31 +500,40 @@ public class MainActivity extends AppCompatActivity
      * If there are more events a flat button will tell
      * the user there are more events
      */
-    private void loadEvents() {
-        int mShownCounter = 0;
-        int mTotalCounter = 0;
+    private HomeCard createEventsCard() {
+        HomeCard.Builder mBuilder = new HomeCard.Builder()
+                .setName(getString(R.string.upcoming_events));
 
-        // Show closest events first
-        List<Event> events = sController.getAllEventsInverted();
-        isEventCardShown = false;
-
-        for (Event eventInList : events) {
-            if (isThisWeek(eventInList.getDate())) {
-                isEventCardShown = true;
-                if (mShownCounter < 3) {
-                    mEventTitles[mShownCounter].setText(eventInList.getTitle());
-                    mEventDates[mShownCounter].setText(eventInList.getDate());
-                    mEventLayouts[mShownCounter].setVisibility(View.VISIBLE);
-                    mShownCounter++;
-                }
-                mTotalCounter++;
+        // Show 3 closest events
+        List<Event> mEvents = sController.getAllEventsInverted();
+        for (int mCounter = 0; mCounter < 3 && mCounter < mEvents.size(); mCounter++) {
+            Event mEvent = mEvents.get(mCounter);
+            if (isThisWeek(mEvent.getDate())) {
+                mBuilder.addEntry(mEvent.getTitle(), mEvent.getDate());
             }
         }
 
-        if (mTotalCounter > mShownCounter) {
-            mMoreEventsButton.setVisibility(View.VISIBLE);
-            mMoreEventsButton.setText(sRes.getQuantityString(R.plurals.more_events, mShownCounter, mShownCounter));
+        return mBuilder.build();
+    }
+
+    private HomeCard createMarksCard() {
+        HomeCard.Builder mBuilder = new HomeCard.Builder()
+                .setName(getString(R.string.lastest_marks));
+
+        List<Mark> mMarks = sController.getAllMarks().sort("date", Sort.DESCENDING);
+        for (int mCounter = 0; mCounter < 3 && mCounter < mMarks.size(); mCounter++) {
+            Mark mMark = mMarks.get(mCounter);
+            mBuilder.addEntry(mMark.getTitle(), String.valueOf((double) mMark.getValue() / 100));
         }
+
+        return mBuilder.build();
+    }
+
+    private HomeCard createSuggestionsCard() {
+        return new HomeCard.Builder()
+                .setName(getString(R.string.suggestions))
+                .addEntry("", getSuggestion())
+                .build();
     }
 
     /**
@@ -608,41 +549,6 @@ public class MainActivity extends AppCompatActivity
         int mDiff = mCalendar.get(Calendar.DAY_OF_YEAR) - sCal.get(Calendar.DAY_OF_YEAR);
 
         return sCal.get(Calendar.YEAR) == mCalendar.get(Calendar.YEAR) && mDiff >= 0 && mDiff < 8;
-    }
-
-    /**
-     * Show the 3 lastest added marks
-     */
-    private void loadMarks() {
-        List<Mark> mMarks = sController.getAllMarks().sort("date", Sort.DESCENDING);
-        int mCounter = 0;
-
-        if (!mMarks.isEmpty()) {
-            isMarksCardShown = true;
-            for (Mark mMark : mMarks) {
-
-                if (mCounter == 3) {
-                    break;
-                }
-                mMarksTitles[mCounter].setText(mMark.getTitle() + ": " + ((double) mMark.getValue() / 100));
-                mMarksDates[mCounter].setText(mMark.getDate());
-                mMarksLayouts[mCounter].setVisibility(View.VISIBLE);
-                mCounter++;
-            }
-        }
-    }
-
-    /**
-     * Show and set up suggestions card
-     * if user enabled it from settings
-     */
-    private void loadSuggestion() {
-        if (Utils.hasSuggestions(this)) {
-            isNewsCardShown = true;
-            mSuggestionText.setText(getSuggestion());
-        } else {
-            isNewsCardShown = false;
-        }
     }
 
     /**
@@ -684,38 +590,19 @@ public class MainActivity extends AppCompatActivity
      * a nice enter effect
      */
     private void populateCards() {
-        int mDelay = 50;
-        mEventsCard.setVisibility(View.GONE);
-        mMarksCard.setVisibility(View.GONE);
-        mSuggestionCard.setVisibility(View.GONE);
+        List<HomeCard> mCards = new ArrayList<>();
+        mCards.add(createEventsCard());
+        if (Utils.hasUsedForMoreThanOneWeek(sContext)) {
+            mCards.add(createMarksCard());
+        }
+        if (Utils.hasSuggestions(sContext)) {
+            mCards.add(createSuggestionsCard());
+        }
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (isEventCardShown) {
-                    mEventsCard.setVisibility(View.VISIBLE);
-                    mEventsCardSeparatorView.setVisibility(View.VISIBLE);
-                }
-            }
-        }, mDelay = mDelay + 20);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (isMarksCardShown) {
-                    mMarksCard.setVisibility(View.VISIBLE);
-                    mMarksCardSeparatorView.setVisibility(View.VISIBLE);
-                }
-            }
-        }, mDelay = mDelay + 20);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (isNewsCardShown) {
-                    mSuggestionCard.setVisibility(View.VISIBLE);
-                    mSuggestionCardSeparatorView.setVisibility(View.VISIBLE);
-                }
-            }
-        }, mDelay + 20);
+        HomeAdapter mAdapter = new HomeAdapter(mCards);
+        mCardsList.setAdapter(mAdapter);
+
+        mAdapter.notifyDataSetChanged();
     }
 
     /**

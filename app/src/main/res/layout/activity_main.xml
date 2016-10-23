@@ -51,166 +51,17 @@
             </android.support.design.widget.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>
 
-        <!-- Content view -->
-        <android.support.v4.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-            <LinearLayout
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/home_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:animateLayoutChanges="true"
                 android:background="@color/home_bg"
-                android:orientation="vertical"
                 android:paddingBottom="@dimen/activity_bottom_margin"
                 android:paddingLeft="@dimen/card_margin"
-                android:paddingRight="@dimen/card_margin">
-
-                <!-- Events -->
-                <TextView
-                    android:id="@+id/home_events_title"
-                    style="@style/AppTheme.HomeTitle"
-                    android:text="@string/upcoming_events" />
-
-                <android.support.v7.widget.CardView
-                    android:id="@+id/home_events_card"
-                    style="@style/AppTheme.HomeCard"
-                    app:cardCornerRadius="1dp"
-                    app:cardElevation="2dp">
-
-                    <LinearLayout
-                        style="@style/AppTheme.HomeCardContent">
-
-                        <LinearLayout
-                            android:id="@+id/home_events_layout_1"
-                            style="@style/AppTheme.HomeCardListLayout">
-
-                            <TextView
-                                android:id="@+id/home_events_title_1"
-                                style="@style/AppTheme.HomeTextCardTitle" />
-
-                            <TextView
-                                android:id="@+id/home_events_sec_1"
-                                style="@style/AppTheme.HomeTextCardSecondary" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/home_events_layout_2"
-                            style="@style/AppTheme.HomeCardListLayout">
-
-                            <TextView
-                                android:id="@+id/home_events_title_2"
-                                style="@style/AppTheme.HomeTextCardTitle" />
-
-                            <TextView
-                                android:id="@+id/home_events_sec_2"
-                                style="@style/AppTheme.HomeTextCardSecondary" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/home_events_layout_3"
-                            style="@style/AppTheme.HomeCardListLayout">
-
-                            <TextView
-                                android:id="@+id/home_events_title_3"
-                                style="@style/AppTheme.HomeTextCardTitle" />
-
-                            <TextView
-                                android:id="@+id/home_events_sec_3"
-                                style="@style/AppTheme.HomeTextCardSecondary" />
-                        </LinearLayout>
-
-                        <Button
-                            android:id="@+id/home_events_button"
-                            style="?android:attr/borderlessButtonStyle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="left"
-                            android:visibility="gone" />
-                    </LinearLayout>
-                </android.support.v7.widget.CardView>
-
-                <!-- Marks -->
-                <TextView
-                    android:id="@+id/home_marks_title"
-                    style="@style/AppTheme.HomeTitle"
-                    android:text="@string/lastest_marks" />
-
-                <android.support.v7.widget.CardView
-                    android:id="@+id/home_marks_card"
-                    style="@style/AppTheme.HomeCard"
-                    app:cardCornerRadius="1dp"
-                    app:cardElevation="2dp">
-
-                    <LinearLayout style="@style/AppTheme.HomeCardContent">
-
-                        <LinearLayout
-                            android:id="@+id/home_marks_layout_1"
-                            style="@style/AppTheme.HomeCardListLayout">
-
-                            <TextView
-                                android:id="@+id/home_marks_title_1"
-                                style="@style/AppTheme.HomeTextCardTitle" />
-
-                            <TextView
-                                android:id="@+id/home_marks_sec_1"
-                                style="@style/AppTheme.HomeTextCardSecondary" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/home_marks_layout_2"
-                            style="@style/AppTheme.HomeCardListLayout">
-
-                            <TextView
-                                android:id="@+id/home_marks_title_2"
-                                style="@style/AppTheme.HomeTextCardTitle" />
-
-                            <TextView
-                                android:id="@+id/home_marks_sec_2"
-                                style="@style/AppTheme.HomeTextCardSecondary" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/home_marks_layout_3"
-                            style="@style/AppTheme.HomeCardListLayout">
-
-                            <TextView
-                                android:id="@+id/home_marks_title_3"
-                                style="@style/AppTheme.HomeTextCardTitle" />
-
-                            <TextView
-                                android:id="@+id/home_marks_sec_3"
-                                style="@style/AppTheme.HomeTextCardSecondary" />
-                        </LinearLayout>
-                    </LinearLayout>
-                </android.support.v7.widget.CardView>
-
-                <!-- Suggestions -->
-                <TextView
-                    android:id="@+id/home_suggestions_title"
-                    style="@style/AppTheme.HomeTitle"
-                    android:text="@string/suggestions" />
-
-                <android.support.v7.widget.CardView
-                    android:id="@+id/home_suggestions_card"
-                    style="@style/AppTheme.HomeCard"
-                    app:cardCornerRadius="1dp"
-                    app:cardElevation="2dp">
-
-                    <LinearLayout style="@style/AppTheme.HomeCardContent">
-
-                        <TextView
-                            android:id="@+id/home_suggestions_text"
-                            style="@style/AppTheme.HomeTextCardSecondary" />
-                    </LinearLayout>
-                </android.support.v7.widget.CardView>
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="24dp" />
-            </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
+                android:paddingRight="@dimen/card_margin"
+                android:scrollbars="vertical"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
     </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.NavigationView
