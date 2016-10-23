@@ -1,16 +1,22 @@
 package it.liceoarzignano.bold.events;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -28,19 +34,29 @@ public class EventListActivity extends AppCompatActivity {
 
     private static RecyclerView sEventList;
     private static LinearLayout sEmptyLayout;
+    private static TextView sEmptyText;
     private static Context sContext;
+
+    private static String mQuery;
 
     /**
      * Update the RecyclerView content
      *
      * @param mContext: needed to reload database data
+     * @param mQuery: search query
      */
-    public static void refreshList(Context mContext) {
+    public static void refreshList(Context mContext, String mQuery) {
+        boolean hasQuery = mQuery != null && !mQuery.isEmpty();
+
         Realm mRealm = Realm.getInstance(BoldApp.getAppRealmConfiguration());
-        final RealmResults<Event> mEvents =
+        final RealmResults<Event> mEvents = hasQuery ?
+                mRealm.where(Event.class).contains("title", mQuery)
+                        .findAllSorted("date", Sort.DESCENDING) :
                 mRealm.where(Event.class).findAllSorted("date", Sort.DESCENDING);
 
         sEmptyLayout.setVisibility(mEvents.isEmpty() ? View.VISIBLE : View.GONE);
+        sEmptyText.setText(mContext.getString(hasQuery ?
+                R.string.search_no_result : R.string.events_empty));
 
         EventsAdapter mAdapter = new EventsAdapter(mEvents);
         RecyclerClickListener mListener = new RecyclerClickListener() {
@@ -50,9 +66,6 @@ public class EventListActivity extends AppCompatActivity {
             }
         };
 
-        sEventList.setLayoutManager(new LinearLayoutManager(mContext));
-        sEventList.setItemAnimator(new DefaultItemAnimator());
-        sEventList.addItemDecoration(new DividerDecoration(mContext));
         sEventList.setAdapter(mAdapter);
         sEventList.addOnItemTouchListener(new RecyclerTouchListener(mContext, mListener));
 
@@ -88,6 +101,7 @@ public class EventListActivity extends AppCompatActivity {
 
         sEventList = (RecyclerView) findViewById(R.id.event_list);
         sEmptyLayout = (LinearLayout) findViewById(R.id.event_empty_layout);
+        sEmptyText = (TextView) findViewById(R.id.events_empty_text);
 
         FloatingActionButton mFab = (FloatingActionButton) findViewById(R.id.fab);
         mFab.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +113,11 @@ public class EventListActivity extends AppCompatActivity {
             }
         });
 
-        refreshList(sContext);
+        sEventList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        sEventList.setItemAnimator(new DefaultItemAnimator());
+        sEventList.addItemDecoration(new DividerDecoration(getApplicationContext()));
+
+
         Utils.animFabIntro(this, mFab, getString(R.string.intro_fab_event_title),
                 getString(R.string.intro_fab_event), "eventKey");
     }
@@ -107,11 +125,49 @@ public class EventListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        refreshList(sContext);
+
+        Intent mCallingIntent = getIntent();
+        if (Intent.ACTION_SEARCH.equals(mCallingIntent.getAction())) {
+            mQuery = mCallingIntent.getStringExtra(SearchManager.QUERY);
+        }
+
+        refreshList(sContext, mQuery);
     }
 
     @Override
     public void onBackPressed() {
         finish();
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu mMenu) {
+        getMenuInflater().inflate(R.menu.search, mMenu);
+        setupSearchView(mMenu.findItem(R.id.menu_search));
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem mItem) {
+        return super.onOptionsItemSelected(mItem);
+    }
+
+    private void setupSearchView(MenuItem mItem) {
+        SearchView mSearchView = (SearchView) MenuItemCompat.getActionView(mItem);
+
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String mQuery) {
+                refreshList(getApplicationContext(), mQuery);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String mNewText) {
+                refreshList(getApplicationContext(), mNewText);
+                return true;
+            }
+        });
+
+    }
+
 }

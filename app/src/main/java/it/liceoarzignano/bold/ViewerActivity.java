@@ -221,7 +221,7 @@ public class ViewerActivity extends AppCompatActivity {
                 if (isMark) {
                     MarkListActivity.refreshList(getApplicationContext());
                 } else {
-                    EventListActivity.refreshList(getApplicationContext());
+                    EventListActivity.refreshList(getApplicationContext(), null);
                 }
                 new Handler().postDelayed(new Runnable() {
                     @Override

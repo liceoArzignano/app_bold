@@ -41,6 +41,7 @@
                     app:srcCompat="@drawable/ic_event" />
 
                 <TextView
+                    android:id="@+id/events_empty_text"
                     style="@style/AppTheme.EmptyText"
                     android:text="@string/events_empty" />
             </LinearLayout>

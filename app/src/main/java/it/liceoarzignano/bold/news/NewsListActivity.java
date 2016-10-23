@@ -1,6 +1,7 @@
 package it.liceoarzignano.bold.news;
 
 import android.app.Activity;
+import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -11,13 +12,20 @@ import android.support.customtabs.CustomTabsIntent;
 import android.support.customtabs.CustomTabsServiceConnection;
 import android.support.customtabs.CustomTabsSession;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -29,6 +37,7 @@ import it.liceoarzignano.bold.ui.DividerDecoration;
 public class NewsListActivity extends AppCompatActivity {
     private static RecyclerView sNewsList;
     private static LinearLayout sEmptyLayout;
+    private static TextView sEmptyText;
     private static CustomTabsClient sClient;
     private static CustomTabsSession sCustomTabsSession;
     private static CustomTabsIntent sCustomTabIntent = null;
@@ -46,6 +55,7 @@ public class NewsListActivity extends AppCompatActivity {
 
         sNewsList = (RecyclerView) findViewById(R.id.news_list);
         sEmptyLayout = (LinearLayout) findViewById(R.id.news_empty_layout);
+        sEmptyText = (TextView) findViewById(R.id.news_empty_text);
 
         Intent mCallingIntent = getIntent();
         long mId = mCallingIntent.getLongExtra("newsId", -1);
@@ -56,21 +66,46 @@ public class NewsListActivity extends AppCompatActivity {
             showUrl(this, mCalledNews.getUrl());
         }
 
-        refreshList(this);
+        String mQuery = null;
+        if (Intent.ACTION_SEARCH.equals(getIntent().getAction())) {
+            mQuery = getIntent().getStringExtra(SearchManager.QUERY);
+        }
+
+        sNewsList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        sNewsList.setItemAnimator(new DefaultItemAnimator());
+        sNewsList.addItemDecoration(new DividerDecoration(getApplicationContext()));
+
+        refreshList(getApplicationContext(), mQuery);
     }
 
-    private static void refreshList(Context mContext) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu mMenu) {
+        getMenuInflater().inflate(R.menu.search, mMenu);
+        setupSearchView(this, mMenu.findItem(R.id.menu_search));
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem mItem) {
+        return super.onOptionsItemSelected(mItem);
+    }
+
+    private static void refreshList(Context mContext, String mQuery) {
+        boolean hasQuery =  mQuery != null && !mQuery.isEmpty();
+
         Realm mRealm = Realm.getInstance(BoldApp.getAppRealmConfiguration());
-        final RealmResults<News> mNews =
+        final RealmResults<News> mNews = hasQuery ?
+                mRealm.where(News.class).contains("title", mQuery).or().contains("message", mQuery)
+                        .findAllSorted("date", Sort.DESCENDING) :
                 mRealm.where(News.class).findAllSorted("date", Sort.DESCENDING);
 
+
         sEmptyLayout.setVisibility(mNews.isEmpty() ? View.VISIBLE : View.GONE);
+        sEmptyText.setText(mContext.getString(hasQuery ?
+                R.string.search_no_result : R.string.news_empty));
 
         NewsAdapter mAdapter = new NewsAdapter(mNews, mContext);
 
-        sNewsList.setLayoutManager(new LinearLayoutManager(mContext));
-        sNewsList.setItemAnimator(new DefaultItemAnimator());
-        sNewsList.addItemDecoration(new DividerDecoration(mContext));
         sNewsList.setAdapter(mAdapter);
 
         mAdapter.notifyDataSetChanged();
@@ -113,5 +148,23 @@ public class NewsListActivity extends AppCompatActivity {
     static void showUrl(Activity mActivity, String mUrl) {
         setupCCustomTabs();
         sCustomTabIntent.launchUrl(mActivity, Uri.parse(mUrl));
+    }
+
+    private void setupSearchView(final Context mContext, MenuItem mItem) {
+        SearchView mSearchView = (SearchView) MenuItemCompat.getActionView(mItem);
+
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String mQuery) {
+                refreshList(mContext, mQuery);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String mNewText) {
+                refreshList(mContext, mNewText);
+                return true;
+            }
+        });
     }
 }

@@ -38,6 +38,10 @@
     <string name="suggestion_backups">Crea un backup su Google Drive, potrai ripristinare i tuoi dati nel caso in cui cambiassi o perdessi il telefono</string>
     <string name="suggestion_news">Troverai le notizie pi\u00F9 importanti della scuola nella sezione Notizie</string>
 
+    <!-- Search -->
+    <string name="search_action">Cerca\u2026</string>
+    <string name="search_no_result">Nessun risultato trovato</string>
+
     <!-- Updated Dialog -->
     <string name="dialog_updated_title">L\'app \u00E8 stata aggiornata!</string>
     <string name="dialog_updated_content">

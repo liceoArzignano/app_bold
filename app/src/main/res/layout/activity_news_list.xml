@@ -41,6 +41,7 @@
                     app:srcCompat="@drawable/ic_news" />
 
                 <TextView
+                    android:id="@+id/news_empty_text"
                     style="@style/AppTheme.EmptyText"
                     android:text="@string/news_empty" />
             </LinearLayout>

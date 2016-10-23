@@ -38,6 +38,10 @@
     <string name="suggestion_backups">Create a backup in Google Drive, you\'ll be able to restore your data in case you lose or change your phone</string>
     <string name="suggestion_news">You will find the most important news from the right in the app by opening the news section</string>
 
+    <!-- Search -->
+    <string name="search_action">Search\u2026</string>
+    <string name="search_no_result">No result found</string>
+
     <!-- Updated Dialog -->
     <string name="dialog_updated_title">App has been updated</string>
     <string name="dialog_updated_content">

@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity
         // Refresh Navigation Drawer header
         setupNavHeader();
 
-        // Refresh home cards if sth changed
+        // Refresh search cards if sth changed
         boolean hasEventsStatusChanged = isEventCardShown;
         boolean hasMarksStatusChanged = isMarksCardShown;
 
