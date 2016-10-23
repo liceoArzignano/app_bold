@@ -21,7 +21,7 @@ allprojects {
     }
 
     ext.androidSupportVersion = '25.0.0'
-    ext.googlePlayServicesVersion = '9.6.1'
+    ext.googlePlayServicesVersion = '9.8.00'
 }
 
 task clean(type: Delete) {
