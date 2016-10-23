@@ -34,7 +34,8 @@
             <LinearLayout
                 android:id="@+id/news_empty_layout"
                 android:paddingTop="128dp"
-                style="@style/AppTheme.EmptyLayout">
+                style="@style/AppTheme.EmptyLayout"
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
                     style="@style/AppTheme.EmptyImage"

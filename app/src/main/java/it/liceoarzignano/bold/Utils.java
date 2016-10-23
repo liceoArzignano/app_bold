@@ -35,7 +35,7 @@ public class Utils {
     public static final String SUGGESTIONS = "showSuggestions_key";
     public static final String NOTIF_NEWS = "notification_news_key";
     public static final String NOTIF_EVENT = "notification_events_key";
-    public static final String NOTIF_EVENT_TIME = "notification_events_time_key";
+    private static final String NOTIF_EVENT_TIME = "notification_events_time_key";
     public static final String ADDRESS = "address_key";
     private static final String USERNAME = "username_key";
     private static final String APP_VERSION = "appVersionKey";
@@ -130,11 +130,11 @@ public class Utils {
     /**
      * Getter for HomePrefs' initialDayKey
      *
-     * @param mCOntext: used to get sharedprefs
+     * @param mContext: used to get sharedprefs
      * @return the date of the day the first usage happened
      */
-    private static String getFirstUsageDate(Context mCOntext) {
-        SharedPreferences mPrefs = mCOntext.getSharedPreferences(HOME_PREFS, MODE_PRIVATE);
+    private static String getFirstUsageDate(Context mContext) {
+        SharedPreferences mPrefs = mContext.getSharedPreferences(HOME_PREFS, MODE_PRIVATE);
         return mPrefs.getString(INITIAL_DAY, "2000-01-01");
     }
 

@@ -2,6 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -14,7 +15,8 @@
     <LinearLayout
         android:id="@+id/mark_empty_layout"
         android:paddingTop="64dp"
-        style="@style/AppTheme.EmptyLayout">
+        style="@style/AppTheme.EmptyLayout"
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
             style="@style/AppTheme.EmptyImage"

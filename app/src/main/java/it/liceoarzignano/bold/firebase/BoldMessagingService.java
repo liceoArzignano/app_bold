@@ -19,7 +19,6 @@ import java.util.Calendar;
 
 import io.realm.Realm;
 import it.liceoarzignano.bold.BoldApp;
-import it.liceoarzignano.bold.MainActivity;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
 import it.liceoarzignano.bold.news.News;

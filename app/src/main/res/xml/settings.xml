@@ -36,7 +36,7 @@
         <Preference
             android:key="backup_key"
             android:summary="@string/pref_backup_title"
-            android:title="@string/pref_backup_summary"></Preference>
+            android:title="@string/pref_backup_summary"/>
 
         <SwitchPreference
             android:defaultValue="true"

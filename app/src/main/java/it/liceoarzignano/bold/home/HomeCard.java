@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeCard {
-    private int mSize;
-    private String mName;
-    private List<String> mTitle;
-    private List<String> mContent;
+    private final int mSize;
+    private final String mName;
+    private final List<String> mTitle;
+    private final List<String> mContent;
 
-    public HomeCard(int mSize, String mName, List<String> mTitle, List<String> mContent) {
+    private HomeCard(int mSize, String mName, List<String> mTitle, List<String> mContent) {
         this.mSize = mSize;
         this.mName = mName;
         this.mTitle = mTitle;
@@ -35,8 +35,8 @@ public class HomeCard {
     public static class Builder {
         private int mCounter;
         private String mName;
-        private List<String> mTitleList = new ArrayList<>();
-        private List<String> mContentList = new ArrayList<>();
+        private final List<String> mTitleList = new ArrayList<>();
+        private final List<String> mContentList = new ArrayList<>();
 
         public Builder setName(String mName) {
             this.mName = mName;

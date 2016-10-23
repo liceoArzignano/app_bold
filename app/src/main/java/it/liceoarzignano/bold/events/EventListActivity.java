@@ -146,11 +146,6 @@ public class EventListActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem mItem) {
-        return super.onOptionsItemSelected(mItem);
-    }
-
     private void setupSearchView(MenuItem mItem) {
         SearchView mSearchView = (SearchView) MenuItemCompat.getActionView(mItem);
 

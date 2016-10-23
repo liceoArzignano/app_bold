@@ -25,8 +25,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
@@ -83,11 +81,6 @@ public class NewsListActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.search, mMenu);
         setupSearchView(this, mMenu.findItem(R.id.menu_search));
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem mItem) {
-        return super.onOptionsItemSelected(mItem);
     }
 
     private static void refreshList(Context mContext, String mQuery) {

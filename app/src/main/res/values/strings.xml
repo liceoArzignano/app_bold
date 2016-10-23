@@ -19,10 +19,6 @@
 
     <!-- Home -->
     <string name="upcoming_events">Upcoming events</string>
-    <plurals name="more_events">
-        <item quantity="one">And one more event</item>
-        <item quantity="other">And %d more events</item>
-    </plurals>
     <string name="lastest_marks">Lastest marks</string>
     <string name="suggestions">Suggestions</string>
     <string name="suggestion_safe">Use Safe to store your school credentials in one secure place</string>
@@ -265,7 +261,6 @@
     <string name="restore_success_message">Backup restored</string>
     <string name="restore_failed_message">Restore failed</string>
     <string name="backup_summary">Create a backup to save your marks, events and news on your Google Drive.\nThis will help in case you loose, change or reset your device. You can use backups to sync data between your devices too</string>
-    <string name="backup_auth_success">Logged in</string>
     <string name="backup_auth_fail">Log in failed</string>
     <string name="backup_dialog_list_title">Select a backup</string>
     <string name="backup_dialog_pick_another">Others\u2026</string>
@@ -281,7 +276,6 @@
     <string name="accessibility_drawer">Header</string>
     <string name="accessibility_welcome">Welcome picture</string>
     <string name="accessibility_event_icon">Event icon</string>
-    <string name="accessibility_news_icon">News icon</string>
     <string name="accessibility_safe_icon">Safe status icon</string>
     <string name="accessibility_generic_icon">Icon</string>
 </resources>

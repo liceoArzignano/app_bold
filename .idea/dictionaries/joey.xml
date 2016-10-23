@@ -2,6 +2,7 @@
   <dictionary name="joey">
     <words>
       <w>abcdef</w>
+      <w>addr</w>
       <w>firebase</w>
       <w>hmac</w>
       <w>jsse</w>

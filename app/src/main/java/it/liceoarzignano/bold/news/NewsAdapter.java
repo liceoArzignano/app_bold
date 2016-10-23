@@ -15,7 +15,7 @@ import it.liceoarzignano.bold.R;
 
 class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
     private final List<News> mNewsList;
-    protected Context mContext;
+    private final Context mContext;
 
     NewsAdapter(List<News> mNewsList, Context mContext) {
         this.mNewsList = mNewsList;
@@ -44,9 +44,9 @@ class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
 
 
     class NewsHolder extends RecyclerView.ViewHolder {
-        private TextView mTitle;
-        private TextView mMessage;
-        private ImageButton mUrlButton;
+        private final TextView mTitle;
+        private final TextView mMessage;
+        private final ImageButton mUrlButton;
 
         NewsHolder(View mView) {
             super(mView);

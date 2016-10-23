@@ -19,10 +19,6 @@
 
     <!-- Home -->
     <string name="upcoming_events">Prossimi eventi</string>
-    <plurals name="more_events">
-        <item quantity="one">E un altro evento</item>
-        <item quantity="other">E altri %d eventi</item>
-    </plurals>
     <string name="lastest_marks">Ultimi voti</string>
     <string name="suggestions">Suggerimenti</string>
     <string name="suggestion_safe">Utilizza Safe per conservare le tue password scolastiche in un unico posto</string>
@@ -279,7 +275,6 @@
     <string name="accessibility_drawer">Intestazione</string>
     <string name="accessibility_welcome">Immagine di benvenuto</string>
     <string name="accessibility_event_icon">Icona evento</string>
-    <string name="accessibility_news_icon">Icona news</string>
     <string name="accessibility_safe_icon">Immagine status di Safe</string>
     <string name="accessibility_generic_icon">Icona</string>
 </resources>

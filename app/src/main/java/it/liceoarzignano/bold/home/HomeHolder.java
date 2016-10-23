@@ -10,10 +10,10 @@ import java.util.List;
 import it.liceoarzignano.bold.R;
 
 class HomeHolder extends RecyclerView.ViewHolder {
-    private TextView mNameView;
-    private LinearLayout[] mLayout;
-    private TextView[] mTitleView;
-    private TextView[] mContentView;
+    private final TextView mNameView;
+    private final LinearLayout[] mLayout;
+    private final TextView[] mTitleView;
+    private final TextView[] mContentView;
 
     HomeHolder(View mView) {
         super(mView);
