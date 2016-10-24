@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:targetApi="25">
+    <shortcut
+        android:shortcutId="marks"
+        android:icon="@drawable/ic_shortcut_marks"
+        android:shortcutShortLabel="@string/shortcut_marks_short"
+        android:shortcutLongLabel="@string/shortcut_marks_long"
+        android:shortcutDisabledMessage="@string/shortcut_marks_disabled">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="it.liceoarzignano.bold"
+            android:targetClass="it.liceoarzignano.bold.marks.MarkListActivity" />
+        </shortcut>
+    <shortcut
+        android:shortcutId="events"
+        android:icon="@drawable/ic_shortcut_events"
+        android:shortcutShortLabel="@string/shortcut_marks_short"
+        android:shortcutLongLabel="@string/shortcut_marks_long"
+        android:shortcutDisabledMessage="@string/shortcut_marks_disabled">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="it.liceoarzignano.bold"
+            android:targetClass="it.liceoarzignano.bold.events.EventListActivity" />
+    </shortcut>
+    <shortcut
+        android:shortcutId="news"
+        android:icon="@drawable/ic_shortcut_news"
+        android:shortcutShortLabel="@string/shortcut_news_short"
+        android:shortcutLongLabel="@string/shortcut_news_long"
+        android:shortcutDisabledMessage="@string/shortcut_news_disabled">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="it.liceoarzignano.bold"
+            android:targetClass="it.liceoarzignano.bold.news.NewsListActivity" />
+    </shortcut>
+</shortcuts>

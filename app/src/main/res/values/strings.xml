@@ -272,6 +272,17 @@
     <string name="restore_dialog_message">Backup info:\nDate: %1$s\nSize: %2$s\nWarning: you will override all the existing marks, events and news with those in the backup.\nDo you want to continue?</string>
     <string name="date_formatting">MMMM dd, yyyy</string>
 
+    <!-- Shortcuts -->
+    <string name="shortcut_marks_short">Marks</string>
+    <string name="shortcut_marks_long">Marks</string>
+    <string name="shortcut_marks_disabled">Marks - Disabled</string>
+    <string name="shortcut_events_short">Events</string>
+    <string name="shortcut_events_long">Events</string>
+    <string name="shortcut_events_disabled">Events - Disabled</string>
+    <string name="shortcut_news_short">News</string>
+    <string name="shortcut_news_long">News</string>
+    <string name="shortcut_news_disabled">News - Disabled</string>
+
     <!-- Accessibility -->
     <string name="accessibility_drawer">Header</string>
     <string name="accessibility_welcome">Welcome picture</string>

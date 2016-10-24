@@ -271,6 +271,17 @@
     <string name="restore_dialog_message">Informazioni backup:\nData: %1$s\nDimensione: %2$s\nAttenzione: i voti, eventi e notizie esistenti saranno rimpiazzati con quelli presenti nel backup.\nVuoi continuare?</string>
     <string name="date_formatting">dd MMMM yyyy</string>
 
+    <!-- Shortcuts -->
+    <string name="shortcut_marks_short">Voti</string>
+    <string name="shortcut_marks_long">Voti</string>
+    <string name="shortcut_marks_disabled">Voti - Disattivato</string>
+    <string name="shortcut_events_short">Eventi</string>
+    <string name="shortcut_events_long">Eventi</string>
+    <string name="shortcut_events_disabled">Eventi - Disattivato</string>
+    <string name="shortcut_news_short">Notizie</string>
+    <string name="shortcut_news_long">Notizie</string>
+    <string name="shortcut_news_disabled">Notizie - Disattivato</string>
+
     <!-- Accessibility -->
     <string name="accessibility_drawer">Intestazione</string>
     <string name="accessibility_welcome">Immagine di benvenuto</string>
