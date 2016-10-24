@@ -52,6 +52,7 @@ import it.liceoarzignano.bold.home.HomeCard;
 import it.liceoarzignano.bold.intro.BenefitsActivity;
 import it.liceoarzignano.bold.marks.Mark;
 import it.liceoarzignano.bold.marks.MarkListActivity;
+import it.liceoarzignano.bold.news.News;
 import it.liceoarzignano.bold.news.NewsListActivity;
 import it.liceoarzignano.bold.realm.RealmController;
 import it.liceoarzignano.bold.safe.SafeActivity;
@@ -521,6 +522,30 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
+     * Show the last 3 news in
+     * a card with their titles and dates.
+     *
+     * @return events card
+     */
+    private HomeCard createNewsCard() {
+        HomeCard.Builder mBuilder = new HomeCard.Builder()
+                .setName(getString(R.string.nav_news));
+
+        // Show 3 lastest news
+        List<News> mNews = sController.getAllNews();
+        if (mNews.isEmpty()) {
+            return null;
+        }
+
+        for (int mCounter = 0; mCounter < 3 && mCounter < mNews.size(); mCounter++) {
+            News mNewsObj = mNews.get(mCounter);
+            mBuilder.addEntry(mNewsObj.getTitle(), mNewsObj.getDate());
+        }
+
+        return mBuilder.build();
+    }
+
+    /**
      * Show the last 3 marks in
      * a card with their titles and dates.
      *
@@ -617,6 +642,12 @@ public class MainActivity extends AppCompatActivity
         HomeCard mEventsCard = createEventsCard();
         if (mEventsCard != null) {
             mCards.add(mEventsCard);
+        }
+
+        // News
+        HomeCard mNewsCard = createNewsCard();
+        if (mNewsCard != null) {
+            mCards.add(mNewsCard);
         }
 
         // Marks

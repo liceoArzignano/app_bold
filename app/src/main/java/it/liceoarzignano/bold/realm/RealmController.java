@@ -12,6 +12,7 @@ import io.realm.RealmResults;
 import io.realm.Sort;
 import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.marks.Mark;
+import it.liceoarzignano.bold.news.News;
 
 public class RealmController {
     private static RealmController sInstance;
@@ -156,5 +157,12 @@ public class RealmController {
         mOldEvent.setNote(mEvent.getNote());
         mRealm.commitTransaction();
         return mId;
+    }
+
+    /*
+     * News
+     */
+    public List<News> getAllNews() {
+        return mRealm.where(News.class).findAllSorted("date", Sort.DESCENDING);
     }
 }
