@@ -497,8 +497,8 @@ public class MainActivity extends AppCompatActivity
     /**
      * Show the first 3 events in the following 7 days in
      * a card with their titles and dates.
-     * If there are more events a flat button will tell
-     * the user there are more events
+     *
+     * @return events card
      */
     private HomeCard createEventsCard() {
         HomeCard.Builder mBuilder = new HomeCard.Builder()
@@ -506,6 +506,10 @@ public class MainActivity extends AppCompatActivity
 
         // Show 3 closest events
         List<Event> mEvents = sController.getAllEventsInverted();
+        if (mEvents.isEmpty()) {
+            return null;
+        }
+
         for (int mCounter = 0; mCounter < 3 && mCounter < mEvents.size(); mCounter++) {
             Event mEvent = mEvents.get(mCounter);
             if (isThisWeek(mEvent.getDate())) {
@@ -516,11 +520,21 @@ public class MainActivity extends AppCompatActivity
         return mBuilder.build();
     }
 
+    /**
+     * Show the last 3 marks in
+     * a card with their titles and dates.
+     *
+     * @return marks card
+     */
     private HomeCard createMarksCard() {
         HomeCard.Builder mBuilder = new HomeCard.Builder()
                 .setName(getString(R.string.lastest_marks));
 
         List<Mark> mMarks = sController.getAllMarks().sort("date", Sort.DESCENDING);
+        if (mMarks.isEmpty()) {
+            return null;
+        }
+
         for (int mCounter = 0; mCounter < 3 && mCounter < mMarks.size(); mCounter++) {
             Mark mMark = mMarks.get(mCounter);
             mBuilder.addEntry(mMark.getTitle(), String.valueOf((double) mMark.getValue() / 100));
@@ -529,6 +543,11 @@ public class MainActivity extends AppCompatActivity
         return mBuilder.build();
     }
 
+    /**
+     * Show a random suggestion in a card
+     *
+     * @return suggestions card
+     */
     private HomeCard createSuggestionsCard() {
         return new HomeCard.Builder()
                 .setName(getString(R.string.suggestions))
@@ -593,10 +612,22 @@ public class MainActivity extends AppCompatActivity
      */
     private void populateCards() {
         List<HomeCard> mCards = new ArrayList<>();
-        mCards.add(createEventsCard());
-        if (Utils.hasUsedForMoreThanOneWeek(sContext)) {
-            mCards.add(createMarksCard());
+
+        // Events
+        HomeCard mEventsCard = createEventsCard();
+        if (mEventsCard != null) {
+            mCards.add(mEventsCard);
         }
+
+        // Marks
+        if (Utils.hasUsedForMoreThanOneWeek(sContext)) {
+            HomeCard mMarksCard = createMarksCard();
+            if (mMarksCard != null) {
+                mCards.add(mMarksCard);
+            }
+        }
+
+        // Suggestions
         if (Utils.hasSuggestions(sContext)) {
             mCards.add(createSuggestionsCard());
         }
