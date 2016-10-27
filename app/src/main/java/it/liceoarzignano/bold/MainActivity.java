@@ -242,6 +242,11 @@ public class MainActivity extends AppCompatActivity
 
         List<Event> mUpcomingEvents = new ArrayList<>();
 
+        // Avoid npe
+        if (sRes == null) {
+            sRes = BoldApp.getBoldContext().getResources();
+        }
+
         // Create tomorrow events list
         for (Event mEvent : mEvents) {
             if (Utils.getToday().equals(mEvent.getDate())) {
