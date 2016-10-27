@@ -219,6 +219,7 @@
     <string name="safe_nomatch">Password errata</string>
     <string name="safe_back_title">Esci</string>
     <string name="safe_back_message">Vuoi uscire? I cambiamenti non verranno applicati.\nTocca il pulsante V in basso per salvare</string>
+    <string name="safe_data_usage"><b>Registro e Quaderno</b>\n\u2022 Nome utente: ID utente\n\u2022 Password: Password registro\n\n<b>Account PC</b>\n\u2022 Nome utente: cognome + ID utente (rossi123456)\n\u2022 Password: Password PC\n\n<b>Accesso internet</b>\n\u2022 Nome utente: cognome + ID utente (rossi123456)\n\u2022 Password: Password Internet</string>
 
     <!-- Notification -->
     <string name="notification_title">Prossimi eventi</string>

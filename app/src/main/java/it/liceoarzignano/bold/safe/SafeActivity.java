@@ -19,6 +19,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -57,7 +58,7 @@ public class SafeActivity extends AppCompatActivity {
     private Menu mMenu;
 
     private LinearLayout mLoadingLayout;
-    private LinearLayout mContentLayout;
+    private ScrollView mContentLayout;
     private TextView mLoadingText;
     private EditText mUserEdit;
     private EditText mRegEdit;
@@ -93,7 +94,7 @@ public class SafeActivity extends AppCompatActivity {
         sEditor = getSharedPreferences(SAFE_PREFS, MODE_PRIVATE).edit();
 
         mLoadingLayout = (LinearLayout) findViewById(R.id.safe_loading_layout);
-        mContentLayout = (LinearLayout) findViewById(R.id.safe_layout_content);
+        mContentLayout = (ScrollView) findViewById(R.id.safe_layout_content);
         mLoadingText = (TextView) findViewById(R.id.safe_loading_text);
         mUserEdit = (EditText) findViewById(R.id.safe_username);
         mRegEdit = (EditText) findViewById(R.id.safe_register);

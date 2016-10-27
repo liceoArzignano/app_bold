@@ -219,6 +219,8 @@
     <string name="safe_nomatch">Password does not match</string>
     <string name="safe_back_title">Exit</string>
     <string name="safe_back_message">Are you sure you want to exit? Your changes will not be saved.\nClick the V button at the bottom to save</string>
+    <string name="safe_data_usage"><b>Register and Copybook</b>\n\u2022 Username: User ID\n\u2022 Password: Register password\n\n<b>PC account</b>\n\u2022 Username: surname + User ID (rossi123456)\n\u2022 Password: PC Password\n\n<b>Internet access</b>\n\u2022 Username: surname + User ID (rossi123456)\n\u2022 Password: Internet Password</string>
+
 
     <!-- Notification -->
     <string name="notification_title">Upcoming events</string>
