@@ -16,9 +16,9 @@
     <shortcut
         android:shortcutId="events"
         android:icon="@drawable/ic_shortcut_events"
-        android:shortcutShortLabel="@string/shortcut_marks_short"
-        android:shortcutLongLabel="@string/shortcut_marks_long"
-        android:shortcutDisabledMessage="@string/shortcut_marks_disabled">
+        android:shortcutShortLabel="@string/shortcut_events_short"
+        android:shortcutLongLabel="@string/shortcut_events_long"
+        android:shortcutDisabledMessage="@string/shortcut_events_disabled">
         <intent
             android:action="android.intent.action.VIEW"
             android:targetPackage="it.liceoarzignano.bold"
