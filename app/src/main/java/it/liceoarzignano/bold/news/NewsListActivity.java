@@ -11,7 +11,6 @@ import android.support.customtabs.CustomTabsClient;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.customtabs.CustomTabsServiceConnection;
 import android.support.customtabs.CustomTabsSession;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -32,8 +31,6 @@ import io.realm.Sort;
 import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.ui.DividerDecoration;
-import it.liceoarzignano.bold.ui.RecyclerClickListener;
-import it.liceoarzignano.bold.ui.RecyclerTouchListener;
 
 public class NewsListActivity extends AppCompatActivity {
     private static Activity sActivity;
@@ -109,7 +106,7 @@ public class NewsListActivity extends AppCompatActivity {
         mAdapter.notifyDataSetChanged();
     }
 
-    static void setupCCustomTabs() {
+    private static void setupCCustomTabs() {
         if (sCustomTabIntent != null) {
             return;
         }

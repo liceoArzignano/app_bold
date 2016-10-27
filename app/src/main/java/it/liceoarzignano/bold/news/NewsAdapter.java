@@ -1,7 +1,7 @@
 package it.liceoarzignano.bold.news;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.widget.RecyclerView;
@@ -82,6 +82,7 @@ class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
             // Bottom sheet dialog
             final BottomSheetDialog mSheet = new BottomSheetDialog(mActivity);
 
+            @SuppressLint("InflateParams")
             View mSheetView = mActivity.getLayoutInflater()
                     .inflate(R.layout.dialog_sheet_news, null);
             LinearLayout mShareLayout =
