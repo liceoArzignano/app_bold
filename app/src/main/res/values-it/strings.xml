@@ -212,8 +212,8 @@
     <string name="safe_info_content">Le credenziali sono criptate e decriptate utilizzando l\'algoritmo AES con chiave a 128-bit. Questo significa che saranno incompresibili per chiunque tranne quest\'app</string>
     <string name="safe_reset_title">Reimpostazione password</string>
     <string name="safe_reset_content">Se reimposti la password anche le credenziali saranno eliminate.\nVuoi procedere?</string>
-    <string name="safe_encrypting">Caricamento dati\u2026</string>
-    <string name="safe_decrypting">Salvataggio dati\u2026</string>
+    <string name="safe_encrypting">Salvataggio dati\u2026</string>
+    <string name="safe_decrypting">Caricamento dati\u2026</string>
     <string name="safe_first_load">Inizializzazione dati\u2026</string>
     <string name="safe_setup_checking_password">Verifica password\u2026</string>
     <string name="safe_nomatch">Password errata</string>
