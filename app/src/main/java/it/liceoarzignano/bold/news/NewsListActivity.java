@@ -11,6 +11,7 @@ import android.support.customtabs.CustomTabsClient;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.customtabs.CustomTabsServiceConnection;
 import android.support.customtabs.CustomTabsSession;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -31,8 +32,11 @@ import io.realm.Sort;
 import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.ui.DividerDecoration;
+import it.liceoarzignano.bold.ui.RecyclerClickListener;
+import it.liceoarzignano.bold.ui.RecyclerTouchListener;
 
 public class NewsListActivity extends AppCompatActivity {
+    private static Activity sActivity;
     private static RecyclerView sNewsList;
     private static LinearLayout sEmptyLayout;
     private static TextView sEmptyText;
@@ -51,6 +55,8 @@ public class NewsListActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        sActivity = this;
+
         sNewsList = (RecyclerView) findViewById(R.id.news_list);
         sEmptyLayout = (LinearLayout) findViewById(R.id.news_empty_layout);
         sEmptyText = (TextView) findViewById(R.id.news_empty_text);
@@ -61,7 +67,7 @@ public class NewsListActivity extends AppCompatActivity {
         if (mId > 0) {
             News mCalledNews = Realm.getInstance(BoldApp.getAppRealmConfiguration())
                     .where(News.class).equalTo("id", mId).findFirst();
-            showUrl(this, mCalledNews.getUrl());
+            showUrl(mCalledNews.getUrl());
         }
 
         String mQuery = null;
@@ -83,7 +89,7 @@ public class NewsListActivity extends AppCompatActivity {
         return true;
     }
 
-    private static void refreshList(Context mContext, String mQuery) {
+    static void refreshList(Context mContext, String mQuery) {
         boolean hasQuery =  mQuery != null && !mQuery.isEmpty();
 
         Realm mRealm = Realm.getInstance(BoldApp.getAppRealmConfiguration());
@@ -92,12 +98,11 @@ public class NewsListActivity extends AppCompatActivity {
                         .findAllSorted("date", Sort.DESCENDING) :
                 mRealm.where(News.class).findAllSorted("date", Sort.DESCENDING);
 
-
         sEmptyLayout.setVisibility(mNews.isEmpty() ? View.VISIBLE : View.GONE);
         sEmptyText.setText(mContext.getString(hasQuery ?
                 R.string.search_no_result : R.string.news_empty));
 
-        NewsAdapter mAdapter = new NewsAdapter(mNews, mContext);
+        NewsAdapter mAdapter = new NewsAdapter(mNews, sActivity);
 
         sNewsList.setAdapter(mAdapter);
 
@@ -138,10 +143,9 @@ public class NewsListActivity extends AppCompatActivity {
                 .build();
     }
 
-    static void showUrl(Context mContext, String mUrl) {
+    static void showUrl(String mUrl) {
         setupCCustomTabs();
-        Activity mActivity = (Activity) mContext;
-        sCustomTabIntent.launchUrl(mActivity, Uri.parse(mUrl));
+        sCustomTabIntent.launchUrl(sActivity, Uri.parse(mUrl));
     }
 
     private void setupSearchView(final Context mContext, MenuItem mItem) {

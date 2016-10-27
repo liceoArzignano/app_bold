@@ -112,6 +112,9 @@
 
     <!-- News -->
     <string name="news_empty">Non hai ricevuto nessuna notizia</string>
+    <string name="news_sheet_share">Condividi</string>
+    <string name="news_sheet_to_event">Salva come evento</string>
+    <string name="news_sheet_remove">Rimuovi</string>
 
     <!-- Welcome -->
     <string name="slide_button">Inizia</string>

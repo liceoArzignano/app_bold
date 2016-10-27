@@ -39,6 +39,7 @@ import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.events.EventListActivity;
 import it.liceoarzignano.bold.marks.Mark;
 import it.liceoarzignano.bold.marks.MarkListActivity;
+import it.liceoarzignano.bold.news.News;
 import it.liceoarzignano.bold.realm.RealmController;
 
 public class ManagerActivity extends AppCompatActivity
@@ -100,6 +101,7 @@ public class ManagerActivity extends AppCompatActivity
      * boolean isEditing
      * boolean isMark
      * long mId
+     * long newsToEvent
      */
 
     @Override
@@ -357,6 +359,16 @@ public class ManagerActivity extends AppCompatActivity
                     }
                 }
             });
+        }
+
+        // News to event
+        long mNewsId = mCallingIntent.getLongExtra("newsToEvent", -1);
+        if (mNewsId > 0) {
+            News mNews = mController.getNews(mNewsId);
+            mTitleInput.setText(mNews.getTitle());
+            mNotesInput.setText(String.format("%1$s\n%2$s", mNews.getMessage(),
+                    mNews.getUrl()));
+            mEventSpinner.setSelection(1);
         }
     }
 

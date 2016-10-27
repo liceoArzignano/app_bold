@@ -165,4 +165,15 @@ public class RealmController {
     public List<News> getAllNews() {
         return mRealm.where(News.class).findAllSorted("date", Sort.DESCENDING);
     }
+
+    public News getNews(long mId) {
+        return mRealm.where(News.class).equalTo("id", mId).findFirst();
+    }
+
+    public void deleteNews(long mId) {
+        News mNews = mRealm.where(News.class).equalTo("id", mId).findFirst();
+        mRealm.beginTransaction();
+        mNews.deleteFromRealm();
+        mRealm.commitTransaction();
+    }
 }
