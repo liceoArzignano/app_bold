@@ -138,8 +138,9 @@ public class NewsListActivity extends AppCompatActivity {
                 .build();
     }
 
-    static void showUrl(Activity mActivity, String mUrl) {
+    static void showUrl(Context mContext, String mUrl) {
         setupCCustomTabs();
+        Activity mActivity = (Activity) mContext;
         sCustomTabIntent.launchUrl(mActivity, Uri.parse(mUrl));
     }
 

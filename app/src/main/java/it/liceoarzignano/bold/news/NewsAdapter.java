@@ -64,7 +64,7 @@ class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
                 mUrlButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        NewsListActivity.showUrl((Activity) mContext, mUrl);
+                        NewsListActivity.showUrl(mContext, mUrl);
                     }
                 });
             } else {
