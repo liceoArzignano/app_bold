@@ -46,6 +46,9 @@ public class BoldApp extends Application {
         sBoldAnalytics = new BoldAnalytics(sContext);
         FirebaseMessaging.getInstance().subscribeToTopic("global");
         FirebaseMessaging.getInstance().subscribeToTopic(Utils.getTopic(sContext));
+        if (!Utils.isTeacher(sContext)) {
+            FirebaseMessaging.getInstance().subscribeToTopic("students");
+        }
 
         // Enable StrictMode
         if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
