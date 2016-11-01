@@ -87,8 +87,7 @@ public class MarkListActivity extends AppCompatActivity {
         });
 
         if (sSubjectFilter == null) {
-            Utils.animFabIntro(this, mFab, getString(R.string.intro_fab_mark_title),
-                    getString(R.string.intro_fab_mark), "markListIntro");
+            Utils.animFab(mFab, true);
         } else {
             String mTitle = String.format(mRes.getString(R.string.title_filter), sSubjectFilter);
             mToobar.setTitle(mTitle);

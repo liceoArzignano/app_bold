@@ -88,7 +88,7 @@
     <string name="hint_content_under">might be %1$s or higher</string>
     <string name="hint_content_above">must be %1$s or higher</string>
     <string name="error_noaddress">Set a valid address to use this feature</string>
-    <string name="marks_empty">You have no marks</string>
+    <string name="marks_empty">There\'s no mark</string>
 
     <!-- View -->
     <string name="title_activity_mark_view">Viewer</string>
@@ -108,7 +108,7 @@
 
     <!-- My events -->
     <string name="title_activity_event_list">Events</string>
-    <string name="events_empty">You have no events</string>
+    <string name="events_empty">There\'s no event</string>
 
     <!-- News -->
     <string name="news_empty">You have received no news so far</string>
@@ -118,18 +118,14 @@
 
     <!-- Intro -->
     <string name="slide_button">Get started</string>
-    <string name="slide0_title">Welcome</string>
-    <string name="slide0_message">Slide to discover the main features</string>
-    <string name="slide1_title">Your school life. Here</string>
-    <string name="slide1_message">Manage marks, test dates, averages, reminders and much more</string>
-    <string name="slide2_title">Keep it Safe</string>
+    <string name="slide0_title">School done easy</string>
+    <string name="slide0_message">Manage and archive marks, averages and events easily on your device</string>
+    <string name="slide1_title">Always up to date</string>
+    <string name="slide1_message">Never miss a news, be notified as soon as they\'re pubblished</string>
+    <string name="slide2_title">Keep\'em Safe</string>
     <string name="slide2_message">With Safe, you can store all your school passwords in one secure place</string>
     <string name="intro_drawer_title">Start here</string>
-    <string name="intro_drawer">Tap this to navigate through the app sections.\nThe home screen will be populated once you\'ve used the app for a while</string>
-    <string name="intro_fab_mark_title">Marks</string>
-    <string name="intro_fab_mark">Here you will find all your marks and real-time averages. Tap this button to add the first mark</string>
-    <string name="intro_fab_event_title">Events</string>
-    <string name="intro_fab_event">Here you will find all your events. Tap this button to add the first event</string>
+    <string name="intro_drawer">Tap this to navigate through the app sections.\nThe home screen will be populated later</string>
     <string name="intro_fab_save_safe_title">Welcome!</string>
     <string name="intro_fab_save_safe">Store your credentials here, then tap this to save</string>
 

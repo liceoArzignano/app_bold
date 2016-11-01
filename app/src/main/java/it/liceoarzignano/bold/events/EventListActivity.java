@@ -118,8 +118,7 @@ public class EventListActivity extends AppCompatActivity {
         sEventList.addItemDecoration(new DividerDecoration(getApplicationContext()));
 
 
-        Utils.animFabIntro(this, mFab, getString(R.string.intro_fab_event_title),
-                getString(R.string.intro_fab_event), "eventKey");
+        Utils.animFab(mFab, true);
     }
 
     @Override

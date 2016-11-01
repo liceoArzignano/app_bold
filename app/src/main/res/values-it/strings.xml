@@ -72,7 +72,7 @@
     <string name="event_spinner_bday">Compleanno</string>
     <string name="event_spinner_hang_out">Incontro</string>
     <string name="event_spinner_other">Altro</string>
-    <string name="editor_text_too_long">Sta diventando molto lungo</string>
+    <string name="editor_text_too_long">Sta diventando troppo lungo</string>
     <string name="editor_text_too_long_fix">Accorcia</string>
     <string name="saved">Salvato</string>
 
@@ -88,7 +88,7 @@
     <string name="hint_content_under">deve essere %1$s o superiore</string>
     <string name="hint_content_above">puo essere %1$s o superiore</string>
     <string name="error_noaddress">Imposta un indirizzo per utilizzare questa funzione</string>
-    <string name="marks_empty">Non hai nessun voto</string>
+    <string name="marks_empty">Non ci sono voti</string>
 
     <!-- Viewer -->
     <string name="title_activity_mark_view">Visualizzatore</string>
@@ -108,30 +108,26 @@
 
     <!-- My events -->
     <string name="title_activity_event_list">I miei eventi</string>
-    <string name="events_empty">Non hai nessun evento</string>
+    <string name="events_empty">Non ci sono eventi</string>
 
     <!-- News -->
-    <string name="news_empty">Non hai ricevuto nessuna notizia</string>
+    <string name="news_empty">Non hai ancora ricevuto notizie</string>
     <string name="news_sheet_share">Condividi</string>
     <string name="news_sheet_to_event">Salva come evento</string>
     <string name="news_sheet_remove">Rimuovi</string>
 
     <!-- Welcome -->
     <string name="slide_button">Inizia</string>
-    <string name="slide0_title">Benvenuto</string>
-    <string name="slide0_message">Scorri per scoprire le funzioni principali</string>
-    <string name="slide1_title">La tua vita scolastica. Qui</string>
-    <string name="slide1_message">Gestisci voti, medie, date delle verifiche e promemoria</string>
-    <string name="slide2_title">Safe</string>
-    <string name="slide2_message">Con Safe, puoi salvare le tue password scolastiche in un luogo sicuro</string>
+    <string name="slide0_title">La scuola resa semplice</string>
+    <string name="slide0_message">Gestisci al meglio voti, medie e impegni scolastici in un unico posto</string>
+    <string name="slide1_title">Sempre aggiornato</string>
+    <string name="slide1_message">Non perdere mai una notizia, sarai avvisato appena ne uscir\u00E0 una</string>
+    <string name="slide2_title">Tienile al sicuro</string>
+    <string name="slide2_message">Con Safe potrai salvare le tue password scolastiche in un unico posto protetto</string>
     <string name="intro_drawer_title">Inizia qui</string>
-    <string name="intro_drawer">Tocca qui per navigare tra le sezioni dell\'app.\nLa schermata Home si popoler\u00E0 quando avrai utilizzato l\'app per un po\'</string>
-    <string name="intro_fab_mark_title">Voti</string>
-    <string name="intro_fab_mark">Qui troverai i tuoi voti e medie. Tocca qui per aggiungere il primo voto</string>
-    <string name="intro_fab_event_title">Eventi</string>
-    <string name="intro_fab_event">Qui troverai i tuoi eventi. Tocca qui per aggiungerne uno</string>
+    <string name="intro_drawer">Tocca per navigare nell\'app.\nLa schermata principale si riempir\u00E0 d\'informazioni pi\u00F9 tardi</string>
     <string name="intro_fab_save_safe_title">Benvenuto!</string>
-    <string name="intro_fab_save_safe">Annota le tue credenziali qui, poi tocca qui per salvare</string>
+    <string name="intro_fab_save_safe">Annota le tue credenziali, poi tocca qui per salvare</string>
 
     <!-- Subjects -->
     <string name="subject_english">Inglese</string>

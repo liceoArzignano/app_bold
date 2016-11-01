@@ -47,12 +47,17 @@ public class Utils {
      * Animate fab with delay
      *
      * @param mFab :  the fab that will be animated
+     * @param shouldShow: whether to show the fab
      */
-    static void animFab(final FloatingActionButton mFab) {
+    public static void animFab(final FloatingActionButton mFab, final boolean shouldShow) {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                mFab.hide();
+                if (shouldShow) {
+                    mFab.show();
+                } else {
+                    mFab.hide();
+                }
             }
         }, 500);
     }

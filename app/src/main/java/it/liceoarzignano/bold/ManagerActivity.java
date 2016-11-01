@@ -436,7 +436,7 @@ public class ManagerActivity extends AppCompatActivity
         }
 
         if (mTitle != null && !mTitle.isEmpty() && mValue != 0) {
-            Utils.animFab((FloatingActionButton) fab);
+            Utils.animFab((FloatingActionButton) fab, false);
 
             mMark.setId(mObjId);
             mMark.setTitle(mTitle);
@@ -472,7 +472,7 @@ public class ManagerActivity extends AppCompatActivity
         if (mTitle.isEmpty()) {
             Snackbar.make(fab, getString(R.string.manager_invalid), Snackbar.LENGTH_SHORT).show();
         } else {
-            Utils.animFab((FloatingActionButton) fab);
+            Utils.animFab((FloatingActionButton) fab, false);
 
             mEvent.setId(mObjId);
             mEvent.setTitle(mTitle);
