@@ -91,7 +91,14 @@ public class SafeActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onBackPressed();
+                }
+            });
         }
+
 
         mContext = this;
 
@@ -195,7 +202,7 @@ public class SafeActivity extends AppCompatActivity {
             new MaterialDialog.Builder(mContext)
                     .title(R.string.safe_back_title)
                     .content(R.string.safe_back_message)
-                    .positiveText(android.R.string.ok)
+                    .positiveText(R.string.safe_back_title)
                     .negativeText(android.R.string.cancel)
                     .onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
