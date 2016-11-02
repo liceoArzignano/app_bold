@@ -46,7 +46,9 @@ public class AverageListFragment extends Fragment {
             RecyclerClickListener mListener = new RecyclerClickListener() {
                 @Override
                 public void onClick(View mView, int mPosition) {
-                    MarkListActivity.showFilteredMarks(mResults[mPosition]);
+                    if (mResults.length > 0) {
+                        MarkListActivity.showFilteredMarks(mResults[mPosition]);
+                    }
                 }
             };
 
