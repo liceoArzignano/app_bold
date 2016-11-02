@@ -512,15 +512,17 @@ public class MainActivity extends AppCompatActivity
 
         // Show 3 closest events
         List<Event> mEvents = sController.getAllEventsInverted();
-        if (mEvents.isEmpty()) {
-            return null;
-        }
 
-        for (int mCounter = 0; mCounter < 3 && mCounter < mEvents.size(); mCounter++) {
+        for (int mCounter = 0; mBuilder.build().getSize() < 3 && mCounter < mEvents.size();
+             mCounter++) {
             Event mEvent = mEvents.get(mCounter);
             if (isThisWeek(mEvent.getDate())) {
                 mBuilder.addEntry(mEvent.getTitle(), mEvent.getDate());
             }
+        }
+
+        if (mBuilder.build().getSize() == 0) {
+            return null;
         }
 
         return mBuilder.build();
