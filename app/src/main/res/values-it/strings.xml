@@ -41,13 +41,13 @@
     <!-- Updated Dialog -->
     <string name="dialog_updated_title">L\'app \u00E8 stata aggiornata!</string>
     <string name="dialog_updated_content">
-        \u2022 Novit\u00E0: nuova interfaccia schermata home.\n
-        \u2022 Novit\u00E0: nuova interfaccia visualizzatore voti ed eventi.\n
-        \u2022 Novit\u00E0: nuova interfaccia editor voti ed eventi.\n
-        \u2022 Novit\u00E0: nuova interfaccia medie voti.\n
-        \u2022 Novit\u00E0: nuove notifiche remote.\n
-        \u2022 Miglioramenti: aggiornamenti gestore statistiche.\n
-        \u2022 Miglioramenti: Safe \u00E8 pi\u00F9 veloce nel caricamento.\n
+        \u2022 Novit\u00E0: News: le notizie inviate dalla scuola verranno salvate e mostrate come notifiche.\n
+        \u2022 Novit\u00E0: ricerca nella lista degli eventi.\n
+        \u2022 Novit\u00E0: supporto android 7.1 (shortcuts inclusi).\n
+        \u2022 Aggiornato: nuovo grafico medie.\n
+        \u2022 Aggiornato: miglioramenti interfaccia Backup e ripristino.\n
+        \u2022 Aggiornato: nuova gestione schede nella schermata home.\n
+        \u2022 Aggiornato: performace ottimizzate nelle liste di voti, eventi e news.\n
         \u2022 Bug fix.
     </string>
     <string name="dialog_updated_changelog">Changelog</string>
