@@ -148,18 +148,20 @@ public class NewsListActivity extends AppCompatActivity {
     private void setupSearchView(final Context mContext, MenuItem mItem) {
         SearchView mSearchView = (SearchView) MenuItemCompat.getActionView(mItem);
 
-        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String mQuery) {
-                refreshList(mContext, mQuery);
-                return true;
-            }
+        if (mSearchView != null) {
+            mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String mQuery) {
+                    refreshList(mContext, mQuery);
+                    return true;
+                }
 
-            @Override
-            public boolean onQueryTextChange(String mNewText) {
-                refreshList(mContext, mNewText);
-                return true;
-            }
-        });
+                @Override
+                public boolean onQueryTextChange(String mNewText) {
+                    refreshList(mContext, mNewText);
+                    return true;
+                }
+            });
+        }
     }
 }

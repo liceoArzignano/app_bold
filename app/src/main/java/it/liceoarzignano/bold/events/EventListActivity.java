@@ -148,20 +148,20 @@ public class EventListActivity extends AppCompatActivity {
     private void setupSearchView(MenuItem mItem) {
         SearchView mSearchView = (SearchView) MenuItemCompat.getActionView(mItem);
 
-        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String mQuery) {
-                refreshList(getApplicationContext(), mQuery);
-                return true;
-            }
+        if (mSearchView != null) {
+            mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String mQuery) {
+                    refreshList(getApplicationContext(), mQuery);
+                    return true;
+                }
 
-            @Override
-            public boolean onQueryTextChange(String mNewText) {
-                refreshList(getApplicationContext(), mNewText);
-                return true;
-            }
-        });
-
+                @Override
+                public boolean onQueryTextChange(String mNewText) {
+                    refreshList(getApplicationContext(), mNewText);
+                    return true;
+                }
+            });
+        }
     }
-
 }
