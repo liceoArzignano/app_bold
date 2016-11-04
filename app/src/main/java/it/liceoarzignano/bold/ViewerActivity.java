@@ -166,7 +166,7 @@ public class ViewerActivity extends AppCompatActivity {
                                         sVal, title) :
                                 String.format(res.getString(R.string.viewer_share_teacher),
                                         title, sVal)
-                        : String.format("1$s (%2$s)\n%3$s", title, sVal, mNotes);
+                        : String.format("1$s (%2$s)\n%3$s", title, sVal, mNotes.getText());
 
                 final Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
