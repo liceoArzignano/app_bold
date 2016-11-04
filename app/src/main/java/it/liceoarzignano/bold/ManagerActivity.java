@@ -259,9 +259,7 @@ public class ManagerActivity extends AppCompatActivity
             }
 
             // Subject selector
-            mSubjectSelector.setText(isEditMode ? String.format(getResources()
-                    .getString(R.string.selected_subject), mTitle) :
-                    getString(R.string.select_subject));
+            mSubjectSelector.setText(isEditMode ? mTitle : getString(R.string.select_subject));
             mSubjectLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -272,8 +270,7 @@ public class ManagerActivity extends AppCompatActivity
                                 @Override
                                 public void onSelection(MaterialDialog dialog,
                                                         View view, int which, CharSequence text) {
-                                    mSubjectSelector.setText(String.format(getResources().getString(
-                                            R.string.selected_subject), text));
+                                    mSubjectSelector.setText(text);
                                     mTitle = text.toString();
                                 }
                             })

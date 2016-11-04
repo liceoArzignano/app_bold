@@ -22,11 +22,11 @@
     <string name="lastest_marks">Lastest marks</string>
     <string name="suggestions">Suggestions</string>
     <string name="suggestion_safe">Use Safe to store your school credentials in one secure place</string>
-    <string name="suggestion_safe_pwd">Someone knows your Safe password? Change it from Safe</string>
-    <string name="suggestion_avg">Would you like to know what mark you should get to have the sufficiency in a subject? Pick a subject from the average, and look at the suggestions</string>
+    <string name="suggestion_safe_pwd">Someone knows your Safe password? Log in and change it</string>
+    <string name="suggestion_avg">Would you like to know what mark you should get to have the sufficiency in a subject? Pick a subject from the average and look at the suggestions</string>
     <string name="suggestion_quarter">A new quarter has begun? You can filter your marks in the marks section</string>
     <string name="suggestion_edit_event">Postponed an event? Edit it and update the date</string>
-    <string name="suggestion_notification_remote">You will receive the most important news from the school as notifications</string>
+    <string name="suggestion_notification_remote">You can receive the most important news from the school as notifications</string>
     <string name="suggestion_get_touch">Need to get in touch with the school? You can call or send an email from the settings</string>
     <string name="suggestion_address">You can\'t find a subject int the list? Check the address</string>
     <string name="suggestion_suggestions">Suggestions annoy you? Turn them off</string>
@@ -64,7 +64,6 @@
     <string name="dialog_select_mark">Pick a mark</string>
     <string name="manager_invalid">Couldn\'t save. Check the values</string>
     <string name="select_subject">Select subject</string>
-    <string name="selected_subject">Selected subject: %1$s</string>
     <string name="event_spinner_test">Test</string>
     <string name="event_spinner_school">At school</string>
     <string name="event_spinner_bday">Birthday</string>
@@ -73,7 +72,7 @@
     <string name="event_spinner_hang_out">Meeting</string>
     <string name="event_spinner_other">Other</string>
     <string name="editor_text_too_long">It\'s getting really long</string>
-    <string name="editor_text_too_long_fix">Fix it</string>
+    <string name="editor_text_too_long_fix">Fix</string>
     <string name="saved">Saved</string>
 
     <!-- My marks -->
@@ -102,7 +101,6 @@
     <string name="viewer_share">Share</string>
     <string name="viewer_share_student">I got %1$s in %2$s</string>
     <string name="viewer_share_teacher">%1$s has got %2$s</string>
-    <string name="viewer_share_event">Event: %1$s on the %2$s</string>
     <string name="viewer_first_quarter">First quarter</string>
     <string name="viewer_second_quarter">Second quarter</string>
 

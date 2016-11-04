@@ -91,7 +91,7 @@ public class ViewerActivity extends AppCompatActivity {
         TextView mValue = (TextView) findViewById(R.id.viewer_value);
         TextView mValueTitle = (TextView) findViewById(R.id.viewer_value_title);
         TextView mDate = (TextView) findViewById(R.id.viewer_dates);
-        TextView mNotes = (TextView) findViewById(R.id.viewer_notes);
+        final TextView mNotes = (TextView) findViewById(R.id.viewer_notes);
 
         mDate.setText(date);
         int value = isMark ? mark.getValue() : 0;
@@ -166,8 +166,7 @@ public class ViewerActivity extends AppCompatActivity {
                                         sVal, title) :
                                 String.format(res.getString(R.string.viewer_share_teacher),
                                         title, sVal)
-                        : String.format(res.getString(R.string.viewer_share_event), title, sVal);
-
+                        : String.format("1$s (%2$s)\n%3$s", title, sVal, mNotes);
 
                 final Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");

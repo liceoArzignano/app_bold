@@ -22,13 +22,13 @@
     <string name="lastest_marks">Ultimi voti</string>
     <string name="suggestions">Suggerimenti</string>
     <string name="suggestion_safe">Utilizza Safe per conservare le tue password scolastiche in un unico posto</string>
-    <string name="suggestion_safe_pwd">Qualcuno conosce la tua password di Safe? Puoi cambiarla semplicemente accedendo a Safe</string>
+    <string name="suggestion_safe_pwd">Qualcuno conosce la tua password di Safe? Puoi cambiarla accedendoci e toccando il pulsante ripristina</string>
     <string name="suggestion_avg">Vorresti sapere qual\'\u00E8 il prossimo voto che dovresti prendere per avere la sufficienza? Seleziona la materia nelle medie e dai un\'occhiata ai suggerimenti</string>
     <string name="suggestion_quarter">Nuovo quadrimestre? Puoi filtrare i voti nell\'omonima sezione</string>
     <string name="suggestion_edit_event">Evento posticipato? Nessun problema, modificalo e aggiorna la data</string>
-    <string name="suggestion_notification_remote">Riceverai notifiche sulle novit\u00E0 pi\u00F9 importanti dalla scuola</string>
+    <string name="suggestion_notification_remote">Puoi ricevere notifiche sulle novit\u00E0 pi\u00F9 importanti dalla scuola</string>
     <string name="suggestion_get_touch">Hai bisogno di contattare l\'istituto? Dalle impostazioni potrai scrivere un\'email o telefonare alla segreteria</string>
-    <string name="suggestion_address">Non trovi una materia nella lista? Controlla l\'indirizzo</string>
+    <string name="suggestion_address">Non trovi una materia nella lista? Controlla l\'indirizzo selezionato</string>
     <string name="suggestion_suggestions">I suggerimenti ti infastidiscono? Disattivali</string>
     <string name="suggestion_notification">L\'app ti ricorder\u00E0 ogni giorno gli eventi imminenti</string>
     <string name="suggestion_backups">Crea un backup su Google Drive, potrai ripristinare i tuoi dati nel caso in cui cambiassi o perdessi il telefono</string>
@@ -64,7 +64,6 @@
     <string name="dialog_select_mark">Seleziona un voto</string>
     <string name="manager_invalid">Impossibile salvare, ricontrolla i valori</string>
     <string name="select_subject">Seleziona materia</string>
-    <string name="selected_subject">Materia selezionata: %1$s</string>
     <string name="event_spinner_test">Compito</string>
     <string name="event_spinner_school">A scuola</string>
     <string name="event_spinner_homework">Compito per casa</string>
@@ -102,7 +101,6 @@
     <string name="viewer_share">Condividi</string>
     <string name="viewer_share_student">Ho preso %1$s in %2$s</string>
     <string name="viewer_share_teacher">%1$s ha preso %2$s</string>
-    <string name="viewer_share_event">Evento: %1$s on the %2$s</string>
     <string name="viewer_first_quarter">Primo quadrimenstre</string>
     <string name="viewer_second_quarter">Secondo quadrimenstre</string>
 
@@ -201,7 +199,7 @@
     <string name="safe_dialog_content">Inserisci la tua password di Safe per visualizzare alle credenziali scolastiche</string>
     <string name="safe_security_issue_xposed">Setup fallito.\nNon \u00E8 possibile utilizzare Safe mentre Xposed \u00E8 installato.\nDisinstallalo per poter utilizzare Safe.</string>
     <string name="safe_username">ID utente</string>
-    <string name="safe_reg_pwd">Password Registro</string>
+    <string name="safe_reg_pwd">Password registro</string>
     <string name="safe_pc_pwd">Password account PC</string>
     <string name="safe_internet_pwd">Password internet</string>
     <string name="safe_info_title">Informazioni sulla sicurezza</string>
