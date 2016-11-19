@@ -206,8 +206,9 @@
     <string name="safe_info_content">The credentials are encrypted and decrypted using the AES algorythm with a 128-bit key. This means they are unreadable for eveyone but this app</string>
     <string name="safe_reset_title">Reset password</string>
     <string name="safe_reset_content">If you rest your password you\'ll loose the other stored credentials as well.\nDo you want to continue?</string>
-    <string name="safe_encrypting">Saving data\u2026</string>
-    <string name="safe_decrypting">Loading data\u2026</string>
+    <string name="safe_encrypting">Saving\u2026</string>
+    <string name="safe_decrypting">Loading\u2026</string>
+    <string name="safe_onpause_locked">Locked</string>
     <string name="safe_first_load">Initializing data\u2026</string>
     <string name="safe_setup_checking_password">Checking password\u2026</string>
     <string name="safe_nomatch">Password does not match</string>

@@ -152,6 +152,7 @@ public class SafeActivity extends AppCompatActivity {
             mCrInternet = null;
             mCrPc = null;
             mCrReg = null;
+            mLoadingText.setText(getString(R.string.safe_onpause_locked));
             mUserEdit.setText("");
             mInternetEdit.setText("");
             mPcEdit.setText("");
