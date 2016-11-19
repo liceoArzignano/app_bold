@@ -15,8 +15,9 @@
     <color name="yellow">#ffc108</color>
     <color name="green">#7DB344</color>
 
-    <color name="empty_image">#9e9d9f</color>
-    <color name="empty_text">#7c7b7d</color>
+    <color name="empty_image">#b1b1b1</color>
+    <color name="empty_background">#efefef</color>
+    <color name="empty_text">@color/empty_image</color>
 
     <color name="viewerPrimary">#ffffff</color>
     <color name="viewerPrimaryDark">#e0e0e0</color>

@@ -39,7 +39,7 @@
 
                 <ImageView
                     style="@style/AppTheme.EmptyImage"
-                    app:srcCompat="@drawable/ic_news" />
+                    app:srcCompat="@drawable/ic_empty_news" />
 
                 <TextView
                     android:id="@+id/news_empty_text"

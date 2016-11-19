@@ -20,7 +20,7 @@
 
         <ImageView
             style="@style/AppTheme.EmptyImage"
-            app:srcCompat="@drawable/ic_my_marks" />
+            app:srcCompat="@drawable/ic_empty_marks" />
 
         <TextView
             style="@style/AppTheme.EmptyText"

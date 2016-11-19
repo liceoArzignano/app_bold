@@ -33,13 +33,13 @@
 
             <LinearLayout
                 android:id="@+id/event_empty_layout"
-                android:paddingTop="128dp"
+                android:paddingTop="164dp"
                 style="@style/AppTheme.EmptyLayout"
                 tools:ignore="UseCompoundDrawables">
 
                 <ImageView
                     style="@style/AppTheme.EmptyImage"
-                    app:srcCompat="@drawable/ic_event" />
+                    app:srcCompat="@drawable/ic_empty_events" />
 
                 <TextView
                     android:id="@+id/events_empty_text"
