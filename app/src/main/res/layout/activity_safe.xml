@@ -38,10 +38,9 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <ImageView
-                    android:id="@+id/safe_loading_image"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/safe_decrypt"
+                    app:srcCompat="@drawable/ic_empty_safe"
                     android:contentDescription="@string/accessibility_safe_icon" />
 
                 <TextView

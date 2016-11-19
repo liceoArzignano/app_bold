@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -65,7 +64,6 @@ public class SafeActivity extends AppCompatActivity {
     private EditText mRegEdit;
     private EditText mPcEdit;
     private EditText mInternetEdit;
-    private ImageView mImage;
     private FloatingActionButton mFab;
 
     // Safe jni addons
@@ -110,7 +108,6 @@ public class SafeActivity extends AppCompatActivity {
         mRegEdit = (EditText) findViewById(R.id.safe_register);
         mPcEdit = (EditText) findViewById(R.id.safe_pc);
         mInternetEdit = (EditText) findViewById(R.id.safe_internet);
-        mImage = (ImageView) findViewById(R.id.safe_loading_image);
         mFab = (FloatingActionButton) findViewById(R.id.fab);
 
         mLoadingLayout.setVisibility(View.VISIBLE);
@@ -296,18 +293,25 @@ public class SafeActivity extends AppCompatActivity {
      * Check if password is right and update UI
      */
     private void validateLogin() {
-        if (mLoginDialog.getInput().equals(decrypt(sPrefs.getString(accessKey, null)))) {
+        final boolean isPasswordCorrect = mLoginDialog.getInput().equals(
+                decrypt(sPrefs.getString(accessKey, null)));
+        if (isPasswordCorrect) {
             mLoginDialog.destroy();
-            onCreateContinue();
         } else {
             mLoadingText.setText(getString(R.string.safe_nomatch));
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
+        }
+
+        // Do things with some delay
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (isPasswordCorrect) {
+                    onCreateContinue();
+                } else {
                     finish();
                 }
-            }, 3000);
-        }
+            }
+        }, isPasswordCorrect ? 800 : 3000);
     }
 
     /**
@@ -339,12 +343,23 @@ public class SafeActivity extends AppCompatActivity {
 
         mMenu.findItem(R.id.action_reset).setVisible(true);
         mMenu.findItem(R.id.action_info).setVisible(true);
-        mLoadingLayout.setVisibility(View.GONE);
-        mContentLayout.setVisibility(View.VISIBLE);
         mUserEdit.setText(mCrUserName);
         mRegEdit.setText(mCrReg);
         mPcEdit.setText(mCrPc);
         mInternetEdit.setText(mCrInternet);
+
+        mLoadingLayout.animate().alpha(0f).setDuration(250);
+
+        // Animations timing
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mLoadingLayout.setVisibility(View.GONE);
+                mContentLayout.setVisibility(View.VISIBLE);
+                mContentLayout.setAlpha(0f);
+                mContentLayout.animate().alpha(1f).setDuration(750);
+            }
+        }, 250);
 
         Utils.animFabIntro(this, mFab, getString(R.string.intro_fab_save_safe_title),
                 getString(R.string.intro_fab_save_safe), "safeKey");
@@ -358,7 +373,6 @@ public class SafeActivity extends AppCompatActivity {
                 mContentLayout.setVisibility(View.GONE);
                 mLoadingText.setText(R.string.safe_encrypting);
                 mLoadingLayout.setVisibility(View.VISIBLE);
-                mImage.setBackgroundResource(R.drawable.safe_encrypt);
 
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -381,7 +395,7 @@ public class SafeActivity extends AppCompatActivity {
                         }
                         finish();
                     }
-                }, 800);
+                }, 1000);
             }
         });
     }
