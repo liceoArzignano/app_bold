@@ -10,7 +10,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,7 +44,6 @@ public class SafeActivity extends AppCompatActivity {
 
     private static SharedPreferences sPrefs;
     private static SharedPreferences.Editor sEditor;
-    private static String sAccessPassword;
     private Encryption.SecretKeys mSecretKeys = null;
     private String mCrUserName;
     private String mCrReg;
@@ -57,6 +55,8 @@ public class SafeActivity extends AppCompatActivity {
     private Context mContext;
 
     private Menu mMenu;
+
+    private SafeLoginDialog mLoginDialog;
 
     private LinearLayout mLoadingLayout;
     private ScrollView mContentLayout;
@@ -74,7 +74,6 @@ public class SafeActivity extends AppCompatActivity {
     }
     public native String getKey();
     public native String getSalt();
-
 
     @SuppressLint("CommitPrefEdits")
     @Override
@@ -99,7 +98,6 @@ public class SafeActivity extends AppCompatActivity {
             });
         }
 
-
         mContext = this;
 
         sPrefs = getSharedPreferences(SAFE_PREFS, MODE_PRIVATE);
@@ -121,7 +119,7 @@ public class SafeActivity extends AppCompatActivity {
         // Xposed can inject code by doing shitty stuffs in the runtime.
         // If xposed is installed, do not allow user to open this activity for security reasons
         if (Utils.hasPackage(mContext, XPOSED_INSTALLER_PACAKGE)) {
-            mLoadingText.setText(getString(R.string.safe_security_issue_xposed));
+            mLoadingText.setText(getString(R.string.safe_dialog_password_error_security));
         } else {
             mLoadingText.setText(R.string.safe_first_load);
             new Handler().postDelayed(new Runnable() {
@@ -223,54 +221,33 @@ public class SafeActivity extends AppCompatActivity {
      */
     private void showPasswordDialog() {
         hasCompletedSetup = sPrefs.getBoolean("hasCompletedSetup", false);
-        String mTitle;
-        String mMessage;
-
-        if (hasCompletedSetup) {
-            mTitle = getString(R.string.safe_dialog_title);
-            mMessage = getString(R.string.safe_dialog_content);
-        } else {
-            mTitle = getString(R.string.safe_dialog_first_title);
-            mMessage = getString(R.string.safe_dialog_first_content);
-        }
-
-        new MaterialDialog.Builder(mContext)
-                .title(mTitle)
-                .content(mMessage)
-                .canceledOnTouchOutside(false)
-                .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)
-                .input(getString(R.string.safe_dialog_password_input_hint),
-                        "", new MaterialDialog.InputCallback() {
+        mLoginDialog = new SafeLoginDialog(mContext, !hasCompletedSetup);
+        mLoginDialog.build(new MaterialDialog.Builder(mContext)
+                .customView(mLoginDialog.getView(), false)
+                .positiveText(hasCompletedSetup ?
+                        R.string.safe_dialog_positive : R.string.safe_dialog_first_positive)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog,
+                                        @NonNull DialogAction which) {
+                        mLoginDialog.dismiss();
+                        mLoadingText.setText(getString(R.string.safe_decrypting));
+                        new Handler().postDelayed(new Runnable() {
                             @Override
-                            public void onInput(@NonNull MaterialDialog dialog,
-                                                CharSequence input) {
-                                sAccessPassword = input.toString();
-                                mLoadingText.setVisibility(View.VISIBLE);
-                                if (!sAccessPassword.isEmpty() && sAccessPassword != null) {
-                                    new Handler().postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            mLoadingText.setText(getString(hasCompletedSetup ?
-                                                    R.string.safe_decrypting :
-                                                    R.string.safe_first_load));
-                                            if (hasCompletedSetup) {
-                                                validateLogin();
-                                            } else {
-                                                String encrypted = encrypt(sAccessPassword);
-                                                sEditor.putString(accessKey, encrypted).apply();
-                                                sEditor.putBoolean("hasCompletedSetup",
-                                                        true).apply();
-                                                onCreateContinue();
-                                            }
-                                        }
-                                    }, 200);
+                            public void run() {
+                                if (hasCompletedSetup) {
+                                    validateLogin();
                                 } else {
-                                    mLoadingText.setText(getString(R.string.safe_nomatch));
+                                    sEditor.putBoolean("hasCompletedSetup", true)
+                                            .putString(accessKey, encrypt(mLoginDialog.getInput()))
+                                            .apply();
+                                    onCreateContinue();
                                 }
                             }
-                        })
-                .positiveText(android.R.string.ok)
-                .show();
+                        }, 240);
+                    }
+                })
+                .negativeText(android.R.string.cancel));
     }
 
     /**
@@ -319,23 +296,18 @@ public class SafeActivity extends AppCompatActivity {
      * Check if password is right and update UI
      */
     private void validateLogin() {
-        final String mDecrypted = decrypt(sPrefs.getString(accessKey, "ERROR"));
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (sAccessPassword.equals(mDecrypted)) {
-                    onCreateContinue();
-                } else {
-                    mLoadingText.setText(getString(R.string.safe_nomatch));
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            finish();
-                        }
-                    }, 3000);
+        if (mLoginDialog.getInput().equals(decrypt(sPrefs.getString(accessKey, null)))) {
+            mLoginDialog.destroy();
+            onCreateContinue();
+        } else {
+            mLoadingText.setText(getString(R.string.safe_nomatch));
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    finish();
                 }
-            }
-        }, 1000);
+            }, 3000);
+        }
     }
 
     /**

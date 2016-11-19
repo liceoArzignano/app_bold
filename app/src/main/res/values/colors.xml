@@ -19,6 +19,8 @@
     <color name="empty_background">#efefef</color>
     <color name="empty_text">@color/empty_image</color>
 
+    <color name="safe_dialog_accent">#37474f</color>
+
     <color name="viewerPrimary">#ffffff</color>
     <color name="viewerPrimaryDark">#e0e0e0</color>
     <color name="viewer_title">#42000000</color>

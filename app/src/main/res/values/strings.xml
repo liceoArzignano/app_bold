@@ -192,12 +192,18 @@
 
     <!-- Safe -->
     <string name="title_activity_safe">Safe</string>
-    <string name="safe_dialog_first_title">Welcome!</string>
-    <string name="safe_dialog_first_content">You need to set a Safe password to log into Safe and view your school credentials</string>
-    <string name="safe_dialog_password_input_hint">Alphanumeric password</string>
-    <string name="safe_dialog_title">Log in</string>
-    <string name="safe_dialog_content">Write your Safe password to view your school credentials</string>
-    <string name="safe_security_issue_xposed">Setup failed.\nYou can not use this feature when Xposed is installed. Please uninstall it.</string>
+    <string name="safe_dialog_title">Safe login</string>
+    <string name="safe_dialog_hint">Input your password to access your private data</string>
+    <string name="safe_dialog_first_title">Welcome</string>
+    <string name="safe_dialog_first_hint">Choose a password to access your private data</string>
+    <string name="safe_dialog_first_hint_low">Weak password</string>
+    <string name="safe_dialog_first_hint_medium">Good password</string>
+    <string name="safe_dialog_first_hint_good">Secure password</string>
+    <string name="safe_dialog_password_input_hint">Password</string>
+    <string name="safe_dialog_password_error_nomatch">Password is incorrect</string>
+    <string name="safe_dialog_password_error_security">Security treat detected. You can\'t access Safe when Xposed is installed</string>
+    <string name="safe_dialog_first_positive">Set</string>
+    <string name="safe_dialog_positive">Unlock</string>
     <string name="safe_username">User ID</string>
     <string name="safe_reg_pwd">Register password</string>
     <string name="safe_pc_pwd">PC-account password</string>
