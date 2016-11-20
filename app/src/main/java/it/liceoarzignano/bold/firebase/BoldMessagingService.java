@@ -78,19 +78,13 @@ public class BoldMessagingService extends FirebaseMessagingService {
         PendingIntent mPendingIntent = PendingIntent.getActivity(mContext, 0,
                 mIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-        String[] mContent = mNews.getMessage().split("[\\r\\n]+");
-        NotificationCompat.InboxStyle mStyle = new NotificationCompat.InboxStyle();
-        for (String mLine : mContent) {
-            mStyle.addLine(mLine);
-        }
-
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mContext)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setAutoCancel(true)
                 .setContentTitle(mNews.getTitle())
                 .setContentText(mNews.getMessage() + '\u2026')
                 .setContentIntent(mPendingIntent)
-                .setStyle(mStyle);
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(mNews.getMessage()));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             mBuilder.setColor(ContextCompat.getColor(mContext, R.color.colorAccent));
