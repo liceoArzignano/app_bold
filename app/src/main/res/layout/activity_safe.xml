@@ -35,13 +35,13 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_empty_safe"
-                    android:contentDescription="@string/accessibility_safe_icon" />
+                    android:contentDescription="@string/accessibility_safe_icon"
+                    app:srcCompat="@drawable/ic_empty_safe" />
 
                 <TextView
                     android:id="@+id/safe_loading_text"
-                    android:text="@string/safe_setup_checking_password"
-                    style="@style/AppTheme.EmptyText"/>
+                    style="@style/AppTheme.EmptyText"
+                    android:text="@string/safe_setup_checking_password" />
             </LinearLayout>
 
             <ScrollView
@@ -53,10 +53,10 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="vertical"
                     android:paddingBottom="@dimen/activity_vertical_margin"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:orientation="vertical">
+                    android:paddingRight="@dimen/activity_horizontal_margin">
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
@@ -66,8 +66,8 @@
 
                         <EditText
                             android:id="@+id/safe_username"
-                            android:hint="@string/safe_username"
-                            style="@style/AppTheme.SafeInputText"/>
+                            style="@style/AppTheme.SafeInputText"
+                            android:hint="@string/safe_username" />
                     </android.support.design.widget.TextInputLayout>
 
                     <android.support.design.widget.TextInputLayout
@@ -77,8 +77,8 @@
 
                         <EditText
                             android:id="@+id/safe_register"
-                            android:hint="@string/safe_reg_pwd"
-                            style="@style/AppTheme.SafeInputText" />
+                            style="@style/AppTheme.SafeInputText"
+                            android:hint="@string/safe_reg_pwd" />
                     </android.support.design.widget.TextInputLayout>
 
                     <android.support.design.widget.TextInputLayout
@@ -88,8 +88,8 @@
 
                         <EditText
                             android:id="@+id/safe_pc"
-                            android:hint="@string/safe_pc_pwd"
-                            style="@style/AppTheme.SafeInputText" />
+                            style="@style/AppTheme.SafeInputText"
+                            android:hint="@string/safe_pc_pwd" />
                     </android.support.design.widget.TextInputLayout>
 
                     <android.support.design.widget.TextInputLayout
@@ -99,8 +99,8 @@
 
                         <EditText
                             android:id="@+id/safe_internet"
-                            android:hint="@string/safe_internet_pwd"
-                            style="@style/AppTheme.SafeInputText" />
+                            style="@style/AppTheme.SafeInputText"
+                            android:hint="@string/safe_internet_pwd" />
                     </android.support.design.widget.TextInputLayout>
 
                     <TextView

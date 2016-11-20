@@ -2,12 +2,24 @@
 
 <full-backup-note>
     <!-- Shared preferences -->
-    <include domain="sharedpref" path="HomePrefs.xml" />
-    <include domain="sharedpref" path="com.google.android.gms.appid.xml" />
-    <include domain="sharedpref" path="com.google.android.gms.measurement.prefs.xml" />
-    <include domain="sharedpref" path="it.liceoarzignano.bold_preferences.xml" />
+    <include
+        domain="sharedpref"
+        path="HomePrefs.xml" />
+    <include
+        domain="sharedpref"
+        path="com.google.android.gms.appid.xml" />
+    <include
+        domain="sharedpref"
+        path="com.google.android.gms.measurement.prefs.xml" />
+    <include
+        domain="sharedpref"
+        path="it.liceoarzignano.bold_preferences.xml" />
 
     <!-- Databases -->
-    <include domain="database" path="google_app_measurement.db" />
-    <include domain="database" path="google_app_measurement.db-journal" />
+    <include
+        domain="database"
+        path="google_app_measurement.db" />
+    <include
+        domain="database"
+        path="google_app_measurement.db-journal" />
 </full-backup-note>
