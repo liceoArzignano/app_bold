@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String APP_VERSION = BuildConfig.VERSION_NAME;
-    private static final Calendar sCal = Calendar.getInstance();
     private static Resources sRes;
     private static Context sContext;
     private static RealmController sController;
@@ -147,11 +146,6 @@ public class MainActivity extends AppCompatActivity
 
         // Show cards
         populateCards();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
     }
 
     @Override
@@ -395,29 +389,27 @@ public class MainActivity extends AppCompatActivity
         }
 
         Calendar mCalendar = Calendar.getInstance();
-        mCalendar.set(Calendar.YEAR, sCal.get(Calendar.YEAR));
-        mCalendar.set(Calendar.MONTH, sCal.get(Calendar.MONTH));
-        mCalendar.set(Calendar.DAY_OF_MONTH, sCal.get(Calendar.DAY_OF_MONTH));
+        mCalendar.setTimeInMillis(System.currentTimeMillis());
 
         switch (Utils.getEventsNotificationTime(sContext)) {
             case "0":
                 if (mCalendar.get(Calendar.HOUR_OF_DAY) >= 6) {
                     // If it's too late for today's notification, plan one for tomorrow
-                    mCalendar.set(Calendar.DAY_OF_MONTH, sCal.get(Calendar.DAY_OF_MONTH) + 1);
+                    mCalendar.set(Calendar.DAY_OF_MONTH, mCalendar.get(Calendar.DAY_OF_MONTH) + 1);
                 }
                 mCalendar.set(Calendar.HOUR_OF_DAY, 6);
                 break;
             case "1":
                 if (mCalendar.get(Calendar.HOUR_OF_DAY) >= 15) {
                     // If it's too late for today's notification, plan one for tomorrow
-                    mCalendar.set(Calendar.DAY_OF_MONTH, sCal.get(Calendar.DAY_OF_MONTH) + 1);
+                    mCalendar.set(Calendar.DAY_OF_MONTH, mCalendar.get(Calendar.DAY_OF_MONTH) + 1);
                 }
                 mCalendar.set(Calendar.HOUR_OF_DAY, 15);
                 break;
             case "2":
                 if (mCalendar.get(Calendar.HOUR_OF_DAY) >= 21) {
                     // If it's too late for today's notification, plan one for tomorrow
-                    mCalendar.set(Calendar.DAY_OF_MONTH, sCal.get(Calendar.DAY_OF_MONTH) + 1);
+                    mCalendar.set(Calendar.DAY_OF_MONTH, mCalendar.get(Calendar.DAY_OF_MONTH) + 1);
                 }
                 mCalendar.set(Calendar.HOUR_OF_DAY, 21);
                 break;
@@ -597,9 +589,10 @@ public class MainActivity extends AppCompatActivity
         Calendar mCalendar = Calendar.getInstance();
         mCalendar.setTimeInMillis(Utils.stringToDate(stringDate).getTime());
 
-        int mDiff = mCalendar.get(Calendar.DAY_OF_YEAR) - sCal.get(Calendar.DAY_OF_YEAR);
+        int mDiff = mCalendar.get(Calendar.DAY_OF_YEAR) - mCalendar.get(Calendar.DAY_OF_YEAR);
 
-        return sCal.get(Calendar.YEAR) == mCalendar.get(Calendar.YEAR) && mDiff >= 0 && mDiff < 8;
+        return mCalendar.get(Calendar.YEAR) == mCalendar.get(Calendar.YEAR) &&
+                mDiff >= 0 && mDiff < 8;
     }
 
     /**

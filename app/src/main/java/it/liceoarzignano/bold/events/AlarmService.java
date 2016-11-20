@@ -18,10 +18,8 @@ public class AlarmService extends Service {
         Context mContext = getApplicationContext();
         String mMessage = MainActivity.getTomorrowInfo();
         Intent mIntent = new Intent(mContext, EventListActivity.class);
-        PendingIntent mPendingIntent = PendingIntent.getActivity(mContext, 0,
-                mIntent, 0);
-        NotificationManager mManager = (NotificationManager) getSystemService(
-                NOTIFICATION_SERVICE);
+        PendingIntent mPendingIntent = PendingIntent.getActivity(mContext, 0, mIntent, 0);
+        NotificationManager mManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         if (mMessage != null) {
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
@@ -29,8 +27,7 @@ public class AlarmService extends Service {
                     .setSmallIcon(R.drawable.ic_notification)
                     .setContentTitle(getString(R.string.notification_title))
                     .setContentText(mMessage)
-                    .setStyle(new NotificationCompat.BigTextStyle()
-                            .bigText(mMessage))
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(mMessage))
                     .setContentIntent(mPendingIntent)
                     .setAutoCancel(true);
 

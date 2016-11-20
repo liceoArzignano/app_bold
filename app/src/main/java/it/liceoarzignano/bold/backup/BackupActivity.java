@@ -488,7 +488,8 @@ public class BackupActivity extends AppCompatActivity {
     private String backupDate(Date mDate) {
         Calendar mCal = Calendar.getInstance();
         mCal.setTime(mDate);
-        @SuppressWarnings("deprecation") String mDateStr = new SimpleDateFormat(getString(R.string.date_formatting),
+        @SuppressWarnings("deprecation")
+        String mDateStr = new SimpleDateFormat(getString(R.string.date_formatting),
                 getResources().getConfiguration().locale).format(mCal.getTime());
 
         int mPosition = 0;

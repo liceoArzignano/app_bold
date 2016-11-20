@@ -114,9 +114,6 @@
             android:name=".events.AlarmService"
             android:enabled="true" />
         <service
-            android:name=".events.BootReceiverService"
-            android:enabled="true" />
-        <service
             android:name=".firebase.BoldMessagingService"
             tools:ignore="ExportedService" >
             <intent-filter>
