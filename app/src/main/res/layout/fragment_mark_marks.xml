@@ -14,7 +14,6 @@
 
     <LinearLayout
         android:id="@+id/mark_empty_layout"
-        android:paddingTop="64dp"
         style="@style/AppTheme.EmptyLayout"
         tools:ignore="UseCompoundDrawables">
 

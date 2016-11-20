@@ -33,7 +33,6 @@
 
             <LinearLayout
                 android:id="@+id/event_empty_layout"
-                android:paddingTop="164dp"
                 style="@style/AppTheme.EmptyLayout"
                 tools:ignore="UseCompoundDrawables">
 

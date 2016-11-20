@@ -29,12 +29,7 @@
 
             <LinearLayout
                 android:id="@+id/safe_loading_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:visibility="gone"
+                style="@style/AppTheme.EmptyLayout"
                 tools:ignore="UseCompoundDrawables">
 
                 <ImageView
@@ -45,13 +40,8 @@
 
                 <TextView
                     android:id="@+id/safe_loading_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
                     android:text="@string/safe_setup_checking_password"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="@color/black" />
+                    style="@style/AppTheme.EmptyText"/>
             </LinearLayout>
 
             <ScrollView
