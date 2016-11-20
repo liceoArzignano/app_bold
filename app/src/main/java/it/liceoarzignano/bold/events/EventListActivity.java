@@ -133,11 +133,6 @@ public class EventListActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        finish();
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu mMenu) {
         getMenuInflater().inflate(R.menu.search, mMenu);
         setupSearchView(mMenu.findItem(R.id.menu_search));

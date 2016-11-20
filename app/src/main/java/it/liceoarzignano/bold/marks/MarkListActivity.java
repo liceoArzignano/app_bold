@@ -3,7 +3,6 @@ package it.liceoarzignano.bold.marks;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
@@ -41,12 +40,17 @@ import it.liceoarzignano.bold.ui.RecyclerTouchListener;
 public class MarkListActivity extends AppCompatActivity {
 
     private static final String PREF_QUARTER_SELECTOR = "quarterSelector";
+
     private static Context sContext;
-    private static MenuItem sAllMarks;
-    private static MenuItem sFirstQMarks;
-    private static MenuItem sSecondQMarks;
+
+    private MenuItem sAllMarks;
+    private MenuItem sFirstQMarks;
+    private MenuItem sSecondQMarks;
+    private static FloatingActionButton sFab;
+
     private static String sSubjectFilter;
     private static int sQuarterFilter;
+
     private SharedPreferences mPrefs;
 
     @Override
@@ -55,7 +59,6 @@ public class MarkListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mark_list);
 
         sContext = this;
-        Resources mRes = getResources();
 
         RealmController mController = RealmController.with(this);
         mPrefs = getSharedPreferences("HomePrefs", MODE_PRIVATE);
@@ -78,8 +81,8 @@ public class MarkListActivity extends AppCompatActivity {
             mTabLayout.setupWithViewPager(mViewPager);
         }
 
-        FloatingActionButton mFab = (FloatingActionButton) findViewById(R.id.fab);
-        mFab.setOnClickListener(new View.OnClickListener() {
+        sFab = (FloatingActionButton) findViewById(R.id.fab);
+        sFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent mNewMarkIntent = new Intent(MarkListActivity.this, ManagerActivity.class);
@@ -87,10 +90,8 @@ public class MarkListActivity extends AppCompatActivity {
             }
         });
 
-        if (sSubjectFilter == null) {
-            Utils.animFab(mFab, true);
-        } else {
-            String mTitle = String.format(mRes.getString(R.string.title_filter), sSubjectFilter);
+        if (sSubjectFilter != null) {
+            String mTitle = String.format(getString(R.string.title_filter), sSubjectFilter);
             mToobar.setTitle(mTitle);
             setSupportActionBar(mToobar);
 
@@ -99,7 +100,6 @@ public class MarkListActivity extends AppCompatActivity {
             mViewPager.setCurrentItem(1);
             AverageListFragment.setHint(this, mAvg, mExcepted);
         }
-        refreshList(this);
     }
 
     @Override
@@ -112,11 +112,11 @@ public class MarkListActivity extends AppCompatActivity {
     public void onBackPressed() {
         // If showing single mark view, roll back to the "all" view
         if (sSubjectFilter != null) {
-            Intent mIntent = new Intent(this, MarkListActivity.class);
-            startActivity(mIntent);
-            finish();
+            sSubjectFilter = null;
+            refreshList(this);
+        } else {
+            super.onBackPressed();
         }
-        finish();
     }
 
     @Override
@@ -193,7 +193,14 @@ public class MarkListActivity extends AppCompatActivity {
         final RealmResults<Mark> mMarks = getFilteredMarks();
 
         if (MarksListFragment.sEmptyLayout != null) {
-            MarksListFragment.sEmptyLayout.setVisibility(mMarks.isEmpty() ? View.VISIBLE : View.GONE);
+            MarksListFragment.sEmptyLayout.setVisibility(mMarks.isEmpty() ?
+                    View.VISIBLE : View.GONE);
+        }
+
+        if (sSubjectFilter != null) {
+            sFab.hide();
+        } else {
+            Utils.animFab(sFab, true);
         }
 
         MarksAdapter mAdapter = new MarksAdapter(mMarks);
@@ -223,10 +230,8 @@ public class MarkListActivity extends AppCompatActivity {
      * @param mFilter: title sSubjectFilter
      */
     public static void showFilteredMarks(String mFilter) {
-        Intent mIntent = new Intent(sContext, MarkListActivity.class);
-        mIntent.putExtra("filteredList", mFilter);
-
-        sContext.startActivity(mIntent);
+        sSubjectFilter = mFilter;
+        refreshList(sContext);
     }
 
     /**

@@ -370,9 +370,6 @@ public class ManagerActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        Intent mListIntent = new Intent(this, isMark ?
-                MarkListActivity.class : EventListActivity.class);
-        startActivity(mListIntent);
         finish();
     }
 
