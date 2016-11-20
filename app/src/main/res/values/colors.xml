@@ -15,6 +15,14 @@
     <color name="yellow">#ffc108</color>
     <color name="green">#7DB344</color>
 
+    <color name="event_red">#D32F2F</color>
+    <color name="event_blue">#3a4aa6</color>
+    <color name="event_yellow">#ffc107</color>
+    <color name="event_green">#47a64a</color>
+    <color name="event_purple">#9224a6</color>
+    <color name="event_brown">#795548</color>
+    <color name="event_grey">#666666</color>
+
     <color name="empty_image">#b1b1b1</color>
     <color name="empty_background">#efefef</color>
     <color name="empty_text">@color/empty_image</color>
