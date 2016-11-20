@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Build;
 import android.os.StrictMode;
+import android.support.v7.app.AppCompatDelegate;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -58,6 +59,11 @@ public class BoldApp extends Application {
                     .penaltyLog()
                     .penaltyDeath()
                     .build());
+        }
+
+        // Turn on support library vectorDrawables supports on legacy devices
+        if (!Utils.isNotLegacy()) {
+            AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         }
     }
 
