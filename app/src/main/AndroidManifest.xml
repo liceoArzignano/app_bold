@@ -81,13 +81,6 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
 
-        <!-- Viewer -->
-        <activity
-            android:name=".ViewerActivity"
-            android:label="@string/title_activity_mark_view"
-            android:parentActivityName=".marks.MarkListActivity"
-            android:theme="@style/ViewerTheme.NoActionBar" />
-
         <!-- Settings -->
         <activity
             android:name=".settings.SettingsActivity"

@@ -798,7 +798,7 @@ public class MainActivity extends AppCompatActivity
     private void setupNavHeader() {
         mUserName.setText(Utils.userNameKey(this));
 
-        if (Utils.isLegacy()) {
+        if (Utils.isNotLegacy()) {
             if (Utils.isTeacher(this)) {
                 mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_6));
             } else {

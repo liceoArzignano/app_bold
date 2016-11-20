@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -30,7 +31,7 @@ import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.ManagerActivity;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
-import it.liceoarzignano.bold.ViewerActivity;
+import it.liceoarzignano.bold.ui.ViewerDialog;
 import it.liceoarzignano.bold.realm.RealmController;
 import it.liceoarzignano.bold.ui.DividerDecoration;
 import it.liceoarzignano.bold.ui.RecyclerClickListener;
@@ -172,17 +173,15 @@ public class MarkListActivity extends AppCompatActivity {
     }
 
     /**
-     * Fire ViewerActivity and pass the selected mark data
+     * Fire ViewerDialog and pass the selected mark data
      *
      * @param mId: mark id
      */
     private static void viewMark(long mId) {
-        Intent mIntent = new Intent(sContext, ViewerActivity.class);
-
-        mIntent.putExtra("isMark", true);
-        mIntent.putExtra("id", mId);
-
-        sContext.startActivity(mIntent);
+        final BottomSheetDialog mSheet = new BottomSheetDialog(sContext);
+        View mBottomView = new ViewerDialog(sContext, mSheet).setData(mId, true);
+        mSheet.setContentView(mBottomView);
+        mSheet.show();
     }
 
     /**

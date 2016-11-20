@@ -90,10 +90,10 @@
     <string name="marks_empty">Non ci sono voti</string>
 
     <!-- Viewer -->
-    <string name="title_activity_mark_view">Visualizzatore</string>
+    <string name="viewer_edit">Modifica</string>
     <string name="viewer_remove">Rimuovi</string>
     <string name="removed">Rimosso</string>
-    <string name="viewer_more_marks">Altri voti di %1$s</string>
+    <string name="viewer_more_marks">Altri voti</string>
     <string name="viewer_date">Data</string>
     <string name="viewer_notes">Note</string>
     <string name="viewer_category">Categoria</string>
@@ -194,13 +194,11 @@
     <string name="title_activity_safe">Safe</string>
     <string name="safe_dialog_title">Accesso a Safe</string>
     <string name="safe_dialog_hint">Inserisci la password per accedere ai tuoi dati privati</string>
-    <string name="safe_dialog_first_title">Benvenuto</string>
     <string name="safe_dialog_first_hint">Scegli una password per accedere ai tuoi dati privati</string>
     <string name="safe_dialog_first_hint_low">Password debole</string>
     <string name="safe_dialog_first_hint_medium">Password buona</string>
     <string name="safe_dialog_first_hint_good">Password sicura</string>
     <string name="safe_dialog_password_input_hint">Password</string>
-    <string name="safe_dialog_password_error_nomatch">Password errata</string>
     <string name="safe_dialog_password_error_security">Sicurezza del dispositivo a rischio. Non puoi accedere a Safe mentre Xposed \u00E8 installato</string>
     <string name="safe_dialog_first_positive">Imposta</string>
     <string name="safe_dialog_positive">Sblocca</string>

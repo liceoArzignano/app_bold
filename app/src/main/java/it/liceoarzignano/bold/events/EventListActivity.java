@@ -4,6 +4,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -25,7 +26,7 @@ import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.ManagerActivity;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
-import it.liceoarzignano.bold.ViewerActivity;
+import it.liceoarzignano.bold.ui.ViewerDialog;
 import it.liceoarzignano.bold.ui.DividerDecoration;
 import it.liceoarzignano.bold.ui.RecyclerClickListener;
 import it.liceoarzignano.bold.ui.RecyclerTouchListener;
@@ -73,17 +74,15 @@ public class EventListActivity extends AppCompatActivity {
     }
 
     /**
-     * Fire ViewerActivity and pass the selected event data
+     * Fire ViewerDialog and pass the selected event data
      *
-     * @param id: event id
+     * @param mId: event id
      */
-    private static void viewEvent(long id) {
-        Intent mIntent = new Intent(sContext, ViewerActivity.class);
-
-        mIntent.putExtra("isMark", false);
-        mIntent.putExtra("id", id);
-
-        sContext.startActivity(mIntent);
+    private static void viewEvent(long mId) {
+        final BottomSheetDialog mSheet = new BottomSheetDialog(sContext);
+        View mBottomView = new ViewerDialog(sContext, mSheet).setData(mId, false);
+        mSheet.setContentView(mBottomView);
+        mSheet.show();
     }
 
     @Override

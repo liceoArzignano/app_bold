@@ -1,5 +1,6 @@
 package it.liceoarzignano.bold.safe;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
@@ -15,7 +16,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import it.liceoarzignano.bold.R;
 
 public class SafeLoginDialog {
-    private Resources mRes;
+    private final Resources mRes;
 
     private MaterialDialog mDialog;
 
@@ -29,6 +30,7 @@ public class SafeLoginDialog {
      * @param mContext used to fetch resources
      * @param isFirstTime adapt ui for first login
      */
+    @SuppressLint("InflateParams")
     SafeLoginDialog(Context mContext, final boolean isFirstTime) {
         mRes = mContext.getResources();
 

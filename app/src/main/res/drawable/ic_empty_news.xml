@@ -12,7 +12,7 @@
     </item>
 
     <item
-        android:drawable="@drawable/ic_empty_news"
+        android:drawable="@drawable/ic_empty_src_news"
         android:top="36dp"
         android:right="36dp"
         android:bottom="36dp"

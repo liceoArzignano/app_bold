@@ -71,11 +71,12 @@ public class Utils {
      * @param mMessage: showcase message
      * @param mKey:     showcase key to show it only the first time
      */
+    @SuppressWarnings("SameParameterValue")
     public static void animFabIntro(final Activity mContext, final FloatingActionButton mFab,
                                     final String mTitle, final String mMessage, final String mKey) {
         final SharedPreferences mPrefs = mContext.getSharedPreferences(HOME_PREFS, MODE_PRIVATE);
         final boolean isFirstTime = mPrefs.getBoolean(mKey, true);
-        if (isLegacy()) {
+        if (isNotLegacy()) {
             mFab.show();
         }
         new Handler().postDelayed(new Runnable() {
@@ -205,7 +206,7 @@ public class Utils {
      *
      * @return true if there's api21+
      */
-    static boolean isLegacy() {
+    public static boolean isNotLegacy() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
 
@@ -247,7 +248,7 @@ public class Utils {
      * @param mCategory: event icon value
      * @return category name
      */
-    static String eventCategoryToString(int mCategory) {
+    public static String eventCategoryToString(int mCategory) {
         Context mContext = BoldApp.getBoldContext();
         switch (mCategory) {
             case 0:

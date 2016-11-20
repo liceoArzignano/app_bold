@@ -78,7 +78,6 @@ public class ManagerActivity extends AppCompatActivity
 
     private boolean isEditMode = false;
     private boolean isMark = true;
-    private boolean hasSaved = false;
 
     private int mYear;
     private int mMonth;
@@ -371,20 +370,9 @@ public class ManagerActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        if (hasSaved) {
-            Intent mEditIntent = new Intent(this, ViewerActivity.class);
-
-            mEditIntent.putExtra("isEditing", true);
-            mEditIntent.putExtra("isMark", isMark);
-            mEditIntent.putExtra("id", mObjId);
-
-            startActivity(mEditIntent);
-        } else {
-            Intent mListIntent = new Intent(this, isMark ?
-                    MarkListActivity.class : EventListActivity.class);
-            startActivity(mListIntent);
-        }
-
+        Intent mListIntent = new Intent(this, isMark ?
+                MarkListActivity.class : EventListActivity.class);
+        startActivity(mListIntent);
         finish();
     }
 
@@ -443,8 +431,6 @@ public class ManagerActivity extends AppCompatActivity
 
             mObjId = isEditMode ? mController.updateMark(mMark) : mController.addMark(mMark);
 
-            hasSaved = true;
-
             Snackbar.make(fab, getString(R.string.saved), Snackbar.LENGTH_SHORT).show();
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -478,8 +464,6 @@ public class ManagerActivity extends AppCompatActivity
             mEvent.setNote(mNotesInput.getText().toString());
 
             mObjId = isEditMode ? mController.updateEvent(mEvent) : mController.addEvent(mEvent);
-
-            hasSaved = true;
 
             Snackbar.make(fab, getString(R.string.saved), Snackbar.LENGTH_SHORT).show();
             new Handler().postDelayed(new Runnable() {
