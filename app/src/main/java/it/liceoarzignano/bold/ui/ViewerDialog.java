@@ -71,7 +71,7 @@ public class ViewerDialog {
     }
 
     /**
-     * Set ui basin on Event / Mark information
+     * Set ui basing on Event / Mark information
      *
      * @param mId object id
      * @param isMark is the object a mark
@@ -209,22 +209,27 @@ public class ViewerDialog {
                 editIntent.putExtra("isMark", isMark);
                 editIntent.putExtra("id", mId);
 
+                int mTime = 0;
                 if (Utils.isNotLegacy()) {
                     ((AnimatedVectorDrawable) mEditButton.getCompoundDrawables()[1]).start();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mThisDialog.dismiss();
+                        }
+                    }, mTime += 1000);
+                } else {
+                    mThisDialog.dismiss();
                 }
 
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        mThisDialog.dismiss();
-                    }
-                }, 1000);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
                         mContext.startActivity(editIntent);
                     }
-                }, 1040);
+                }, mTime + 40);
+
+
 
             }
         });
