@@ -249,7 +249,7 @@ public class Utils {
      * @return category name
      */
     public static String eventCategoryToString(int mCategory) {
-        Context mContext = BoldApp.getBoldContext();
+        Context mContext = BoldApp.getContext();
         switch (mCategory) {
             case 0:
                 return mContext.getString(R.string.event_spinner_test);
@@ -296,7 +296,7 @@ public class Utils {
      * @return true if first quarter, else false
      */
     public static boolean isFirstQuarter(String mDate) {
-        return stringToDate(BoldApp.getBoldContext().getString(R.string.config_quarter_change))
+        return stringToDate(BoldApp.getContext().getString(R.string.config_quarter_change))
                 .after(stringToDate(mDate));
     }
 

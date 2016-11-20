@@ -22,7 +22,7 @@ public class BoldApp extends Application {
         return sConfig;
     }
 
-    public static Context getBoldContext() {
+    public static Context getContext() {
         return sContext;
     }
 

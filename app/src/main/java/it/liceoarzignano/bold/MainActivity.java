@@ -33,7 +33,6 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -46,7 +45,6 @@ import io.realm.Sort;
 import it.liceoarzignano.bold.events.AlarmService;
 import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.events.EventListActivity;
-import it.liceoarzignano.bold.firebase.BoldAnalytics;
 import it.liceoarzignano.bold.home.HomeAdapter;
 import it.liceoarzignano.bold.home.HomeCard;
 import it.liceoarzignano.bold.intro.BenefitsActivity;
@@ -63,20 +61,17 @@ import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String APP_VERSION = BuildConfig.VERSION_NAME;
     private static Resources sRes;
     private static Context sContext;
     private static RealmController sController;
-    // Firebase
-    private BoldAnalytics mBoldAnalytics;
-    private boolean isAnalyticsEnabled = false;
-    // Header
+    private Calendar mCal;
+
     private Toolbar mToolbar;
     private TextView mUserName;
     private ImageView mAddressLogo;
-    // Cards
+
     private RecyclerView mCardsList;
-    // Chrome custom tabs
+
     private CustomTabsClient mClient;
     private CustomTabsSession mCustomTabsSession;
     private CustomTabsIntent mCustomTabsIntent;
@@ -90,12 +85,10 @@ public class MainActivity extends AppCompatActivity
         sContext = getApplicationContext();
         sController = RealmController.with(this);
 
-        // Analytics
-        setupAnalytics();
-
         // Intro
         showIntroIfNeeded();
 
+        // UI
         setContentView(R.layout.activity_main);
 
         // Toolbar and NavDrawer
@@ -121,13 +114,6 @@ public class MainActivity extends AppCompatActivity
         // Chrome custom tabs
         setupCCustomTabs();
 
-        // Firebase intent
-        Intent mCallingIntent = getIntent();
-        String mFirebaseUrl = mCallingIntent.getStringExtra("firebaseUrl");
-        if (mFirebaseUrl != null && !mFirebaseUrl.isEmpty()) {
-            mCustomTabsIntent.launchUrl(this, Uri.parse(mFirebaseUrl));
-        }
-
         // Welcome dialog
         showWelcomeIfNeeded(this);
 
@@ -150,63 +136,39 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem mItem) {
-        int mId = mItem.getItemId();
-        int mMenuVal = 0;
-
-        switch (mId) {
+        switch (mItem.getItemId()) {
             case R.id.nav_my_marks:
-                mMenuVal = 1;
-                Intent mMarksIntent = new Intent(this, MarkListActivity.class);
-                startActivity(mMarksIntent);
+                startActivity(new Intent(this, MarkListActivity.class));
                 break;
             case R.id.nav_calendar:
-                mMenuVal = 2;
-                Intent mEventsIntent = new Intent(this, EventListActivity.class);
-                startActivity(mEventsIntent);
+                startActivity(new Intent(this, EventListActivity.class));
                 break;
             case R.id.nav_news:
-                mMenuVal = 3;
-                Intent mNewsIntent = new Intent(this, NewsListActivity.class);
-                startActivity(mNewsIntent);
+                startActivity(new Intent(this, NewsListActivity.class));
                 break;
             case R.id.nav_website:
-                mMenuVal = 4;
                 showWebViewUI(0);
                 break;
             case R.id.nav_reg:
-                mMenuVal = 5;
                 showWebViewUI(1);
                 break;
             case R.id.nav_moodle:
-                mMenuVal = 6;
                 showWebViewUI(2);
                 break;
             case R.id.nav_copyboox:
-                mMenuVal = 7;
                 showWebViewUI(3);
                 break;
             case R.id.nav_teacherzone:
-                mMenuVal = 8;
                 showWebViewUI(4);
                 break;
             case R.id.nav_settings:
-                mMenuVal = 9;
                 Intent settingsIntent = new Intent(this, SettingsActivity.class);
                 startActivity(settingsIntent);
                 break;
             case R.id.nav_safe:
-                mMenuVal = 10;
                 Intent safeIntent = new Intent(this, SafeActivity.class);
                 startActivity(safeIntent);
                 break;
-        }
-
-        if (isAnalyticsEnabled) {
-            // Track this action
-            Bundle mBundle = new Bundle();
-            mBundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Drawer Item");
-            mBundle.putString(FirebaseAnalytics.Param.ITEM_NAME, String.valueOf(mMenuVal));
-            mBoldAnalytics.sendEvent(mBundle);
         }
 
         DrawerLayout mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -215,7 +177,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     * @return content for notification
+     * Fetch all the upcoming events and create a description
+     *
+     * @return content for events notification
      */
     public static String getTomorrowInfo() {
         String mContent = null;
@@ -238,7 +202,7 @@ public class MainActivity extends AppCompatActivity
 
         // Avoid npe
         if (sRes == null) {
-            sRes = BoldApp.getBoldContext().getResources();
+            sRes = BoldApp.getContext().getResources();
         }
 
         // Create tomorrow events list
@@ -380,12 +344,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     * Create notification that will be fired later
+     * Create an event notification that will be fired later
      */
     public static void makeEventNotification() {
         // Guard against npe when called from service
         if (sContext == null) {
-            sContext = BoldApp.getBoldContext();
+            sContext = BoldApp.getContext();
         }
 
         Calendar mCalendar = Calendar.getInstance();
@@ -415,6 +379,7 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
 
+        // Set alarm
         Intent mNotifIntent = new Intent(sContext, AlarmService.class);
         AlarmManager mAlarmManager = (AlarmManager) sContext.getSystemService(ALARM_SERVICE);
         PendingIntent mPendingIntent = PendingIntent.getService(sContext, 0, mNotifIntent, 0);
@@ -459,8 +424,7 @@ public class MainActivity extends AppCompatActivity
     /**
      * Open a chrome custom tab with the selected url and send
      * an Analytics event.
-     * If there's no chrome / chromium 46+ it will
-     * just open the browser
+     * If there's no chrome / chromium 46+ it will just open the default browser
      *
      * @param mIndex: the selected item from the nav drawer menu
      */
@@ -505,8 +469,7 @@ public class MainActivity extends AppCompatActivity
         // Show 3 closest events
         List<Event> mEvents = sController.getAllEventsInverted();
 
-        for (int mCounter = 0; mBuilder.build().getSize() < 3 && mCounter < mEvents.size();
-             mCounter++) {
+        for (int mCounter = 0; mCounter < 3 && mCounter < mEvents.size(); mCounter++) {
             Event mEvent = mEvents.get(mCounter);
             if (isThisWeek(mEvent.getDate())) {
                 mBuilder.addEntry(mEvent.getTitle(), mEvent.getDate());
@@ -524,7 +487,7 @@ public class MainActivity extends AppCompatActivity
      * Show the last 3 news in
      * a card with their titles and dates.
      *
-     * @return events card
+     * @return news card
      */
     private HomeCard createNewsCard() {
         HomeCard.Builder mBuilder = new HomeCard.Builder()
@@ -586,12 +549,12 @@ public class MainActivity extends AppCompatActivity
      * @return true if it's within 7 days, false if not
      */
     private boolean isThisWeek(String stringDate) {
-        Calendar mCalendar = Calendar.getInstance();
-        mCalendar.setTimeInMillis(Utils.stringToDate(stringDate).getTime());
+        Calendar mDateCal = Calendar.getInstance();
+        mDateCal.setTimeInMillis(Utils.stringToDate(stringDate).getTime());
 
-        int mDiff = mCalendar.get(Calendar.DAY_OF_YEAR) - mCalendar.get(Calendar.DAY_OF_YEAR);
+        int mDiff = mDateCal.get(Calendar.DAY_OF_YEAR) - mCal.get(Calendar.DAY_OF_YEAR);
 
-        return mCalendar.get(Calendar.YEAR) == mCalendar.get(Calendar.YEAR) &&
+        return mDateCal.get(Calendar.YEAR) == mCal.get(Calendar.YEAR) &&
                 mDiff >= 0 && mDiff < 8;
     }
 
@@ -701,12 +664,12 @@ public class MainActivity extends AppCompatActivity
                 getSharedPreferences("HomePrefs", MODE_PRIVATE).edit();
 
         switch (Utils.appVersionKey(this)) {
-            case APP_VERSION:
+            case BuildConfig.VERSION_NAME:
                 break;
             case "0":
                 // Used for feature discovery
                 final String today = Utils.getToday();
-                mEditor.putString("appVersionKey", APP_VERSION).apply();
+                mEditor.putString("appVersionKey", BuildConfig.VERSION_NAME).apply();
                 mEditor.putString("initialDayKey", today).apply();
                 break;
             default:
@@ -720,7 +683,8 @@ public class MainActivity extends AppCompatActivity
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog,
                                                 @NonNull DialogAction which) {
-                                mEditor.putString("appVersionKey", APP_VERSION).apply();
+                                mEditor.putString("appVersionKey",
+                                        BuildConfig.VERSION_NAME).apply();
                             }
                         })
                         .onNegative(new MaterialDialog.SingleButtonCallback() {
@@ -814,22 +778,5 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         }
-    }
-
-    /**
-     * Initialize firebase analytics
-     */
-    private void setupAnalytics() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Utils.enableTrackerIfOverlayRequests(sContext,
-                        getResources().getBoolean(R.bool.force_tracker));
-                if (Utils.hasAnalytics(sContext)) {
-                    isAnalyticsEnabled = true;
-                    mBoldAnalytics = BoldApp.getBoldAnalytics();
-                }
-            }
-        }).start();
     }
 }

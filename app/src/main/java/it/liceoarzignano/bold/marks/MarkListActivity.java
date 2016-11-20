@@ -148,7 +148,7 @@ public class MarkListActivity extends AppCompatActivity {
         }
         mItem.setChecked(true);
         mPrefs.edit().putInt(PREF_QUARTER_SELECTOR, sQuarterFilter).apply();
-        refreshList(BoldApp.getBoldContext());
+        refreshList(BoldApp.getContext());
 
 
         return super.onOptionsItemSelected(mItem);

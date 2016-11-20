@@ -21,7 +21,7 @@ public class BoldInstanceIdService extends FirebaseInstanceIdService {
     @Override
     public void onTokenRefresh() {
         FirebaseInstanceId.getInstance().getToken();
-        Context mContext = BoldApp.getBoldContext();
+        Context mContext = BoldApp.getContext();
         String mTopic;
         if (Utils.isTeacher(mContext)) {
             mTopic = ADDR6_TOPIC;

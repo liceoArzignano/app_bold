@@ -111,7 +111,7 @@ public class NewsListActivity extends AppCompatActivity {
             return;
         }
 
-        Context mContext = BoldApp.getBoldContext();
+        Context mContext = BoldApp.getContext();
         CustomTabsServiceConnection mCustomTabsServiceConnection =
                 new CustomTabsServiceConnection() {
                     @Override
