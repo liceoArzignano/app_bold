@@ -79,7 +79,6 @@
     <string name="title_activity_mark_list">My marks</string>
     <string name="title_filter">%1$s marks</string>
     <string name="title_fragment_marks">Marks</string>
-    <string name="title_fragments_avg">Average</string>
     <string name="title_fragments_avgs">Averages</string>
     <string name="marks_menu_filter">Filter marks</string>
     <string name="marks_all">All</string>

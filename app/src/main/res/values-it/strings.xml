@@ -79,13 +79,12 @@
     <string name="title_activity_mark_list">I miei voti</string>
     <string name="title_filter">Voti di %1$s</string>
     <string name="title_fragment_marks">Voti</string>
-    <string name="title_fragments_avg">Media</string>
     <string name="title_fragments_avgs">Medie</string>
     <string name="marks_menu_filter">Filtro voti</string>
     <string name="marks_all">Tutti</string>
     <string name="hint_content_common">Per avere la sufficienza, il prossimo voto</string>
     <string name="hint_content_under">deve essere %1$s o superiore</string>
-    <string name="hint_content_above">puo essere %1$s o superiore</string>
+    <string name="hint_content_above">pu\u00F2 essere %1$s o superiore</string>
     <string name="error_noaddress">Imposta un indirizzo per utilizzare questa funzione</string>
     <string name="marks_empty">Non ci sono voti</string>
 

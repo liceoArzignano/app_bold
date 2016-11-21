@@ -41,6 +41,9 @@ public class MarkListActivity extends AppCompatActivity {
 
     private static Context sContext;
 
+    private static Toolbar sToobar;
+    private static ViewPager sViewPager;
+
     private MenuItem sAllMarks;
     private MenuItem sFirstQMarks;
     private MenuItem sSecondQMarks;
@@ -64,18 +67,18 @@ public class MarkListActivity extends AppCompatActivity {
         Intent mIntent = getIntent();
         sSubjectFilter = mIntent.getStringExtra("filteredList");
 
-        Toolbar mToobar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToobar);
+        sToobar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(sToobar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        ViewPager mViewPager = (ViewPager) findViewById(R.id.viewpager);
+        sViewPager = (ViewPager) findViewById(R.id.viewpager);
         TabLayout mTabLayout = (TabLayout) findViewById(R.id.tabs);
 
-        setUpViewPager(mViewPager);
+        setUpViewPager();
         if (mTabLayout != null) {
-            mTabLayout.setupWithViewPager(mViewPager);
+            mTabLayout.setupWithViewPager(sViewPager);
         }
 
         sFab = (FloatingActionButton) findViewById(R.id.fab);
@@ -85,14 +88,6 @@ public class MarkListActivity extends AppCompatActivity {
             // once we're done with adding a new mark
             finish();
         });
-
-        if (sSubjectFilter != null) {
-            String mTitle = String.format(getString(R.string.title_filter), sSubjectFilter);
-            mToobar.setTitle(mTitle);
-            setSupportActionBar(mToobar);
-
-            mViewPager.setCurrentItem(1);
-        }
     }
 
     @Override
@@ -191,7 +186,13 @@ public class MarkListActivity extends AppCompatActivity {
         }
 
         if (sSubjectFilter != null) {
+            String mTitle =
+                    String.format(mContext.getString(R.string.title_filter), sSubjectFilter);
+            sToobar.setTitle(mTitle);
+            ((MarkListActivity) sContext).setSupportActionBar(sToobar);
+
             sFab.hide();
+            sViewPager.setCurrentItem(1);
         } else {
             Utils.animFab(sFab, true);
         }
@@ -238,16 +239,13 @@ public class MarkListActivity extends AppCompatActivity {
 
     /**
      * Initialize the viewpager and add the needed fragments
-     *
-     * @param mViewPager: the viewpager we're going to play with
      */
-    private void setUpViewPager(ViewPager mViewPager) {
+    private void setUpViewPager() {
         ViewPagerAdapter mAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         mAdapter.addFragment(new MarksListFragment(), getString(R.string.title_fragment_marks));
-        mAdapter.addFragment(new AverageListFragment(), sSubjectFilter == null ?
-                getString(R.string.title_fragments_avgs) : getString(R.string.title_fragments_avg));
+        mAdapter.addFragment(new AverageListFragment(), getString(R.string.title_fragments_avgs));
 
-        mViewPager.setAdapter(mAdapter);
+        sViewPager.setAdapter(mAdapter);
     }
 
     private static RealmResults<Mark> getFilteredMarks() {

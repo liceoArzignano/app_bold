@@ -17,8 +17,8 @@ import android.widget.TextView;
 
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
-import it.liceoarzignano.bold.ui.CircularProgressBar;
 import it.liceoarzignano.bold.realm.RealmController;
+import it.liceoarzignano.bold.ui.CircularProgressBar;
 import it.liceoarzignano.bold.ui.DividerDecoration;
 import it.liceoarzignano.bold.ui.RecyclerClickListener;
 import it.liceoarzignano.bold.ui.RecyclerTouchListener;
@@ -68,9 +68,16 @@ public class AverageListFragment extends Fragment {
             double avg = sController.getAverage(mFilter.first, mFilter.second);
             double excepted = sController.whatShouldIGet(mFilter.first, mFilter.second);
             setHint(mContext, avg, excepted);
+
+            // Animate transition
             sHintLayout.setVisibility(View.VISIBLE);
+            sHintLayout.setAlpha(0f);
+            sHintLayout.animate().alpha(1f).setDuration(280);
         } else {
+            // Animate transition
             sHintLayout.setVisibility(View.GONE);
+            sAvgListview.setAlpha(0f);
+            sAvgListview.animate().alpha(1f).setDuration(280);
         }
     }
 
@@ -90,7 +97,7 @@ public class AverageListFragment extends Fragment {
             mColor = R.color.green;
         }
         sProgressBar.setProgressColor(ContextCompat.getColor(mContext, mColor));
-        sProgressBar.setProgress(mAvg);
+        sProgressBar.setProgress(mAvg < 1 ? 1 : mAvg);
     }
 
     @Override

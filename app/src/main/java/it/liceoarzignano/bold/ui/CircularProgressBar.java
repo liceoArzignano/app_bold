@@ -15,9 +15,9 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
 
 import java.util.Locale;
 
@@ -105,11 +105,14 @@ public class CircularProgressBar extends View {
      * @param mProgress progress between 0 and 100.
      */
     public void setProgress(double mProgress) {
+        mSweepAngle = 0f;
         mValue = mProgress;
+
         ValueAnimator mAnimator = ValueAnimator.ofFloat(mSweepAngle,
                 calcSweepAngleFromProgress((int) mProgress * 100));
-        mAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
-        mAnimator.setDuration(2000);
+        //
+        mAnimator.setInterpolator(new FastOutSlowInInterpolator());
+        mAnimator.setDuration(1600);
         mAnimator.setStartDelay(300);
         mAnimator.addUpdateListener(valueAnimator -> {
             mSweepAngle = (float) valueAnimator.getAnimatedValue();
