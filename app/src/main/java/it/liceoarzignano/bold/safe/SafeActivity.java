@@ -221,6 +221,7 @@ public class SafeActivity extends AppCompatActivity {
         mLoginDialog = new SafeLoginDialog(mContext, !hasCompletedSetup);
         mLoginDialog.build(new MaterialDialog.Builder(mContext)
                 .customView(mLoginDialog.getView(), false)
+                .canceledOnTouchOutside(false)
                 .positiveText(hasCompletedSetup ?
                         R.string.safe_dialog_positive : R.string.safe_dialog_first_positive)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -244,7 +245,14 @@ public class SafeActivity extends AppCompatActivity {
                         }, 240);
                     }
                 })
-                .negativeText(android.R.string.cancel));
+                .negativeText(android.R.string.cancel)
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog,
+                                        @NonNull DialogAction which) {
+                        finish();
+                    }
+                }));
     }
 
     /**
