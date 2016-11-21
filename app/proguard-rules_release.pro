@@ -19,6 +19,7 @@
 -mergeinterfacesaggressively
 -dontwarn android.support.**
 -dontwarn com.google.**
+-dontwarn java.lang.invoke.*
 -forceprocessing
 -optimizations 25
 -dontskipnonpubliclibraryclasses
