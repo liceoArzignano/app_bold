@@ -61,10 +61,12 @@ public class SafeLoginDialog {
                     if (!mInput.isEmpty()) {
                         if (mInput.length() < 8) {
                             mMessage = R.string.safe_dialog_first_hint_low;
-                        } else if (mInput.matches(".*\\d.*")) {
-                            // Has at least 1 number and more than 8 chars
+                        } else if (mInput.matches(".*\\d.*") &&
+                                mInput.matches(".*[a-zA-Z].*")) {
+                            // Has at least 1 number, 1 letter and more than 8 chars
                             mMessage = R.string.safe_dialog_first_hint_good;
                         } else {
+                            // More than 8 chars but only numbers / letters
                             mMessage = R.string.safe_dialog_first_hint_medium;
                         }
 

@@ -195,9 +195,9 @@
     <string name="safe_dialog_title">Safe login</string>
     <string name="safe_dialog_hint">Input your password to access your private data</string>
     <string name="safe_dialog_first_hint">Choose a password to access your private data</string>
-    <string name="safe_dialog_first_hint_low">Weak password</string>
-    <string name="safe_dialog_first_hint_medium">Good password</string>
-    <string name="safe_dialog_first_hint_good">Secure password</string>
+    <string name="safe_dialog_first_hint_low">Weak password. An 8 characters long password would be better</string>
+    <string name="safe_dialog_first_hint_medium">Decent passwod. Password with both numbers and letters are even better</string>
+    <string name="safe_dialog_first_hint_good">Secure password. Well done</string>
     <string name="safe_dialog_password_input_hint">Password</string>
     <string name="safe_dialog_password_error_security">Security treat detected. You can\'t access Safe when Xposed is installed</string>
     <string name="safe_dialog_first_positive">Set</string>
