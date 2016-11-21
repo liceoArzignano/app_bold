@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity
     private static Resources sRes;
     private static Context sContext;
     private static RealmController sController;
-    private Calendar mCal;
+    private Calendar mCalendar = Calendar.getInstance();
 
     private Toolbar mToolbar;
     private TextView mUserName;
@@ -551,9 +551,9 @@ public class MainActivity extends AppCompatActivity
         Calendar mDateCal = Calendar.getInstance();
         mDateCal.setTimeInMillis(Utils.stringToDate(stringDate).getTime());
 
-        int mDiff = mDateCal.get(Calendar.DAY_OF_YEAR) - mCal.get(Calendar.DAY_OF_YEAR);
+        int mDiff = mDateCal.get(Calendar.DAY_OF_YEAR) - mCalendar.get(Calendar.DAY_OF_YEAR);
 
-        return mDateCal.get(Calendar.YEAR) == mCal.get(Calendar.YEAR) &&
+        return mDateCal.get(Calendar.YEAR) == mCalendar.get(Calendar.YEAR) &&
                 mDiff >= 0 && mDiff < 8;
     }
 

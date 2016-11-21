@@ -3,9 +3,11 @@ package it.liceoarzignano.bold;
 import android.app.Application;
 import android.content.Context;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatDelegate;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import io.realm.Realm;
@@ -16,7 +18,6 @@ public class BoldApp extends Application {
 
     private static RealmConfiguration sConfig;
     private static Context sContext;
-    private static BoldAnalytics sBoldAnalytics;
 
     public static RealmConfiguration getAppRealmConfiguration() {
         return sConfig;
@@ -24,10 +25,6 @@ public class BoldApp extends Application {
 
     public static Context getContext() {
         return sContext;
-    }
-
-    public static BoldAnalytics getBoldAnalytics() {
-        return sBoldAnalytics;
     }
 
     @Override
@@ -44,7 +41,6 @@ public class BoldApp extends Application {
 
         sContext = getApplicationContext();
 
-        sBoldAnalytics = new BoldAnalytics(sContext);
         FirebaseMessaging.getInstance().subscribeToTopic("global");
         FirebaseMessaging.getInstance().subscribeToTopic(Utils.getTopic(sContext));
         if (!Utils.isTeacher(sContext)) {
@@ -64,6 +60,17 @@ public class BoldApp extends Application {
         // Turn on support library vectorDrawables supports on legacy devices
         if (!Utils.isNotLegacy()) {
             AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+        }
+
+        // Analytics
+        Utils.enableTrackerIfOverlayRequests(sContext,
+                getResources().getBoolean(R.bool.force_tracker));
+
+        if (Utils.hasAnalytics(sContext)) {
+            BoldAnalytics mBoldAnalytics = new BoldAnalytics(sContext);
+            Bundle mBundle = new Bundle();
+            mBundle.putString(FirebaseAnalytics.Param.LEVEL, "App");
+            mBoldAnalytics.sendConfig(mBundle);
         }
     }
 

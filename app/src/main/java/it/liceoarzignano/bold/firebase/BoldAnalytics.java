@@ -25,17 +25,6 @@ public class BoldAnalytics {
     }
 
     /**
-     * Send firebase analytics event
-     *
-     * @param mBundle event data
-     */
-    public void sendEvent(Bundle mBundle) {
-        mBundle.putString(FirebaseAnalytics.Param.GROUP_ID, Utils.isTeacher(mContext) ?
-                "0" : Utils.getAddress(mContext));
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, mBundle);
-    }
-
-    /**
      * Send firebase analytics when settings are opened
      *
      * @param mBundle event data

@@ -121,12 +121,6 @@ public class SettingsActivity extends AppCompatActivity {
                 }
                 return true;
             });
-
-            if (Utils.hasAnalytics(mContext)) {
-                Bundle mBundle = new Bundle();
-                mBundle.putString(FirebaseAnalytics.Param.LEVEL, "Settings");
-                BoldApp.getBoldAnalytics().sendConfig(mBundle);
-            }
         }
     }
 }
