@@ -199,7 +199,7 @@
     <string name="safe_dialog_first_hint_medium">Decent passwod. Password with both numbers and letters are even better</string>
     <string name="safe_dialog_first_hint_good">Secure password. Well done</string>
     <string name="safe_dialog_password_input_hint">Password</string>
-    <string name="safe_dialog_password_error_security">Security treat detected. You can\'t access Safe when Xposed is installed</string>
+    <string name="safe_dialog_password_error_security">Security threat detected. You can\'t access Safe when Xposed is installed</string>
     <string name="safe_dialog_first_positive">Set</string>
     <string name="safe_dialog_positive">Unlock</string>
     <string name="safe_username">User ID</string>
@@ -217,7 +217,7 @@
     <string name="safe_setup_checking_password">Checking password\u2026</string>
     <string name="safe_nomatch">Password is incorrect</string>
     <string name="safe_back_title">Exit</string>
-    <string name="safe_back_message">Are you sure you want to exit? Your changes will not be saved.\nClick the V button at the bottom to save</string>
+    <string name="safe_back_message">Are you sure you want to exit? Your changes will not be saved.\nClick the button at the bottom to save</string>
     <string name="safe_data_usage"><b>Register and Copybook</b>\n\u2022 Username: User ID\n\u2022 Password: Register password\n\n<b>PC account</b>\n\u2022 Username: surname + User ID (rossi123456)\n\u2022 Password: PC Password\n\n<b>Internet access</b>\n\u2022 Username: surname + User ID (rossi123456)\n\u2022 Password: Internet Password</string>
 
 

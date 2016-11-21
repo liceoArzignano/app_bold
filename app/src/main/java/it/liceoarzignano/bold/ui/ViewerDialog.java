@@ -138,7 +138,7 @@ public class ViewerDialog {
                         String.format(mContext.getString(Utils.isTeacher(mContext) ?
                                         R.string.viewer_share_teacher : R.string.viewer_share_student),
                                 mValueTextView.getText(), mTitle) :
-                        String.format("1$s (%2$s)\n%3$s", mTitle, mValueTextView.getText(),
+                        String.format("%1$s (%2$s)\n%3$s", mTitle, mValueTextView.getText(),
                                 mNotesTexView.getText());
 
                 final Intent shareIntent = new Intent(Intent.ACTION_SEND);
