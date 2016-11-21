@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity
     private static Resources sRes;
     private static Context sContext;
     private static RealmController sController;
-    private Calendar mCalendar = Calendar.getInstance();
+    private final Calendar mCalendar = Calendar.getInstance();
 
     private Toolbar mToolbar;
     private TextView mUserName;
@@ -205,6 +205,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         // Create tomorrow events list
+        //noinspection Convert2streamapi
         for (Event mEvent : mEvents) {
             if (Utils.getToday().equals(mEvent.getDate())) {
                 mUpcomingEvents.add(mEvent);

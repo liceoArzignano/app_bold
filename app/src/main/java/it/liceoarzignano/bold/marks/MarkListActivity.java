@@ -15,7 +15,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,11 +29,10 @@ import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.ManagerActivity;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
-import it.liceoarzignano.bold.ui.ViewerDialog;
-import it.liceoarzignano.bold.realm.RealmController;
 import it.liceoarzignano.bold.ui.DividerDecoration;
 import it.liceoarzignano.bold.ui.RecyclerClickListener;
 import it.liceoarzignano.bold.ui.RecyclerTouchListener;
+import it.liceoarzignano.bold.ui.ViewerDialog;
 
 
 public class MarkListActivity extends AppCompatActivity {
@@ -60,7 +58,6 @@ public class MarkListActivity extends AppCompatActivity {
 
         sContext = this;
 
-        RealmController mController = RealmController.with(this);
         mPrefs = getSharedPreferences("HomePrefs", MODE_PRIVATE);
         sQuarterFilter = mPrefs.getInt(PREF_QUARTER_SELECTOR, 0);
 

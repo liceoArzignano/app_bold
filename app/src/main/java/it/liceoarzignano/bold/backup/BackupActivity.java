@@ -8,7 +8,6 @@ import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,10 +17,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveApi;
 import com.google.android.gms.drive.DriveContents;
@@ -165,6 +162,7 @@ public class BackupActivity extends AppCompatActivity {
      */
     private void pickBackup(final Context mContext) {
         List<String> mBackupsTitles = new ArrayList<>();
+        //noinspection Convert2streamapi,Convert2streamapi,Convert2streamapi
         for (BackupData mData : mBackupList) {
             mBackupsTitles.add(String.format("%1$s (%2$s)", backupDate(mData.getDate()),
                     backupSize(mData.getSize())));

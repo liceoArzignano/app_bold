@@ -4,8 +4,6 @@
 
     <!-- URL -->
     <string translatable="false" name="config_url_home">http://www.liceoarzignano.it</string>
-    <string translatable="false" name="config_url_news_student">http://www.liceoarzignano.it/circolari/appcircolaripub/ricerca.php?numero=0</string>
-    <string translatable="false" name="config_url_news_teacher">http://www.liceoarzignano.it/circolari/index.php</string>
     <string translatable="false" name="config_url_reg_student">https://davinci-vi-sito.registroelettronico.com</string>
     <string translatable="false" name="config_url_reg_teacher">https://81.174.32.167:30443/registro</string>
     <string translatable="false" name="config_url_moodle">https://81.174.32.167:30443/moodle</string>
