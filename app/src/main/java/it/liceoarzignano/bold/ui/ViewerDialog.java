@@ -187,7 +187,7 @@ public class ViewerDialog {
                 Snackbar.make(v, mContext.getString(R.string.removed),
                         Snackbar.LENGTH_SHORT).show();
                 if (isMark) {
-                    MarkListActivity.refreshList(mContext);
+                    MarkListActivity.refresh(mContext);
                 } else {
                     EventListActivity.refreshList(mContext, null);
                 }

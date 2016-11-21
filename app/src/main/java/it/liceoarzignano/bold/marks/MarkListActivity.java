@@ -87,6 +87,9 @@ public class MarkListActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent mNewMarkIntent = new Intent(MarkListActivity.this, ManagerActivity.class);
                 startActivity(mNewMarkIntent);
+                // Hax: avoid averages sync issues by restarting the activity
+                // once we're done with adding a new mark
+                finish();
             }
         });
 
@@ -95,17 +98,14 @@ public class MarkListActivity extends AppCompatActivity {
             mToobar.setTitle(mTitle);
             setSupportActionBar(mToobar);
 
-            double mAvg = mController.getAverage(sSubjectFilter, 0);
-            double mExcepted = mController.whatShouldIGet(sSubjectFilter, 0);
             mViewPager.setCurrentItem(1);
-            AverageListFragment.setHint(this, mAvg, mExcepted);
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        refreshList(getApplicationContext());
+        refresh(getApplicationContext());
     }
 
     @Override
@@ -113,7 +113,7 @@ public class MarkListActivity extends AppCompatActivity {
         // If showing single mark view, roll back to the "all" view
         if (sSubjectFilter != null) {
             sSubjectFilter = null;
-            refreshList(this);
+            refresh(this);
         } else {
             super.onBackPressed();
         }
@@ -148,7 +148,7 @@ public class MarkListActivity extends AppCompatActivity {
         }
         mItem.setChecked(true);
         mPrefs.edit().putInt(PREF_QUARTER_SELECTOR, sQuarterFilter).apply();
-        refreshList(BoldApp.getContext());
+        refresh(BoldApp.getContext());
 
 
         return super.onOptionsItemSelected(mItem);
@@ -189,7 +189,7 @@ public class MarkListActivity extends AppCompatActivity {
      *
      * @param mContext: needed to reload database data
      */
-    public static void refreshList(Context mContext) {
+    public static void refresh(Context mContext) {
         final RealmResults<Mark> mMarks = getFilteredMarks();
 
         if (MarksListFragment.sEmptyLayout != null) {
@@ -203,8 +203,12 @@ public class MarkListActivity extends AppCompatActivity {
             Utils.animFab(sFab, true);
         }
 
+        if (MarksListFragment.sMarksListView == null) {
+            return;
+        }
+
+        // Adapter cannot be loaded from fragment, load stuffs here
         MarksAdapter mAdapter = new MarksAdapter(mMarks);
-        RecyclerView.LayoutManager mManager = new LinearLayoutManager(mContext);
         RecyclerClickListener mListener = new RecyclerClickListener() {
             @Override
             public void onClick(View mView, int mPosition) {
@@ -212,16 +216,16 @@ public class MarkListActivity extends AppCompatActivity {
             }
         };
 
-        if (MarksListFragment.sMarksListView != null) {
-            MarksListFragment.sMarksListView.setLayoutManager(mManager);
-            MarksListFragment.sMarksListView.setItemAnimator(new DefaultItemAnimator());
-            MarksListFragment.sMarksListView.setAdapter(mAdapter);
-            MarksListFragment.sMarksListView.addItemDecoration(new DividerDecoration(mContext));
-            MarksListFragment.sMarksListView.addOnItemTouchListener(
-                    new RecyclerTouchListener(mContext, mListener));
-            mAdapter.notifyDataSetChanged();
-            AverageListFragment.refresh(mContext, new Pair<>(sSubjectFilter, sQuarterFilter));
-        }
+        MarksListFragment.sMarksListView.setLayoutManager(new LinearLayoutManager(mContext));
+        MarksListFragment.sMarksListView.addItemDecoration(new DividerDecoration(mContext));
+        MarksListFragment.sMarksListView.setItemAnimator(new DefaultItemAnimator());
+        MarksListFragment.sMarksListView.setAdapter(mAdapter);
+        MarksListFragment.sMarksListView.addOnItemTouchListener(
+                new RecyclerTouchListener(mContext, mListener));
+        mAdapter.notifyDataSetChanged();
+
+        // Load avg fragment
+        AverageListFragment.refresh(mContext, new Pair<>(sSubjectFilter, sQuarterFilter));
     }
 
     /**
@@ -231,7 +235,7 @@ public class MarkListActivity extends AppCompatActivity {
      */
     public static void showFilteredMarks(String mFilter) {
         sSubjectFilter = mFilter;
-        refreshList(sContext);
+        refresh(sContext);
     }
 
     /**

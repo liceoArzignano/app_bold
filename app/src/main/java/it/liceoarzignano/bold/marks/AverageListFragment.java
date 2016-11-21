@@ -38,38 +38,42 @@ public class AverageListFragment extends Fragment {
     }
 
     static void refresh(Context mContext, final Pair<String, Integer> mFilter) {
-        if (sAvgListview != null) {
-            final String[] mResults = Utils.getAverageElements(mFilter.second);
-
-            final AverageAdapter mAdapter = new AverageAdapter(sController, mResults);
-            RecyclerView.LayoutManager mManager = new LinearLayoutManager(mContext);
-            RecyclerClickListener mListener = new RecyclerClickListener() {
-                @Override
-                public void onClick(View mView, int mPosition) {
-                    if (mResults.length > 0) {
-                        MarkListActivity.showFilteredMarks(mResults[mPosition]);
-                    }
-                }
-            };
-
-            sAvgListview.setLayoutManager(mManager);
-            sAvgListview.setItemAnimator(new DefaultItemAnimator());
-            sAvgListview.addItemDecoration(new DividerDecoration(mContext));
-            sAvgListview.setAdapter(mAdapter);
-            sAvgListview.addOnItemTouchListener(new RecyclerTouchListener(mContext, mListener));
-            sAvgListview.setVisibility(mFilter.first != null ? View.GONE : View.VISIBLE);
-            mAdapter.notifyDataSetChanged();
+        if (sAvgListview == null) {
+            return;
         }
 
-        if (sHintLayout != null) {
-            if (mFilter.first != null) {
-                double avg = sController.getAverage(mFilter.first, mFilter.second);
-                double excepted = sController.whatShouldIGet(mFilter.first, mFilter.second);
-                setHint(mContext, avg, excepted);
-                sHintLayout.setVisibility(View.VISIBLE);
-            } else {
-                sHintLayout.setVisibility(View.GONE);
+        final String[] mResults = Utils.getAverageElements(mFilter.second);
+
+        final AverageAdapter mAdapter = new AverageAdapter(sController, mResults);
+        RecyclerView.LayoutManager mManager = new LinearLayoutManager(mContext);
+        RecyclerClickListener mListener = new RecyclerClickListener() {
+            @Override
+            public void onClick(View mView, int mPosition) {
+                if (mResults.length > 0) {
+                    MarkListActivity.showFilteredMarks(mResults[mPosition]);
+                }
             }
+        };
+
+        sAvgListview.setLayoutManager(mManager);
+        sAvgListview.setItemAnimator(new DefaultItemAnimator());
+        sAvgListview.addItemDecoration(new DividerDecoration(mContext));
+        sAvgListview.setAdapter(mAdapter);
+        sAvgListview.addOnItemTouchListener(new RecyclerTouchListener(mContext, mListener));
+        sAvgListview.setVisibility(mFilter.first != null ? View.GONE : View.VISIBLE);
+        mAdapter.notifyDataSetChanged();
+
+        if (sHintLayout == null) {
+            return;
+        }
+
+        if (mFilter.first != null) {
+            double avg = sController.getAverage(mFilter.first, mFilter.second);
+            double excepted = sController.whatShouldIGet(mFilter.first, mFilter.second);
+            setHint(mContext, avg, excepted);
+            sHintLayout.setVisibility(View.VISIBLE);
+        } else {
+            sHintLayout.setVisibility(View.GONE);
         }
     }
 

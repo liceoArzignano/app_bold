@@ -1,6 +1,5 @@
 package it.liceoarzignano.bold.marks;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -16,18 +15,7 @@ public class MarksListFragment extends Fragment {
     static RecyclerView sMarksListView;
     static LinearLayout sEmptyLayout;
 
-    public MarksListFragment() {
-
-    }
-
-    /**
-     * Update the ListView content
-     *
-     * @param mContext: needed to reload database data
-     */
-    private static void refreshList(Context mContext) {
-        MarkListActivity.refreshList(mContext);
-    }
+    public MarksListFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater mInflater, ViewGroup mContainer,
@@ -37,7 +25,7 @@ public class MarksListFragment extends Fragment {
         sMarksListView = (RecyclerView) mView.findViewById(R.id.mark_list);
         sEmptyLayout = (LinearLayout) mView.findViewById(R.id.mark_empty_layout);
 
-        refreshList(getContext());
+        MarkListActivity.refresh(mContainer.getContext());
 
         return mView;
     }

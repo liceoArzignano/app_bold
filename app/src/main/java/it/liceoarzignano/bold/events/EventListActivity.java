@@ -109,6 +109,7 @@ public class EventListActivity extends AppCompatActivity {
                 Intent mIntent = new Intent(EventListActivity.this, ManagerActivity.class);
                 mIntent.putExtra("isMark", false);
                 startActivity(mIntent);
+                finish();
             }
         });
 
