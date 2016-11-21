@@ -50,14 +50,11 @@ public class Utils {
      * @param shouldShow: whether to show the fab
      */
     public static void animFab(final FloatingActionButton mFab, final boolean shouldShow) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (shouldShow) {
-                    mFab.show();
-                } else {
-                    mFab.hide();
-                }
+        new Handler().postDelayed(() -> {
+            if (shouldShow) {
+                mFab.show();
+            } else {
+                mFab.hide();
             }
         }, 500);
     }
@@ -79,19 +76,16 @@ public class Utils {
         if (isNotLegacy()) {
             mFab.show();
         }
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mFab.setVisibility(View.VISIBLE);
-                if (isFirstTime) {
-                    mPrefs.edit().putBoolean(mKey, false).apply();
-                    new MaterialTapTargetPrompt.Builder(mContext)
-                            .setTarget(mFab)
-                            .setPrimaryText(mTitle)
-                            .setSecondaryText(mMessage)
-                            .setBackgroundColourFromRes(R.color.colorAccentDark)
-                            .show();
-                }
+        new Handler().postDelayed(() -> {
+            mFab.setVisibility(View.VISIBLE);
+            if (isFirstTime) {
+                mPrefs.edit().putBoolean(mKey, false).apply();
+                new MaterialTapTargetPrompt.Builder(mContext)
+                        .setTarget(mFab)
+                        .setPrimaryText(mTitle)
+                        .setSecondaryText(mMessage)
+                        .setBackgroundColourFromRes(R.color.colorAccentDark)
+                        .show();
             }
         }, 500);
 

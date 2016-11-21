@@ -82,15 +82,11 @@ public class MarkListActivity extends AppCompatActivity {
         }
 
         sFab = (FloatingActionButton) findViewById(R.id.fab);
-        sFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent mNewMarkIntent = new Intent(MarkListActivity.this, ManagerActivity.class);
-                startActivity(mNewMarkIntent);
-                // Hax: avoid averages sync issues by restarting the activity
-                // once we're done with adding a new mark
-                finish();
-            }
+        sFab.setOnClickListener(view -> {
+            startActivity(new Intent(MarkListActivity.this, ManagerActivity.class));
+            // Hax: avoid averages sync issues by restarting the activity
+            // once we're done with adding a new mark
+            finish();
         });
 
         if (sSubjectFilter != null) {
@@ -209,12 +205,8 @@ public class MarkListActivity extends AppCompatActivity {
 
         // Adapter cannot be loaded from fragment, load stuffs here
         MarksAdapter mAdapter = new MarksAdapter(mMarks);
-        RecyclerClickListener mListener = new RecyclerClickListener() {
-            @Override
-            public void onClick(View mView, int mPosition) {
+        RecyclerClickListener mListener = (mView, mPosition) ->
                 MarkListActivity.viewMark(mMarks.get(mPosition).getId());
-            }
-        };
 
         MarksListFragment.sMarksListView.setLayoutManager(new LinearLayoutManager(mContext));
         MarksListFragment.sMarksListView.addItemDecoration(new DividerDecoration(mContext));

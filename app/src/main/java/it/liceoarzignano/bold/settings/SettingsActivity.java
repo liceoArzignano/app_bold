@@ -57,28 +57,21 @@ public class SettingsActivity extends AppCompatActivity {
             final Preference mName = findPreference("username_key");
             final Preference mSecret = findPreference("secret_key");
 
-            mChangelog.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    new MaterialDialog.Builder(mContext)
-                            .title(getString(R.string.pref_changelog))
-                            .content(getString(R.string.dialog_updated_content))
-                            .positiveText(getString(android.R.string.ok))
-                            .negativeText(R.string.dialog_updated_changelog)
-                            .onNegative(new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(@NonNull MaterialDialog dialog,
-                                                    @NonNull DialogAction which) {
-                                    dialog.hide();
-                                    Intent mIntent = new Intent(Intent.ACTION_VIEW);
-                                    mIntent.setData(
-                                            Uri.parse(getString(R.string.config_url_changelog)));
-                                    startActivity(mIntent);
-                                }
-                            })
-                            .show();
-                    return true;
-                }
+            mChangelog.setOnPreferenceClickListener(preference -> {
+                new MaterialDialog.Builder(mContext)
+                        .title(getString(R.string.pref_changelog))
+                        .content(getString(R.string.dialog_updated_content))
+                        .positiveText(getString(android.R.string.ok))
+                        .negativeText(R.string.dialog_updated_changelog)
+                        .onNegative((dialog, which) -> {
+                            dialog.hide();
+                            Intent mIntent = new Intent(Intent.ACTION_VIEW);
+                            mIntent.setData(
+                                    Uri.parse(getString(R.string.config_url_changelog)));
+                            startActivity(mIntent);
+                        })
+                        .show();
+                return true;
             });
 
             mAnalytics.setEnabled(!getResources().getBoolean(R.bool.force_tracker));
@@ -89,59 +82,44 @@ public class SettingsActivity extends AppCompatActivity {
             mBackup.setEnabled(GoogleApiAvailability.getInstance()
                     .isGooglePlayServicesAvailable(mContext) == ConnectionResult.SUCCESS &&
                     Utils.hasPackage(mContext, "com.google.android.apps.docs"));
-            mBackup.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    Intent mIntent = new Intent(mContext, BackupActivity.class);
-                    startActivity(mIntent);
-                    return true;
-                }
+            mBackup.setOnPreferenceClickListener(preference -> {
+                startActivity(new Intent(mContext, BackupActivity.class));
+                return true;
             });
 
             mName.setSummary(Utils.userNameKey(mContext));
-            mName.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    mName.setSummary(newValue.toString());
-                    return true;
-                }
+            mName.setOnPreferenceChangeListener((preference, newValue) -> {
+                mName.setSummary(newValue.toString());
+                return true;
             });
 
-            mSecret.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    mCounter++;
-                    if (mCounter == 9) {
-                        if (SafeActivity.hasSharedPassword(mContext)) {
-                            Toast.makeText(mContext, getString(
-                                    R.string.pref_secret_export_already_shared), Toast.LENGTH_LONG)
-                                    .show();
-                        } else {
-                            new MaterialDialog.Builder(mContext)
-                                    .title(getString(R.string.pref_secret_export_safe_title))
-                                    .content(getString(R.string.pref_secret_export_safe_message))
-                                    .negativeText(getString(android.R.string.cancel))
-                                    .positiveText(getString(R.string.viewer_share))
-                                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                        @Override
-                                        public void onClick(@NonNull MaterialDialog dialog,
-                                                            @NonNull DialogAction which) {
-                                            final Intent mIntent = new Intent(Intent.ACTION_SEND);
-                                            mIntent.setType("text/plain");
-                                            mIntent.putExtra(Intent.EXTRA_TEXT, String.format(
-                                                    getString(R.string.pref_secret_export_message),
-                                                    SafeActivity.getEncryptedPassword(mContext)));
-                                            startActivity(Intent.createChooser(mIntent,
-                                                    getString(R.string.pref_secret_export_title)));
-                                            SafeActivity.setSharedPassword(mContext);
-                                        }
-                                    })
-                                    .show();
-                        }
-
+            mSecret.setOnPreferenceClickListener(preference -> {
+                mCounter++;
+                if (mCounter == 9) {
+                    if (SafeActivity.hasSharedPassword(mContext)) {
+                        Toast.makeText(mContext, getString(
+                                R.string.pref_secret_export_already_shared), Toast.LENGTH_LONG)
+                                .show();
+                    } else {
+                        new MaterialDialog.Builder(mContext)
+                                .title(getString(R.string.pref_secret_export_safe_title))
+                                .content(getString(R.string.pref_secret_export_safe_message))
+                                .negativeText(getString(android.R.string.cancel))
+                                .positiveText(getString(R.string.viewer_share))
+                                .onPositive((dialog, which) -> {
+                                    Intent mIntent = new Intent(Intent.ACTION_SEND);
+                                    mIntent.setType("text/plain");
+                                    mIntent.putExtra(Intent.EXTRA_TEXT, String.format(
+                                            getString(R.string.pref_secret_export_message),
+                                            SafeActivity.getEncryptedPassword(mContext)));
+                                    startActivity(Intent.createChooser(mIntent,
+                                            getString(R.string.pref_secret_export_title)));
+                                    SafeActivity.setSharedPassword(mContext);
+                                })
+                                .show();
                     }
-                    return true;
                 }
+                return true;
             });
 
             if (Utils.hasAnalytics(mContext)) {

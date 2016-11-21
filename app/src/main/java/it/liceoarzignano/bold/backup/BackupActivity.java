@@ -134,12 +134,9 @@ public class BackupActivity extends AppCompatActivity {
         mSummary.setText(getString(R.string.backup_summary));
 
         final Context mContext = this;
-        mRestoreButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                pickBackup(mContext);
-                setUI();
-            }
+        mRestoreButton.setOnClickListener(view -> {
+            pickBackup(mContext);
+            setUI();
         });
         mRestoreButton.setVisibility(hasValidFolder ? View.VISIBLE : View.GONE);
 
@@ -152,15 +149,12 @@ public class BackupActivity extends AppCompatActivity {
         }
 
         mBackupButton.setText(getString(mBackButtonText));
-        mBackupButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mBackup == null) {
-                    initBackup();
-                }
-                openFolderPicker();
-                setUI();
+        mBackupButton.setOnClickListener(view -> {
+            if (mBackup == null) {
+                initBackup();
             }
+            openFolderPicker();
+            setUI();
         });
     }
 
@@ -179,15 +173,11 @@ public class BackupActivity extends AppCompatActivity {
         new MaterialDialog.Builder(mContext)
                 .title(R.string.backup_dialog_list_title)
                 .items(mBackupsTitles)
-                .itemsCallback(new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog dialog, View itemView,
-                                            int position, CharSequence text) {
-                        dialog.hide();
-                        restoreBackupDialog(mContext, mBackupList.get(position).getId(),
-                                backupDate(mBackupList.get(position).getDate()),
-                                backupSize(mBackupList.get(position).getSize()));
-                    }
+                .itemsCallback((dialog, itemView, position, text) -> {
+                    dialog.hide();
+                    restoreBackupDialog(mContext, mBackupList.get(position).getId(),
+                            backupDate(mBackupList.get(position).getDate()),
+                            backupSize(mBackupList.get(position).getSize()));
                 })
                 .neutralText(android.R.string.cancel)
                 .show();
@@ -208,22 +198,12 @@ public class BackupActivity extends AppCompatActivity {
                 .positiveText(android.R.string.yes)
                 .neutralText(R.string.backup_dialog_pick_another)
                 .negativeText(android.R.string.no)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog,
-                                        @NonNull DialogAction which) {
-                        dialog.hide();
-                        ((BackupActivity) mContext).downloadFromDrive(mId != null ?
-                                mId.asDriveFile() : null);
-                    }
+                .onPositive((dialog, which) -> {
+                    dialog.hide();
+                    ((BackupActivity) mContext).downloadFromDrive(mId != null ?
+                            mId.asDriveFile() : null);
                 })
-                .onNeutral(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog,
-                                        @NonNull DialogAction which) {
-                        pickBackup(mContext);
-                    }
-                })
+                .onNeutral((dialog, which) -> pickBackup(mContext))
                 .show();
     }
 
@@ -262,17 +242,14 @@ public class BackupActivity extends AppCompatActivity {
      */
     private void downloadFromDrive(DriveFile mFile) {
         mFile.open(mGoogleApiClient, DriveFile.MODE_READ_ONLY, null)
-                .setResultCallback(new ResultCallback<DriveApi.DriveContentsResult>() {
-                    @Override
-                    public void onResult(@NonNull DriveApi.DriveContentsResult result) {
-                        mStatus = 8;
-                        if (!result.getStatus().isSuccess()) {
-                            showResult(false);
-                            mStatus = 0;
-                            return;
-                        }
-                        restoreRealmBackup(result);
+                .setResultCallback(result -> {
+                    mStatus = 8;
+                    if (!result.getStatus().isSuccess()) {
+                        showResult(false);
+                        mStatus = 0;
+                        return;
                     }
+                    restoreRealmBackup(result);
                 });
     }
 
@@ -315,12 +292,7 @@ public class BackupActivity extends AppCompatActivity {
         AlarmManager alarmManager = (AlarmManager)
                 getApplicationContext().getSystemService(ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + 10, mPendingIntent);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                System.exit(0);
-            }
-        }, 650);
+        new Handler().postDelayed(() -> System.exit(0), 650);
     }
 
     /**
@@ -332,15 +304,12 @@ public class BackupActivity extends AppCompatActivity {
         if (mFolderId != null) {
             final DriveFolder mFolder = mFolderId.asDriveFolder();
             Drive.DriveApi.newDriveContents(mGoogleApiClient)
-                    .setResultCallback(new ResultCallback<DriveApi.DriveContentsResult>() {
-                        @Override
-                        public void onResult(@NonNull DriveApi.DriveContentsResult result) {
-                            if (!result.getStatus().isSuccess()) {
-                                showResult(false);
-                                return;
-                            }
-                            uploadRealmBackup(result, mFolder);
+                    .setResultCallback(result -> {
+                        if (!result.getStatus().isSuccess()) {
+                            showResult(false);
+                            return;
                         }
+                        uploadRealmBackup(result, mFolder);
                     });
         }
     }
@@ -382,13 +351,8 @@ public class BackupActivity extends AppCompatActivity {
                         .build();
 
                 mFolder.createFile(mGoogleApiClient, mChangeSet, mContents)
-                        .setResultCallback(new ResultCallback<DriveFolder.DriveFileResult>() {
-                            @Override
-                            public void onResult(
-                                    @NonNull DriveFolder.DriveFileResult driveFileResult) {
-                                showResult(mResult.getStatus().isSuccess());
-                            }
-                        });
+                        .setResultCallback(driveFileResult ->
+                                showResult(mResult.getStatus().isSuccess()));
                 mStatus = 2;
             }
         }.start();
@@ -445,20 +409,16 @@ public class BackupActivity extends AppCompatActivity {
                 .setSortOrder(mOrder)
                 .build();
         mFolder.queryChildren(mGoogleApiClient, query)
-                .setResultCallback(new ResultCallback<DriveApi.MetadataBufferResult>() {
-                    @Override
-                    public void onResult(
-                            @NonNull DriveApi.MetadataBufferResult metadataBufferResult) {
-                        MetadataBuffer buffer = metadataBufferResult.getMetadataBuffer();
-                        int size = buffer.getCount();
-                        for (int i = 0; i < size; i++) {
-                            BackupData data = new BackupData();
-                            Metadata metadata = buffer.get(i);
-                            data.setId(metadata.getDriveId());
-                            data.setDate(metadata.getModifiedDate());
-                            data.setSize(metadata.getFileSize());
-                            mBackupList.add(data);
-                        }
+                .setResultCallback(metadataBufferResult -> {
+                    MetadataBuffer buffer = metadataBufferResult.getMetadataBuffer();
+                    int size = buffer.getCount();
+                    for (int i = 0; i < size; i++) {
+                        BackupData data = new BackupData();
+                        Metadata metadata = buffer.get(i);
+                        data.setId(metadata.getDriveId());
+                        data.setDate(metadata.getModifiedDate());
+                        data.setSize(metadata.getFileSize());
+                        mBackupList.add(data);
                     }
                 });
     }

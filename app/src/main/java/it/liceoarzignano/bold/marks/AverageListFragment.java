@@ -46,12 +46,9 @@ public class AverageListFragment extends Fragment {
 
         final AverageAdapter mAdapter = new AverageAdapter(sController, mResults);
         RecyclerView.LayoutManager mManager = new LinearLayoutManager(mContext);
-        RecyclerClickListener mListener = new RecyclerClickListener() {
-            @Override
-            public void onClick(View mView, int mPosition) {
-                if (mResults.length > 0) {
-                    MarkListActivity.showFilteredMarks(mResults[mPosition]);
-                }
+        RecyclerClickListener mListener = (mView, mPosition) -> {
+            if (mResults.length > 0) {
+                MarkListActivity.showFilteredMarks(mResults[mPosition]);
             }
         };
 

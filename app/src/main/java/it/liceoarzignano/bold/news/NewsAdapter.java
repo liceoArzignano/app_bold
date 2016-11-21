@@ -69,12 +69,7 @@ class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
 
             final String mUrl = mNews.getUrl();
             if (mUrl != null && !mUrl.isEmpty()) {
-                mUrlButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        NewsListActivity.showUrl(mUrl);
-                    }
-                });
+                mUrlButton.setOnClickListener(view -> NewsListActivity.showUrl(mUrl));
             } else {
                 mUrlButton.setVisibility(View.GONE);
             }
@@ -92,47 +87,33 @@ class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
             LinearLayout mDeleteLayout =
                     (LinearLayout) mSheetView.findViewById(R.id.news_sheet_delete);
 
-            mShareLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mSheet.hide();
-                    Intent mShareIntent = new Intent(Intent.ACTION_SEND);
-                    mShareIntent.setType("text/plain")
-                            .putExtra(Intent.EXTRA_TEXT, String.format("%1$s (%2$s)\n%3$s\n%4$s",
-                                    mNews.getTitle(), mNews.getDate(), mNews.getMessage(),
-                                    mNews.getUrl()));
-                    mActivity.startActivity(Intent.createChooser(mShareIntent,
-                            mActivity.getString(R.string.news_sheet_share)));
+            mShareLayout.setOnClickListener(view -> {
+                mSheet.hide();
+                Intent mShareIntent = new Intent(Intent.ACTION_SEND);
+                mShareIntent.setType("text/plain")
+                        .putExtra(Intent.EXTRA_TEXT, String.format("%1$s (%2$s)\n%3$s\n%4$s",
+                                mNews.getTitle(), mNews.getDate(), mNews.getMessage(),
+                                mNews.getUrl()));
+                mActivity.startActivity(Intent.createChooser(mShareIntent,
+                        mActivity.getString(R.string.news_sheet_share)));
 
-                }
             });
-            mDeleteLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mSheet.hide();
-                    RealmController.with(mActivity).deleteNews(mNews.getId());
-                    NewsListActivity.refreshList(mActivity, null);
-                }
+            mDeleteLayout.setOnClickListener(view -> {
+                mSheet.hide();
+                RealmController.with(mActivity).deleteNews(mNews.getId());
+                NewsListActivity.refreshList(mActivity, null);
             });
-            mToEventLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mSheet.hide();
-                    Intent mToEventIntent = new Intent(mActivity, ManagerActivity.class);
-                    mToEventIntent.putExtra("newsToEvent", mNews.getId());
-                    mToEventIntent.putExtra("isMark", false);
-                    mActivity.startActivity(mToEventIntent);
-                }
+            mToEventLayout.setOnClickListener(view -> {
+                mSheet.hide();
+                Intent mToEventIntent = new Intent(mActivity, ManagerActivity.class);
+                mToEventIntent.putExtra("newsToEvent", mNews.getId());
+                mToEventIntent.putExtra("isMark", false);
+                mActivity.startActivity(mToEventIntent);
             });
 
             mSheet.setContentView(mSheetView);
 
-            mLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mSheet.show();
-                }
-            });
+            mLayout.setOnClickListener(view -> mSheet.show());
         }
     }
 }

@@ -31,7 +31,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.security.SecureRandom;
@@ -679,21 +678,11 @@ public class MainActivity extends AppCompatActivity
                         .positiveText(android.R.string.ok)
                         .negativeText(R.string.dialog_updated_changelog)
                         .canceledOnTouchOutside(false)
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog,
-                                                @NonNull DialogAction which) {
-                                mEditor.putString("appVersionKey",
-                                        BuildConfig.VERSION_NAME).apply();
-                            }
-                        })
-                        .onNegative(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog,
-                                                @NonNull DialogAction which) {
-                                dialog.hide();
-                                showWebViewUI(-1);
-                            }
+                        .onPositive((dialog, which) -> mEditor.putString("appVersionKey",
+                                BuildConfig.VERSION_NAME).apply())
+                        .onNegative((dialog, which) -> {
+                            dialog.hide();
+                            showWebViewUI(-1);
                         })
 
                         .show();
@@ -717,31 +706,27 @@ public class MainActivity extends AppCompatActivity
                     .canceledOnTouchOutside(false)
                     .positiveText(android.R.string.ok)
                     .autoDismiss(false)
-                    .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
-                        @Override
-                        public boolean onSelection(MaterialDialog dialog, View itemView,
-                                                   int which, CharSequence text) {
+                    .itemsCallbackSingleChoice(-1, (dialog, itemView, which, text) -> {
                         boolean isAddressValid = which != -1;
-                            if (which == 5) {
-                                Utils.setTeacherMode(mContext);
-                            } else if (isAddressValid){
-                                Utils.setAddress(mContext, String.valueOf(which + 1));
-                            }
-                            if (isAddressValid) {
-                                setupNavHeader();
-                                dialog.dismiss();
-                                mPrefs.edit().putBoolean("drawerIntro", false).apply();
-                                new MaterialTapTargetPrompt.Builder(mActivity)
-                                        .setTarget(mToolbar.getChildAt(1))
-                                        .setPrimaryText(getString(R.string.intro_drawer_title))
-                                        .setSecondaryText(getString(R.string.intro_drawer))
-                                        .setBackgroundColourFromRes(R.color.colorAccentDark)
-                                        .setFocalColourFromRes(R.color.colorPrimaryDark)
-                                        .show();
-                            }
-
-                            return true;
+                        if (which == 5) {
+                            Utils.setTeacherMode(mContext);
+                        } else if (isAddressValid){
+                            Utils.setAddress(mContext, String.valueOf(which + 1));
                         }
+                        if (isAddressValid) {
+                            setupNavHeader();
+                            dialog.dismiss();
+                            mPrefs.edit().putBoolean("drawerIntro", false).apply();
+                            new MaterialTapTargetPrompt.Builder(mActivity)
+                                    .setTarget(mToolbar.getChildAt(1))
+                                    .setPrimaryText(getString(R.string.intro_drawer_title))
+                                    .setSecondaryText(getString(R.string.intro_drawer))
+                                    .setBackgroundColourFromRes(R.color.colorAccentDark)
+                                    .setFocalColourFromRes(R.color.colorPrimaryDark)
+                                    .show();
+                        }
+
+                        return true;
                     })
                     .show();
         }

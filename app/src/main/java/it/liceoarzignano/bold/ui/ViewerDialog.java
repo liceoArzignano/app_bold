@@ -111,127 +111,91 @@ public class ViewerDialog {
         mNotesTexView.setText(mNotes.toString());
         mDateTextView.setText(isMark ? mMark.getDate() : mEvent.getDate());
 
-        mMoreButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (Utils.isNotLegacy()) {
-                    ((AnimatedVectorDrawable) mMoreButton.getCompoundDrawables()[1]).start();
+        mMoreButton.setOnClickListener(v -> {
+            if (Utils.isNotLegacy()) {
+                ((AnimatedVectorDrawable) mMoreButton.getCompoundDrawables()[1]).start();
 
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mThisDialog.dismiss();
-                            MarkListActivity.showFilteredMarks(mTitle);
-                        }
-                    }, 1800);
-                } else {
+                new Handler().postDelayed(() -> {
                     mThisDialog.dismiss();
                     MarkListActivity.showFilteredMarks(mTitle);
-                }
+                }, 1800);
+            } else {
+                mThisDialog.dismiss();
+                MarkListActivity.showFilteredMarks(mTitle);
             }
         });
 
-        mShareButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String msg = isMark ?
-                        String.format(mContext.getString(Utils.isTeacher(mContext) ?
-                                        R.string.viewer_share_teacher : R.string.viewer_share_student),
-                                mValueTextView.getText(), mTitle) :
-                        String.format("%1$s (%2$s)\n%3$s", mTitle, mValueTextView.getText(),
-                                mNotesTexView.getText());
+        mShareButton.setOnClickListener(v -> {
+            String msg = isMark ?
+                    String.format(mContext.getString(Utils.isTeacher(mContext) ?
+                                    R.string.viewer_share_teacher : R.string.viewer_share_student),
+                            mValueTextView.getText(), mTitle) :
+                    String.format("%1$s (%2$s)\n%3$s", mTitle, mValueTextView.getText(),
+                            mNotesTexView.getText());
 
-                final Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                shareIntent.setType("text/plain");
-                shareIntent.putExtra(Intent.EXTRA_TEXT, msg);
+            final Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, msg);
 
-                if (Utils.isNotLegacy()) {
-                    ((AnimatedVectorDrawable) mShareButton.getCompoundDrawables()[1]).start();
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mThisDialog.dismiss();
-                            mContext.startActivity(Intent.createChooser(shareIntent,
-                                    mContext.getString(R.string.viewer_share)));
-                        }
-                    }, 1000);
-                } else {
+            if (Utils.isNotLegacy()) {
+                ((AnimatedVectorDrawable) mShareButton.getCompoundDrawables()[1]).start();
+                new Handler().postDelayed(() -> {
                     mThisDialog.dismiss();
                     mContext.startActivity(Intent.createChooser(shareIntent,
                             mContext.getString(R.string.viewer_share)));
-                }
+                }, 1000);
+            } else {
+                mThisDialog.dismiss();
+                mContext.startActivity(Intent.createChooser(shareIntent,
+                        mContext.getString(R.string.viewer_share)));
             }
         });
 
-        mDeleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (Utils.isNotLegacy()) {
-                    ((AnimatedVectorDrawable) mDeleteButton.getCompoundDrawables()[1]).start();
-                }
-
-                if (isMark) {
-                    RealmResults<Mark> mResults =
-                            mRealm.where(Mark.class).equalTo("id", mId).findAll();
-                    mRealm.beginTransaction();
-                    mResults.deleteAllFromRealm();
-                    mRealm.commitTransaction();
-                } else {
-                    RealmResults<Event> mResults =
-                            mRealm.where(Event.class).equalTo("id", mId).findAll();
-                    mRealm.beginTransaction();
-                    mResults.deleteAllFromRealm();
-                    mRealm.commitTransaction();
-                }
-
-                Snackbar.make(v, mContext.getString(R.string.removed),
-                        Snackbar.LENGTH_SHORT).show();
-                if (isMark) {
-                    MarkListActivity.refresh(mContext);
-                } else {
-                    EventListActivity.refreshList(mContext, null);
-                }
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mThisDialog.dismiss();
-                    }
-                }, 840);
+        mDeleteButton.setOnClickListener(v -> {
+            if (Utils.isNotLegacy()) {
+                ((AnimatedVectorDrawable) mDeleteButton.getCompoundDrawables()[1]).start();
             }
+
+            if (isMark) {
+                RealmResults<Mark> mResults =
+                        mRealm.where(Mark.class).equalTo("id", mId).findAll();
+                mRealm.beginTransaction();
+                mResults.deleteAllFromRealm();
+                mRealm.commitTransaction();
+            } else {
+                RealmResults<Event> mResults =
+                        mRealm.where(Event.class).equalTo("id", mId).findAll();
+                mRealm.beginTransaction();
+                mResults.deleteAllFromRealm();
+                mRealm.commitTransaction();
+            }
+
+            Snackbar.make(v, mContext.getString(R.string.removed),
+                    Snackbar.LENGTH_SHORT).show();
+            if (isMark) {
+                MarkListActivity.refresh(mContext);
+            } else {
+                EventListActivity.refreshList(mContext, null);
+            }
+            new Handler().postDelayed(mThisDialog::dismiss, 840);
         });
 
-        mEditButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final Intent editIntent = new Intent(mContext, ManagerActivity.class);
+        mEditButton.setOnClickListener(view -> {
+            final Intent editIntent = new Intent(mContext, ManagerActivity.class);
 
-                editIntent.putExtra("isEditing", true);
-                editIntent.putExtra("isMark", isMark);
-                editIntent.putExtra("id", mId);
+            editIntent.putExtra("isEditing", true);
+            editIntent.putExtra("isMark", isMark);
+            editIntent.putExtra("id", mId);
 
-                int mTime = 0;
-                if (Utils.isNotLegacy()) {
-                    ((AnimatedVectorDrawable) mEditButton.getCompoundDrawables()[1]).start();
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mThisDialog.dismiss();
-                        }
-                    }, mTime += 1000);
-                } else {
-                    mThisDialog.dismiss();
-                }
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mContext.startActivity(editIntent);
-                    }
-                }, mTime + 40);
-
-
-
+            int mTime = 0;
+            if (Utils.isNotLegacy()) {
+                ((AnimatedVectorDrawable) mEditButton.getCompoundDrawables()[1]).start();
+                new Handler().postDelayed(mThisDialog::dismiss, mTime += 1000);
+            } else {
+                mThisDialog.dismiss();
             }
+
+            new Handler().postDelayed(() -> mContext.startActivity(editIntent), mTime + 40);
         });
 
         return mView;

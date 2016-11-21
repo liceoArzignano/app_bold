@@ -88,12 +88,7 @@ public class SafeActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onBackPressed();
-                }
-            });
+            mToolbar.setNavigationOnClickListener(view -> onBackPressed());
         }
 
         mContext = this;
@@ -119,12 +114,9 @@ public class SafeActivity extends AppCompatActivity {
             mLoadingText.setText(getString(R.string.safe_dialog_password_error_security));
         } else {
             mLoadingText.setText(R.string.safe_first_load);
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    setupEncryption();
-                    showPasswordDialog();
-                }
+            new Handler().postDelayed(() -> {
+                setupEncryption();
+                showPasswordDialog();
             }, 100);
         }
     }
@@ -200,13 +192,7 @@ public class SafeActivity extends AppCompatActivity {
                     .content(R.string.safe_back_message)
                     .positiveText(R.string.safe_back_title)
                     .negativeText(android.R.string.cancel)
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog,
-                                            @NonNull DialogAction which) {
-                            finish();
-                        }
-                    })
+                    .onPositive((dialog, which) -> finish())
                     .show();
         }
     }
@@ -224,35 +210,22 @@ public class SafeActivity extends AppCompatActivity {
                 .canceledOnTouchOutside(false)
                 .positiveText(hasCompletedSetup ?
                         R.string.safe_dialog_positive : R.string.safe_dialog_first_positive)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog,
-                                        @NonNull DialogAction which) {
-                        mLoginDialog.dismiss();
-                        mLoadingText.setText(getString(R.string.safe_decrypting));
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (hasCompletedSetup) {
-                                    validateLogin();
-                                } else {
-                                    sEditor.putBoolean("hasCompletedSetup", true)
-                                            .putString(accessKey, encrypt(mLoginDialog.getInput()))
-                                            .apply();
-                                    onCreateContinue();
-                                }
-                            }
-                        }, 240);
-                    }
+                .onPositive((dialog, which) -> {
+                    mLoginDialog.dismiss();
+                    mLoadingText.setText(getString(R.string.safe_decrypting));
+                    new Handler().postDelayed(() -> {
+                        if (hasCompletedSetup) {
+                            validateLogin();
+                        } else {
+                            sEditor.putBoolean("hasCompletedSetup", true)
+                                    .putString(accessKey, encrypt(mLoginDialog.getInput()))
+                                    .apply();
+                            onCreateContinue();
+                        }
+                    }, 240);
                 })
                 .negativeText(android.R.string.cancel)
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog,
-                                        @NonNull DialogAction which) {
-                        finish();
-                    }
-                }));
+                .onNegative((dialog, which) -> finish()));
     }
 
     /**
@@ -310,14 +283,11 @@ public class SafeActivity extends AppCompatActivity {
         }
 
         // Do things with some delay
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (isPasswordCorrect) {
-                    onCreateContinue();
-                } else {
-                    finish();
-                }
+        new Handler().postDelayed(() -> {
+            if (isPasswordCorrect) {
+                onCreateContinue();
+            } else {
+                finish();
             }
         }, isPasswordCorrect ? 800 : 3000);
     }
@@ -359,52 +329,43 @@ public class SafeActivity extends AppCompatActivity {
         mLoadingLayout.animate().alpha(0f).setDuration(250);
 
         // Animations timing
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mLoadingLayout.setVisibility(View.GONE);
-                mContentLayout.setVisibility(View.VISIBLE);
-                mContentLayout.setAlpha(0f);
-                mContentLayout.animate().alpha(1f).setDuration(750);
-            }
+        new Handler().postDelayed(() -> {
+            mLoadingLayout.setVisibility(View.GONE);
+            mContentLayout.setVisibility(View.VISIBLE);
+            mContentLayout.setAlpha(0f);
+            mContentLayout.animate().alpha(1f).setDuration(750);
         }, 250);
 
         Utils.animFabIntro(this, mFab, getString(R.string.intro_fab_save_safe_title),
                 getString(R.string.intro_fab_save_safe), "safeKey");
 
-        mFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mMenu.findItem(R.id.action_reset).setVisible(false);
-                mMenu.findItem(R.id.action_info).setVisible(false);
-                mFab.hide();
-                mContentLayout.setVisibility(View.GONE);
-                mLoadingText.setText(R.string.safe_encrypting);
-                mLoadingLayout.setVisibility(View.VISIBLE);
+        mFab.setOnClickListener(v -> {
+            mMenu.findItem(R.id.action_reset).setVisible(false);
+            mMenu.findItem(R.id.action_info).setVisible(false);
+            mFab.hide();
+            mContentLayout.setVisibility(View.GONE);
+            mLoadingText.setText(R.string.safe_encrypting);
+            mLoadingLayout.setVisibility(View.VISIBLE);
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        String text = mUserEdit.getText().toString();
-                        if (!text.isEmpty()) {
-                            sEditor.putString(userKey, encrypt(text)).apply();
-                        }
-                        text = mRegEdit.getText().toString();
-                        if (!text.isEmpty()) {
-                            sEditor.putString(regPwdKey, encrypt(text)).apply();
-                        }
-                        text = mPcEdit.getText().toString();
-                        if (!text.isEmpty()) {
-                            sEditor.putString(pcPwdKey, encrypt(text)).apply();
-                        }
-                        text = mInternetEdit.getText().toString();
-                        if (!text.isEmpty()) {
-                            sEditor.putString(internetPwdKey, encrypt(text)).apply();
-                        }
-                        finish();
-                    }
-                }, 1000);
-            }
+            new Handler().postDelayed(() -> {
+                String text = mUserEdit.getText().toString();
+                if (!text.isEmpty()) {
+                    sEditor.putString(userKey, encrypt(text)).apply();
+                }
+                text = mRegEdit.getText().toString();
+                if (!text.isEmpty()) {
+                    sEditor.putString(regPwdKey, encrypt(text)).apply();
+                }
+                text = mPcEdit.getText().toString();
+                if (!text.isEmpty()) {
+                    sEditor.putString(pcPwdKey, encrypt(text)).apply();
+                }
+                text = mInternetEdit.getText().toString();
+                if (!text.isEmpty()) {
+                    sEditor.putString(internetPwdKey, encrypt(text)).apply();
+                }
+                finish();
+            }, 1000);
         });
     }
 
@@ -417,26 +378,17 @@ public class SafeActivity extends AppCompatActivity {
                 .content(getString(R.string.safe_reset_content))
                 .negativeText(getString(android.R.string.no))
                 .positiveText(getString(android.R.string.yes))
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog,
-                                        @NonNull DialogAction which) {
-                        sEditor.remove(accessKey).apply();
-                        sEditor.remove(userKey).apply();
-                        sEditor.remove(regPwdKey).apply();
-                        sEditor.remove(pcPwdKey).apply();
-                        sEditor.remove(internetPwdKey).apply();
-                        sEditor.remove(hasSharedKey).apply();
-                        sEditor.remove("hasCompletedSetup").apply();
+                .onPositive((dialog, which) -> {
+                    sEditor.remove(accessKey).apply();
+                    sEditor.remove(userKey).apply();
+                    sEditor.remove(regPwdKey).apply();
+                    sEditor.remove(pcPwdKey).apply();
+                    sEditor.remove(internetPwdKey).apply();
+                    sEditor.remove(hasSharedKey).apply();
+                    sEditor.remove("hasCompletedSetup").apply();
 
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                Intent i = new Intent(mContext, SafeActivity.class);
-                                startActivity(i);
-                            }
-                        }, 700);
-                    }
+                    new Handler().postDelayed(() ->
+                            startActivity(new Intent(mContext, SafeActivity.class)), 700);
                 })
                 .show();
     }

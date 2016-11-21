@@ -49,15 +49,11 @@ public class BenefitsActivity extends AppCompatActivity {
         }
 
         if (mFinishBtn != null) {
-            mFinishBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    getSharedPreferences("HomePrefs", MODE_PRIVATE).edit().putBoolean("introKey",
-                            true).apply();
-                    Intent mIntent = new Intent(BenefitsActivity.this, MainActivity.class);
-                    startActivity(mIntent);
-                    finish();
-                }
+            mFinishBtn.setOnClickListener(v -> {
+                getSharedPreferences("HomePrefs", MODE_PRIVATE).edit().putBoolean("introKey", true)
+                        .apply();
+                startActivity(new Intent(BenefitsActivity.this, MainActivity.class));
+                finish();
             });
         }
     }

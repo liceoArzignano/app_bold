@@ -146,12 +146,7 @@ public class ManagerActivity extends AppCompatActivity
         FloatingActionButton mFab = (FloatingActionButton) findViewById(R.id.fab);
 
         setupFromIntent();
-        mFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                save(view);
-            }
-        });
+        mFab.setOnClickListener(this::save);
 
         // Animate layout transition for shared fab animation when editing
         if (isEditMode) {
@@ -189,13 +184,8 @@ public class ManagerActivity extends AppCompatActivity
 
         mDate = Utils.getToday();
         mDatePicker.setText(mDate);
-        mDatePickerLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //noinspection deprecation
-                showDialog(33);
-            }
-        });
+        //noinspection deprecation
+        mDatePickerLayout.setOnClickListener(v -> showDialog(33));
 
         // Load intent data
         if (isEditMode) {
@@ -259,23 +249,14 @@ public class ManagerActivity extends AppCompatActivity
 
             // Subject selector
             mSubjectSelector.setText(isEditMode ? mTitle : getString(R.string.select_subject));
-            mSubjectLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    new MaterialDialog.Builder(mContext)
-                            .title(R.string.select_subject)
-                            .items((CharSequence[]) mSubjects)
-                            .itemsCallback(new MaterialDialog.ListCallback() {
-                                @Override
-                                public void onSelection(MaterialDialog dialog,
-                                                        View view, int which, CharSequence text) {
-                                    mSubjectSelector.setText(text);
-                                    mTitle = text.toString();
-                                }
-                            })
-                            .show();
-                }
-            });
+            mSubjectLayout.setOnClickListener(v -> new MaterialDialog.Builder(mContext)
+                    .title(R.string.select_subject)
+                    .items((CharSequence[]) mSubjects)
+                    .itemsCallback((dialog, view, which, text) -> {
+                        mSubjectSelector.setText(text);
+                        mTitle = text.toString();
+                    })
+                    .show());
 
             // Mark mValue
             LayoutInflater mInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -303,27 +284,18 @@ public class ManagerActivity extends AppCompatActivity
                 }
             });
 
-            mMarkValueLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    new MaterialDialog.Builder(mContext)
-                            .title(R.string.dialog_select_mark)
-                            .customView(mDialogLayout, false)
-                            .positiveText(android.R.string.ok)
-                            .negativeText(android.R.string.cancel)
-                            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(@NonNull MaterialDialog dialog,
-                                                    @NonNull DialogAction which) {
-                                    mValue = (int) (mDialogVal * 25);
-                                    // Force English locale to use the "." instead of ","
-                                    mMarkPreview.setText(String.format(Locale.ENGLISH, "%.2f",
-                                            (double) (mDialogVal / 4)));
-                                }
-                            })
-                            .show();
-                }
-            });
+            mMarkValueLayout.setOnClickListener(view -> new MaterialDialog.Builder(mContext)
+                    .title(R.string.dialog_select_mark)
+                    .customView(mDialogLayout, false)
+                    .positiveText(android.R.string.ok)
+                    .negativeText(android.R.string.cancel)
+                    .onPositive((dialog, which) -> {
+                        mValue = (int) (mDialogVal * 25);
+                        // Force English locale to use the "." instead of ","
+                        mMarkPreview.setText(String.format(Locale.ENGLISH, "%.2f",
+                                (double) (mDialogVal / 4)));
+                    })
+                    .show());
         } else {
             // Hide marks-related items
             mSubjectLayout.setVisibility(View.GONE);
@@ -345,13 +317,8 @@ public class ManagerActivity extends AppCompatActivity
                         Snackbar.make(mCoordinatorLayout, getString(R.string.editor_text_too_long),
                                 Snackbar.LENGTH_LONG).setAction(
                                 getString(R.string.editor_text_too_long_fix),
-                                new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        String str = s.subSequence(0, 25) + "\u2026";
-                                        mTitleInput.setText(str);
-                                    }
-                                }).show();
+                                v -> mTitleInput.setText(String.format("%1$s \u2026",
+                                        s.subSequence(0, 25)))).show();
                     }
                 }
             });
@@ -430,12 +397,7 @@ public class ManagerActivity extends AppCompatActivity
             mObjId = isEditMode ? mController.updateMark(mMark) : mController.addMark(mMark);
 
             Snackbar.make(fab, getString(R.string.saved), Snackbar.LENGTH_SHORT).show();
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    onBackPressed();
-                }
-            }, 1000);
+            new Handler().postDelayed(this::onBackPressed, 1000);
         } else {
             Snackbar.make(fab, getString(R.string.manager_invalid),
                     Snackbar.LENGTH_SHORT).show();
@@ -464,12 +426,7 @@ public class ManagerActivity extends AppCompatActivity
             mObjId = isEditMode ? mController.updateEvent(mEvent) : mController.addEvent(mEvent);
 
             Snackbar.make(fab, getString(R.string.saved), Snackbar.LENGTH_SHORT).show();
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    onBackPressed();
-                }
-            }, 1000);
+            new Handler().postDelayed(this::onBackPressed, 1000);
         }
     }
 }

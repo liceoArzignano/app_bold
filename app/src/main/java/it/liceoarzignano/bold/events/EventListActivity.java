@@ -60,12 +60,8 @@ public class EventListActivity extends AppCompatActivity {
                 R.string.search_no_result : R.string.events_empty));
 
         EventsAdapter mAdapter = new EventsAdapter(mEvents);
-        RecyclerClickListener mListener = new RecyclerClickListener() {
-            @Override
-            public void onClick(View mView, int mPosition) {
+        RecyclerClickListener mListener = (mView, mPosition) ->
                 EventListActivity.viewEvent(mEvents.get(mPosition).getId());
-            }
-        };
 
         sEventList.setAdapter(mAdapter);
         sEventList.addOnItemTouchListener(new RecyclerTouchListener(mContext, mListener));
@@ -103,14 +99,11 @@ public class EventListActivity extends AppCompatActivity {
         sEmptyText = (TextView) findViewById(R.id.events_empty_text);
 
         FloatingActionButton mFab = (FloatingActionButton) findViewById(R.id.fab);
-        mFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent mIntent = new Intent(EventListActivity.this, ManagerActivity.class);
-                mIntent.putExtra("isMark", false);
-                startActivity(mIntent);
-                finish();
-            }
+        mFab.setOnClickListener(view -> {
+            Intent mIntent = new Intent(EventListActivity.this, ManagerActivity.class);
+            mIntent.putExtra("isMark", false);
+            startActivity(mIntent);
+            finish();
         });
 
         sEventList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
