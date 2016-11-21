@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.customtabs.CustomTabsClient;
 import android.support.customtabs.CustomTabsIntent;
@@ -135,43 +136,48 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem mItem) {
-        switch (mItem.getItemId()) {
-            case R.id.nav_my_marks:
-                startActivity(new Intent(this, MarkListActivity.class));
-                break;
-            case R.id.nav_calendar:
-                startActivity(new Intent(this, EventListActivity.class));
-                break;
-            case R.id.nav_news:
-                startActivity(new Intent(this, NewsListActivity.class));
-                break;
-            case R.id.nav_website:
-                showWebViewUI(0);
-                break;
-            case R.id.nav_reg:
-                showWebViewUI(1);
-                break;
-            case R.id.nav_moodle:
-                showWebViewUI(2);
-                break;
-            case R.id.nav_copyboox:
-                showWebViewUI(3);
-                break;
-            case R.id.nav_teacherzone:
-                showWebViewUI(4);
-                break;
-            case R.id.nav_settings:
-                Intent settingsIntent = new Intent(this, SettingsActivity.class);
-                startActivity(settingsIntent);
-                break;
-            case R.id.nav_safe:
-                Intent safeIntent = new Intent(this, SafeActivity.class);
-                startActivity(safeIntent);
-                break;
-        }
-
         DrawerLayout mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawer.closeDrawer(GravityCompat.START);
+
+        // Do action with some delay to prevent lags when
+        // loading big lists of marks and events
+        new Handler().postDelayed(() -> {
+            switch (mItem.getItemId()) {
+                case R.id.nav_my_marks:
+                    startActivity(new Intent(this, MarkListActivity.class));
+                    break;
+                case R.id.nav_calendar:
+                    startActivity(new Intent(this, EventListActivity.class));
+                    break;
+                case R.id.nav_news:
+                    startActivity(new Intent(this, NewsListActivity.class));
+                    break;
+                case R.id.nav_website:
+                    showWebViewUI(0);
+                    break;
+                case R.id.nav_reg:
+                    showWebViewUI(1);
+                    break;
+                case R.id.nav_moodle:
+                    showWebViewUI(2);
+                    break;
+                case R.id.nav_copyboox:
+                    showWebViewUI(3);
+                    break;
+                case R.id.nav_teacherzone:
+                    showWebViewUI(4);
+                    break;
+                case R.id.nav_settings:
+                    Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                    startActivity(settingsIntent);
+                    break;
+                case R.id.nav_safe:
+                    Intent safeIntent = new Intent(this, SafeActivity.class);
+                    startActivity(safeIntent);
+                    break;
+            }
+        }, 130);
+
         return true;
     }
 
