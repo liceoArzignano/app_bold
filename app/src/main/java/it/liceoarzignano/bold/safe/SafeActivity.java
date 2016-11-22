@@ -260,7 +260,7 @@ public class SafeActivity extends AppCompatActivity {
      */
     private String decrypt(String mString) {
         try {
-            return Encryption.decryptString(
+            return Encryption.decrypt(
                     new Encryption.CipherTextIvMac(mString), mSecretKeys);
         } catch (UnsupportedEncodingException | GeneralSecurityException e) {
             Log.e("Safe", e.getMessage(), e);
