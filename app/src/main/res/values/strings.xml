@@ -206,7 +206,7 @@
     <string name="safe_pc_pwd">PC-account password</string>
     <string name="safe_internet_pwd">Internet password</string>
     <string name="safe_info_title">Info</string>
-    <string name="safe_info_content">The credentials are encrypted and decrypted using the AES algorythm with a 128-bit key. This means they are unreadable for eveyone but this app</string>
+    <string name="safe_info_content">The credentials are encrypted and decrypted using the AES algorythm with a 256-bit key. This means they are unreadable for eveyone but this app</string>
     <string name="safe_reset_title">Reset password</string>
     <string name="safe_reset_content">If you rest your password you\'ll loose the other stored credentials as well.\nDo you want to continue?</string>
     <string name="safe_encrypting">Saving\u2026</string>

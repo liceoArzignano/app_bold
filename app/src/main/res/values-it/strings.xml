@@ -206,7 +206,7 @@
     <string name="safe_pc_pwd">Password account PC</string>
     <string name="safe_internet_pwd">Password internet</string>
     <string name="safe_info_title">Informazioni sulla sicurezza</string>
-    <string name="safe_info_content">Le credenziali sono criptate e decriptate utilizzando l\'algoritmo AES con chiave a 128-bit. Questo significa che saranno incompresibili per chiunque tranne quest\'app</string>
+    <string name="safe_info_content">Le credenziali sono criptate e decriptate utilizzando l\'algoritmo AES con chiave a 256-bit. Questo significa che saranno incompresibili per chiunque tranne quest\'app</string>
     <string name="safe_reset_title">Reimpostazione password</string>
     <string name="safe_reset_content">Se reimposti la password anche le credenziali saranno eliminate.\nVuoi procedere?</string>
     <string name="safe_encrypting">Salvataggio\u2026</string>
@@ -216,7 +216,7 @@
     <string name="safe_setup_checking_password">Verifica password\u2026</string>
     <string name="safe_nomatch">Password errata</string>
     <string name="safe_back_title">Esci</string>
-    <string name="safe_back_message">Vuoi uscire? I cambiamenti non verranno applicati.\nTocca il pulsante V in basso per salvare</string>
+    <string name="safe_back_message">Vuoi uscire? I cambiamenti non verranno applicati.\nTocca il pulsante in basso per salvare</string>
     <string name="safe_data_usage"><b>Registro e Quaderno</b>\n\u2022 Nome utente: ID utente\n\u2022 Password: Password registro\n\n<b>Account PC</b>\n\u2022 Nome utente: cognome + ID utente (rossi123456)\n\u2022 Password: Password PC\n\n<b>Accesso internet</b>\n\u2022 Nome utente: cognome + ID utente (rossi123456)\n\u2022 Password: Password Internet</string>
 
     <!-- Notification -->
