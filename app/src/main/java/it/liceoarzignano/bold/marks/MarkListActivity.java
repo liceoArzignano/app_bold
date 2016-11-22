@@ -186,16 +186,16 @@ public class MarkListActivity extends AppCompatActivity {
         }
 
         if (sSubjectFilter != null) {
-            String mTitle =
-                    String.format(mContext.getString(R.string.title_filter), sSubjectFilter);
-            sToobar.setTitle(mTitle);
-            ((MarkListActivity) sContext).setSupportActionBar(sToobar);
-
+            sToobar.setTitle(String.format(mContext.getString(R.string.title_filter),
+                    sSubjectFilter));
             sFab.hide();
             sViewPager.setCurrentItem(1);
         } else {
+            sToobar.setTitle(mContext.getString(R.string.title_activity_mark_list));
             Utils.animFab(sFab, true);
         }
+        ((MarkListActivity) sContext).setSupportActionBar(sToobar);
+
 
         if (MarksListFragment.sMarksListView == null) {
             return;

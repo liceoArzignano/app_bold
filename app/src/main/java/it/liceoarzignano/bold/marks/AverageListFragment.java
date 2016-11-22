@@ -97,7 +97,7 @@ public class AverageListFragment extends Fragment {
             mColor = R.color.green;
         }
         sProgressBar.setProgressColor(ContextCompat.getColor(mContext, mColor));
-        sProgressBar.setProgress(mAvg < 1 ? 1 : mAvg);
+        sProgressBar.setProgress(mAvg);
     }
 
     @Override
