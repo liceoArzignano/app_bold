@@ -3,6 +3,7 @@ package it.liceoarzignano.bold.marks;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -80,13 +81,13 @@ public class MarkListActivity extends AppCompatActivity {
             // once we're done with adding a new mark
             finish();
         });
-        refresh();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        refresh();
+        // Hax: refresh in a new handler to make sure data is fetched before the adapters are built
+        new Handler().post(this::refresh);
     }
 
     @Override
@@ -174,7 +175,6 @@ public class MarkListActivity extends AppCompatActivity {
         final RealmResults<Mark> mMarks = mController.getFilteredMarks(mSubjectFilter,
                 mQuarterFilter);
 
-
         if (mMarksFragment.mEmptyLayout != null) {
             mMarksFragment.mEmptyLayout.setVisibility(mMarks.isEmpty() ?
                     View.VISIBLE : View.GONE);
@@ -190,7 +190,6 @@ public class MarkListActivity extends AppCompatActivity {
             Utils.animFab(mFab, true);
         }
         setSupportActionBar(mToolbar);
-
 
         if (mMarksFragment.mMarksListView == null) {
             return;
