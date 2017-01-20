@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity
     private CustomTabsClient mClient;
     private CustomTabsSession mCustomTabsSession;
     private CustomTabsIntent mCustomTabsIntent;
+    private CustomTabsServiceConnection mCustomTabsServiceConnection;
     private String mUrl;
 
     @Override
@@ -109,9 +110,6 @@ public class MainActivity extends AppCompatActivity
         mCardsList.setItemAnimator(new DefaultItemAnimator());
         mCardsList.addItemDecoration(new DividerDecoration(this));
 
-        // Chrome custom tabs
-        setupCCustomTabs();
-
         // Welcome dialog
         showWelcomeIfNeeded(this);
 
@@ -125,11 +123,20 @@ public class MainActivity extends AppCompatActivity
     public void onResume() {
         super.onResume();
 
+        // Chrome custom tabs
+        setupCCustomTabs();
+
         // Refresh Navigation Drawer header
         setupNavHeader();
 
         // Show cards
         populateCards();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unbindService(mCustomTabsServiceConnection);
     }
 
     @Override
@@ -183,7 +190,12 @@ public class MainActivity extends AppCompatActivity
      * Init Chrome custom tabs
      */
     private void setupCCustomTabs() {
-        CustomTabsServiceConnection mCustomTabsServiceConnection =
+        if (mClient != null) {
+            return;
+        }
+
+
+        mCustomTabsServiceConnection =
                 new CustomTabsServiceConnection() {
                     @Override
                     public void onCustomTabsServiceConnected(ComponentName componentName,
@@ -199,7 +211,7 @@ public class MainActivity extends AppCompatActivity
                     }
                 };
 
-        CustomTabsClient.bindCustomTabsService(this, "com.android.chrome",
+        CustomTabsClient.bindCustomTabsService(getBaseContext(), "com.android.chrome",
                 mCustomTabsServiceConnection);
 
         mCustomTabsIntent = new CustomTabsIntent.Builder(mCustomTabsSession)

@@ -39,6 +39,7 @@ public class NewsListActivity extends AppCompatActivity {
     private TextView mEmptyText;
     private CustomTabsClient mClient;
     private CustomTabsSession mCustomTabsSession;
+    private CustomTabsServiceConnection mCustomTabsServiceConnection;
     private CustomTabsIntent mCustomTabIntent = null;
 
     @Override
@@ -87,6 +88,20 @@ public class NewsListActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Chrome custom tabs
+        setupCCustomTabs();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unbindService(mCustomTabsServiceConnection);
+    }
+
     /**
      * Refresh list
      *
@@ -121,7 +136,7 @@ public class NewsListActivity extends AppCompatActivity {
             return;
         }
 
-        CustomTabsServiceConnection mCustomTabsServiceConnection =
+        mCustomTabsServiceConnection =
                 new CustomTabsServiceConnection() {
                     @Override
                     public void onCustomTabsServiceConnected(ComponentName componentName,
