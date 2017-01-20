@@ -5,7 +5,7 @@ package it.liceoarzignano.bold.ui;
  * It can be customized with size, stroke size, colors and text etc.
  * Progress change will be animated.
  * Created by Kristoffer, http://kmdev.se
- *
+ * <p>
  * Customized for it.liceoarzignano.bold by joey
  */
 
@@ -25,6 +25,8 @@ import it.liceoarzignano.bold.R;
 
 public class CircularProgressBar extends View {
 
+    // Allocate paint outside onDraw to avoid unnecessary object creation
+    private final Paint mPaint;
     // Width
     private int mViewWidth;
     // Height
@@ -35,8 +37,6 @@ public class CircularProgressBar extends View {
     private int mProgressColor;
     // Progress text color
     private int mTextColor;
-    // Allocate paint outside onDraw to avoid unnecessary object creation
-    private final Paint mPaint;
     // Average value
     private double mValue;
 

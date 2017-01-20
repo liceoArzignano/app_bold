@@ -26,67 +26,23 @@ import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.ManagerActivity;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
-import it.liceoarzignano.bold.ui.ViewerDialog;
 import it.liceoarzignano.bold.ui.DividerDecoration;
 import it.liceoarzignano.bold.ui.RecyclerClickListener;
 import it.liceoarzignano.bold.ui.RecyclerTouchListener;
+import it.liceoarzignano.bold.ui.ViewerDialog;
 
 public class EventListActivity extends AppCompatActivity {
 
-    private static RecyclerView sEventList;
-    private static LinearLayout sEmptyLayout;
-    private static TextView sEmptyText;
-    private static Context sContext;
+    RecyclerView mEventList;
+    LinearLayout mEmptyLayout;
+    TextView mEmptyText;
 
-    private static String mQuery;
-
-    /**
-     * Update the RecyclerView content
-     *
-     * @param mContext: needed to reload database data
-     * @param mQuery: search query
-     */
-    public static void refreshList(Context mContext, String mQuery) {
-        boolean hasQuery = mQuery != null && !mQuery.isEmpty();
-
-        Realm mRealm = Realm.getInstance(BoldApp.getAppRealmConfiguration());
-        final RealmResults<Event> mEvents = hasQuery ?
-                mRealm.where(Event.class).contains("title", mQuery)
-                        .findAllSorted("date", Sort.DESCENDING) :
-                mRealm.where(Event.class).findAllSorted("date", Sort.DESCENDING);
-
-        sEmptyLayout.setVisibility(mEvents.isEmpty() ? View.VISIBLE : View.GONE);
-        sEmptyText.setText(mContext.getString(hasQuery ?
-                R.string.search_no_result : R.string.events_empty));
-
-        EventsAdapter mAdapter = new EventsAdapter(mEvents);
-        RecyclerClickListener mListener = (mView, mPosition) ->
-                EventListActivity.viewEvent(mEvents.get(mPosition).getId());
-
-        sEventList.setAdapter(mAdapter);
-        sEventList.addOnItemTouchListener(new RecyclerTouchListener(mContext, mListener));
-
-        mAdapter.notifyDataSetChanged();
-    }
-
-    /**
-     * Fire ViewerDialog and pass the selected event data
-     *
-     * @param mId: event id
-     */
-    private static void viewEvent(long mId) {
-        final BottomSheetDialog mSheet = new BottomSheetDialog(sContext);
-        View mBottomView = new ViewerDialog(sContext, mSheet).setData(mId, false);
-        mSheet.setContentView(mBottomView);
-        mSheet.show();
-    }
+    private String mQuery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_list);
-
-        sContext = this;
 
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -94,9 +50,9 @@ public class EventListActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        sEventList = (RecyclerView) findViewById(R.id.event_list);
-        sEmptyLayout = (LinearLayout) findViewById(R.id.event_empty_layout);
-        sEmptyText = (TextView) findViewById(R.id.events_empty_text);
+        mEventList = (RecyclerView) findViewById(R.id.event_list);
+        mEmptyLayout = (LinearLayout) findViewById(R.id.event_empty_layout);
+        mEmptyText = (TextView) findViewById(R.id.events_empty_text);
 
         FloatingActionButton mFab = (FloatingActionButton) findViewById(R.id.fab);
         mFab.setOnClickListener(view -> {
@@ -106,9 +62,9 @@ public class EventListActivity extends AppCompatActivity {
             finish();
         });
 
-        sEventList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        sEventList.setItemAnimator(new DefaultItemAnimator());
-        sEventList.addItemDecoration(new DividerDecoration(getApplicationContext()));
+        mEventList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        mEventList.setItemAnimator(new DefaultItemAnimator());
+        mEventList.addItemDecoration(new DividerDecoration(getApplicationContext()));
 
 
         Utils.animFab(mFab, true);
@@ -123,7 +79,7 @@ public class EventListActivity extends AppCompatActivity {
             mQuery = mCallingIntent.getStringExtra(SearchManager.QUERY);
         }
 
-        refreshList(sContext, mQuery);
+        refreshList(this, mQuery);
     }
 
     @Override
@@ -151,5 +107,46 @@ public class EventListActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    /**
+     * Update the RecyclerView content
+     *
+     * @param mContext: needed to reload database data
+     * @param mQuery:   search query
+     */
+    void refreshList(Context mContext, String mQuery) {
+        boolean hasQuery = mQuery != null && !mQuery.isEmpty();
+
+        Realm mRealm = Realm.getInstance(((BoldApp) mContext.getApplicationContext()).getConfig());
+        final RealmResults<Event> mEvents = hasQuery ?
+                mRealm.where(Event.class).contains("title", mQuery)
+                        .findAllSorted("date", Sort.DESCENDING) :
+                mRealm.where(Event.class).findAllSorted("date", Sort.DESCENDING);
+
+        mEmptyLayout.setVisibility(mEvents.isEmpty() ? View.VISIBLE : View.GONE);
+        mEmptyText.setText(mContext.getString(hasQuery ?
+                R.string.search_no_result : R.string.events_empty));
+
+        EventsAdapter mAdapter = new EventsAdapter(mEvents);
+        RecyclerClickListener mListener = (mView, mPosition) ->
+                viewEvent(mEvents.get(mPosition).getId());
+
+        mEventList.setAdapter(mAdapter);
+        mEventList.addOnItemTouchListener(new RecyclerTouchListener(mContext, mListener));
+
+        mAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * Fire ViewerDialog and pass the selected event data
+     *
+     * @param mId: event id
+     */
+    private void viewEvent(long mId) {
+        final BottomSheetDialog mSheet = new BottomSheetDialog(this);
+        View mBottomView = new ViewerDialog(this, mSheet).setData(mId, false);
+        mSheet.setContentView(mBottomView);
+        mSheet.show();
     }
 }

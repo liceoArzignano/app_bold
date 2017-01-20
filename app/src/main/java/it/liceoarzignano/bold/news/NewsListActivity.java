@@ -33,13 +33,13 @@ import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.ui.DividerDecoration;
 
 public class NewsListActivity extends AppCompatActivity {
-    private static Activity sActivity;
-    private static RecyclerView sNewsList;
-    private static LinearLayout sEmptyLayout;
-    private static TextView sEmptyText;
-    private static CustomTabsClient sClient;
-    private static CustomTabsSession sCustomTabsSession;
-    private static CustomTabsIntent sCustomTabIntent = null;
+    private Activity mActivity;
+    private RecyclerView mNewsList;
+    private LinearLayout mEmptyLayout;
+    private TextView mEmptyText;
+    private CustomTabsClient mClient;
+    private CustomTabsSession mCustomTabsSession;
+    private CustomTabsIntent mCustomTabIntent = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,17 +52,18 @@ public class NewsListActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        sActivity = this;
+        mActivity = this;
 
-        sNewsList = (RecyclerView) findViewById(R.id.news_list);
-        sEmptyLayout = (LinearLayout) findViewById(R.id.news_empty_layout);
-        sEmptyText = (TextView) findViewById(R.id.news_empty_text);
+        mNewsList = (RecyclerView) findViewById(R.id.news_list);
+        mEmptyLayout = (LinearLayout) findViewById(R.id.news_empty_layout);
+        mEmptyText = (TextView) findViewById(R.id.news_empty_text);
 
         Intent mCallingIntent = getIntent();
         long mId = mCallingIntent.getLongExtra("newsId", -1);
 
         if (mId > 0) {
-            News mCalledNews = Realm.getInstance(BoldApp.getAppRealmConfiguration())
+            News mCalledNews = Realm.getInstance(((BoldApp)
+                    mActivity.getApplicationContext()).getConfig())
                     .where(News.class).equalTo("id", mId).findFirst();
             showUrl(mCalledNews.getUrl());
         }
@@ -72,11 +73,11 @@ public class NewsListActivity extends AppCompatActivity {
             mQuery = getIntent().getStringExtra(SearchManager.QUERY);
         }
 
-        sNewsList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        sNewsList.setItemAnimator(new DefaultItemAnimator());
-        sNewsList.addItemDecoration(new DividerDecoration(getApplicationContext()));
+        mNewsList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        mNewsList.setItemAnimator(new DefaultItemAnimator());
+        mNewsList.addItemDecoration(new DividerDecoration(getApplicationContext()));
 
-        refreshList(getApplicationContext(), mQuery);
+        refresh(getApplicationContext(), mQuery);
     }
 
     @Override
@@ -86,65 +87,84 @@ public class NewsListActivity extends AppCompatActivity {
         return true;
     }
 
-    static void refreshList(Context mContext, String mQuery) {
-        boolean hasQuery =  mQuery != null && !mQuery.isEmpty();
+    /**
+     * Refresh list
+     *
+     * @param mContext used to fetch resources
+     * @param mQuery search query
+     */
+    void refresh(Context mContext, String mQuery) {
+        boolean hasQuery = mQuery != null && !mQuery.isEmpty();
 
-        Realm mRealm = Realm.getInstance(BoldApp.getAppRealmConfiguration());
+        Realm mRealm = Realm.getInstance(((BoldApp) mContext).getConfig());
         final RealmResults<News> mNews = hasQuery ?
                 mRealm.where(News.class).contains("title", mQuery).or().contains("message", mQuery)
                         .findAllSorted("date", Sort.DESCENDING) :
                 mRealm.where(News.class).findAllSorted("date", Sort.DESCENDING);
 
-        sEmptyLayout.setVisibility(mNews.isEmpty() ? View.VISIBLE : View.GONE);
-        sEmptyText.setText(mContext.getString(hasQuery ?
+        mEmptyLayout.setVisibility(mNews.isEmpty() ? View.VISIBLE : View.GONE);
+        mEmptyText.setText(mContext.getString(hasQuery ?
                 R.string.search_no_result : R.string.news_empty));
 
-        NewsAdapter mAdapter = new NewsAdapter(mNews, sActivity);
+        NewsAdapter mAdapter = new NewsAdapter(mNews, mActivity);
 
-        sNewsList.setAdapter(mAdapter);
+        mNewsList.setAdapter(mAdapter);
 
         mAdapter.notifyDataSetChanged();
     }
 
-    private static void setupCCustomTabs() {
-        if (sCustomTabIntent != null) {
+    /**
+     * Initialize chrome custom tabs
+     */
+    private void setupCCustomTabs() {
+        if (mCustomTabIntent != null) {
             return;
         }
 
-        Context mContext = BoldApp.getContext();
         CustomTabsServiceConnection mCustomTabsServiceConnection =
                 new CustomTabsServiceConnection() {
                     @Override
                     public void onCustomTabsServiceConnected(ComponentName componentName,
                                                              CustomTabsClient customTabsClient) {
-                        sClient = customTabsClient;
-                        sClient.warmup(0L);
-                        sCustomTabsSession = sClient.newSession(null);
+                        mClient = customTabsClient;
+                        mClient.warmup(0L);
+                        mCustomTabsSession = mClient.newSession(null);
                     }
 
                     @Override
                     public void onServiceDisconnected(ComponentName name) {
-                        sClient = null;
+                        mClient = null;
                     }
                 };
 
-        CustomTabsClient.bindCustomTabsService(mContext, "com.android.chrome",
+        CustomTabsClient.bindCustomTabsService(mActivity, "com.android.chrome",
                 mCustomTabsServiceConnection);
 
-        sCustomTabIntent = new CustomTabsIntent.Builder(sCustomTabsSession)
-                .setToolbarColor(ContextCompat.getColor(mContext, R.color.colorPrimary))
+        mCustomTabIntent = new CustomTabsIntent.Builder(mCustomTabsSession)
+                .setToolbarColor(ContextCompat.getColor(mActivity, R.color.colorPrimary))
                 .setShowTitle(true)
-                .setStartAnimations(mContext, R.anim.slide_in_right, R.anim.slide_out_left)
-                .setExitAnimations(mContext, android.R.anim.slide_in_left,
+                .setStartAnimations(mActivity, R.anim.slide_in_right, R.anim.slide_out_left)
+                .setExitAnimations(mActivity, android.R.anim.slide_in_left,
                         android.R.anim.slide_out_right)
                 .build();
     }
 
-    static void showUrl(String mUrl) {
+    /**
+     * Open the url associated with a news
+     *
+     * @param mUrl website url
+     */
+    void showUrl(String mUrl) {
         setupCCustomTabs();
-        sCustomTabIntent.launchUrl(sActivity, Uri.parse(mUrl));
+        mCustomTabIntent.launchUrl(mActivity, Uri.parse(mUrl));
     }
 
+    /**
+     * Initialize search view
+     *
+     * @param mContext used to fetch resources
+     * @param mItem menu item
+     */
     private void setupSearchView(final Context mContext, MenuItem mItem) {
         SearchView mSearchView = (SearchView) MenuItemCompat.getActionView(mItem);
 
@@ -152,13 +172,13 @@ public class NewsListActivity extends AppCompatActivity {
             mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String mQuery) {
-                    refreshList(mContext, mQuery);
+                    refresh(mContext, mQuery);
                     return true;
                 }
 
                 @Override
                 public boolean onQueryTextChange(String mNewText) {
-                    refreshList(mContext, mNewText);
+                    refresh(mContext, mNewText);
                     return true;
                 }
             });

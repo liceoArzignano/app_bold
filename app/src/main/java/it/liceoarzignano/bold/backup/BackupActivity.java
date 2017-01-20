@@ -49,8 +49,8 @@ import java.util.List;
 import java.util.Locale;
 
 import io.realm.Realm;
+import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.realm.RealmController;
 
 public class BackupActivity extends AppCompatActivity {
     private static final String PREFERENCES = "HomePrefs";
@@ -117,7 +117,7 @@ public class BackupActivity extends AppCompatActivity {
         mBackup.init(this);
         mBackup.start();
         mGoogleApiClient = mBackup.getClient();
-        mRealm = RealmController.with(this).getmRealm();
+        mRealm = Realm.getInstance(((BoldApp) getApplication()).getConfig());
     }
 
     /**
@@ -361,7 +361,7 @@ public class BackupActivity extends AppCompatActivity {
      *
      * @param mRequest api request code
      * @param mResult  api result code
-     * @param mData        data
+     * @param mData    data
      */
     protected void onActivityResult(int mRequest, int mResult, Intent mData) {
         if (mResult == RESULT_OK) {

@@ -61,5 +61,4 @@ class MarksAdapter extends RecyclerView.Adapter<MarksAdapter.MarkHolder> {
             mValue.setText(String.format(Locale.ENGLISH, "%.2f", mDoubleVal));
         }
     }
-
 }

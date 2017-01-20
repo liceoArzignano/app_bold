@@ -2,7 +2,6 @@ package it.liceoarzignano.bold;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,17 +34,19 @@ import java.util.Locale;
 
 import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.events.EventListActivity;
+import it.liceoarzignano.bold.events.EventsController;
 import it.liceoarzignano.bold.marks.Mark;
 import it.liceoarzignano.bold.marks.MarkListActivity;
+import it.liceoarzignano.bold.marks.MarksController;
 import it.liceoarzignano.bold.news.News;
-import it.liceoarzignano.bold.realm.RealmController;
+import it.liceoarzignano.bold.news.NewsController;
 
 public class ManagerActivity extends AppCompatActivity
         implements AdapterView.OnItemSelectedListener {
 
-    private Context mContext;
     private Intent mCallingIntent;
-    private RealmController mController;
+    private MarksController mMarksController;
+    private EventsController mEventsController;
 
     private CoordinatorLayout mCoordinatorLayout;
     // Title
@@ -106,8 +107,8 @@ public class ManagerActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manager);
 
-        mContext = this;
-        mController = RealmController.with(this);
+        mMarksController = new MarksController(((BoldApp) getApplicationContext()).getConfig());
+        mEventsController = new EventsController(((BoldApp) getApplicationContext()).getConfig());
 
         // Init calendar
         Calendar mCal = Calendar.getInstance();
@@ -190,7 +191,7 @@ public class ManagerActivity extends AppCompatActivity
             mObjId = mCallingIntent.getLongExtra("id", -1);
 
             if (isMark) {
-                mLoadMark = mController.getMark(mObjId);
+                mLoadMark = mMarksController.getById(mObjId).first();
                 mTitle = mLoadMark.getTitle();
                 mLoadNotes = mLoadMark.getNote();
                 mValue = mLoadMark.getValue();
@@ -198,7 +199,7 @@ public class ManagerActivity extends AppCompatActivity
                 mDoubleVal = mValue;
                 mMarkPreview.setText(String.format(Locale.ENGLISH, "%.2f", mDoubleVal / 100d));
             } else {
-                mLoadEvent = mController.getEvent(mObjId);
+                mLoadEvent = mEventsController.getById(mObjId).first();
                 mTitle = mLoadEvent.getTitle();
                 mLoadNotes = mLoadEvent.getNote();
                 mValue = mLoadEvent.getIcon();
@@ -212,7 +213,7 @@ public class ManagerActivity extends AppCompatActivity
         }
 
         // Setup UI
-        if (Utils.isTeacher(mContext) || !isMark) {
+        if (Utils.isTeacher(this) || !isMark) {
             mTitleInput.setHint(getString(isMark ? R.string.hint_student : R.string.hint_event));
             mSubjectLayout.setVisibility(View.GONE);
         } else {
@@ -224,7 +225,7 @@ public class ManagerActivity extends AppCompatActivity
             mEventSpinnerLayout.setVisibility(View.GONE);
 
             // Subjects list
-            switch (Utils.getAddress(mContext)) {
+            switch (Utils.getAddress(this)) {
                 case "1":
                     mSubjects = getResources().getStringArray(R.array.subjects_lists_1);
                     break;
@@ -247,7 +248,7 @@ public class ManagerActivity extends AppCompatActivity
 
             // Subject selector
             mSubjectSelector.setText(isEditMode ? mTitle : getString(R.string.select_subject));
-            mSubjectLayout.setOnClickListener(v -> new MaterialDialog.Builder(mContext)
+            mSubjectLayout.setOnClickListener(v -> new MaterialDialog.Builder(this)
                     .title(R.string.select_subject)
                     .items((CharSequence[]) mSubjects)
                     .itemsCallback((dialog, view, which, text) -> {
@@ -269,11 +270,14 @@ public class ManagerActivity extends AppCompatActivity
             mDialogVal = mValue / 25;
             mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {}
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                }
+
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     mPreview.setText(String.valueOf((double) progress / 4));
                 }
+
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {
                     double progress = mSeekBar.getProgress();
@@ -282,7 +286,7 @@ public class ManagerActivity extends AppCompatActivity
                 }
             });
 
-            mMarkValueLayout.setOnClickListener(view -> new MaterialDialog.Builder(mContext)
+            mMarkValueLayout.setOnClickListener(view -> new MaterialDialog.Builder(this)
                     .title(R.string.dialog_select_mark)
                     .customView(mDialogLayout, false)
                     .positiveText(android.R.string.ok)
@@ -325,7 +329,9 @@ public class ManagerActivity extends AppCompatActivity
         // News to event
         long mNewsId = mCallingIntent.getLongExtra("newsToEvent", -1);
         if (mNewsId > 0) {
-            News mNews = mController.getNews(mNewsId);
+            NewsController mNewsController =
+                    new NewsController(((BoldApp) getApplicationContext()).getConfig());
+            News mNews = mNewsController.getById(mNewsId).first();
             mTitleInput.setText(mNews.getTitle());
             mNotesInput.setText(String.format("%1$s\n%2$s", mNews.getMessage(),
                     mNews.getUrl()));
@@ -390,9 +396,10 @@ public class ManagerActivity extends AppCompatActivity
             mMark.setTitle(mTitle);
             mMark.setNote(mNotesInput.getText().toString());
             mMark.setValue(mValue);
-            mMark.setDate(mDatePicker.getText().toString());
+            mMark.setDate(mDatePicker.getText().toString(),
+                    Utils.isFirstQuarter(this, mDatePicker.getText().toString()));
 
-            mObjId = isEditMode ? mController.updateMark(mMark) : mController.addMark(mMark);
+            mObjId = isEditMode ? mMarksController.update(mMark) : mMarksController.add(mMark);
 
             Snackbar.make(fab, getString(R.string.saved), Snackbar.LENGTH_SHORT).show();
             new Handler().postDelayed(this::onBackPressed, 1000);
@@ -421,7 +428,7 @@ public class ManagerActivity extends AppCompatActivity
             mEvent.setDate(mDate);
             mEvent.setNote(mNotesInput.getText().toString());
 
-            mObjId = isEditMode ? mController.updateEvent(mEvent) : mController.addEvent(mEvent);
+            mObjId = isEditMode ? mEventsController.update(mEvent) : mEventsController.add(mEvent);
 
             Snackbar.make(fab, getString(R.string.saved), Snackbar.LENGTH_SHORT).show();
             new Handler().postDelayed(this::onBackPressed, 1000);

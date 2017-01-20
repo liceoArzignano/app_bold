@@ -1,10 +1,14 @@
 package it.liceoarzignano.bold;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -21,32 +25,34 @@ import java.util.List;
 import java.util.Locale;
 
 import io.realm.Realm;
+import it.liceoarzignano.bold.events.AlarmService;
+import it.liceoarzignano.bold.events.Event;
+import it.liceoarzignano.bold.events.EventsController;
 import it.liceoarzignano.bold.marks.Mark;
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 import static android.content.Context.MODE_PRIVATE;
 
 public class Utils {
-    private static final String HOME_PREFS = "HomePrefs";
-    private static final String SAFE_PREFS = "SafePrefs";
-    private static final String INITIAL_DAY = "initialDayKey";
-    private static final String ANALYTICS = "analytics_key";
     public static final String ISTEACHER = "isTeacher_key";
     public static final String SUGGESTIONS = "showSuggestions_key";
     public static final String NOTIF_NEWS = "notification_news_key";
     public static final String NOTIF_EVENT = "notification_events_key";
-    private static final String NOTIF_EVENT_TIME = "notification_events_time_key";
     public static final String ADDRESS = "address_key";
+    public static final String SAFE_DONE = "doneSetup";
+    private static final String HOME_PREFS = "HomePrefs";
+    private static final String SAFE_PREFS = "SafePrefs";
+    private static final String INITIAL_DAY = "initialDayKey";
+    private static final String ANALYTICS = "analytics_key";
+    private static final String NOTIF_EVENT_TIME = "notification_events_time_key";
     private static final String USERNAME = "username_key";
     private static final String APP_VERSION = "appVersionKey";
-    public static final String SAFE_DONE = "doneSetup";
-
     private static SharedPreferences mPrefs;
 
     /**
      * Animate fab with delay
      *
-     * @param mFab :  the fab that will be animated
+     * @param mFab        :  the fab that will be animated
      * @param shouldShow: whether to show the fab
      */
     public static void animFab(final FloatingActionButton mFab, final boolean shouldShow) {
@@ -209,9 +215,9 @@ public class Utils {
      *
      * @return array of subjects
      */
-    public static String[] getAverageElements(int mFilter) {
+    public static String[] getAverageElements(Context mContext, int mFilter) {
         int mSize = 0;
-        Realm mRealm = Realm.getInstance(BoldApp.getAppRealmConfiguration());
+        Realm mRealm = Realm.getInstance(((BoldApp) mContext.getApplicationContext()).getConfig());
         List<Mark> mMarks;
         switch (mFilter) {
             case 1:
@@ -242,8 +248,7 @@ public class Utils {
      * @param mCategory: event icon value
      * @return category name
      */
-    public static String eventCategoryToString(int mCategory) {
-        Context mContext = BoldApp.getContext();
+    public static String eventCategoryToString(Context mContext, int mCategory) {
         switch (mCategory) {
             case 0:
                 return mContext.getString(R.string.event_spinner_test);
@@ -289,8 +294,8 @@ public class Utils {
      * @param mDate given mark's date
      * @return true if first quarter, else false
      */
-    public static boolean isFirstQuarter(String mDate) {
-        return stringToDate(BoldApp.getContext().getString(R.string.config_quarter_change))
+    public static boolean isFirstQuarter(Context mContext, String mDate) {
+        return stringToDate(mContext.getString(R.string.config_quarter_change))
                 .after(stringToDate(mDate));
     }
 
@@ -298,7 +303,7 @@ public class Utils {
      * Determine if given package is installed
      *
      * @param mContext to invoke pm
-     * @param mPkg package name
+     * @param mPkg     package name
      * @return true if installed
      */
     public static boolean hasPackage(Context mContext, String mPkg) {
@@ -338,6 +343,212 @@ public class Utils {
                     return "addr_6";
             }
         }
+    }
+
+    /**
+     * Fetch all the upcoming events and create a description
+     *
+     * @return content for events notification
+     */
+    public static String getTomorrowInfo(Context mContext) {
+        Resources mRes = mContext.getResources();
+        String mContent = null;
+        boolean isFirstElement = true;
+
+        int mIcon;
+        int mTest = 0;
+        int mAtSchool = 0;
+        int mBirthday = 0;
+        int mHomework = 0;
+        int mReminder = 0;
+        int mHangout = 0;
+        int mOther = 0;
+
+        // Use realm instead of RealmController to avoid NPE when onBoot intent is broadcast'ed
+        EventsController mController = new EventsController(
+                ((BoldApp) mContext.getApplicationContext()).getConfig());
+        List<Event> mEvents = mController.getAll();
+
+        List<Event> mUpcomingEvents = new ArrayList<>();
+
+        // Create tomorrow events list
+        //noinspection Convert2streamapi
+        for (Event mEvent : mEvents) {
+            if (Utils.getToday().equals(mEvent.getDate())) {
+                mUpcomingEvents.add(mEvent);
+            }
+        }
+
+        if (mUpcomingEvents.isEmpty()) {
+            return null;
+        }
+
+        // Get data
+        for (Event mEvent : mUpcomingEvents) {
+            mIcon = mEvent.getIcon();
+            switch (mIcon) {
+                case 0:
+                    mTest++;
+                    break;
+                case 1:
+                    mAtSchool++;
+                    break;
+                case 2:
+                    mBirthday++;
+                    break;
+                case 3:
+                    mHomework++;
+                    break;
+                case 4:
+                    mReminder++;
+                    break;
+                case 5:
+                    mHangout++;
+                    break;
+                case 6:
+                    mOther++;
+                    break;
+            }
+        }
+
+        // Test
+        if (mTest > 0) {
+            // First element
+            mContent = mRes.getQuantityString(R.plurals.notification_message_first, mTest, mTest)
+                    + " " + mRes.getQuantityString(R.plurals.notification_test, mTest, mTest);
+            isFirstElement = false;
+        }
+
+        // School
+        if (mAtSchool > 0) {
+            if (isFirstElement) {
+                mContent = mRes.getQuantityString(R.plurals.notification_message_first,
+                        mAtSchool, mAtSchool) + " ";
+                isFirstElement = false;
+            } else {
+                mContent += mBirthday == 0 && mHangout == 0 && mOther == 0 ? " " +
+                        String.format(mRes.getString(R.string.notification_message_half),
+                                mAtSchool) :
+                        String.format(mRes.getString(R.string.notification_message_half),
+                                mAtSchool);
+            }
+            mContent += " " + mRes.getQuantityString(R.plurals.notification_school,
+                    mAtSchool, mAtSchool);
+        }
+
+        // Birthday
+        if (mBirthday > 0) {
+            if (isFirstElement) {
+                mContent = mRes.getQuantityString(R.plurals.notification_message_first,
+                        mBirthday, mBirthday) + " ";
+                isFirstElement = false;
+            } else {
+                mContent += String.format(mRes.getString(R.string.notification_message_half),
+                        mBirthday);
+            }
+            mContent += " " + mRes.getQuantityString(R.plurals.notification_birthday,
+                    mBirthday, mBirthday);
+        }
+
+        // Homework
+        if (mHomework > 0) {
+            if (isFirstElement) {
+                mContent = mRes.getQuantityString(R.plurals.notification_message_first,
+                        mHomework, mHomework) + " ";
+                isFirstElement = false;
+            } else {
+                mContent += String.format(mRes.getString(R.string.notification_message_half),
+                        mHomework);
+            }
+
+            mContent += " " + mRes.getQuantityString(R.plurals.notification_homework,
+                    mHomework, mHomework);
+        }
+
+        // Reminder
+        if (mReminder > 0) {
+            if (isFirstElement) {
+                mContent = mRes.getQuantityString(R.plurals.notification_message_first,
+                        mReminder, mReminder) + " ";
+                isFirstElement = false;
+            } else {
+                mContent += String.format(mRes.getString(R.string.notification_message_half),
+                        mReminder);
+            }
+            mContent += " " + mRes.getQuantityString(R.plurals.notification_reminder,
+                    mReminder, mReminder);
+        }
+
+        // Hangout
+        if (mHangout > 0) {
+            if (isFirstElement) {
+                mContent = mRes.getQuantityString(R.plurals.notification_message_first,
+                        mHangout, mHangout) + " ";
+                isFirstElement = false;
+            } else {
+                mContent += String.format(mRes.getString(R.string.notification_message_half),
+                        mAtSchool);
+            }
+            mContent += " " + mRes.getQuantityString(R.plurals.notification_meeting,
+                    mHangout, mHangout);
+        }
+
+        // Other
+        if (mOther > 0) {
+            if (isFirstElement) {
+                mContent = mRes.getQuantityString(R.plurals.notification_message_first,
+                        mOther, mOther);
+                mContent += " ";
+            } else {
+                mContent += String.format(mRes.getString(R.string.notification_message_half),
+                        mOther);
+            }
+            mContent += " " + mRes.getQuantityString(R.plurals.notification_other,
+                    mOther, mOther);
+        }
+
+        mContent += " " + mRes.getString(R.string.notification_message_end);
+
+        return mContent;
+    }
+
+    /**
+     * Create an event notification that will be fired later
+     */
+    public static void makeEventNotification(Context mContext) {
+        Calendar mCalendar = Calendar.getInstance();
+        mCalendar.setTimeInMillis(System.currentTimeMillis());
+
+        switch (getEventsNotificationTime(mContext)) {
+            case "0":
+                if (mCalendar.get(Calendar.HOUR_OF_DAY) >= 6) {
+                    // If it's too late for today's notification, plan one for tomorrow
+                    mCalendar.set(Calendar.DAY_OF_MONTH, mCalendar.get(Calendar.DAY_OF_MONTH) + 1);
+                }
+                mCalendar.set(Calendar.HOUR_OF_DAY, 6);
+                break;
+            case "1":
+                if (mCalendar.get(Calendar.HOUR_OF_DAY) >= 15) {
+                    // If it's too late for today's notification, plan one for tomorrow
+                    mCalendar.set(Calendar.DAY_OF_MONTH, mCalendar.get(Calendar.DAY_OF_MONTH) + 1);
+                }
+                mCalendar.set(Calendar.HOUR_OF_DAY, 15);
+                break;
+            case "2":
+                if (mCalendar.get(Calendar.HOUR_OF_DAY) >= 21) {
+                    // If it's too late for today's notification, plan one for tomorrow
+                    mCalendar.set(Calendar.DAY_OF_MONTH, mCalendar.get(Calendar.DAY_OF_MONTH) + 1);
+                }
+                mCalendar.set(Calendar.HOUR_OF_DAY, 21);
+                break;
+        }
+
+        // Set alarm
+        Intent mNotifIntent = new Intent(mContext, AlarmService.class);
+        AlarmManager mAlarmManager = (AlarmManager)
+                mContext.getSystemService(Context.ALARM_SERVICE);
+        PendingIntent mPendingIntent = PendingIntent.getService(mContext, 0, mNotifIntent, 0);
+        mAlarmManager.set(AlarmManager.RTC, mCalendar.getTimeInMillis(), mPendingIntent);
     }
 
     /*

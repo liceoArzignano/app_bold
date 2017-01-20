@@ -15,9 +15,9 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.ManagerActivity;
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.realm.RealmController;
 
 class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
     private final List<News> mNewsList;
@@ -36,7 +36,6 @@ class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
         return new NewsHolder(mItem);
     }
 
-
     @Override
     public void onBindViewHolder(NewsHolder mHolder, int mPostition) {
         News mNews = mNewsList.get(mPostition);
@@ -47,7 +46,6 @@ class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
     public int getItemCount() {
         return mNewsList.size();
     }
-
 
     class NewsHolder extends RecyclerView.ViewHolder {
         private final RelativeLayout mLayout;
@@ -69,7 +67,7 @@ class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
 
             final String mUrl = mNews.getUrl();
             if (mUrl != null && !mUrl.isEmpty()) {
-                mUrlButton.setOnClickListener(view -> NewsListActivity.showUrl(mUrl));
+                mUrlButton.setOnClickListener(view -> ((NewsListActivity) mActivity).showUrl(mUrl));
             } else {
                 mUrlButton.setVisibility(View.GONE);
             }
@@ -100,8 +98,10 @@ class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
             });
             mDeleteLayout.setOnClickListener(view -> {
                 mSheet.hide();
-                RealmController.with(mActivity).deleteNews(mNews.getId());
-                NewsListActivity.refreshList(mActivity, null);
+                NewsController mController = new NewsController(((BoldApp)
+                        mActivity.getApplication()).getConfig());
+                mController.delete(mNews.getId());
+                ((NewsListActivity) mActivity).refresh(mActivity, null);
             });
             mToEventLayout.setOnClickListener(view -> {
                 mSheet.hide();

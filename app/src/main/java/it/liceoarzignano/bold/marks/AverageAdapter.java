@@ -10,14 +10,13 @@ import android.widget.TextView;
 import java.util.Locale;
 
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.realm.RealmController;
 
 
 class AverageAdapter extends RecyclerView.Adapter<AverageAdapter.AverageHolder> {
-    private final RealmController mController;
+    private final MarksController mController;
     private final String[] mResults;
 
-    AverageAdapter(RealmController mController, String[] mResults) {
+    AverageAdapter(MarksController mController, String[] mResults) {
         this.mController = mController;
         this.mResults = mResults;
     }
@@ -39,7 +38,6 @@ class AverageAdapter extends RecyclerView.Adapter<AverageAdapter.AverageHolder> 
     public int getItemCount() {
         return mResults != null ? mResults.length : 0;
     }
-
 
     class AverageHolder extends RecyclerView.ViewHolder {
         private final TextView mTitle;

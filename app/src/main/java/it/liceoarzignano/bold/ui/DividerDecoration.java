@@ -10,15 +10,16 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.R;
 
 public class DividerDecoration extends RecyclerView.ItemDecoration {
     private final Drawable mDivider;
+    private final Context mContext;
 
     public DividerDecoration(Context mContext) {
+        this.mContext = mContext;
         TypedArray mTyped = mContext.obtainStyledAttributes(
-                new int[] { android.R.attr.listDivider });
+                new int[]{android.R.attr.listDivider});
         mDivider = mTyped.getDrawable(0);
         mTyped.recycle();
     }
@@ -36,12 +37,11 @@ public class DividerDecoration extends RecyclerView.ItemDecoration {
             int mTop = mChild.getBottom() + mParams.bottomMargin;
             int mTottom = mTop + mDivider.getIntrinsicHeight();
             mDivider.setBounds(mLeft, mTop, mRight, mTottom);
-            mDivider.setColorFilter(ContextCompat.getColor(BoldApp.getContext(),
+            mDivider.setColorFilter(ContextCompat.getColor(mContext,
                     R.color.list_divider), PorterDuff.Mode.SRC_ATOP);
             mDivider.draw(mCanvas);
         }
     }
-
 
     @Override
     public void getItemOffsets(Rect mOut, View mView, RecyclerView mParent,

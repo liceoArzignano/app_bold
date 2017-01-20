@@ -4,14 +4,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import it.liceoarzignano.bold.MainActivity;
+import it.liceoarzignano.bold.Utils;
 
 public class BootReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context mContext, Intent mIntent) {
         if ("android.intent.action.BOOT_COMPLETED".equals(mIntent.getAction())) {
-            MainActivity.makeEventNotification();
+            Utils.makeEventNotification(mContext);
         }
     }
 

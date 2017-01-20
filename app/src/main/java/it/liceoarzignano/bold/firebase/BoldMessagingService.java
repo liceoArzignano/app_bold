@@ -99,7 +99,7 @@ public class BoldMessagingService extends FirebaseMessagingService {
     private void saveNews() {
         mNews.setId(Calendar.getInstance().getTimeInMillis());
 
-        Realm mRealm = Realm.getInstance(BoldApp.getAppRealmConfiguration());
+        Realm mRealm = Realm.getInstance(((BoldApp) mContext).getConfig());
         mRealm.beginTransaction();
         mRealm.copyToRealm(mNews);
         mRealm.commitTransaction();

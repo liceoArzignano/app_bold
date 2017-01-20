@@ -27,7 +27,7 @@ public class SafeLoginDialog {
     /**
      * Log in dialog with password input and hints
      *
-     * @param mContext used to fetch resources
+     * @param mContext    used to fetch resources
      * @param isFirstTime adapt ui for first login
      */
     @SuppressLint("InflateParams")

@@ -6,7 +6,6 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.Utils;
 
 
@@ -21,7 +20,7 @@ public class BoldInstanceIdService extends FirebaseInstanceIdService {
     @Override
     public void onTokenRefresh() {
         FirebaseInstanceId.getInstance().getToken();
-        Context mContext = BoldApp.getContext();
+        Context mContext = getApplicationContext();
         String mTopic;
         if (Utils.isTeacher(mContext)) {
             mTopic = ADDR6_TOPIC;

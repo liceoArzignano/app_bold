@@ -1,179 +1,66 @@
 package it.liceoarzignano.bold.realm;
 
-import android.app.Activity;
-import android.app.Application;
-import android.app.Fragment;
-
-import java.util.Calendar;
-import java.util.List;
-
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import io.realm.RealmObject;
 import io.realm.RealmResults;
-import io.realm.Sort;
-import it.liceoarzignano.bold.events.Event;
-import it.liceoarzignano.bold.marks.Mark;
-import it.liceoarzignano.bold.news.News;
 
-public class RealmController {
-    private static RealmController sInstance;
-    private final Realm mRealm;
+public abstract class RealmController<T extends RealmObject> {
+    protected final Realm mRealm;
 
-    @SuppressWarnings("UnusedParameters")
-    private RealmController(Application mApplication) {
-        mRealm = Realm.getDefaultInstance();
-    }
-
-    public static RealmController with(Activity mActivity) {
-        if (sInstance == null) {
-            sInstance = new RealmController(mActivity.getApplication());
-        }
-        return sInstance;
-    }
-
-    public static RealmController with(Fragment mFragment) {
-        if (sInstance == null) {
-            sInstance = new RealmController(mFragment.getActivity().getApplication());
-        }
-        return sInstance;
-    }
-
-    public static RealmController with(Application mApplication) {
-        if (sInstance == null) {
-            sInstance = new RealmController(mApplication);
-        }
-        return sInstance;
-    }
-
-    public Realm getmRealm() {
-        return mRealm;
-    }
-
-    /*
-     * Marks
+    /**
+     * Default constructor
+     *
+     * @param mConfig realm configuration
      */
-
-    public RealmResults<Mark> getAllMarks() {
-        return mRealm.where(Mark.class).findAllSorted("date", Sort.ASCENDING);
+    public RealmController(RealmConfiguration mConfig) {
+        mRealm = Realm.getInstance(mConfig);
     }
 
-    private RealmResults<Mark> getFilteredMarks(String mTitle, int mQuarter) {
-        switch (mQuarter) {
-            case 1:
-                return mRealm.where(Mark.class).equalTo("title", mTitle)
-                        .equalTo("isFirstQuarter", true).findAll();
-            case 2:
-                return mRealm.where(Mark.class).equalTo("title", mTitle)
-                        .equalTo("isFirstQuarter", false).findAll();
-            default:
-                return mRealm.where(Mark.class).equalTo("title", mTitle).findAll();
-        }
-    }
-
-    public Mark getMark(long mId) {
-        return mRealm.where(Mark.class).equalTo("id", mId).findFirst();
-    }
-
-    public long addMark(Mark mMark) {
-        long mId = Calendar.getInstance().getTimeInMillis();
-        mMark.setId(mId);
-        mRealm.beginTransaction();
-        mRealm.copyToRealm(mMark);
-        mRealm.commitTransaction();
-        return mId;
-    }
-
-    public long updateMark(Mark mMark) {
-        long mId = mMark.getId();
-
-        Mark mOldMark = getMark(mId);
-        mRealm.beginTransaction();
-        mOldMark.setTitle(mMark.getTitle());
-        mOldMark.setValue(mMark.getValue());
-        mOldMark.setDate(mMark.getDate());
-        mOldMark.setNote(mMark.getNote());
-        mRealm.commitTransaction();
-        return mId;
-    }
-
-    public double getAverage(String mTitle, int mQuarter) {
-        List<Mark> mMarks = getFilteredMarks(mTitle, mQuarter);
-        double mSum = 0;
-        if (mMarks.isEmpty()) {
-            return 0;
-        } else {
-            for (Mark mark : mMarks) {
-                mSum += mark.getValue();
-            }
-            mSum /= 100;
-
-            return mSum / mMarks.size();
-        }
-    }
-
-    public double whatShouldIGet(String mTitle, int mQuarter) {
-        double mSum = 0;
-
-        List<Mark> mMarks = getFilteredMarks(mTitle, mQuarter);
-
-        for (Mark mMark : mMarks) {
-            mSum += mMark.getValue();
-        }
-        mSum /= 100;
-
-        return !mMarks.isEmpty() ? 6 * (mMarks.size() + 1) - mSum : 0;
-    }
-
-
-    /*
-     * Events
+    /**
+     * Get all the items
+     *
+     * @return list of all the items
      */
-
-    public RealmResults<Event> getAllEventsInverted() {
-        return mRealm.where(Event.class).findAllSorted("date", Sort.ASCENDING);
+    public RealmResults<T> getAll() {
+        return null;
     }
 
-    public Event getEvent(long mId) {
-        return mRealm.where(Event.class).equalTo("id", mId).findFirst();
-    }
-
-    public long addEvent(Event mEvent) {
-        long mId = Calendar.getInstance().getTimeInMillis();
-
-        mEvent.setId(mId);
-        mRealm.beginTransaction();
-        mRealm.copyToRealm(mEvent);
-        mRealm.commitTransaction();
-        return mId;
-    }
-
-    public long updateEvent(Event mEvent) {
-        long mId = mEvent.getId();
-
-        Event mOldEvent = getEvent(mId);
-        mRealm.beginTransaction();
-        mOldEvent.setTitle(mEvent.getTitle());
-        mOldEvent.setDate(mEvent.getDate());
-        mOldEvent.setIcon(mEvent.getIcon());
-        mOldEvent.setNote(mEvent.getNote());
-        mRealm.commitTransaction();
-        return mId;
-    }
-
-    /*
-     * News
+    /**
+     * Get items matching a given id
+     *
+     * @param mId item id
+     * @return list of items with the given id
      */
-    public List<News> getAllNews() {
-        return mRealm.where(News.class).findAllSorted("date", Sort.DESCENDING);
+    public RealmResults<T> getById(long mId) {
+        return null;
     }
 
-    public News getNews(long mId) {
-        return mRealm.where(News.class).equalTo("id", mId).findFirst();
+    /**
+     * Add an object to the database
+     *
+     * @param mObject given object. Must extend RealmObject
+     * @return new object id
+     */
+    public long add(T mObject) {
+        return -1;
     }
 
-    public void deleteNews(long mId) {
-        News mNews = mRealm.where(News.class).equalTo("id", mId).findFirst();
-        mRealm.beginTransaction();
-        mNews.deleteFromRealm();
-        mRealm.commitTransaction();
+    /**
+     * Update an existing object in the database
+     *
+     * @param mObject given object. Must extend RealmObject
+     * @return updated object id
+     */
+    public long update(T mObject) {
+        return -1;
+    }
+
+    /**
+     * Remove a given object from the database
+     *
+     * @param mId object id
+     */
+    public void delete(long mId) {
     }
 }

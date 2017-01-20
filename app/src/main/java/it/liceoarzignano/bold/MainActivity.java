@@ -2,13 +2,10 @@ package it.liceoarzignano.bold;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -40,19 +37,20 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
-import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import io.realm.Sort;
-import it.liceoarzignano.bold.events.AlarmService;
 import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.events.EventListActivity;
+import it.liceoarzignano.bold.events.EventsController;
 import it.liceoarzignano.bold.home.HomeAdapter;
 import it.liceoarzignano.bold.home.HomeCard;
 import it.liceoarzignano.bold.intro.BenefitsActivity;
 import it.liceoarzignano.bold.marks.Mark;
 import it.liceoarzignano.bold.marks.MarkListActivity;
+import it.liceoarzignano.bold.marks.MarksController;
 import it.liceoarzignano.bold.news.News;
+import it.liceoarzignano.bold.news.NewsController;
 import it.liceoarzignano.bold.news.NewsListActivity;
-import it.liceoarzignano.bold.realm.RealmController;
 import it.liceoarzignano.bold.safe.SafeActivity;
 import it.liceoarzignano.bold.settings.SettingsActivity;
 import it.liceoarzignano.bold.ui.DividerDecoration;
@@ -61,11 +59,10 @@ import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static Resources sRes;
-    private static Context sContext;
-    private static RealmController sController;
     private final Calendar mCalendar = Calendar.getInstance();
-
+    private MarksController mController;
+    private EventsController mEventsController;
+    private NewsController mNewsController;
     private Toolbar mToolbar;
     private TextView mUserName;
     private ImageView mAddressLogo;
@@ -81,9 +78,10 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        sRes = getResources();
-        sContext = getApplicationContext();
-        sController = RealmController.with(this);
+        RealmConfiguration mConfig = ((BoldApp) getApplication()).getConfig();
+        mController = new MarksController(mConfig);
+        mEventsController = new EventsController(mConfig);
+        mNewsController = new NewsController(mConfig);
 
         // Intro
         showIntroIfNeeded();
@@ -107,9 +105,9 @@ public class MainActivity extends AppCompatActivity
 
         // Cards List
         mCardsList = (RecyclerView) findViewById(R.id.home_list);
-        mCardsList.setLayoutManager(new LinearLayoutManager(sContext));
+        mCardsList.setLayoutManager(new LinearLayoutManager(this));
         mCardsList.setItemAnimator(new DefaultItemAnimator());
-        mCardsList.addItemDecoration(new DividerDecoration(sContext));
+        mCardsList.addItemDecoration(new DividerDecoration(this));
 
         // Chrome custom tabs
         setupCCustomTabs();
@@ -118,8 +116,8 @@ public class MainActivity extends AppCompatActivity
         showWelcomeIfNeeded(this);
 
         // Notification
-        if (Utils.hasEventsNotification(sContext)) {
-            makeEventNotification();
+        if (Utils.hasEventsNotification(this)) {
+            Utils.makeEventNotification(this);
         }
     }
 
@@ -182,217 +180,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     * Fetch all the upcoming events and create a description
-     *
-     * @return content for events notification
-     */
-    public static String getTomorrowInfo() {
-        String mContent = null;
-        boolean isFirstElement = true;
-
-        int mIcon;
-        int mTest = 0;
-        int mAtSchool = 0;
-        int mBirthday = 0;
-        int mHomework = 0;
-        int mReminder = 0;
-        int mHangout = 0;
-        int mOther = 0;
-
-        // Use realm instead of RealmController to avoid NPE when onBoot intent is broadcast'ed
-        List<Event> mEvents = Realm.getInstance(BoldApp.getAppRealmConfiguration())
-                .where(Event.class).findAllSorted("date", Sort.DESCENDING);
-
-        List<Event> mUpcomingEvents = new ArrayList<>();
-
-        // Avoid npe
-        if (sRes == null) {
-            sRes = BoldApp.getContext().getResources();
-        }
-
-        // Create tomorrow events list
-        //noinspection Convert2streamapi
-        for (Event mEvent : mEvents) {
-            if (Utils.getToday().equals(mEvent.getDate())) {
-                mUpcomingEvents.add(mEvent);
-            }
-        }
-
-        if (mUpcomingEvents.isEmpty()) {
-            return null;
-        }
-
-        // Get data
-        for (Event mEvent : mUpcomingEvents) {
-            mIcon = mEvent.getIcon();
-            switch (mIcon) {
-                case 0:
-                    mTest++;
-                    break;
-                case 1:
-                    mAtSchool++;
-                    break;
-                case 2:
-                    mBirthday++;
-                    break;
-                case 3:
-                    mHomework++;
-                    break;
-                case 4:
-                    mReminder++;
-                    break;
-                case 5:
-                    mHangout++;
-                    break;
-                case 6:
-                    mOther++;
-                    break;
-            }
-        }
-
-        // Test
-        if (mTest > 0) {
-            // First element
-            mContent = sRes.getQuantityString(R.plurals.notification_message_first, mTest, mTest)
-                    + " " + sRes.getQuantityString(R.plurals.notification_test, mTest, mTest);
-            isFirstElement = false;
-        }
-
-        // School
-        if (mAtSchool > 0) {
-            if (isFirstElement) {
-                mContent = sRes.getQuantityString(R.plurals.notification_message_first,
-                        mAtSchool, mAtSchool) + " ";
-                isFirstElement = false;
-            } else {
-                mContent += mBirthday == 0 && mHangout == 0 && mOther == 0 ? " " +
-                        String.format(sRes.getString(R.string.notification_message_half), mAtSchool) :
-                        String.format(sRes.getString(R.string.notification_message_half), mAtSchool);
-            }
-            mContent += " " + sRes.getQuantityString(R.plurals.notification_school,
-                    mAtSchool, mAtSchool);
-        }
-
-        // Birthday
-        if (mBirthday > 0) {
-            if (isFirstElement) {
-                mContent = sRes.getQuantityString(R.plurals.notification_message_first,
-                        mBirthday, mBirthday) + " ";
-                isFirstElement = false;
-            } else {
-                mContent += String.format(sRes.getString(R.string.notification_message_half),
-                        mBirthday);
-            }
-            mContent += " " + sRes.getQuantityString(R.plurals.notification_birthday,
-                    mBirthday, mBirthday);
-        }
-
-        // Homework
-        if (mHomework > 0) {
-            if (isFirstElement) {
-                mContent = sRes.getQuantityString(R.plurals.notification_message_first,
-                        mHomework, mHomework) + " ";
-                isFirstElement = false;
-            } else {
-                mContent += String.format(sRes.getString(R.string.notification_message_half),
-                        mHomework);
-            }
-
-            mContent += " " + sRes.getQuantityString(R.plurals.notification_homework,
-                    mHomework, mHomework);
-        }
-
-        // Reminder
-        if (mReminder > 0) {
-            if (isFirstElement) {
-                mContent = sRes.getQuantityString(R.plurals.notification_message_first,
-                        mReminder, mReminder) + " ";
-                isFirstElement = false;
-            } else {
-                mContent += String.format(sRes.getString(R.string.notification_message_half),
-                        mReminder);
-            }
-            mContent += " " + sRes.getQuantityString(R.plurals.notification_reminder,
-                    mReminder, mReminder);
-        }
-
-        // Hangout
-        if (mHangout > 0) {
-            if (isFirstElement) {
-                mContent = sRes.getQuantityString(R.plurals.notification_message_first,
-                        mHangout, mHangout) + " ";
-                isFirstElement = false;
-            } else {
-                mContent += String.format(sRes.getString(R.string.notification_message_half),
-                        mAtSchool);
-            }
-            mContent += " " + sRes.getQuantityString(R.plurals.notification_meeting,
-                    mHangout, mHangout);
-        }
-
-        // Other
-        if (mOther > 0) {
-            if (isFirstElement) {
-                mContent = sRes.getQuantityString(R.plurals.notification_message_first,
-                        mOther, mOther);
-                mContent += " ";
-            } else {
-                mContent += String.format(sRes.getString(R.string.notification_message_half),
-                        mOther);
-            }
-            mContent += " " + sRes.getQuantityString(R.plurals.notification_other,
-                    mOther, mOther);
-        }
-
-        mContent += " " + sRes.getString(R.string.notification_message_end);
-
-        return mContent;
-    }
-
-    /**
-     * Create an event notification that will be fired later
-     */
-    public static void makeEventNotification() {
-        // Guard against npe when called from service
-        if (sContext == null) {
-            sContext = BoldApp.getContext();
-        }
-
-        Calendar mCalendar = Calendar.getInstance();
-        mCalendar.setTimeInMillis(System.currentTimeMillis());
-
-        switch (Utils.getEventsNotificationTime(sContext)) {
-            case "0":
-                if (mCalendar.get(Calendar.HOUR_OF_DAY) >= 6) {
-                    // If it's too late for today's notification, plan one for tomorrow
-                    mCalendar.set(Calendar.DAY_OF_MONTH, mCalendar.get(Calendar.DAY_OF_MONTH) + 1);
-                }
-                mCalendar.set(Calendar.HOUR_OF_DAY, 6);
-                break;
-            case "1":
-                if (mCalendar.get(Calendar.HOUR_OF_DAY) >= 15) {
-                    // If it's too late for today's notification, plan one for tomorrow
-                    mCalendar.set(Calendar.DAY_OF_MONTH, mCalendar.get(Calendar.DAY_OF_MONTH) + 1);
-                }
-                mCalendar.set(Calendar.HOUR_OF_DAY, 15);
-                break;
-            case "2":
-                if (mCalendar.get(Calendar.HOUR_OF_DAY) >= 21) {
-                    // If it's too late for today's notification, plan one for tomorrow
-                    mCalendar.set(Calendar.DAY_OF_MONTH, mCalendar.get(Calendar.DAY_OF_MONTH) + 1);
-                }
-                mCalendar.set(Calendar.HOUR_OF_DAY, 21);
-                break;
-        }
-
-        // Set alarm
-        Intent mNotifIntent = new Intent(sContext, AlarmService.class);
-        AlarmManager mAlarmManager = (AlarmManager) sContext.getSystemService(ALARM_SERVICE);
-        PendingIntent mPendingIntent = PendingIntent.getService(sContext, 0, mNotifIntent, 0);
-        mAlarmManager.set(AlarmManager.RTC, mCalendar.getTimeInMillis(), mPendingIntent);
-    }
-
-    /**
      * Init Chrome custom tabs
      */
     private void setupCCustomTabs() {
@@ -412,7 +199,7 @@ public class MainActivity extends AppCompatActivity
                     }
                 };
 
-        CustomTabsClient.bindCustomTabsService(sContext, "com.android.chrome",
+        CustomTabsClient.bindCustomTabsService(this, "com.android.chrome",
                 mCustomTabsServiceConnection);
 
         mCustomTabsIntent = new CustomTabsIntent.Builder(mCustomTabsSession)
@@ -473,7 +260,7 @@ public class MainActivity extends AppCompatActivity
                 .setName(getString(R.string.upcoming_events));
 
         // Show 3 closest events
-        List<Event> mEvents = sController.getAllEventsInverted();
+        List<Event> mEvents = mEventsController.getAll();
 
         for (int mCounter = 0; mCounter < 3 && mCounter < mEvents.size(); mCounter++) {
             Event mEvent = mEvents.get(mCounter);
@@ -500,7 +287,7 @@ public class MainActivity extends AppCompatActivity
                 .setName(getString(R.string.nav_news));
 
         // Show 3 lastest news
-        List<News> mNews = sController.getAllNews();
+        List<News> mNews = mNewsController.getAll();
         if (mNews.isEmpty()) {
             return null;
         }
@@ -523,7 +310,7 @@ public class MainActivity extends AppCompatActivity
         HomeCard.Builder mBuilder = new HomeCard.Builder()
                 .setName(getString(R.string.lastest_marks));
 
-        List<Mark> mMarks = sController.getAllMarks().sort("date", Sort.DESCENDING);
+        List<Mark> mMarks = mController.getAll().sort("date", Sort.DESCENDING);
         if (mMarks.isEmpty()) {
             return null;
         }
@@ -620,7 +407,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         // Marks
-        if (Utils.hasUsedForMoreThanOneWeek(sContext)) {
+        if (Utils.hasUsedForMoreThanOneWeek(this)) {
             HomeCard mMarksCard = createMarksCard();
             if (mMarksCard != null) {
                 mCards.add(mMarksCard);
@@ -628,7 +415,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         // Suggestions
-        if (Utils.hasSuggestions(sContext)) {
+        if (Utils.hasSuggestions(this)) {
             mCards.add(createSuggestionsCard());
         }
 
@@ -698,7 +485,7 @@ public class MainActivity extends AppCompatActivity
 
         if (mPrefs.getBoolean("drawerIntro", true)) {
             final Activity mActivity = this;
-            String[] mAddresses = new String[] {
+            String[] mAddresses = new String[]{
                     getString(R.string.pref_address_1),
                     getString(R.string.pref_address_2),
                     getString(R.string.pref_address_3),
@@ -717,7 +504,7 @@ public class MainActivity extends AppCompatActivity
                         boolean isAddressValid = which != -1;
                         if (which == 5) {
                             Utils.setTeacherMode(mContext);
-                        } else if (isAddressValid){
+                        } else if (isAddressValid) {
                             Utils.setAddress(mContext, String.valueOf(which + 1));
                         }
                         if (isAddressValid) {

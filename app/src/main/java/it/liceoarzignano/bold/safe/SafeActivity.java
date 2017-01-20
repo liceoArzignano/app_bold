@@ -41,6 +41,12 @@ public class SafeActivity extends AppCompatActivity {
 
     private static SharedPreferences sPrefs;
     private static SharedPreferences.Editor sEditor;
+
+    // Safe jni addons
+    static {
+        System.loadLibrary("safe-addon-jni");
+    }
+
     private Encryption.SecretKeys mSecretKeys = null;
     private String mCrUserName;
     private String mCrReg;
@@ -48,13 +54,8 @@ public class SafeActivity extends AppCompatActivity {
     private String mCrInternet;
     private boolean hasCompletedSetup;
     private boolean isWorking = true;
-
-    private Context mContext;
-
     private Menu mMenu;
-
     private SafeLoginDialog mLoginDialog;
-
     private LinearLayout mLoadingLayout;
     private ScrollView mContentLayout;
     private TextView mLoadingText;
@@ -64,11 +65,41 @@ public class SafeActivity extends AppCompatActivity {
     private EditText mInternetEdit;
     private FloatingActionButton mFab;
 
-    // Safe jni addons
-    static {
-        System.loadLibrary("safe-addon-jni");
+    /**
+     * Encrypted password getter
+     *
+     * @param mContext used to access sharedPreferences
+     * @return encrypted password from sharedPreferences
+     */
+    public static String getEncryptedPassword(Context mContext) {
+        return mContext.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE).getString(accessKey, "");
     }
+
+    /**
+     * Public getter for hasShared password, used to prevent
+     * encrypted password to be shared too many times from secret menu
+     *
+     * @param mContext used to access to sharedPreferences
+     * @return true if user has already shared the password
+     */
+    public static boolean hasSharedPassword(Context mContext) {
+        return mContext.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE)
+                .getBoolean(hasSharedKey, false);
+    }
+
+    /**
+     * Public setter for hasShared password, used to prevent
+     * encrypted password to be shared too many times from secret menu
+     *
+     * @param mContext used to access SharedPreferences
+     */
+    public static void setSharedPassword(Context mContext) {
+        mContext.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE).edit()
+                .putBoolean(hasSharedKey, true).apply();
+    }
+
     public native String getKey();
+
     public native String getSalt();
 
     @SuppressLint("CommitPrefEdits")
@@ -89,8 +120,6 @@ public class SafeActivity extends AppCompatActivity {
             mToolbar.setNavigationOnClickListener(view -> onBackPressed());
         }
 
-        mContext = this;
-
         sPrefs = getSharedPreferences(SAFE_PREFS, MODE_PRIVATE);
         sEditor = getSharedPreferences(SAFE_PREFS, MODE_PRIVATE).edit();
 
@@ -108,7 +137,7 @@ public class SafeActivity extends AppCompatActivity {
 
         // Xposed can inject code by doing shitty stuffs in the runtime.
         // If xposed is installed, do not allow user to open this activity for security reasons
-        if (Utils.hasPackage(mContext, XPOSED_INSTALLER_PACAKGE)) {
+        if (Utils.hasPackage(this, XPOSED_INSTALLER_PACAKGE)) {
             mLoadingText.setText(getString(R.string.safe_dialog_password_error_security));
         } else {
             mLoadingText.setText(R.string.safe_first_load);
@@ -169,7 +198,7 @@ public class SafeActivity extends AppCompatActivity {
                 safeReset();
                 break;
             case R.id.action_info:
-                new MaterialDialog.Builder(mContext)
+                new MaterialDialog.Builder(this)
                         .title(getString(R.string.safe_info_title))
                         .content(getString(R.string.safe_info_content))
                         .neutralText(getString(android.R.string.ok))
@@ -185,7 +214,7 @@ public class SafeActivity extends AppCompatActivity {
         if (isWorking) {
             super.onBackPressed();
         } else {
-            new MaterialDialog.Builder(mContext)
+            new MaterialDialog.Builder(this)
                     .title(R.string.safe_back_title)
                     .content(R.string.safe_back_message)
                     .positiveText(R.string.safe_back_title)
@@ -202,8 +231,8 @@ public class SafeActivity extends AppCompatActivity {
      */
     private void showPasswordDialog() {
         hasCompletedSetup = sPrefs.getBoolean("hasCompletedSetup", false);
-        mLoginDialog = new SafeLoginDialog(mContext, !hasCompletedSetup);
-        mLoginDialog.build(new MaterialDialog.Builder(mContext)
+        mLoginDialog = new SafeLoginDialog(this, !hasCompletedSetup);
+        mLoginDialog.build(new MaterialDialog.Builder(this)
                 .customView(mLoginDialog.getView(), false)
                 .canceledOnTouchOutside(false)
                 .positiveText(hasCompletedSetup ?
@@ -371,7 +400,7 @@ public class SafeActivity extends AppCompatActivity {
      * Reset the safe data when user wants to change the password
      */
     private void safeReset() {
-        new MaterialDialog.Builder(mContext)
+        new MaterialDialog.Builder(this)
                 .title(getString(R.string.safe_reset_title))
                 .content(getString(R.string.safe_reset_content))
                 .negativeText(getString(android.R.string.no))
@@ -386,41 +415,8 @@ public class SafeActivity extends AppCompatActivity {
                     sEditor.remove("hasCompletedSetup").apply();
 
                     new Handler().postDelayed(() ->
-                            startActivity(new Intent(mContext, SafeActivity.class)), 700);
+                            startActivity(new Intent(this, SafeActivity.class)), 700);
                 })
                 .show();
-    }
-
-    /**
-     * Encrypted password getter
-     *
-     * @param mContext used to access sharedPreferences
-     * @return encrypted password from sharedPreferences
-     */
-    public static String getEncryptedPassword(Context mContext) {
-        return mContext.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE).getString(accessKey, "");
-    }
-
-    /**
-     * Public getter for hasShared password, used to prevent
-     * encrypted password to be shared too many times from secret menu
-     *
-     * @param mContext used to access to sharedPreferences
-     * @return true if user has already shared the password
-     */
-    public static boolean hasSharedPassword(Context mContext) {
-        return mContext.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE)
-                .getBoolean(hasSharedKey, false);
-    }
-
-    /**
-     * Public setter for hasShared password, used to prevent
-     * encrypted password to be shared too many times from secret menu
-     *
-     * @param mContext used to access SharedPreferences
-     */
-    public static void setSharedPassword(Context mContext) {
-        mContext.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE).edit()
-                .putBoolean(hasSharedKey, true).apply();
     }
 }

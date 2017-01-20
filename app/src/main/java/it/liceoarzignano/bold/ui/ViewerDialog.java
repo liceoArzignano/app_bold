@@ -22,7 +22,6 @@ import it.liceoarzignano.bold.ManagerActivity;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
 import it.liceoarzignano.bold.events.Event;
-import it.liceoarzignano.bold.events.EventListActivity;
 import it.liceoarzignano.bold.marks.Mark;
 import it.liceoarzignano.bold.marks.MarkListActivity;
 
@@ -66,14 +65,13 @@ public class ViewerDialog {
         mDateTextView = (TextView) mView.findViewById(R.id.viewer_dates);
         mNotesTexView = (TextView) mView.findViewById(R.id.viewer_notes);
 
-        mRealm = Realm.getInstance(BoldApp.getAppRealmConfiguration());
-
+        mRealm = Realm.getInstance(((BoldApp) mContext.getApplicationContext()).getConfig());
     }
 
     /**
      * Set ui basing on Event / Mark information
      *
-     * @param mId object id
+     * @param mId    object id
      * @param isMark is the object a mark
      * @return this view
      */
@@ -104,7 +102,7 @@ public class ViewerDialog {
         } else {
             mNotes.append(mEvent.getNote());
             mValueTitle.setText(mContext.getString(R.string.viewer_category));
-            mValueTextView.setText(Utils.eventCategoryToString(mEvent.getIcon()));
+            mValueTextView.setText(Utils.eventCategoryToString(mContext, mEvent.getIcon()));
             mMoreButton.setVisibility(View.GONE);
         }
 
@@ -117,11 +115,11 @@ public class ViewerDialog {
 
                 new Handler().postDelayed(() -> {
                     mThisDialog.dismiss();
-                    MarkListActivity.showFilteredMarks(mTitle);
+                    ((MarkListActivity) mContext).showFilteredMarks(mTitle);
                 }, 1800);
             } else {
                 mThisDialog.dismiss();
-                MarkListActivity.showFilteredMarks(mTitle);
+                ((MarkListActivity) mContext).showFilteredMarks(mTitle);
             }
         });
 
@@ -172,11 +170,11 @@ public class ViewerDialog {
 
             Snackbar.make(v, mContext.getString(R.string.removed),
                     Snackbar.LENGTH_SHORT).show();
-            if (isMark) {
+            /*if (isMark) {
                 MarkListActivity.refresh(mContext);
             } else {
                 EventListActivity.refreshList(mContext, null);
-            }
+            }*/
             new Handler().postDelayed(mThisDialog::dismiss, 840);
         });
 

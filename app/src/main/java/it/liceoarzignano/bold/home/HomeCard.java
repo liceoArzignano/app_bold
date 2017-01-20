@@ -33,10 +33,10 @@ public class HomeCard {
     }
 
     public static class Builder {
-        private int mCounter;
-        private String mName;
         private final List<String> mTitleList = new ArrayList<>();
         private final List<String> mContentList = new ArrayList<>();
+        private int mCounter;
+        private String mName;
 
         public Builder setName(String mName) {
             this.mName = mName;

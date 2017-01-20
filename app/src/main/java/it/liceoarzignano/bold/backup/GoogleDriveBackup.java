@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -15,10 +14,7 @@ import com.google.android.gms.drive.Drive;
 import java.lang.ref.WeakReference;
 
 class GoogleDriveBackup implements Backup, GoogleApiClient.OnConnectionFailedListener {
-    @Nullable
     private GoogleApiClient mClient;
-
-    @Nullable
     private WeakReference<Activity> mReference;
 
     @Override
@@ -82,7 +78,7 @@ class GoogleDriveBackup implements Backup, GoogleApiClient.OnConnectionFailedLis
         } else {
             Log.e("GoogleDriveAPI", "Unable to connect!");
             Log.e("GoogleDriveAPI", "Error code: " + mResult.getErrorCode());
-            Log.e("GoogleDriveAPI", "Error message: " +  mResult.getErrorMessage());
+            Log.e("GoogleDriveAPI", "Error message: " + mResult.getErrorMessage());
         }
     }
 }
