@@ -94,12 +94,17 @@ public class NewsListActivity extends AppCompatActivity {
 
         // Chrome custom tabs
         setupCCustomTabs();
+
+        refresh(this, getIntent().getStringExtra(SearchManager.QUERY));
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        unbindService(mCustomTabsServiceConnection);
+        if (mCustomTabsServiceConnection != null) {
+            unbindService(mCustomTabsServiceConnection);
+            mCustomTabsServiceConnection = null;
+        }
     }
 
     /**
@@ -111,7 +116,7 @@ public class NewsListActivity extends AppCompatActivity {
     void refresh(Context mContext, String mQuery) {
         boolean hasQuery = mQuery != null && !mQuery.isEmpty();
 
-        Realm mRealm = Realm.getInstance(((BoldApp) mContext).getConfig());
+        Realm mRealm = Realm.getInstance(((BoldApp) mContext.getApplicationContext()).getConfig());
         final RealmResults<News> mNews = hasQuery ?
                 mRealm.where(News.class).contains("title", mQuery).or().contains("message", mQuery)
                         .findAllSorted("date", Sort.DESCENDING) :

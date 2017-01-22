@@ -136,7 +136,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onPause() {
         super.onPause();
-        unbindService(mCustomTabsServiceConnection);
+        if (mCustomTabsServiceConnection != null) {
+            unbindService(mCustomTabsServiceConnection);
+            mCustomTabsServiceConnection = null;
+        }
     }
 
     @Override
