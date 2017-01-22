@@ -40,13 +40,17 @@ public class BoldMessagingService extends FirebaseMessagingService {
         if (!mRemoteMessage.getData().isEmpty()) {
             try {
                 JSONObject mJSON = new JSONObject(mRemoteMessage.getData().toString());
-                JSONObject mData = mJSON.getJSONObject("data");
-                String mTitle = mData.getString("title");
-                String mMessage = mData.getString("message");
-                String mUrl = mData.getString("url");
+                String mTitle = mJSON.getString("title");
+                String mMessage = mJSON.getString("message");
+                String mUrl = mJSON.getString("url");
+                boolean isPrivate = mJSON.getBoolean("isPrivate");
                 Intent mIntent;
 
                 if (mMessage == null || mMessage.isEmpty()) {
+                    return;
+                }
+
+                if (isPrivate && !Utils.isTeacher(mContext)) {
                     return;
                 }
 
