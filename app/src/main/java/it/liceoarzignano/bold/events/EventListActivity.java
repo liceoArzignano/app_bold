@@ -115,7 +115,7 @@ public class EventListActivity extends AppCompatActivity {
      * @param mContext: needed to reload database data
      * @param mQuery:   search query
      */
-    void refreshList(Context mContext, String mQuery) {
+    public void refreshList(Context mContext, String mQuery) {
         boolean hasQuery = mQuery != null && !mQuery.isEmpty();
 
         Realm mRealm = Realm.getInstance(((BoldApp) mContext.getApplicationContext()).getConfig());

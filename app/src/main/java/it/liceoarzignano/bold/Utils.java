@@ -563,7 +563,7 @@ public class Utils {
         return mPrefs.getBoolean(ISTEACHER, false);
     }
 
-    public static boolean hasAnalytics(Context mContext) {
+    static boolean hasAnalytics(Context mContext) {
         mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         return mPrefs.getBoolean(ANALYTICS, true);
     }
@@ -583,7 +583,7 @@ public class Utils {
         return mPrefs.getBoolean(NOTIF_EVENT, true);
     }
 
-    public static String getEventsNotificationTime(Context mContext) {
+    private static String getEventsNotificationTime(Context mContext) {
         mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         return mPrefs.getString(NOTIF_EVENT_TIME, "0");
     }

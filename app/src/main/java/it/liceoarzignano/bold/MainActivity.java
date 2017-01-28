@@ -46,7 +46,7 @@ import it.liceoarzignano.bold.home.HomeAdapter;
 import it.liceoarzignano.bold.home.HomeCard;
 import it.liceoarzignano.bold.intro.BenefitsActivity;
 import it.liceoarzignano.bold.marks.Mark;
-import it.liceoarzignano.bold.marks.MarkListActivity;
+import it.liceoarzignano.bold.marks.MarksActivity;
 import it.liceoarzignano.bold.marks.MarksController;
 import it.liceoarzignano.bold.news.News;
 import it.liceoarzignano.bold.news.NewsController;
@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity
         new Handler().postDelayed(() -> {
             switch (mItem.getItemId()) {
                 case R.id.nav_my_marks:
-                    startActivity(new Intent(this, MarkListActivity.class));
+                    startActivity(new Intent(this, MarksActivity.class));
                     break;
                 case R.id.nav_calendar:
                     startActivity(new Intent(this, EventListActivity.class));

@@ -12,23 +12,23 @@ import java.util.Locale;
 
 import it.liceoarzignano.bold.R;
 
-class MarksAdapter extends RecyclerView.Adapter<MarksAdapter.MarkHolder> {
+class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectHolder> {
     private final List<Mark> mMarks;
 
-    MarksAdapter(List<Mark> mMarks) {
+    SubjectAdapter(List<Mark> mMarks) {
         this.mMarks = mMarks;
     }
 
     @Override
-    public MarksAdapter.MarkHolder onCreateViewHolder(ViewGroup mParent, int mType) {
+    public SubjectHolder onCreateViewHolder(ViewGroup mParent, int mType) {
         View mItem = LayoutInflater.from(mParent.getContext())
                 .inflate(R.layout.item_mark, mParent, false);
 
-        return new MarksAdapter.MarkHolder(mItem);
+        return new SubjectHolder(mItem);
     }
 
     @Override
-    public void onBindViewHolder(MarksAdapter.MarkHolder mHolder, int mPosition) {
+    public void onBindViewHolder(SubjectHolder mHolder, int mPosition) {
         Mark mMark = mMarks.get(mPosition);
         mHolder.setData(mMark);
     }
@@ -38,12 +38,12 @@ class MarksAdapter extends RecyclerView.Adapter<MarksAdapter.MarkHolder> {
         return mMarks.size();
     }
 
-    class MarkHolder extends RecyclerView.ViewHolder {
+    class SubjectHolder extends RecyclerView.ViewHolder {
         private final TextView mTitle;
         private final TextView mValue;
         private final TextView mDate;
 
-        MarkHolder(View mView) {
+        SubjectHolder(View mView) {
             super(mView);
             mTitle = (TextView) mView.findViewById(R.id.row_mark_title);
             mValue = (TextView) mView.findViewById(R.id.row_mark_value);

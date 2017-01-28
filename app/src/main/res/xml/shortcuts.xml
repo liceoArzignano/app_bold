@@ -10,7 +10,7 @@
         android:shortcutShortLabel="@string/shortcut_marks_short">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetClass="it.liceoarzignano.bold.marks.MarkListActivity"
+            android:targetClass="it.liceoarzignano.bold.marks.MarksActivity"
             android:targetPackage="it.liceoarzignano.bold" />
     </shortcut>
     <shortcut

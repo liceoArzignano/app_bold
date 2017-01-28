@@ -15,8 +15,6 @@
 
     <style name="AppTheme.SettingsTheme" parent="@style/AppTheme.NoActionBar" />
 
-    <style name="AppTheme.MarksTheme" parent="@style/AppTheme.NoActionBar"/>
-
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark" />

@@ -36,7 +36,6 @@ import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.events.EventListActivity;
 import it.liceoarzignano.bold.events.EventsController;
 import it.liceoarzignano.bold.marks.Mark;
-import it.liceoarzignano.bold.marks.MarkListActivity;
 import it.liceoarzignano.bold.marks.MarksController;
 import it.liceoarzignano.bold.news.News;
 import it.liceoarzignano.bold.news.NewsController;
@@ -337,12 +336,6 @@ public class ManagerActivity extends AppCompatActivity
                     mNews.getUrl()));
             mEventSpinner.setSelection(1);
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        startActivity(new Intent(this, isMark ? MarkListActivity.class : EventListActivity.class));
-        finish();
     }
 
     @SuppressWarnings("deprecation")

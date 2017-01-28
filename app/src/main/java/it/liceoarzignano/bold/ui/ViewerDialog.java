@@ -22,8 +22,9 @@ import it.liceoarzignano.bold.ManagerActivity;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
 import it.liceoarzignano.bold.events.Event;
+import it.liceoarzignano.bold.events.EventListActivity;
 import it.liceoarzignano.bold.marks.Mark;
-import it.liceoarzignano.bold.marks.MarkListActivity;
+import it.liceoarzignano.bold.marks.SubjectActivity;
 
 public class ViewerDialog {
     private final Realm mRealm;
@@ -36,7 +37,6 @@ public class ViewerDialog {
     private final Button mEditButton;
     private final Button mShareButton;
     private final Button mDeleteButton;
-    private final Button mMoreButton;
     private final TextView mValueTextView;
     private final TextView mValueTitle;
     private final TextView mDateTextView;
@@ -57,7 +57,6 @@ public class ViewerDialog {
         mToolbar = (Toolbar) mView.findViewById(R.id.toolbar);
         mEditButton = (Button) mView.findViewById(R.id.viewer_btn_edit);
         mShareButton = (Button) mView.findViewById(R.id.viewer_btn_share);
-        mMoreButton = (Button) mView.findViewById(R.id.viewer_btn_more);
         mDeleteButton = (Button) mView.findViewById(R.id.viewer_btn_delete);
 
         mValueTextView = (TextView) mView.findViewById(R.id.viewer_value);
@@ -103,25 +102,10 @@ public class ViewerDialog {
             mNotes.append(mEvent.getNote());
             mValueTitle.setText(mContext.getString(R.string.viewer_category));
             mValueTextView.setText(Utils.eventCategoryToString(mContext, mEvent.getIcon()));
-            mMoreButton.setVisibility(View.GONE);
         }
 
         mNotesTexView.setText(mNotes.toString());
         mDateTextView.setText(isMark ? mMark.getDate() : mEvent.getDate());
-
-        mMoreButton.setOnClickListener(v -> {
-            if (Utils.isNotLegacy()) {
-                ((AnimatedVectorDrawable) mMoreButton.getCompoundDrawables()[1]).start();
-
-                new Handler().postDelayed(() -> {
-                    mThisDialog.dismiss();
-                    ((MarkListActivity) mContext).showFilteredMarks(mTitle);
-                }, 1800);
-            } else {
-                mThisDialog.dismiss();
-                ((MarkListActivity) mContext).showFilteredMarks(mTitle);
-            }
-        });
 
         mShareButton.setOnClickListener(v -> {
             String msg = isMark ?
@@ -170,11 +154,11 @@ public class ViewerDialog {
 
             Snackbar.make(v, mContext.getString(R.string.removed),
                     Snackbar.LENGTH_SHORT).show();
-            /*if (isMark) {
-                MarkListActivity.refresh(mContext);
+            if (isMark) {
+                ((SubjectActivity) mContext).refresh();
             } else {
-                EventListActivity.refreshList(mContext, null);
-            }*/
+                ((EventListActivity) mContext).refreshList(mContext, null);
+            }
             new Handler().postDelayed(mThisDialog::dismiss, 840);
         });
 
