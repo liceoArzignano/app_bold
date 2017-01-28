@@ -77,9 +77,6 @@
 
     <!-- My marks -->
     <string name="title_activity_mark_list">I miei voti</string>
-    <string name="title_filter">Voti di %1$s</string>
-    <string name="title_fragment_marks">Voti</string>
-    <string name="title_fragments_avgs">Medie</string>
     <string name="marks_menu_filter">Filtro voti</string>
     <string name="marks_all">Tutti</string>
     <string name="hint_content_common">Per avere la sufficienza, il prossimo voto</string>
@@ -92,7 +89,6 @@
     <string name="viewer_edit">Modifica</string>
     <string name="viewer_remove">Rimuovi</string>
     <string name="removed">Rimosso</string>
-    <string name="viewer_more_marks">Altri voti</string>
     <string name="viewer_date">Data</string>
     <string name="viewer_notes">Note</string>
     <string name="viewer_category">Categoria</string>

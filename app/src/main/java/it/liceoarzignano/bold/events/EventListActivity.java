@@ -33,9 +33,9 @@ import it.liceoarzignano.bold.ui.ViewerDialog;
 
 public class EventListActivity extends AppCompatActivity {
 
-    RecyclerView mEventList;
-    LinearLayout mEmptyLayout;
-    TextView mEmptyText;
+    private RecyclerView mEventList;
+    private LinearLayout mEmptyLayout;
+    private TextView mEmptyText;
 
     private String mQuery;
 

@@ -68,7 +68,7 @@ public class BoldMessagingService extends FirebaseMessagingService {
                     if (mUrl != null && !mUrl.isEmpty()) {
                         mIntent.putExtra("newsId", mNews.getId());
                     }
-                    pubblishNotification(mIntent);
+                    publishNotification(mIntent);
                 }
 
             } catch (JSONException e) {
@@ -77,7 +77,7 @@ public class BoldMessagingService extends FirebaseMessagingService {
         }
     }
 
-    private void pubblishNotification(Intent mIntent) {
+    private void publishNotification(Intent mIntent) {
         mIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent mPendingIntent = PendingIntent.getActivity(mContext, 0,
                 mIntent, PendingIntent.FLAG_CANCEL_CURRENT);

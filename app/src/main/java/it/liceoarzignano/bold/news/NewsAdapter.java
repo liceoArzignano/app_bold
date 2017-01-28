@@ -37,8 +37,8 @@ class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
     }
 
     @Override
-    public void onBindViewHolder(NewsHolder mHolder, int mPostition) {
-        News mNews = mNewsList.get(mPostition);
+    public void onBindViewHolder(NewsHolder mHolder, int mPosition) {
+        News mNews = mNewsList.get(mPosition);
         mHolder.setData(mActivity, mNews);
     }
 

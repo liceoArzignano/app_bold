@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Locale;
 
 import it.liceoarzignano.bold.events.Event;
-import it.liceoarzignano.bold.events.EventListActivity;
 import it.liceoarzignano.bold.events.EventsController;
 import it.liceoarzignano.bold.marks.Mark;
 import it.liceoarzignano.bold.marks.MarksController;

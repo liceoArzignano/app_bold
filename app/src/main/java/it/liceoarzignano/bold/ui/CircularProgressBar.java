@@ -59,12 +59,12 @@ public class CircularProgressBar extends View {
     @Override
     protected void onDraw(Canvas mCanvas) {
         super.onDraw(mCanvas);
-        initMeasurments();
+        initMeasurements();
         drawOutlineArc(mCanvas);
         drawText(mCanvas);
     }
 
-    private void initMeasurments() {
+    private void initMeasurements() {
         mViewWidth = getWidth();
         mViewHeight = getHeight();
     }

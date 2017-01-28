@@ -15,7 +15,6 @@
 
         <!-- Toolbar -->
         <android.support.design.widget.AppBarLayout
-            android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/app_bar_height_view"
             android:fitsSystemWindows="true"

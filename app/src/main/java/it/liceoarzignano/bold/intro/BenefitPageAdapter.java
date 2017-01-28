@@ -11,8 +11,8 @@ class BenefitPageAdapter extends FragmentPagerAdapter {
     }
 
     @Override
-    public Fragment getItem(int mPostion) {
-        return BenefitFragment.newInstance(mPostion + 1);
+    public Fragment getItem(int mPosition) {
+        return BenefitFragment.newInstance(mPosition + 1);
     }
 
     @Override

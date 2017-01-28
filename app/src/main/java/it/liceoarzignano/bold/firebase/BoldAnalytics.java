@@ -37,7 +37,7 @@ public class BoldAnalytics {
      * Setup user props basing on sharedPreferences
      */
     private void configUser() {
-        mFirebaseAnalytics.setUserProperty(Utils.ISTEACHER,
+        mFirebaseAnalytics.setUserProperty(Utils.IS_TEACHER,
                 String.valueOf(Utils.isTeacher(mContext)));
         mFirebaseAnalytics.setUserProperty(Utils.SUGGESTIONS,
                 String.valueOf(Utils.hasSuggestions(mContext)));

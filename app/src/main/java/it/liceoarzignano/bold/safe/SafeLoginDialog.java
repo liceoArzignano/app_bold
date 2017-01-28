@@ -15,7 +15,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import it.liceoarzignano.bold.R;
 
-public class SafeLoginDialog {
+class SafeLoginDialog {
     private final Resources mRes;
 
     private MaterialDialog mDialog;

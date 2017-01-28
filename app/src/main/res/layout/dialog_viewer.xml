@@ -80,12 +80,6 @@
                     android:text="@string/viewer_share" />
 
                 <Button
-                    android:id="@+id/viewer_btn_more"
-                    style="@style/ViewerTheme.Button"
-                    android:drawableTop="@drawable/avd_views"
-                    android:text="@string/viewer_more_marks" />
-
-                <Button
                     android:id="@+id/viewer_btn_delete"
                     style="@style/ViewerTheme.Button"
                     android:drawableTop="@drawable/avd_remove"

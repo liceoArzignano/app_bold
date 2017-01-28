@@ -13,7 +13,7 @@ public abstract class RealmController<T extends RealmObject> {
      *
      * @param mConfig realm configuration
      */
-    public RealmController(RealmConfiguration mConfig) {
+    protected RealmController(RealmConfiguration mConfig) {
         mRealm = Realm.getInstance(mConfig);
     }
 

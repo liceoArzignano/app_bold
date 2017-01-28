@@ -34,7 +34,7 @@ import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 import static android.content.Context.MODE_PRIVATE;
 
 public class Utils {
-    public static final String ISTEACHER = "isTeacher_key";
+    public static final String IS_TEACHER = "isTeacher_key";
     public static final String SUGGESTIONS = "showSuggestions_key";
     public static final String NOTIF_NEWS = "notification_news_key";
     public static final String NOTIF_EVENT = "notification_events_key";
@@ -560,7 +560,7 @@ public class Utils {
 
     public static boolean isTeacher(Context mContext) {
         mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        return mPrefs.getBoolean(ISTEACHER, false);
+        return mPrefs.getBoolean(IS_TEACHER, false);
     }
 
     static boolean hasAnalytics(Context mContext) {
@@ -611,7 +611,7 @@ public class Utils {
 
     static void setTeacherMode(Context mContext) {
         mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        mPrefs.edit().putBoolean(ISTEACHER, true).putString(ADDRESS, "0")
+        mPrefs.edit().putBoolean(IS_TEACHER, true).putString(ADDRESS, "0")
                 .apply();
     }
 

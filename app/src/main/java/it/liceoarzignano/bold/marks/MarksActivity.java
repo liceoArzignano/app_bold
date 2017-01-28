@@ -33,7 +33,7 @@ public class MarksActivity extends AppCompatActivity {
 
     private SharedPreferences mPrefs;
 
-    int mFilter;
+    private int mFilter;
 
     @Override
     protected void onCreate(Bundle mSavedInstance) {
