@@ -29,6 +29,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -79,16 +80,16 @@ public class ManagerActivity extends AppCompatActivity
     private int mYear;
     private int mMonth;
     private int mDay;
-    private String mDate;
+    private Date mDate;
     private final DatePickerDialog.OnDateSetListener dpickerListener
             = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int mDialogYear, int mDialogMonth, int mDialogDay) {
             mYear = mDialogYear;
-            mMonth = mDialogMonth + 1;
+            mMonth = mDialogMonth;
             mDay = mDialogDay;
             mDate = Utils.rightDate(mYear, mMonth, mDay);
-            mDatePicker.setText(mDate);
+            mDatePicker.setText(Utils.dateToStr(mDate));
         }
     };
 
@@ -160,7 +161,7 @@ public class ManagerActivity extends AppCompatActivity
     private void setupFromIntent() {
         Mark mLoadMark;
         Event mLoadEvent;
-        String mLoadDate;
+        Date mLoadDate;
         String mLoadNotes;
         double mDoubleVal = 0;
 
@@ -179,8 +180,8 @@ public class ManagerActivity extends AppCompatActivity
                 this, android.R.layout.simple_dropdown_item_1line, mCategories);
         mEventSpinner.setAdapter(mAdapter);
 
-        mDate = Utils.getToday();
-        mDatePicker.setText(mDate);
+        mDate = Calendar.getInstance().getTime();
+        mDatePicker.setText(Utils.dateToStr(mDate));
         //noinspection deprecation
         mDatePickerLayout.setOnClickListener(v -> showDialog(33));
 
@@ -206,7 +207,7 @@ public class ManagerActivity extends AppCompatActivity
             }
 
             mTitleInput.setText(mTitle);
-            mDatePicker.setText(mLoadDate);
+            mDatePicker.setText(Utils.dateToStr(mLoadDate));
             mNotesInput.setText(mLoadNotes);
         }
 
@@ -388,8 +389,7 @@ public class ManagerActivity extends AppCompatActivity
             mMark.setTitle(mTitle);
             mMark.setNote(mNotesInput.getText().toString());
             mMark.setValue(mValue);
-            mMark.setDate(mDatePicker.getText().toString(),
-                    Utils.isFirstQuarter(this, mDatePicker.getText().toString()));
+            mMark.setDate(mDate, Utils.isFirstQuarter(this, mDate));
 
             mObjId = isEditMode ? mMarksController.update(mMark) : mMarksController.add(mMark);
 

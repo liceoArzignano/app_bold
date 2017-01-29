@@ -10,6 +10,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import it.liceoarzignano.bold.R;
+import it.liceoarzignano.bold.Utils;
 
 class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventHolder> {
     private final List<Event> mEvents;
@@ -51,7 +52,7 @@ class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventHolder> {
 
         void setData(Event mEvent) {
             mTitle.setText(mEvent.getTitle());
-            mValue.setText(mEvent.getDate());
+            mValue.setText(Utils.dateToStr(mEvent.getDate()));
             int mIconAddress;
 
             switch (mEvent.getIcon()) {

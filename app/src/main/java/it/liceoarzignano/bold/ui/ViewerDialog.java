@@ -105,7 +105,7 @@ public class ViewerDialog {
         }
 
         mNotesTexView.setText(mNotes.toString());
-        mDateTextView.setText(isMark ? mMark.getDate() : mEvent.getDate());
+        mDateTextView.setText(Utils.dateToStr(isMark ? mMark.getDate() : mEvent.getDate()));
 
         mShareButton.setOnClickListener(v -> {
             String msg = isMark ?

@@ -1,5 +1,7 @@
 package it.liceoarzignano.bold.events;
 
+import java.util.Date;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -9,7 +11,7 @@ public class Event extends RealmObject {
     private long id = 0;
 
     private String title;
-    private String date;
+    private Date date;
     private String note;
     private int icon;
 
@@ -27,7 +29,7 @@ public class Event extends RealmObject {
     public Event() {
     }
 
-    public Event(long id, String title, String date, String note, int icon) {
+    public Event(long id, String title, Date date, String note, int icon) {
         setId(id);
         setTitle(title);
         setDate(date);
@@ -51,11 +53,11 @@ public class Event extends RealmObject {
         this.title = title;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -79,6 +81,6 @@ public class Event extends RealmObject {
     public boolean equals(Object o) {
         return o instanceof Event &&
                 title.equalsIgnoreCase(((Event) o).getTitle()) &&
-                date.equalsIgnoreCase(((Event) o).getDate());
+                date.equals(((Event) o).getDate());
     }
 }

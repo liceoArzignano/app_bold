@@ -100,24 +100,22 @@ public class Utils {
     /**
      * Get today date
      *
-     * @return today formatted in Locale.ITALIAN (yyyy-mm-dd)
+     * @return today
      */
-    public static String getToday() {
+    public static Date getToday() {
         Calendar mCal = Calendar.getInstance();
-        int mMonth = mCal.get(Calendar.MONTH) + 1;
-        int mDay = mCal.get(Calendar.DAY_OF_MONTH);
-        StringBuilder mBuilder = new StringBuilder();
-        mBuilder.append(mCal.get(Calendar.YEAR)).append("-");
-        if (mMonth < 10) {
-            mBuilder.append("0");
-        }
-        mBuilder.append(mMonth).append("-");
-        if (mDay < 10) {
-            mBuilder.append("0");
-        }
-        mBuilder.append(mDay);
-        return mBuilder.toString();
+        return mCal.getTime();
     }
+
+    /**
+     * Get today date
+     *
+     * @return today
+     */
+    public static String getTodayStr() {
+        return dateToStr(getToday());
+    }
+
 
     /**
      * Force enable Google Analytics Tracker
@@ -155,18 +153,20 @@ public class Utils {
      * @param mDay:   day of the month from the date picker dialog
      * @return string with formatted date
      */
-    static String rightDate(int mYear, int mMonth, int mDay) {
-        String mDate;
-        mDate = mYear + "-";
-        if (mMonth < 10) {
-            mDate += "0";
-        }
-        mDate = mDate + mMonth + "-";
-        if (mDay < 10) {
-            mDate += "0";
-        }
-        mDate += mDay;
-        return mDate;
+    static Date rightDate(int mYear, int mMonth, int mDay) {
+        Calendar mCal = Calendar.getInstance();
+        mCal.set(mYear, mMonth, mDay);
+        return mCal.getTime();
+    }
+
+    /**
+     * Convert date to string for UI elements
+     *
+     * @param mDate given date
+     * @return yyyy-MM-dd string
+     */
+    public static String dateToStr(Date mDate) {
+        return new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(mDate);
     }
 
     /**
@@ -184,7 +184,7 @@ public class Utils {
         }
 
         try {
-            Date mDate = mFormat.parse(getToday());
+            Date mDate = getToday();
             Calendar mFirstCal = Calendar.getInstance();
             Calendar mSecondCal = Calendar.getInstance();
             mSecondCal.setTimeInMillis(mDate.getTime());
@@ -274,7 +274,7 @@ public class Utils {
      * @return java date
      */
     static Date stringToDate(String mStringDate) {
-        if (mStringDate == null || mStringDate.length() != 10 || !mStringDate.contains("-")) {
+        if (mStringDate.length() != 10 || !mStringDate.contains("-")) {
             throw new IllegalArgumentException(mStringDate
                     + ": invalid format. Must be yyyy-MM-dd");
         }
@@ -294,9 +294,8 @@ public class Utils {
      * @param mDate given mark's date
      * @return true if first quarter, else false
      */
-    public static boolean isFirstQuarter(Context mContext, String mDate) {
-        return stringToDate(mContext.getString(R.string.config_quarter_change))
-                .after(stringToDate(mDate));
+    public static boolean isFirstQuarter(Context mContext, Date mDate) {
+        return stringToDate(mContext.getString(R.string.config_quarter_change)).after(mDate);
     }
 
     /**

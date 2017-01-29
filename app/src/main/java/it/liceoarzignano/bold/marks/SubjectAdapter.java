@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Locale;
 
 import it.liceoarzignano.bold.R;
+import it.liceoarzignano.bold.Utils;
 
 class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectHolder> {
     private final List<Mark> mMarks;
@@ -52,7 +53,7 @@ class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectHolder> 
 
         void setData(Mark mMark) {
             mTitle.setText(mMark.getTitle());
-            mDate.setText(mMark.getDate());
+            mDate.setText(Utils.dateToStr(mMark.getDate()));
 
             Double mDoubleVal = (double) mMark.getValue() / 100;
             if (mDoubleVal < 6) {

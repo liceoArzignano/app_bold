@@ -1,5 +1,7 @@
 package it.liceoarzignano.bold.marks;
 
+import java.util.Date;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -9,7 +11,7 @@ public class Mark extends RealmObject {
 
     private String title;
     private String note;
-    private String date;
+    private Date date;
     private int value;
     private boolean isFirstQuarter;
 
@@ -66,11 +68,11 @@ public class Mark extends RealmObject {
         this.id = id;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date, boolean isFirstQuarter) {
+    public void setDate(Date date, boolean isFirstQuarter) {
         this.date = date;
         this.isFirstQuarter = isFirstQuarter;
     }

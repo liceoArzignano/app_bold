@@ -34,6 +34,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -280,7 +281,7 @@ public class MainActivity extends AppCompatActivity
         for (int mCounter = 0; mCounter < 3 && mCounter < mEvents.size(); mCounter++) {
             Event mEvent = mEvents.get(mCounter);
             if (isThisWeek(mEvent.getDate())) {
-                mBuilder.addEntry(mEvent.getTitle(), mEvent.getDate());
+                mBuilder.addEntry(mEvent.getTitle(), Utils.dateToStr(mEvent.getDate()));
             }
         }
 
@@ -351,14 +352,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     * Check if stringDate is one of the next 7 days
+     * Check if mDate is one of the next 7 days
      *
-     * @param stringDate: string date from event database
+     * @param mDate: string date from event database
      * @return true if it's within 7 days, false if not
      */
-    private boolean isThisWeek(String stringDate) {
+    private boolean isThisWeek(Date mDate) {
         Calendar mDateCal = Calendar.getInstance();
-        mDateCal.setTimeInMillis(Utils.stringToDate(stringDate).getTime());
+        mDateCal.setTime(mDate);
 
         int mDiff = mDateCal.get(Calendar.DAY_OF_YEAR) - mCalendar.get(Calendar.DAY_OF_YEAR);
 
@@ -476,7 +477,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             case "0":
                 // Used for feature discovery
-                final String today = Utils.getToday();
+                final String today = Utils.getTodayStr();
                 mEditor.putString("appVersionKey", BuildConfig.VERSION_NAME).apply();
                 mEditor.putString("initialDayKey", today).apply();
                 break;
