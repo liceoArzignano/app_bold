@@ -25,6 +25,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
@@ -118,7 +119,8 @@ public class NewsListActivity extends AppCompatActivity {
 
         Realm mRealm = Realm.getInstance(((BoldApp) mContext.getApplicationContext()).getConfig());
         final RealmResults<News> mNews = hasQuery ?
-                mRealm.where(News.class).contains("title", mQuery).or().contains("message", mQuery)
+                mRealm.where(News.class).contains("title", mQuery, Case.INSENSITIVE).or()
+                        .contains("message", mQuery, Case.INSENSITIVE)
                         .findAllSorted("date", Sort.DESCENDING) :
                 mRealm.where(News.class).findAllSorted("date", Sort.DESCENDING);
 

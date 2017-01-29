@@ -25,8 +25,8 @@ import it.liceoarzignano.bold.ui.ViewerDialog;
 
 public class SubjectActivity extends AppCompatActivity {
 
-    final static String EXTRA_TITLE = "extra_subject_position";
-    final static String EXTRA_FILTER = "extra_subject_filter";
+    static final String EXTRA_TITLE = "extra_subject_position";
+    static final String EXTRA_FILTER = "extra_subject_filter";
 
     private CircularProgressBar mProgressBar;
     private TextView mTextHint;
