@@ -21,7 +21,7 @@ allprojects {
         maven { url "https://jitpack.io" }
     }
 
-    ext.androidSupportVersion = '25.1.0'
+    ext.androidSupportVersion = '25.1.1'
     ext.googlePlayServicesVersion = '10.0.1'
 }
 
