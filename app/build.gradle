@@ -67,6 +67,7 @@ dependencies {
     compile "com.android.support:customtabs:${androidSupportVersion}"
     // google + fireBase
     compile "com.google.android.gms:play-services-drive:${googlePlayServicesVersion}"
+    compile "com.google.android.gms:play-services-safetynet:${googlePlayServicesVersion}"
     compile "com.google.firebase:firebase-core:${googlePlayServicesVersion}"
     compile "com.google.firebase:firebase-messaging:${googlePlayServicesVersion}"
     // others

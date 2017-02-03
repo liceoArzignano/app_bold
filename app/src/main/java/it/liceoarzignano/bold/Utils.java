@@ -9,6 +9,9 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -16,6 +19,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.View;
 
+import java.net.URLConnection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -47,6 +51,7 @@ public class Utils {
     private static final String NOTIF_EVENT_TIME = "notification_events_time_key";
     private static final String USERNAME = "username_key";
     private static final String APP_VERSION = "appVersionKey";
+
     private static SharedPreferences mPrefs;
 
     /**
@@ -548,6 +553,12 @@ public class Utils {
                 mContext.getSystemService(Context.ALARM_SERVICE);
         PendingIntent mPendingIntent = PendingIntent.getService(mContext, 0, mNotifIntent, 0);
         mAlarmManager.set(AlarmManager.RTC, mCalendar.getTimeInMillis(), mPendingIntent);
+    }
+
+    public static boolean hasInternetConnection(Context mContext) {
+        ConnectivityManager mManager = (ConnectivityManager)
+                mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return mManager.getActiveNetworkInfo() != null;
     }
 
     /*

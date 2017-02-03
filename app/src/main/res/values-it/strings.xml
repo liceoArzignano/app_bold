@@ -194,7 +194,7 @@
     <string name="safe_dialog_first_hint_medium">Password buona. Le password con entrambi numeri e lettere sono ancora pi\u00F9 sicure</string>
     <string name="safe_dialog_first_hint_good">Password sicura. Ottima scelta</string>
     <string name="safe_dialog_password_input_hint">Password</string>
-    <string name="safe_dialog_password_error_security">Sicurezza del dispositivo a rischio. Non puoi accedere a Safe mentre Xposed \u00E8 installato</string>
+    <string name="safe_dialog_password_error_security">Dispositivo non sicuro. Safe non sar\u00E0 eseguito</string>
     <string name="safe_dialog_first_positive">Imposta</string>
     <string name="safe_dialog_positive">Sblocca</string>
     <string name="safe_username">ID utente</string>

@@ -33,6 +33,9 @@
             <meta-data
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
+            <meta-data
+                android:name="com.google.android.safetynet.ATTEST_API_KEY"
+                android:value="AIzaSyDCokY0jUhOkEbVIn6O0kxm3cYqd1thrRg" />
         </activity>
 
         <!-- Mark -->
