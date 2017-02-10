@@ -51,9 +51,9 @@ import java.util.Locale;
 import io.realm.Realm;
 import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.R;
+import it.liceoarzignano.bold.Utils;
 
 public class BackupActivity extends AppCompatActivity {
-    private static final String PREFERENCES = "HomePrefs";
     private static final String BACKUP_FOLDER = "BACKUP_FOLDER";
 
     private Backup mBackup = null;
@@ -88,7 +88,7 @@ public class BackupActivity extends AppCompatActivity {
         mBackupButton = (AppCompatButton) findViewById(R.id.backup_button);
         mRestoreButton = (AppCompatButton) findViewById(R.id.restore_button);
 
-        mPrefs = getSharedPreferences(PREFERENCES, MODE_PRIVATE);
+        mPrefs = getSharedPreferences(Utils.EXTRA_PREFS, MODE_PRIVATE);
         mBackupFolder = mPrefs.getString(BACKUP_FOLDER, "");
 
         hasValidFolder = !mBackupFolder.isEmpty();

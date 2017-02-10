@@ -42,7 +42,7 @@ public class MarksActivity extends AppCompatActivity {
         setContentView(R.layout.activity_marks);
 
         mController = new MarksController(((BoldApp) getApplication()).getConfig());
-        mPrefs = getSharedPreferences("HomePrefs", MODE_PRIVATE);
+        mPrefs = getSharedPreferences(Utils.EXTRA_PREFS, MODE_PRIVATE);
 
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);

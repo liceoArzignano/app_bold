@@ -110,17 +110,21 @@
     <string name="news_sheet_remove">Rimuovi</string>
 
     <!-- Welcome -->
-    <string name="slide_button">Inizia</string>
-    <string name="slide0_title">La scuola resa semplice</string>
-    <string name="slide0_message">Gestisci al meglio voti, medie e impegni scolastici in un unico posto</string>
-    <string name="slide1_title">Sempre aggiornato</string>
-    <string name="slide1_message">Non perdere mai una notizia, sarai avvisato appena ne uscir\u00E0 una</string>
-    <string name="slide2_title">Tienile al sicuro</string>
-    <string name="slide2_message">Con Safe potrai salvare le tue password scolastiche in un unico posto protetto</string>
+    <string name="slide0_title">Benvenuto</string>
+    <string name="slide0_message">Scorri per iniziare</string>
+    <string name="slide1_title">Indirizzo di studi</string>
+    <string name="slide1_message">Seleziona il tuo indirizzo di studi</string>
+    <string name="slide2_title">Safe</string>
+    <string name="slide2_message">Safe ti consente di archiviare le tue password scolastiche.\nAttendi il completamento del test di sicurezza</string>
     <string name="intro_drawer_title">Inizia qui</string>
     <string name="intro_drawer">Tocca per navigare nell\'app.\nLa schermata principale si riempir\u00E0 d\'informazioni pi\u00F9 tardi</string>
     <string name="intro_fab_save_safe_title">Benvenuto!</string>
     <string name="intro_fab_save_safe">Annota le tue credenziali, poi tocca qui per salvare</string>
+    <string name="intro_safe_retry">Riprova</string>
+    <string name="intro_safe_retry_message">Connetti il dispositivo a internet per effettuare il test</string>
+    <string name="intro_safe_retry_success">Ottimo, tutto pronto per iniziare</string>
+    <string name="intro_safe_failure">Il dispositivo non \u00E8 sicuro, Safe potrebbe non funzionare</string>
+    <string name="intro_safe_done">Fatto</string>
 
     <!-- Subjects -->
     <string name="subject_english">Inglese</string>
@@ -194,7 +198,7 @@
     <string name="safe_dialog_first_hint_medium">Password buona. Le password con entrambi numeri e lettere sono ancora pi\u00F9 sicure</string>
     <string name="safe_dialog_first_hint_good">Password sicura. Ottima scelta</string>
     <string name="safe_dialog_password_input_hint">Password</string>
-    <string name="safe_dialog_password_error_security">Dispositivo non sicuro. Safe non sar\u00E0 eseguito</string>
+    <string name="safe_error_security">Dispositivo non sicuro. Safe non sar\u00E0 eseguito</string>
     <string name="safe_dialog_first_positive">Imposta</string>
     <string name="safe_dialog_positive">Sblocca</string>
     <string name="safe_username">ID utente</string>
@@ -282,7 +286,6 @@
 
     <!-- Accessibility -->
     <string name="accessibility_drawer">Intestazione</string>
-    <string name="accessibility_welcome">Immagine di benvenuto</string>
     <string name="accessibility_event_icon">Icona evento</string>
     <string name="accessibility_safe_icon">Immagine status di Safe</string>
     <string name="accessibility_generic_icon">Icona</string>

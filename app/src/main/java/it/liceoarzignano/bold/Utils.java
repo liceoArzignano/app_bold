@@ -10,8 +10,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -19,7 +17,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.View;
 
-import java.net.URLConnection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,13 +41,16 @@ public class Utils {
     public static final String NOTIF_EVENT = "notification_events_key";
     public static final String ADDRESS = "address_key";
     public static final String SAFE_DONE = "doneSetup";
-    private static final String HOME_PREFS = "HomePrefs";
+    public static final String EXTRA_PREFS = "extraPrefs";
+    public static final String KEY_INTRO_SCREEN = "introScreen";
+    public static final String KEY_INTRO_DRAWER = "introDrawer";
+    public static final String KEY_INITIAL_DAY = "introDay";
+    public static final String KEY_VERSION = "introVersion";
     private static final String SAFE_PREFS = "SafePrefs";
-    private static final String INITIAL_DAY = "initialDayKey";
+    private static final String KEY_SAFE_PASSED = "safetyNetPassed";
     private static final String ANALYTICS = "analytics_key";
     private static final String NOTIF_EVENT_TIME = "notification_events_time_key";
     private static final String USERNAME = "username_key";
-    private static final String APP_VERSION = "appVersionKey";
 
     private static SharedPreferences mPrefs;
 
@@ -82,7 +82,7 @@ public class Utils {
     @SuppressWarnings("SameParameterValue")
     public static void animFabIntro(final Activity mContext, final FloatingActionButton mFab,
                                     final String mTitle, final String mMessage, final String mKey) {
-        final SharedPreferences mPrefs = mContext.getSharedPreferences(HOME_PREFS, MODE_PRIVATE);
+        final SharedPreferences mPrefs = mContext.getSharedPreferences(EXTRA_PREFS, MODE_PRIVATE);
         final boolean isFirstTime = mPrefs.getBoolean(mKey, true);
         if (isNotLegacy()) {
             mFab.show();
@@ -137,14 +137,15 @@ public class Utils {
     }
 
     /**
-     * Getter for HomePrefs' initialDayKey
+     * Getter for initialDayKey
      *
      * @param mContext: used to get sharedprefs
      * @return the date of the day the first usage happened
      */
     private static String getFirstUsageDate(Context mContext) {
-        SharedPreferences mPrefs = mContext.getSharedPreferences(HOME_PREFS, MODE_PRIVATE);
-        return mPrefs.getString(INITIAL_DAY, "2000-01-01");
+        SharedPreferences mPrefs = mContext.getSharedPreferences(EXTRA_PREFS,
+                MODE_PRIVATE);
+        return mPrefs.getString(KEY_INITIAL_DAY, "2000-01-01");
     }
 
     /**
@@ -561,6 +562,16 @@ public class Utils {
         return mManager.getActiveNetworkInfo() != null;
     }
 
+    public static boolean hasPassedSafetyNetTest(Context mContext) {
+        SharedPreferences mPrefs = mContext.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE);
+        return mPrefs.getBoolean(KEY_SAFE_PASSED, false);
+    }
+
+    public static void setSafetyNetResults(Context mContext, boolean hasPassed) {
+        SharedPreferences mPrefs = mContext.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE);
+        mPrefs.edit().putBoolean(KEY_SAFE_PASSED, hasPassed).apply();
+    }
+
     /*
      * SharedPreferences getters
      *
@@ -604,22 +615,22 @@ public class Utils {
     }
 
     static String appVersionKey(Context mContext) {
-        mPrefs = mContext.getSharedPreferences(HOME_PREFS, MODE_PRIVATE);
-        return mPrefs.getString(APP_VERSION, "0");
+        mPrefs = mContext.getSharedPreferences(EXTRA_PREFS, MODE_PRIVATE);
+        return mPrefs.getString(KEY_VERSION, "0");
     }
 
     public static String userNameKey(Context mContext) {
         mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        return mPrefs.getString(USERNAME, " ");
+        return mPrefs.getString(USERNAME, "");
     }
 
-    static void setAddress(Context mContext, String mValue) {
+    public static void setAddress(Context mContext, String mValue) {
         mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        mPrefs.edit().putString(ADDRESS, mValue).putBoolean("isTeacher_key", false)
+        mPrefs.edit().putString(ADDRESS, mValue).putBoolean(IS_TEACHER, false)
                 .apply();
     }
 
-    static void setTeacherMode(Context mContext) {
+    public static void setTeacherMode(Context mContext) {
         mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         mPrefs.edit().putBoolean(IS_TEACHER, true).putString(ADDRESS, "0")
                 .apply();

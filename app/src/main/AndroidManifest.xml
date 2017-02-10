@@ -112,7 +112,6 @@
         <!-- Benefits -->
         <activity
             android:name=".intro.BenefitsActivity"
-            android:label="@string/slide_button"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 

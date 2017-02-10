@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress ALL, XmlHighlighting -->
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt">
+    <aapt:attr name="android:drawable">
+        <vector
+            android:width="24dp"
+            android:height="24dp"
+            android:alpha="1"
+            android:viewportHeight="24"
+            android:viewportWidth="24">
+            <group
+                android:name="hat"
+                android:pivotX="12"
+                android:pivotY="12"
+                android:rotation="45"
+                android:translateY="-1">
+                <path
+                    android:name="square"
+                    android:fillColor="@color/white"
+                    android:pathData="M 6 12 L 12 18 L 18 12 L 12 6 L 6 12" />
+            </group>
+            <group
+                android:name="end"
+                android:pivotX="22"
+                android:pivotY="9"
+                android:scaleY="0">
+                <path
+                    android:name="path_2"
+                    android:fillColor="@color/white"
+                    android:pathData="M 21 9 L 21 17 L 23 17 L 23 9 L 21 9" />
+            </group>
+            <group
+                android:name="bottom"
+                android:translateY="-4">
+                <path
+                    android:name="path"
+                    android:fillAlpha="0"
+                    android:fillColor="@color/white"
+                    android:pathData="M 5 13.18 L 5 17.18 L 12 21 L 19 17.18 L 19 13.18 L 12 17 L 5 13.18 Z" />
+            </group>
+        </vector>
+    </aapt:attr>
+    <target android:name="hat">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:name="hat"
+                    android:duration="352"
+                    android:propertyName="rotation"
+                    android:startOffset="49"
+                    android:valueFrom="45"
+                    android:valueTo="0"
+                    android:valueType="floatType" />
+                <objectAnimator
+                    android:name="hat"
+                    android:duration="200"
+                    android:interpolator="@android:anim/decelerate_interpolator"
+                    android:propertyName="scaleX"
+                    android:startOffset="500"
+                    android:valueFrom="1"
+                    android:valueTo="1.83"
+                    android:valueType="floatType" />
+                <objectAnimator
+                    android:name="hat"
+                    android:duration="190"
+                    android:interpolator="@android:anim/accelerate_decelerate_interpolator"
+                    android:propertyName="translateY"
+                    android:startOffset="760"
+                    android:valueFrom="-1"
+                    android:valueTo="-3"
+                    android:valueType="floatType" />
+            </set>
+        </aapt:attr>
+    </target>
+    <target android:name="path">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:name="path"
+                android:duration="1"
+                android:interpolator="@android:anim/linear_interpolator"
+                android:propertyName="fillAlpha"
+                android:startOffset="699"
+                android:valueFrom="0"
+                android:valueTo="1"
+                android:valueType="floatType" />
+        </aapt:attr>
+    </target>
+    <target android:name="end">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:name="end"
+                android:duration="100"
+                android:interpolator="@android:anim/decelerate_interpolator"
+                android:propertyName="scaleY"
+                android:startOffset="1100"
+                android:valueFrom="0"
+                android:valueTo="1"
+                android:valueType="floatType" />
+        </aapt:attr>
+    </target>
+    <target android:name="bottom">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:name="bottom"
+                android:duration="250"
+                android:interpolator="@android:anim/decelerate_interpolator"
+                android:propertyName="translateY"
+                android:startOffset="760"
+                android:valueFrom="-4"
+                android:valueTo="0"
+                android:valueType="floatType" />
+        </aapt:attr>
+    </target>
+</animated-vector>

@@ -1,7 +1,6 @@
 package it.liceoarzignano.bold;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -446,8 +445,8 @@ public class MainActivity extends AppCompatActivity
      * if it's the first time we fire the app
      */
     private void showIntroIfNeeded() {
-        SharedPreferences mPrefs = getSharedPreferences("HomePrefs", MODE_PRIVATE);
-        if (!mPrefs.getBoolean("introKey", false)) {
+        SharedPreferences mPrefs = getSharedPreferences(Utils.EXTRA_PREFS, MODE_PRIVATE);
+        if (!mPrefs.getBoolean(Utils.KEY_INTRO_SCREEN, false)) {
             Intent mIntent = new Intent(this, BenefitsActivity.class);
             startActivity(mIntent);
             finish();
@@ -461,16 +460,14 @@ public class MainActivity extends AppCompatActivity
      * @param mContext: used to get SharedPreferences
      */
     private void showWelcomeIfNeeded(final Context mContext) {
-        final SharedPreferences mPrefs = getSharedPreferences("HomePrefs", MODE_PRIVATE);
+        final SharedPreferences mPrefs = getSharedPreferences(Utils.EXTRA_PREFS, MODE_PRIVATE);
+        @SuppressLint("CommitPrefEdits")
+        final SharedPreferences.Editor mEditor = mPrefs.edit();
 
-        if (!mPrefs.getBoolean("introKey", false)) {
+        if (!mPrefs.getBoolean(Utils.KEY_INTRO_SCREEN, false)) {
             // If we're showing intro, don't display dialog
             return;
         }
-
-        @SuppressLint("CommitPrefEdits")
-        final SharedPreferences.Editor mEditor =
-                getSharedPreferences("HomePrefs", MODE_PRIVATE).edit();
 
         switch (Utils.appVersionKey(this)) {
             case BuildConfig.VERSION_NAME:
@@ -478,8 +475,8 @@ public class MainActivity extends AppCompatActivity
             case "0":
                 // Used for feature discovery
                 final String today = Utils.getTodayStr();
-                mEditor.putString("appVersionKey", BuildConfig.VERSION_NAME).apply();
-                mEditor.putString("initialDayKey", today).apply();
+                mEditor.putString(Utils.KEY_VERSION, BuildConfig.VERSION_NAME).apply();
+                mEditor.putString(Utils.KEY_INITIAL_DAY, today).apply();
                 break;
             default:
                 new MaterialDialog.Builder(mContext)
@@ -488,7 +485,7 @@ public class MainActivity extends AppCompatActivity
                         .positiveText(android.R.string.ok)
                         .negativeText(R.string.dialog_updated_changelog)
                         .canceledOnTouchOutside(false)
-                        .onPositive((dialog, which) -> mEditor.putString("appVersionKey",
+                        .onPositive((dialog, which) -> mEditor.putString(Utils.KEY_VERSION,
                                 BuildConfig.VERSION_NAME).apply())
                         .onNegative((dialog, which) -> {
                             dialog.hide();
@@ -499,45 +496,14 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
 
-        if (mPrefs.getBoolean("drawerIntro", true)) {
-            final Activity mActivity = this;
-            String[] mAddresses = new String[]{
-                    getString(R.string.pref_address_1),
-                    getString(R.string.pref_address_2),
-                    getString(R.string.pref_address_3),
-                    getString(R.string.pref_address_4),
-                    getString(R.string.pref_address_5),
-                    getString(R.string.pref_address_teacher)
-            };
-
-            new MaterialDialog.Builder(mContext)
-                    .title(R.string.pref_address_dialog)
-                    .items((CharSequence[]) mAddresses)
-                    .canceledOnTouchOutside(false)
-                    .positiveText(android.R.string.ok)
-                    .autoDismiss(false)
-                    .itemsCallbackSingleChoice(-1, (dialog, itemView, which, text) -> {
-                        boolean isAddressValid = which != -1;
-                        if (which == 5) {
-                            Utils.setTeacherMode(mContext);
-                        } else if (isAddressValid) {
-                            Utils.setAddress(mContext, String.valueOf(which + 1));
-                        }
-                        if (isAddressValid) {
-                            setupNavHeader();
-                            dialog.dismiss();
-                            mPrefs.edit().putBoolean("drawerIntro", false).apply();
-                            new MaterialTapTargetPrompt.Builder(mActivity)
-                                    .setTarget(mToolbar.getChildAt(1))
-                                    .setPrimaryText(getString(R.string.intro_drawer_title))
-                                    .setSecondaryText(getString(R.string.intro_drawer))
-                                    .setBackgroundColourFromRes(R.color.colorAccentDark)
-                                    .setFocalColourFromRes(R.color.colorPrimaryDark)
-                                    .show();
-                        }
-
-                        return true;
-                    })
+        if (mPrefs.getBoolean(Utils.KEY_INTRO_DRAWER, true)) {
+            mEditor.putBoolean(Utils.KEY_INTRO_DRAWER, false).apply();
+            new MaterialTapTargetPrompt.Builder(this)
+                    .setTarget(mToolbar.getChildAt(1))
+                    .setPrimaryText(getString(R.string.intro_drawer_title))
+                    .setSecondaryText(getString(R.string.intro_drawer))
+                    .setBackgroundColourFromRes(R.color.colorAccentDark)
+                    .setFocalColourFromRes(R.color.colorPrimaryDark)
                     .show();
         }
     }

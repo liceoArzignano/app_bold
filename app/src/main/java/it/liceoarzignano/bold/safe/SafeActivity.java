@@ -1,5 +1,6 @@
 package it.liceoarzignano.bold.safe;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -383,14 +384,16 @@ public class SafeActivity extends AppCompatActivity {
      * @param mResponse SafetyNet test results
      */
     private void prepareDevice(@Nullable String mResponse) {
-        if (Encryption.validateRespose(this, mResponse)) {
+        if (Encryption.validateRespose(this, mResponse) && Utils.hasPassedSafetyNetTest(this)) {
+            Utils.setSafetyNetResults(this, true);
             mLoadingText.setText(R.string.safe_first_load);
             new Handler().postDelayed(() -> {
                 setupEncryption();
                 showPasswordDialog();
             }, 100);
         } else {
-            mLoadingText.setText(R.string.safe_dialog_password_error_security);
+            Utils.setSafetyNetResults(this, false);
+            mLoadingText.setText(R.string.safe_error_security);
         }
 
     }
@@ -417,9 +420,8 @@ public class SafeActivity extends AppCompatActivity {
             // Run SafetyNet test
             SafetyNet.SafetyNetApi
                     .attest(mClient, mOstream.toByteArray())
-                    .setResultCallback((mResult) -> {
-                        prepareDevice(mResult.getJwsResult());
-                    });
+                    .setResultCallback((mResult) ->
+                        prepareDevice(mResult.getJwsResult()));
         } else {
             prepareDevice(null);
         }

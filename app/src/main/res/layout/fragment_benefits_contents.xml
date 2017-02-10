@@ -1,48 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/activity_horizontal_margin">
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/benefits_img"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/accessibility_welcome"
-            android:scaleType="fitXY" />
-    </LinearLayout>
-
-    <LinearLayout
+    <TextView
+        android:id="@+id/intro_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:baselineAligned="true"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/white"
+        android:textSize="32sp" />
+
+    <TextView
+        android:id="@+id/intro_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/intro_title"
+        android:paddingBottom="16dp"
+        android:paddingTop="8dp"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+    <!-- Step 1 - Welcome animation -->
+    <LinearLayout
+        android:id="@+id/step_1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/intro_message"
         android:gravity="center"
-        android:orientation="vertical"
-        android:padding="@dimen/activity_horizontal_margin">
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/benefits_title"
-            style="@style/TextAppearance.AppCompat.Headline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white" />
-
-        <TextView
-            android:id="@+id/benefits_message"
-            style="@style/TextAppearance.AppCompat.Body1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_horizontal_margin"
-            android:gravity="center"
-            android:paddingBottom="16dp"
-            android:textColor="@color/white" />
+        <ImageView
+            android:id="@+id/intro_animation"
+            android:layout_width="220dp"
+            android:layout_height="220dp"
+            app:srcCompat="@drawable/avd_hat" />
     </LinearLayout>
-</FrameLayout>
+
+    <!-- Step 2 - Address selection -->
+    <LinearLayout
+        android:id="@+id/step_2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/intro_message"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <RadioButton
+            android:id="@+id/intro_address_1"
+            style="@style/ViewerTheme.Radio"
+            android:text="@string/pref_address_1" />
+
+        <RadioButton
+            android:id="@+id/intro_address_2"
+            style="@style/ViewerTheme.Radio"
+            android:text="@string/pref_address_2" />
+
+        <RadioButton
+            android:id="@+id/intro_address_3"
+            style="@style/ViewerTheme.Radio"
+            android:text="@string/pref_address_3" />
+
+        <RadioButton
+            android:id="@+id/intro_address_4"
+            style="@style/ViewerTheme.Radio"
+            android:text="@string/pref_address_4" />
+
+        <RadioButton
+            android:id="@+id/intro_address_5"
+            style="@style/ViewerTheme.Radio"
+            android:text="@string/pref_address_5" />
+
+        <RadioButton
+            android:id="@+id/intro_address_6"
+            style="@style/ViewerTheme.Radio"
+            android:text="@string/pref_address_teacher" />
+    </LinearLayout>
+
+    <!-- Step 3 - Safe test -->
+    <LinearLayout
+        android:id="@+id/step_3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/intro_message"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/intro_safe_anim"
+            android:layout_width="196dp"
+            android:layout_height="196dp"
+            android:paddingBottom="8dp"
+            android:tint="@color/white"
+            app:srcCompat="@drawable/ic_safe" />
+
+        <TextView
+            android:id="@+id/intro_safe_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+            android:id="@+id/intro_safe_bar"
+            android:layout_width="72dp"
+            android:layout_height="75dp"
+            android:layout_gravity="center" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/intro_safe_retry"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/intro_safe_retry"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            app:backgroundTint="@color/colorAccent" />
+
+    </LinearLayout>
+</RelativeLayout>

@@ -4,7 +4,7 @@
     <!-- Shared preferences -->
     <include
         domain="sharedpref"
-        path="HomePrefs.xml" />
+        path="extraPrefs.xml" />
     <include
         domain="sharedpref"
         path="com.google.android.gms.appid.xml" />
