@@ -1,6 +1,5 @@
 package it.liceoarzignano.bold.safe;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -33,6 +32,7 @@ import java.security.SecureRandom;
 import it.liceoarzignano.bold.BuildConfig;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
+import it.liceoarzignano.bold.safe.mod.Encryption;
 
 public class SafeActivity extends AppCompatActivity {
 
@@ -212,7 +212,8 @@ public class SafeActivity extends AppCompatActivity {
      */
     private void setupEncryption() {
         try {
-            mSecretKeys = Encryption.generateKeyFromPassword(getKey(), getSalt().getBytes());
+            mSecretKeys = Encryption.generateKeyFromPassword(Encryption.getKey(),
+                    Encryption.getSalt().getBytes());
         } catch (GeneralSecurityException e) {
             Log.e("Safe", e.getMessage(), e);
         }
@@ -379,7 +380,8 @@ public class SafeActivity extends AppCompatActivity {
      * @param mResponse SafetyNet test results
      */
     private void prepareDevice(@Nullable String mResponse) {
-        if (Encryption.validateRespose(this, mResponse) && Utils.hasPassedSafetyNetTest(this)) {
+        if (Encryption.validateRespose(this, mResponse, BuildConfig.DEBUG) &&
+                Utils.hasPassedSafetyNetTest(this)) {
             Utils.setSafetyNetResults(this, true);
             mLoadingText.setText(R.string.safe_first_load);
             new Handler().postDelayed(() -> {

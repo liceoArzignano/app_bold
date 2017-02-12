@@ -8,8 +8,8 @@ import android.provider.Settings.Secure;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import it.liceoarzignano.bold.Utils;
+import it.liceoarzignano.bold.safe.mod.Encryption;
 
-import static it.liceoarzignano.bold.safe.Encryption.strToSHA;
 
 public class BoldAnalytics {
     private final FirebaseAnalytics mFirebaseAnalytics;
@@ -19,7 +19,7 @@ public class BoldAnalytics {
     public BoldAnalytics(Context mContext) {
         this.mContext = mContext;
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
-        mFirebaseAnalytics.setUserId(strToSHA(
+        mFirebaseAnalytics.setUserId(Encryption.strToSHA(
                 Secure.getString(mContext.getContentResolver(), Secure.ANDROID_ID)));
         configUser();
     }

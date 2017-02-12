@@ -22,9 +22,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.SecureRandom;
 
+import it.liceoarzignano.bold.BuildConfig;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
-import it.liceoarzignano.bold.safe.Encryption;
+import it.liceoarzignano.bold.safe.mod.Encryption;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 public class BenefitFragment extends Fragment {
@@ -149,7 +150,8 @@ public class BenefitFragment extends Fragment {
             SafetyNet.SafetyNetApi
                     .attest(mClient, mOstream.toByteArray())
                     .setResultCallback((mResult) -> postDeviceCheck(mContext,
-                            Encryption.validateRespose(mContext, mResult.getJwsResult())));
+                            Encryption.validateRespose(mContext, mResult.getJwsResult(),
+                                    BuildConfig.DEBUG)));
         } else {
             mSafeImage.setImageResource(R.drawable.avd_intro_no_connection);
             mSafeProgressBar.setVisibility(View.GONE);

@@ -1,0 +1,3 @@
+[submodule "safe_mod"]
+	path = safe_mod
+	url = https://gitlab.com/liceoArzignano/safe_mod
