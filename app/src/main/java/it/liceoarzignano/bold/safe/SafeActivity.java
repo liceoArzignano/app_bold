@@ -47,11 +47,6 @@ public class SafeActivity extends AppCompatActivity {
     private SharedPreferences mPrefs;
     private SharedPreferences.Editor mEditor;
 
-    // Safe jni addons
-    static {
-        System.loadLibrary("safe-addon-jni");
-    }
-
     private Encryption.SecretKeys mSecretKeys = null;
     private String mCrUserName;
     private String mCrReg;
@@ -459,10 +454,4 @@ public class SafeActivity extends AppCompatActivity {
         mContext.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE).edit()
                 .putBoolean(hasSharedKey, true).apply();
     }
-
-    public native String getKey();
-
-    public native String getSalt();
-
-    public static native String getApkSignatureHash();
 }
