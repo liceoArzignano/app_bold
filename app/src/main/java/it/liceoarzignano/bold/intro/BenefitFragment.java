@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -64,7 +65,7 @@ public class BenefitFragment extends Fragment {
         mIntroImage = (ImageView) mView.findViewById(R.id.intro_animation);
 
         // Step 2
-        LinearLayout mStep2 = (LinearLayout) mView.findViewById(R.id.step_2);
+        RadioGroup mStep2 = (RadioGroup) mView.findViewById(R.id.step_2);
         RadioButton mRadio1 = (RadioButton) mView.findViewById(R.id.intro_address_1);
         RadioButton mRadio2 = (RadioButton) mView.findViewById(R.id.intro_address_2);
         RadioButton mRadio3 = (RadioButton) mView.findViewById(R.id.intro_address_3);

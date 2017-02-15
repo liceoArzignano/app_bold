@@ -41,7 +41,7 @@
     </LinearLayout>
 
     <!-- Step 2 - Address selection -->
-    <LinearLayout
+    <RadioGroup
         android:id="@+id/step_2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -78,7 +78,7 @@
             android:id="@+id/intro_address_6"
             style="@style/ViewerTheme.Radio"
             android:text="@string/pref_address_teacher" />
-    </LinearLayout>
+    </RadioGroup>
 
     <!-- Step 3 - Safe test -->
     <LinearLayout
