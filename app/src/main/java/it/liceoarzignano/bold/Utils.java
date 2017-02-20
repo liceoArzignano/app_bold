@@ -34,6 +34,7 @@ import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 import static android.content.Context.MODE_PRIVATE;
 
+@SuppressWarnings("SameParameterValue")
 public class Utils {
     public static final String IS_TEACHER = "isTeacher_key";
     public static final String SUGGESTIONS = "showSuggestions_key";
@@ -43,9 +44,9 @@ public class Utils {
     public static final String SAFE_DONE = "doneSetup";
     public static final String EXTRA_PREFS = "extraPrefs";
     public static final String KEY_INTRO_SCREEN = "introScreen";
-    public static final String KEY_INTRO_DRAWER = "introDrawer";
-    public static final String KEY_INITIAL_DAY = "introDay";
-    public static final String KEY_VERSION = "introVersion";
+    static final String KEY_INTRO_DRAWER = "introDrawer";
+    static final String KEY_INITIAL_DAY = "introDay";
+    static final String KEY_VERSION = "introVersion";
     private static final String SAFE_PREFS = "SafePrefs";
     private static final String KEY_SAFE_PASSED = "safetyNetPassed";
     private static final String ANALYTICS = "analytics_key";
@@ -279,7 +280,7 @@ public class Utils {
      * @param mStringDate yyyy-MM-dd date
      * @return java date
      */
-    static Date stringToDate(String mStringDate) {
+    private static Date stringToDate(String mStringDate) {
         if (mStringDate.length() != 10 || !mStringDate.contains("-")) {
             throw new IllegalArgumentException(mStringDate
                     + ": invalid format. Must be yyyy-MM-dd");

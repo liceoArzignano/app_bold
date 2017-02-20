@@ -165,7 +165,7 @@ public class BenefitFragment extends Fragment {
         }
     }
 
-    void postDeviceCheck(Context mContext, boolean hasPassed) {
+    private void postDeviceCheck(Context mContext, boolean hasPassed) {
         Utils.setSafetyNetResults(mContext, hasPassed);
 
         mSafeMessage.setVisibility(View.VISIBLE);

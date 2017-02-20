@@ -1,5 +1,6 @@
 package it.liceoarzignano.bold.safe;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -65,6 +66,7 @@ public class SafeActivity extends AppCompatActivity {
     private EditText mInternetEdit;
     private FloatingActionButton mFab;
 
+    @SuppressLint("CommitPrefEdits")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
