@@ -59,8 +59,6 @@ public class MarksActivity extends AppCompatActivity {
         mList.setLayoutManager(new LinearLayoutManager(this));
         mList.addItemDecoration(new DividerDecoration(this));
         mList.setItemAnimator(new DefaultItemAnimator());
-
-        Utils.animFab(mFab, true);
     }
 
     @Override

@@ -60,15 +60,11 @@ public class EventListActivity extends AppCompatActivity {
             Intent mIntent = new Intent(EventListActivity.this, ManagerActivity.class);
             mIntent.putExtra("isMark", false);
             startActivity(mIntent);
-            finish();
         });
 
         mEventList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         mEventList.setItemAnimator(new DefaultItemAnimator());
         mEventList.addItemDecoration(new DividerDecoration(getApplicationContext()));
-
-
-        Utils.animFab(mFab, true);
     }
 
     @Override

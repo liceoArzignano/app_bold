@@ -2,8 +2,10 @@ package it.liceoarzignano.bold.marks;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,6 +33,7 @@ public class SubjectActivity extends AppCompatActivity {
     private CircularProgressBar mProgressBar;
     private TextView mTextHint;
     private RecyclerView mList;
+    private NestedScrollView mNestedView;
 
     private MarksController mController;
     private List<Mark> mMarks;
@@ -56,6 +59,8 @@ public class SubjectActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+        mNestedView = (NestedScrollView) findViewById(R.id.subject_nested_view);
 
         mProgressBar = (CircularProgressBar) findViewById(R.id.subject_hint_bar);
         mTextHint = (TextView) findViewById(R.id.subject_hint_text);
@@ -90,6 +95,8 @@ public class SubjectActivity extends AppCompatActivity {
         mList.setAdapter(mAdapter);
         mList.addOnItemTouchListener(new RecyclerTouchListener(this, mListener));
         mAdapter.notifyDataSetChanged();
+        // Scroll to top
+        new Handler().post(() -> mNestedView.scrollTo(0,0));
     }
 
     private void setHint(double mAverage, double mExpected) {
