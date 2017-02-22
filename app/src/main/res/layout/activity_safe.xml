@@ -41,7 +41,7 @@
                 <TextView
                     android:id="@+id/safe_loading_text"
                     style="@style/AppTheme.EmptyText"
-                    android:text="@string/safe_setup_checking_password" />
+                    android:text="@string/safe_first_load" />
             </LinearLayout>
 
             <ScrollView

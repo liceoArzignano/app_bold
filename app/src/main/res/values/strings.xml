@@ -21,12 +21,12 @@
     <string name="upcoming_events">Upcoming events</string>
     <string name="lastest_marks">Lastest marks</string>
     <string name="suggestions">Suggestions</string>
-    <string name="suggestion_safe">Use Safe to store your school credentials in one secure place</string>
+    <string name="suggestion_safe">You forgot your password? Check Safe out and store all of them in a single place</string>
     <string name="suggestion_safe_pwd">Someone knows your Safe password? Log in and change it</string>
-    <string name="suggestion_avg">Would you like to know what mark you should get to have the sufficiency in a subject? Pick a subject from the average and look at the suggestions</string>
-    <string name="suggestion_quarter">A new quarter has begun? You can filter your marks in the marks section</string>
-    <string name="suggestion_edit_event">Postponed an event? Edit it and update the date</string>
-    <string name="suggestion_notification_remote">You can receive the most important news from the school as notifications</string>
+    <string name="suggestion_avg">Would you like to know what mark you should get to have the sufficiency in a subject? Pick a subject and look at the suggestions</string>
+    <string name="suggestion_quarter">A new quarter has begun? No problem, marks will be automatically filtered</string>
+    <string name="suggestion_edit_event">Your classmates keep asing for homeworks? If you save them in an event, you\'ll be able to answer in a couple of seconds</string>
+    <string name="suggestion_notification_remote">Most important news from the school will be delivered as notifications</string>
     <string name="suggestion_get_touch">Need to get in touch with the school? You can call or send an email from the settings</string>
     <string name="suggestion_address">You can\'t find a subject int the list? Check the address</string>
     <string name="suggestion_suggestions">Suggestions annoy you? Turn them off</string>
@@ -62,7 +62,7 @@
     <string name="hint_event">Event</string>
     <string name="hint_notes">Notes</string>
     <string name="dialog_select_mark">Pick a mark</string>
-    <string name="manager_invalid">Couldn\'t save. Check the values</string>
+    <string name="manager_invalid">Check the values</string>
     <string name="select_subject">Select subject</string>
     <string name="event_spinner_test">Test</string>
     <string name="event_spinner_school">At school</string>
@@ -76,7 +76,7 @@
     <string name="saved">Saved</string>
 
     <!-- My marks -->
-    <string name="title_activity_mark_list">My marks</string>
+    <string name="title_activity_mark_list">Marks</string>
     <string name="marks_menu_filter">Filter marks</string>
     <string name="marks_all">All</string>
     <string name="hint_content_common">To have sufficiency, the next mark</string>
@@ -123,8 +123,8 @@
     <string name="intro_safe_retry">Retry</string>
     <string name="intro_safe_retry_message">Please provide an internet connection in order to check the device, then tap retry</string>
     <string name="intro_safe_retry_success">Great, you\'re good to go!</string>
-    <string name="intro_safe_failure">Your device is not secure. You may not be able to use Safe</string>
-    <string name="intro_safe_done">Done</string>
+    <string name="intro_safe_failure">Test failed, we\'ll try again another time</string>
+    <string name="intro_safe_done">Start</string>
 
     <!-- Subjects -->
     <string name="subject_english">English</string>
@@ -212,13 +212,12 @@
     <string name="safe_encrypting">Saving\u2026</string>
     <string name="safe_decrypting">Loading\u2026</string>
     <string name="safe_onpause_locked">Locked</string>
-    <string name="safe_first_load">Initializing data\u2026</string>
+    <string name="safe_first_load">Loading\u2026</string>
     <string name="safe_setup_checking_password">Checking password\u2026</string>
     <string name="safe_nomatch">Password is incorrect</string>
     <string name="safe_back_title">Exit</string>
-    <string name="safe_back_message">Are you sure you want to exit? Your changes will not be saved.\nClick the button at the bottom to save</string>
-    <string name="safe_data_usage"><b>Register and Copybook</b>\n\u2022 Username: User ID\n\u2022 Password: Register password\n\n<b>PC account</b>\n\u2022 Username: surname + User ID (rossi123456)\n\u2022 Password: PC Password\n\n<b>Internet access</b>\n\u2022 Username: surname + User ID (rossi123456)\n\u2022 Password: Internet Password</string>
-
+    <string name="safe_back_message">Are you sure you want to exit? Your changes will be discarded.\nClick the button at the bottom to save</string>
+    <string name="safe_data_usage"><b>Register and Copybook</b>\n\u2022 Username: User ID\n\u2022 Password: Register password\n\n<b>PC account</b>\n\u2022 Username: surname + User ID (<i>rossi123456</i>)\n\u2022 Password: PC Password\n\n<b>Internet access</b>\n\u2022 Username: surname + User ID (<i>rossi123456</i>)\n\u2022 Password: Internet Password</string>
 
     <!-- Notification -->
     <string name="notification_title">Upcoming events</string>
