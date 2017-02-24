@@ -3,7 +3,6 @@ package it.liceoarzignano.bold.events;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
@@ -11,7 +10,6 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -32,14 +30,15 @@ import io.realm.Sort;
 import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.ManagerActivity;
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.ui.DividerDecoration;
-import it.liceoarzignano.bold.ui.RecyclerClickListener;
-import it.liceoarzignano.bold.ui.RecyclerTouchListener;
+import it.liceoarzignano.bold.ui.recyclerview.DividerDecoration;
+import it.liceoarzignano.bold.ui.recyclerview.RecyclerClickListener;
+import it.liceoarzignano.bold.ui.recyclerview.RecyclerTouchListener;
+import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt;
 import it.liceoarzignano.bold.ui.ViewerDialog;
 
 public class EventListActivity extends AppCompatActivity {
 
-    private RecyclerView mEventList;
+    private RecyclerViewExt mEventList;
     private LinearLayout mEmptyLayout;
     private TextView mEmptyText;
 
@@ -57,7 +56,7 @@ public class EventListActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        mEventList = (RecyclerView) findViewById(R.id.event_list);
+        mEventList = (RecyclerViewExt) findViewById(R.id.event_list);
         mEmptyLayout = (LinearLayout) findViewById(R.id.event_empty_layout);
         mEmptyText = (TextView) findViewById(R.id.events_empty_text);
 

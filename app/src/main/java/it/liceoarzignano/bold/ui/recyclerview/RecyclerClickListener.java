@@ -1,4 +1,4 @@
-package it.liceoarzignano.bold.ui;
+package it.liceoarzignano.bold.ui.recyclerview;
 
 import android.view.View;
 

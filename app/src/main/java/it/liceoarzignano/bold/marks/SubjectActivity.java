@@ -9,7 +9,6 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
@@ -19,9 +18,10 @@ import java.util.List;
 import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.ui.CircularProgressBar;
-import it.liceoarzignano.bold.ui.DividerDecoration;
-import it.liceoarzignano.bold.ui.RecyclerClickListener;
-import it.liceoarzignano.bold.ui.RecyclerTouchListener;
+import it.liceoarzignano.bold.ui.recyclerview.DividerDecoration;
+import it.liceoarzignano.bold.ui.recyclerview.RecyclerClickListener;
+import it.liceoarzignano.bold.ui.recyclerview.RecyclerTouchListener;
+import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt;
 import it.liceoarzignano.bold.ui.ViewerDialog;
 
 
@@ -32,7 +32,7 @@ public class SubjectActivity extends AppCompatActivity {
 
     private CircularProgressBar mProgressBar;
     private TextView mTextHint;
-    private RecyclerView mList;
+    private RecyclerViewExt mList;
     private NestedScrollView mNestedView;
 
     private MarksController mController;
@@ -64,7 +64,7 @@ public class SubjectActivity extends AppCompatActivity {
 
         mProgressBar = (CircularProgressBar) findViewById(R.id.subject_hint_bar);
         mTextHint = (TextView) findViewById(R.id.subject_hint_text);
-        mList = (RecyclerView) findViewById(R.id.subject_list);
+        mList = (RecyclerViewExt) findViewById(R.id.subject_list);
 
         mList.setLayoutManager(new LinearLayoutManager(this));
         mList.addItemDecoration(new DividerDecoration(this));

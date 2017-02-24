@@ -50,7 +50,7 @@
                     android:textSize="16sp" />
             </LinearLayout>
 
-            <android.support.v7.widget.RecyclerView
+            <it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt
                 android:id="@+id/subject_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

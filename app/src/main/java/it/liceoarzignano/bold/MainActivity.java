@@ -53,7 +53,7 @@ import it.liceoarzignano.bold.news.NewsController;
 import it.liceoarzignano.bold.news.NewsListActivity;
 import it.liceoarzignano.bold.safe.SafeActivity;
 import it.liceoarzignano.bold.settings.SettingsActivity;
-import it.liceoarzignano.bold.ui.DividerDecoration;
+import it.liceoarzignano.bold.ui.recyclerview.DividerDecoration;
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 public class MainActivity extends AppCompatActivity

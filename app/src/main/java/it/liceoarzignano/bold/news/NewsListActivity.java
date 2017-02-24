@@ -16,7 +16,6 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -31,11 +30,12 @@ import io.realm.RealmResults;
 import io.realm.Sort;
 import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.ui.DividerDecoration;
+import it.liceoarzignano.bold.ui.recyclerview.DividerDecoration;
+import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt;
 
 public class NewsListActivity extends AppCompatActivity {
     private Activity mActivity;
-    private RecyclerView mNewsList;
+    private RecyclerViewExt mNewsList;
     private LinearLayout mEmptyLayout;
     private TextView mEmptyText;
     private CustomTabsClient mClient;
@@ -56,7 +56,7 @@ public class NewsListActivity extends AppCompatActivity {
 
         mActivity = this;
 
-        mNewsList = (RecyclerView) findViewById(R.id.news_list);
+        mNewsList = (RecyclerViewExt) findViewById(R.id.news_list);
         mEmptyLayout = (LinearLayout) findViewById(R.id.news_empty_layout);
         mEmptyText = (TextView) findViewById(R.id.news_empty_text);
 

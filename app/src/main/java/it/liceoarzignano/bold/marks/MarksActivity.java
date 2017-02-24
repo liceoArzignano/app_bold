@@ -7,7 +7,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,9 +17,10 @@ import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.ManagerActivity;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
-import it.liceoarzignano.bold.ui.DividerDecoration;
-import it.liceoarzignano.bold.ui.RecyclerClickListener;
-import it.liceoarzignano.bold.ui.RecyclerTouchListener;
+import it.liceoarzignano.bold.ui.recyclerview.DividerDecoration;
+import it.liceoarzignano.bold.ui.recyclerview.RecyclerClickListener;
+import it.liceoarzignano.bold.ui.recyclerview.RecyclerTouchListener;
+import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt;
 
 
 public class MarksActivity extends AppCompatActivity {
@@ -28,7 +28,7 @@ public class MarksActivity extends AppCompatActivity {
     private static final String PREF_QUARTER_SELECTOR = "quarterSelector";
 
     private MarksController mController;
-    private RecyclerView mList;
+    private RecyclerViewExt mList;
     private LinearLayout mEmptyLayout;
 
     private SharedPreferences mPrefs;
@@ -50,7 +50,7 @@ public class MarksActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        mList = (RecyclerView) findViewById(R.id.marks_list);
+        mList = (RecyclerViewExt) findViewById(R.id.marks_list);
         mEmptyLayout = (LinearLayout) findViewById(R.id.marks_empty_layout);
         FloatingActionButton mFab = (FloatingActionButton) findViewById(R.id.fab);
 
