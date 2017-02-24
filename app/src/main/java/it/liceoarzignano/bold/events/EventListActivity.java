@@ -12,6 +12,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -162,10 +163,21 @@ public class EventListActivity extends AppCompatActivity {
     public void refreshList(Context context, Date date, String query) {
         boolean hasQuery = query != null && !query.isEmpty();
 
+        Calendar today = Calendar.getInstance();
         Calendar previous = Calendar.getInstance();
         if (date != null) {
+            // Set hours, mins and second for a better query
             previous.setTime(date);
             previous.add(Calendar.DAY_OF_YEAR, -1);
+            previous.set(Calendar.HOUR, 23);
+            previous.set(Calendar.MINUTE, 59);
+            previous.set(Calendar.SECOND, 59);
+            previous.set(Calendar.MILLISECOND, 999);
+            today.setTime(date);
+            today.set(Calendar.HOUR, 23);
+            today.set(Calendar.MINUTE, 59);
+            today.set(Calendar.SECOND, 59);
+            today.set(Calendar.MILLISECOND, 999);
         }
 
         Realm realm = Realm.getInstance(((BoldApp) getApplicationContext()).getConfig());
@@ -179,11 +191,11 @@ public class EventListActivity extends AppCompatActivity {
                                 .findAllSorted("date", Sort.DESCENDING) :
                 hasQuery ?
                         realm.where(Event.class)
-                                .between("date", previous.getTime(), date)
+                                .between("date", previous.getTime(), today.getTime())
                                 .contains("title", query,Case.INSENSITIVE)
                                 .findAllSorted("date", Sort.DESCENDING) :
                         realm.where(Event.class)
-                                .between("date", previous.getTime(), date)
+                                .between("date", previous.getTime(), today.getTime())
                                 .findAllSorted("date", Sort.DESCENDING);
 
         mEmptyLayout.setVisibility(events.isEmpty() ? View.VISIBLE : View.GONE);
