@@ -51,32 +51,32 @@
 
         <RadioButton
             android:id="@+id/intro_address_1"
-            style="@style/ViewerTheme.Radio"
+            style="@style/AppTheme.Radio"
             android:text="@string/pref_address_1" />
 
         <RadioButton
             android:id="@+id/intro_address_2"
-            style="@style/ViewerTheme.Radio"
+            style="@style/AppTheme.Radio"
             android:text="@string/pref_address_2" />
 
         <RadioButton
             android:id="@+id/intro_address_3"
-            style="@style/ViewerTheme.Radio"
+            style="@style/AppTheme.Radio"
             android:text="@string/pref_address_3" />
 
         <RadioButton
             android:id="@+id/intro_address_4"
-            style="@style/ViewerTheme.Radio"
+            style="@style/AppTheme.Radio"
             android:text="@string/pref_address_4" />
 
         <RadioButton
             android:id="@+id/intro_address_5"
-            style="@style/ViewerTheme.Radio"
+            style="@style/AppTheme.Radio"
             android:text="@string/pref_address_5" />
 
         <RadioButton
             android:id="@+id/intro_address_6"
-            style="@style/ViewerTheme.Radio"
+            style="@style/AppTheme.Radio"
             android:text="@string/pref_address_teacher" />
     </RadioGroup>
 

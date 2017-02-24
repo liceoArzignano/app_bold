@@ -4,85 +4,114 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:minHeight="421dp"
+    app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        tools:ignore="UseCompoundDrawables">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingBottom="32dp">
+            android:orientation="vertical">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:elevation="0dp"
-                app:theme="@style/ViewerTheme.ToolbarTheme"
-                tools:targetApi="lollipop" />
+            <LinearLayout style="@style/AppTheme.BottomSheetLayout">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingBottom="24dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="16dp">
+                <ImageView
+                    style="@style/AppTheme.BottomSheetIcon"
+                    app:srcCompat="@drawable/ic_title" />
 
-                <!-- Value / Category -->
                 <TextView
-                    android:id="@+id/viewer_value_title"
-                    style="@style/ViewerTheme.Title"
-                    android:text="@string/viewer_values" />
+                    android:id="@+id/viewer_title"
+                    style="@style/AppTheme.BottomSheetText" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/AppTheme.BottomSheetLayout">
+
+                <ImageView
+                    android:id="@+id/viewer_value_icon"
+                    style="@style/AppTheme.BottomSheetIcon"
+                    app:srcCompat="@drawable/ic_trophy" />
 
                 <TextView
                     android:id="@+id/viewer_value"
-                    style="@style/ViewerTheme.Text" />
+                    style="@style/AppTheme.BottomSheetText" />
+            </LinearLayout>
 
-                <!-- Date -->
-                <TextView
-                    style="@style/ViewerTheme.Title"
-                    android:text="@string/viewer_date" />
+            <LinearLayout style="@style/AppTheme.BottomSheetLayout">
 
-                <TextView
-                    android:id="@+id/viewer_dates"
-                    style="@style/ViewerTheme.Text" />
-
-                <!-- Notes -->
-                <TextView
-                    style="@style/ViewerTheme.Title"
-                    android:text="@string/viewer_notes" />
+                <ImageView
+                    style="@style/AppTheme.BottomSheetIcon"
+                    app:srcCompat="@drawable/ic_calendar" />
 
                 <TextView
-                    android:id="@+id/viewer_notes"
-                    style="@style/ViewerTheme.Text" />
+                    android:id="@+id/viewer_date"
+                    style="@style/AppTheme.BottomSheetText" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                style="@style/AppTheme.BottomSheetLayout"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:gravity="top"
+                android:minHeight="60dp">
 
-                <Button
-                    android:id="@+id/viewer_btn_edit"
-                    style="@style/ViewerTheme.Button"
-                    android:drawableTop="@drawable/avd_edit"
+                <ImageView
+                    style="@style/AppTheme.BottomSheetIcon"
+                    app:srcCompat="@drawable/ic_notes" />
+
+                <TextView
+                    android:id="@+id/viewer_notes"
+                    style="@style/AppTheme.BottomSheetText" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/empty_text" />
+
+            <LinearLayout
+                android:id="@+id/viewer_edit_layout"
+                style="@style/AppTheme.BottomSheetLayout">
+
+                <ImageView
+                    android:id="@+id/viewer_edit_icon"
+                    style="@style/AppTheme.BottomSheetIcon"
+                    app:srcCompat="@drawable/avd_edit" />
+
+                <TextView
+                    style="@style/AppTheme.BottomSheetText"
                     android:text="@string/viewer_edit" />
+            </LinearLayout>
 
-                <Button
-                    android:id="@+id/viewer_btn_share"
-                    style="@style/ViewerTheme.Button"
-                    android:drawableTop="@drawable/avd_share"
+            <LinearLayout
+                android:id="@+id/viewer_share_layout"
+                style="@style/AppTheme.BottomSheetLayout">
+
+                <ImageView
+                    android:id="@+id/viewer_share_icon"
+                    style="@style/AppTheme.BottomSheetIcon"
+                    app:srcCompat="@drawable/avd_share" />
+
+                <TextView
+                    style="@style/AppTheme.BottomSheetText"
                     android:text="@string/viewer_share" />
+            </LinearLayout>
 
-                <Button
-                    android:id="@+id/viewer_btn_delete"
-                    style="@style/ViewerTheme.Button"
-                    android:drawableTop="@drawable/avd_remove"
+            <LinearLayout
+                android:id="@+id/viewer_remove_layout"
+                style="@style/AppTheme.BottomSheetLayout">
+
+                <ImageView
+                    android:id="@+id/viewer_remove_icon"
+                    style="@style/AppTheme.BottomSheetIcon"
+                    app:srcCompat="@drawable/avd_remove" />
+
+                <TextView
+                    style="@style/AppTheme.BottomSheetText"
                     android:text="@string/viewer_remove" />
             </LinearLayout>
         </LinearLayout>

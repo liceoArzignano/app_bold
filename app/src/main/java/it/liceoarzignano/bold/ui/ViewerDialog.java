@@ -7,10 +7,10 @@ import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Handler;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.Snackbar;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.Date;
@@ -34,14 +34,19 @@ public class ViewerDialog {
     private final View mView;
     private final BottomSheetDialog mThisDialog;
 
-    private final Toolbar mToolbar;
-    private final Button mEditButton;
-    private final Button mShareButton;
-    private final Button mDeleteButton;
-    private final TextView mValueTextView;
-    private final TextView mValueTitle;
-    private final TextView mDateTextView;
-    private final TextView mNotesTexView;
+    private final LinearLayout mEditLayout;
+    private final LinearLayout mShareLayout;
+    private final LinearLayout mRemoveLayout;
+
+    private final TextView mTitleText;
+    private final TextView mValueText;
+    private final TextView mDateText;
+    private final TextView mNotesText;
+
+    private final ImageView mValueIcon;
+    private final ImageView mEditIcon;
+    private final ImageView mShareIcon;
+    private final ImageView mRemoveIcon;
 
     private Mark mMark = new Mark();
     private Event mEvent = new Event();
@@ -55,15 +60,19 @@ public class ViewerDialog {
                 mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mView = mInflater.inflate(R.layout.dialog_viewer, null);
 
-        mToolbar = (Toolbar) mView.findViewById(R.id.toolbar);
-        mEditButton = (Button) mView.findViewById(R.id.viewer_btn_edit);
-        mShareButton = (Button) mView.findViewById(R.id.viewer_btn_share);
-        mDeleteButton = (Button) mView.findViewById(R.id.viewer_btn_delete);
+        mEditLayout = (LinearLayout) mView.findViewById(R.id.viewer_edit_layout);
+        mShareLayout = (LinearLayout) mView.findViewById(R.id.viewer_share_layout);
+        mRemoveLayout = (LinearLayout) mView.findViewById(R.id.viewer_remove_layout);
 
-        mValueTextView = (TextView) mView.findViewById(R.id.viewer_value);
-        mValueTitle = (TextView) mView.findViewById(R.id.viewer_value_title);
-        mDateTextView = (TextView) mView.findViewById(R.id.viewer_dates);
-        mNotesTexView = (TextView) mView.findViewById(R.id.viewer_notes);
+        mTitleText = (TextView) mView.findViewById(R.id.viewer_title);
+        mValueText = (TextView) mView.findViewById(R.id.viewer_value);
+        mDateText = (TextView) mView.findViewById(R.id.viewer_date);
+        mNotesText = (TextView) mView.findViewById(R.id.viewer_notes);
+
+        mValueIcon = (ImageView) mView.findViewById(R.id.viewer_value_icon);
+        mEditIcon = (ImageView) mView.findViewById(R.id.viewer_edit_icon);
+        mShareIcon = (ImageView) mView.findViewById(R.id.viewer_share_icon);
+        mRemoveIcon = (ImageView) mView.findViewById(R.id.viewer_remove_icon);
 
         mRealm = Realm.getInstance(((BoldApp) mContext.getApplicationContext()).getConfig());
     }
@@ -83,45 +92,44 @@ public class ViewerDialog {
         }
 
         // UI
-        final String mTitle = isMark ? mMark.getTitle() : mEvent.getTitle();
+        mTitleText.setText(isMark ? mMark.getTitle() : mEvent.getTitle());
 
-        if (!mTitle.isEmpty() && mToolbar != null) {
-            mToolbar.setTitle(mTitle);
-        }
-
-        StringBuilder mNotes = new StringBuilder();
 
         if (isMark) {
+            StringBuilder mNotes = new StringBuilder();
             mNotes.append(mMark.getNote());
-            mNotes.append('\n');
+            if (mMark.getNote() != null && !mMark.getNote().isEmpty()) {
+                mNotes.append('\n');
+            }
             mNotes.append(mContext.getString(mMark.getIsFirstQuarter() ?
                     R.string.viewer_first_quarter : R.string.viewer_second_quarter));
-            mValueTitle.setText(mContext.getString(R.string.viewer_values));
-            mValueTextView.setText(String.format(Locale.ENGLISH, "%.2f",
+            mNotesText.setText(mNotes.toString());
+
+            mValueText.setText(String.format(Locale.ENGLISH, "%.2f",
                     (double) (mMark.getValue() / 100d)));
+            mValueIcon.setImageResource(R.drawable.ic_trophy);
         } else {
-            mNotes.append(mEvent.getNote());
-            mValueTitle.setText(mContext.getString(R.string.viewer_category));
-            mValueTextView.setText(Utils.eventCategoryToString(mContext, mEvent.getIcon()));
+            mNotesText.setText(mEvent.getNote());
+            mValueText.setText(Utils.eventCategoryToString(mContext, mEvent.getIcon()));
+            mValueIcon.setImageResource(R.drawable.ic_category);
         }
 
-        mNotesTexView.setText(mNotes.toString());
-        mDateTextView.setText(Utils.dateToStr(isMark ? mMark.getDate() : mEvent.getDate()));
+        mDateText.setText(Utils.dateToStr(isMark ? mMark.getDate() : mEvent.getDate()));
 
-        mShareButton.setOnClickListener(v -> {
+        mShareLayout.setOnClickListener(v -> {
             String msg = isMark ?
                     String.format(mContext.getString(Utils.isTeacher(mContext) ?
                                     R.string.viewer_share_teacher : R.string.viewer_share_student),
-                            mValueTextView.getText(), mTitle) :
-                    String.format("%1$s (%2$s)\n%3$s", mTitle, mValueTextView.getText(),
-                            mNotesTexView.getText());
+                            mValueText.getText(), mTitleText.getText()) :
+                    String.format("%1$s (%2$s)\n%3$s", mTitleText.getText(),
+                            mValueText.getText(), mNotesText.getText());
 
             final Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
             shareIntent.putExtra(Intent.EXTRA_TEXT, msg);
 
             if (Utils.isNotLegacy()) {
-                ((AnimatedVectorDrawable) mShareButton.getCompoundDrawables()[1]).start();
+                ((AnimatedVectorDrawable) mShareIcon.getDrawable()).start();
                 new Handler().postDelayed(() -> {
                     mThisDialog.dismiss();
                     mContext.startActivity(Intent.createChooser(shareIntent,
@@ -134,9 +142,9 @@ public class ViewerDialog {
             }
         });
 
-        mDeleteButton.setOnClickListener(v -> {
+        mRemoveLayout.setOnClickListener(v -> {
             if (Utils.isNotLegacy()) {
-                ((AnimatedVectorDrawable) mDeleteButton.getCompoundDrawables()[1]).start();
+                ((AnimatedVectorDrawable) mRemoveIcon.getDrawable()).start();
             }
 
             if (isMark) {
@@ -163,7 +171,7 @@ public class ViewerDialog {
             new Handler().postDelayed(mThisDialog::dismiss, 840);
         });
 
-        mEditButton.setOnClickListener(view -> {
+        mEditLayout.setOnClickListener(view -> {
             final Intent editIntent = new Intent(mContext, ManagerActivity.class);
 
             editIntent.putExtra("isEditing", true);
@@ -172,7 +180,7 @@ public class ViewerDialog {
 
             int mTime = 0;
             if (Utils.isNotLegacy()) {
-                ((AnimatedVectorDrawable) mEditButton.getCompoundDrawables()[1]).start();
+                ((AnimatedVectorDrawable) mEditIcon.getDrawable()).start();
                 new Handler().postDelayed(mThisDialog::dismiss, mTime += 1000);
             } else {
                 mThisDialog.dismiss();

@@ -81,7 +81,7 @@
         <item name="android:layout_width">24dp</item>
         <item name="android:layout_height">24dp</item>
         <item name="android:layout_centerVertical">true</item>
-        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginLeft">8dp</item>
         <item name="android:contentDescription">@string/accessibility_generic_icon</item>
     </style>
 
@@ -100,7 +100,7 @@
         <item name="android:ellipsize">start</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="android:layout_marginLeft">72dp</item>
-        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:layout_marginRight">8dp</item>
     </style>
 
     <style name="AppTheme.EditorLayout">
@@ -164,52 +164,7 @@
         <item name="android:layout_marginLeft">16dp</item>
     </style>
 
-    <!-- ViewerTheme -->
-
-    <style name="ViewerTheme" parent="Theme.AppCompat.Light">
-        <item name="colorPrimary">@color/viewerPrimary</item>
-        <item name="colorPrimaryDark">@color/viewerPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
-    <style name="ViewerTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="ViewerTheme.ToolbarTheme" parent="ThemeOverlay.AppCompat.ActionBar">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">?attr/actionBarSize</item>
-        <item name="android:background">@color/viewerPrimary</item>
-        <item name="android:textColor">@color/text_secondary</item>
-    </style>
-
-    <style name="ViewerTheme.Title">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/viewer_title</item>
-        <item name="android:textSize">12sp</item>
-        <item name="android:paddingBottom">2dp</item>
-    </style>
-
-    <style name="ViewerTheme.Text">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/text_secondary</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:paddingBottom">14dp</item>
-    </style>
-
-    <style name="ViewerTheme.Button" parent="@android:style/Widget.Button">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:gravity">center_horizontal</item>
-        <item name="android:textColor">@color/text_secondary</item>
-        <item name="android:background">@android:color/transparent</item>
-    </style>
-
-    <style name="ViewerTheme.Radio">
+    <style name="AppTheme.Radio">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:hapticFeedbackEnabled">true</item>

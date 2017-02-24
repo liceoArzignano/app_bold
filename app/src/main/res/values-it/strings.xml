@@ -89,10 +89,6 @@
     <string name="viewer_edit">Modifica</string>
     <string name="viewer_remove">Rimuovi</string>
     <string name="removed">Rimosso</string>
-    <string name="viewer_date">Data</string>
-    <string name="viewer_notes">Note</string>
-    <string name="viewer_category">Categoria</string>
-    <string name="viewer_values">Valore</string>
     <string name="viewer_share">Condividi</string>
     <string name="viewer_share_student">Ho preso %1$s in %2$s</string>
     <string name="viewer_share_teacher">%1$s ha preso %2$s</string>
@@ -213,7 +209,6 @@
     <string name="safe_decrypting">Caricamento\u2026</string>
     <string name="safe_onpause_locked">Bloccato. Tocca per sbloccare</string>
     <string name="safe_first_load">Caricamento\u2026</string>
-    <string name="safe_setup_checking_password">Verifica password\u2026</string>
     <string name="safe_nomatch">Password errata</string>
     <string name="safe_back_title">Esci</string>
     <string name="safe_back_message">Vuoi uscire? I cambiamenti non verranno salvati.\nTocca il pulsante in basso per salvare</string>

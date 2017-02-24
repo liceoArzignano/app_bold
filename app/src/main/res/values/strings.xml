@@ -89,10 +89,6 @@
     <string name="viewer_edit">Edit</string>
     <string name="viewer_remove">Remove</string>
     <string name="removed">Removed</string>
-    <string name="viewer_date">Date</string>
-    <string name="viewer_notes">Notes</string>
-    <string name="viewer_category">Category</string>
-    <string name="viewer_values">Value</string>
     <string name="viewer_share">Share</string>
     <string name="viewer_share_student">I got %1$s in %2$s</string>
     <string name="viewer_share_teacher">%1$s has got %2$s</string>
@@ -213,7 +209,6 @@
     <string name="safe_decrypting">Loading\u2026</string>
     <string name="safe_onpause_locked">Locked</string>
     <string name="safe_first_load">Loading\u2026</string>
-    <string name="safe_setup_checking_password">Checking password\u2026</string>
     <string name="safe_nomatch">Password is incorrect</string>
     <string name="safe_back_title">Exit</string>
     <string name="safe_back_message">Are you sure you want to exit? Your changes will be discarded.\nClick the button at the bottom to save</string>
