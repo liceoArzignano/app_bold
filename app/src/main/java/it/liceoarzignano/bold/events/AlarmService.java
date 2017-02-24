@@ -15,23 +15,23 @@ public class AlarmService extends Service {
 
     @Override
     public void onCreate() {
-        Context mContext = getApplicationContext();
-        String mMessage = Utils.getTomorrowInfo(mContext);
-        Intent mIntent = new Intent(mContext, EventListActivity.class);
-        PendingIntent mPendingIntent = PendingIntent.getActivity(mContext, 0, mIntent, 0);
-        NotificationManager mManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        Context context = getApplicationContext();
+        String message = Utils.getTomorrowInfo(context);
+        PendingIntent pIntent = PendingIntent.getActivity(context, 0,
+                new Intent(context, EventListActivity.class), 0);
+        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-        if (mMessage != null) {
-            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+        if (message != null) {
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(
                     getApplicationContext())
                     .setSmallIcon(R.drawable.ic_notification)
                     .setContentTitle(getString(R.string.notification_title))
-                    .setContentText(mMessage)
-                    .setStyle(new NotificationCompat.BigTextStyle().bigText(mMessage))
-                    .setContentIntent(mPendingIntent)
+                    .setContentText(message)
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
+                    .setContentIntent(pIntent)
                     .setAutoCancel(true);
 
-            mManager.notify(21, mBuilder.build());
+            manager.notify(21, builder.build());
         }
     }
 

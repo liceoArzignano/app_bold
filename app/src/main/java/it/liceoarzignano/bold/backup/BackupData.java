@@ -14,24 +14,24 @@ class BackupData {
         return mId;
     }
 
-    public void setId(DriveId mId) {
-        this.mId = mId;
+    public void setId(DriveId id) {
+        this.mId = id;
     }
 
     public Date getDate() {
         return mDate;
     }
 
-    public void setDate(Date mDate) {
-        this.mDate = mDate;
+    public void setDate(Date date) {
+        this.mDate = date;
     }
 
     public long getSize() {
         return mSize;
     }
 
-    public void setSize(long mSize) {
-        this.mSize = mSize;
+    public void setSize(long size) {
+        this.mSize = size;
     }
 
 }

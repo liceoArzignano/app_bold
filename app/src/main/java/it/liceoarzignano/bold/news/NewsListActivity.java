@@ -48,8 +48,8 @@ public class NewsListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_list);
 
-        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -60,32 +60,32 @@ public class NewsListActivity extends AppCompatActivity {
         mEmptyLayout = (LinearLayout) findViewById(R.id.news_empty_layout);
         mEmptyText = (TextView) findViewById(R.id.news_empty_text);
 
-        Intent mCallingIntent = getIntent();
-        long mId = mCallingIntent.getLongExtra("newsId", -1);
+        Intent callingIntent = getIntent();
+        long id = callingIntent.getLongExtra("newsId", -1);
 
-        if (mId > 0) {
+        if (id > 0) {
             News mCalledNews = Realm.getInstance(((BoldApp)
                     mActivity.getApplicationContext()).getConfig())
-                    .where(News.class).equalTo("id", mId).findFirst();
+                    .where(News.class).equalTo("id", id).findFirst();
             showUrl(mCalledNews.getUrl());
         }
 
-        String mQuery = null;
+        String query = null;
         if (Intent.ACTION_SEARCH.equals(getIntent().getAction())) {
-            mQuery = getIntent().getStringExtra(SearchManager.QUERY);
+            query = getIntent().getStringExtra(SearchManager.QUERY);
         }
 
         mNewsList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         mNewsList.setItemAnimator(new DefaultItemAnimator());
         mNewsList.addItemDecoration(new DividerDecoration(getApplicationContext()));
 
-        refresh(getApplicationContext(), mQuery);
+        refresh(getApplicationContext(), query);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu mMenu) {
-        getMenuInflater().inflate(R.menu.search, mMenu);
-        setupSearchView(this, mMenu.findItem(R.id.menu_search));
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search, menu);
+        setupSearchView(this, menu.findItem(R.id.menu_search));
         return true;
     }
 
@@ -111,28 +111,27 @@ public class NewsListActivity extends AppCompatActivity {
     /**
      * Refresh list
      *
-     * @param mContext used to fetch resources
-     * @param mQuery search query
+     * @param context used to fetch resources
+     * @param query search query
      */
-    void refresh(Context mContext, String mQuery) {
-        boolean hasQuery = mQuery != null && !mQuery.isEmpty();
+    void refresh(Context context, String query) {
+        boolean hasQuery = query != null && !query.isEmpty();
 
-        Realm mRealm = Realm.getInstance(((BoldApp) mContext.getApplicationContext()).getConfig());
-        final RealmResults<News> mNews = hasQuery ?
-                mRealm.where(News.class).contains("title", mQuery, Case.INSENSITIVE).or()
-                        .contains("message", mQuery, Case.INSENSITIVE)
+        Realm realm = Realm.getInstance(((BoldApp) context.getApplicationContext()).getConfig());
+        final RealmResults<News> news = hasQuery ?
+                realm.where(News.class).contains("title", query, Case.INSENSITIVE).or()
+                        .contains("message", query, Case.INSENSITIVE)
                         .findAllSorted("date", Sort.DESCENDING) :
-                mRealm.where(News.class).findAllSorted("date", Sort.DESCENDING);
+                realm.where(News.class).findAllSorted("date", Sort.DESCENDING);
 
-        mEmptyLayout.setVisibility(mNews.isEmpty() ? View.VISIBLE : View.GONE);
-        mEmptyText.setText(mContext.getString(hasQuery ?
+        mEmptyLayout.setVisibility(news.isEmpty() ? View.VISIBLE : View.GONE);
+        mEmptyText.setText(context.getString(hasQuery ?
                 R.string.search_no_result : R.string.news_empty));
 
-        NewsAdapter mAdapter = new NewsAdapter(mNews, mActivity);
+        NewsAdapter adapter = new NewsAdapter(news, mActivity);
+        mNewsList.setAdapter(adapter);
 
-        mNewsList.setAdapter(mAdapter);
-
-        mAdapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
 
     /**
@@ -143,21 +142,20 @@ public class NewsListActivity extends AppCompatActivity {
             return;
         }
 
-        mCustomTabsServiceConnection =
-                new CustomTabsServiceConnection() {
-                    @Override
-                    public void onCustomTabsServiceConnected(ComponentName componentName,
-                                                             CustomTabsClient customTabsClient) {
-                        mClient = customTabsClient;
-                        mClient.warmup(0L);
-                        mCustomTabsSession = mClient.newSession(null);
-                    }
+        mCustomTabsServiceConnection = new CustomTabsServiceConnection() {
+            @Override
+            public void onCustomTabsServiceConnected(ComponentName componentName,
+                                                     CustomTabsClient customTabsClient) {
+                mClient = customTabsClient;
+                mClient.warmup(0L);
+                mCustomTabsSession = mClient.newSession(null);
+            }
 
-                    @Override
-                    public void onServiceDisconnected(ComponentName name) {
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
                         mClient = null;
                     }
-                };
+        };
 
         CustomTabsClient.bindCustomTabsService(mActivity, "com.android.chrome",
                 mCustomTabsServiceConnection);
@@ -174,36 +172,38 @@ public class NewsListActivity extends AppCompatActivity {
     /**
      * Open the url associated with a news
      *
-     * @param mUrl website url
+     * @param url website url
      */
-    void showUrl(String mUrl) {
+    void showUrl(String url) {
         setupCCustomTabs();
-        mCustomTabIntent.launchUrl(mActivity, Uri.parse(mUrl));
+        mCustomTabIntent.launchUrl(mActivity, Uri.parse(url));
     }
 
     /**
      * Initialize search view
      *
-     * @param mContext used to fetch resources
-     * @param mItem menu item
+     * @param context used to fetch resources
+     * @param item menu item
      */
-    private void setupSearchView(final Context mContext, MenuItem mItem) {
-        SearchView mSearchView = (SearchView) MenuItemCompat.getActionView(mItem);
+    private void setupSearchView(final Context context, MenuItem item) {
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
 
-        if (mSearchView != null) {
-            mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String mQuery) {
-                    refresh(mContext, mQuery);
-                    return true;
-                }
-
-                @Override
-                public boolean onQueryTextChange(String mNewText) {
-                    refresh(mContext, mNewText);
-                    return true;
-                }
-            });
+        if (searchView == null) {
+            return;
         }
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String mQuery) {
+                refresh(context, mQuery);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String mNewText) {
+                refresh(context, mNewText);
+                return true;
+            }
+        });
     }
 }

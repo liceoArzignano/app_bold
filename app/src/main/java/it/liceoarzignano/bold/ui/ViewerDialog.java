@@ -32,7 +32,7 @@ public class ViewerDialog {
     private final Context mContext;
 
     private final View mView;
-    private final BottomSheetDialog mThisDialog;
+    private final BottomSheetDialog mDialog;
 
     private final LinearLayout mEditLayout;
     private final LinearLayout mShareLayout;
@@ -52,13 +52,13 @@ public class ViewerDialog {
     private Event mEvent = new Event();
 
     @SuppressLint("InflateParams")
-    public ViewerDialog(Context mContext, BottomSheetDialog mThisDialog) {
-        this.mContext = mContext;
-        this.mThisDialog = mThisDialog;
+    public ViewerDialog(Context context, BottomSheetDialog dialog) {
+        this.mContext = context;
+        this.mDialog = dialog;
 
-        LayoutInflater mInflater = (LayoutInflater)
-                mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mView = mInflater.inflate(R.layout.dialog_viewer, null);
+        LayoutInflater inflater = (LayoutInflater)
+                context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mView = inflater.inflate(R.layout.dialog_viewer, null);
 
         mEditLayout = (LinearLayout) mView.findViewById(R.id.viewer_edit_layout);
         mShareLayout = (LinearLayout) mView.findViewById(R.id.viewer_share_layout);
@@ -74,36 +74,35 @@ public class ViewerDialog {
         mShareIcon = (ImageView) mView.findViewById(R.id.viewer_share_icon);
         mRemoveIcon = (ImageView) mView.findViewById(R.id.viewer_remove_icon);
 
-        mRealm = Realm.getInstance(((BoldApp) mContext.getApplicationContext()).getConfig());
+        mRealm = Realm.getInstance(((BoldApp) context.getApplicationContext()).getConfig());
     }
 
     /**
      * Set ui basing on Event / Mark information
      *
-     * @param mId    object id
+     * @param id    object id
      * @param isMark is the object a mark
      * @return this view
      */
-    public View setData(final long mId, final boolean isMark) {
+    public View setData(final long id, final boolean isMark) {
         if (isMark) {
-            mMark = mRealm.where(Mark.class).equalTo("id", mId).findFirst();
+            mMark = mRealm.where(Mark.class).equalTo("id", id).findFirst();
         } else {
-            mEvent = mRealm.where(Event.class).equalTo("id", mId).findFirst();
+            mEvent = mRealm.where(Event.class).equalTo("id", id).findFirst();
         }
 
         // UI
         mTitleText.setText(isMark ? mMark.getTitle() : mEvent.getTitle());
 
-
         if (isMark) {
-            StringBuilder mNotes = new StringBuilder();
-            mNotes.append(mMark.getNote());
+            StringBuilder notes = new StringBuilder();
+            notes.append(mMark.getNote());
             if (mMark.getNote() != null && !mMark.getNote().isEmpty()) {
-                mNotes.append('\n');
+                notes.append('\n');
             }
-            mNotes.append(mContext.getString(mMark.getIsFirstQuarter() ?
+            notes.append(mContext.getString(mMark.getIsFirstQuarter() ?
                     R.string.viewer_first_quarter : R.string.viewer_second_quarter));
-            mNotesText.setText(mNotes.toString());
+            mNotesText.setText(notes.toString());
 
             mValueText.setText(String.format(Locale.ENGLISH, "%.2f",
                     (double) (mMark.getValue() / 100d)));
@@ -116,7 +115,7 @@ public class ViewerDialog {
 
         mDateText.setText(Utils.dateToStr(isMark ? mMark.getDate() : mEvent.getDate()));
 
-        mShareLayout.setOnClickListener(v -> {
+        mShareLayout.setOnClickListener(view -> {
             String msg = isMark ?
                     String.format(mContext.getString(Utils.isTeacher(mContext) ?
                                     R.string.viewer_share_teacher : R.string.viewer_share_student),
@@ -131,44 +130,44 @@ public class ViewerDialog {
             if (Utils.isNotLegacy()) {
                 ((AnimatedVectorDrawable) mShareIcon.getDrawable()).start();
                 new Handler().postDelayed(() -> {
-                    mThisDialog.dismiss();
+                    mDialog.dismiss();
                     mContext.startActivity(Intent.createChooser(shareIntent,
                             mContext.getString(R.string.viewer_share)));
                 }, 1000);
             } else {
-                mThisDialog.dismiss();
+                mDialog.dismiss();
                 mContext.startActivity(Intent.createChooser(shareIntent,
                         mContext.getString(R.string.viewer_share)));
             }
         });
 
-        mRemoveLayout.setOnClickListener(v -> {
+        mRemoveLayout.setOnClickListener(view -> {
             if (Utils.isNotLegacy()) {
                 ((AnimatedVectorDrawable) mRemoveIcon.getDrawable()).start();
             }
 
             if (isMark) {
-                RealmResults<Mark> mResults =
-                        mRealm.where(Mark.class).equalTo("id", mId).findAll();
+                RealmResults<Mark> results =
+                        mRealm.where(Mark.class).equalTo("id", id).findAll();
                 mRealm.beginTransaction();
-                mResults.deleteAllFromRealm();
+                results.deleteAllFromRealm();
                 mRealm.commitTransaction();
             } else {
-                RealmResults<Event> mResults =
-                        mRealm.where(Event.class).equalTo("id", mId).findAll();
+                RealmResults<Event> results =
+                        mRealm.where(Event.class).equalTo("id", id).findAll();
                 mRealm.beginTransaction();
-                mResults.deleteAllFromRealm();
+                results.deleteAllFromRealm();
                 mRealm.commitTransaction();
             }
 
-            Snackbar.make(v, mContext.getString(R.string.removed),
+            Snackbar.make(view, mContext.getString(R.string.removed),
                     Snackbar.LENGTH_SHORT).show();
             if (isMark) {
                 ((SubjectActivity) mContext).refresh();
             } else {
                 ((EventListActivity) mContext).refreshList(mContext, new Date(), null);
             }
-            new Handler().postDelayed(mThisDialog::dismiss, 840);
+            new Handler().postDelayed(mDialog::dismiss, 840);
         });
 
         mEditLayout.setOnClickListener(view -> {
@@ -176,17 +175,17 @@ public class ViewerDialog {
 
             editIntent.putExtra("isEditing", true);
             editIntent.putExtra("isMark", isMark);
-            editIntent.putExtra("id", mId);
+            editIntent.putExtra("id", id);
 
-            int mTime = 0;
+            int time = 0;
             if (Utils.isNotLegacy()) {
                 ((AnimatedVectorDrawable) mEditIcon.getDrawable()).start();
-                new Handler().postDelayed(mThisDialog::dismiss, mTime += 1000);
+                new Handler().postDelayed(mDialog::dismiss, time += 1000);
             } else {
-                mThisDialog.dismiss();
+                mDialog.dismiss();
             }
 
-            new Handler().postDelayed(() -> mContext.startActivity(editIntent), mTime + 40);
+            new Handler().postDelayed(() -> mContext.startActivity(editIntent), time + 40);
         });
 
         return mView;

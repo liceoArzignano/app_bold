@@ -11,10 +11,10 @@ public abstract class RealmController<T extends RealmObject> {
     /**
      * Default constructor
      *
-     * @param mConfig realm configuration
+     * @param config realm configuration
      */
-    protected RealmController(RealmConfiguration mConfig) {
-        mRealm = Realm.getInstance(mConfig);
+    protected RealmController(RealmConfiguration config) {
+        mRealm = Realm.getInstance(config);
     }
 
     /**
@@ -29,38 +29,38 @@ public abstract class RealmController<T extends RealmObject> {
     /**
      * Get items matching a given id
      *
-     * @param mId item id
+     * @param id item id
      * @return list of items with the given id
      */
-    public RealmResults<T> getById(long mId) {
+    public RealmResults<T> getById(long id) {
         return null;
     }
 
     /**
      * Add an object to the database
      *
-     * @param mObject given object. Must extend RealmObject
+     * @param object given object. Must extend RealmObject
      * @return new object id
      */
-    public long add(T mObject) {
+    public long add(T object) {
         return -1;
     }
 
     /**
      * Update an existing object in the database
      *
-     * @param mObject given object. Must extend RealmObject
+     * @param object given object. Must extend RealmObject
      * @return updated object id
      */
-    public long update(T mObject) {
+    public long update(T object) {
         return -1;
     }
 
     /**
      * Remove a given object from the database
      *
-     * @param mId object id
+     * @param id object id
      */
-    public void delete(long mId) {
+    public void delete(long id) {
     }
 }

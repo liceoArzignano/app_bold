@@ -12,8 +12,8 @@ import it.liceoarzignano.bold.realm.RealmController;
 
 public class MarksController extends RealmController<Mark> {
 
-    public MarksController(RealmConfiguration mConfig) {
-        super(mConfig);
+    public MarksController(RealmConfiguration config) {
+        super(config);
     }
 
     @Override
@@ -22,52 +22,52 @@ public class MarksController extends RealmController<Mark> {
     }
 
     @Override
-    public RealmResults<Mark> getById(long mId) {
-        return mRealm.where(Mark.class).equalTo("id", mId).findAllSorted("date", Sort.ASCENDING);
+    public RealmResults<Mark> getById(long id) {
+        return mRealm.where(Mark.class).equalTo("id", id).findAllSorted("date", Sort.ASCENDING);
     }
 
     @Override
-    public long add(Mark mMark) {
-        long mNewId = Calendar.getInstance().getTimeInMillis();
+    public long add(Mark mark) {
+        long id = Calendar.getInstance().getTimeInMillis();
 
-        mMark.setId(mNewId);
+        mark.setId(id);
         mRealm.beginTransaction();
-        mRealm.copyToRealm(mMark);
+        mRealm.copyToRealm(mark);
         mRealm.commitTransaction();
-        return mNewId;
+        return id;
     }
 
     @Override
-    public long update(Mark mMark) {
-        long mId = mMark.getId();
-        Mark mOld = getById(mId).first();
+    public long update(Mark mark) {
+        long id = mark.getId();
+        Mark old = getById(id).first();
         mRealm.beginTransaction();
-        mOld.setTitle(mMark.getTitle());
-        mOld.setNote(mMark.getNote());
-        mOld.setDate(mMark.getDate(), mMark.getIsFirstQuarter());
-        mOld.setValue(mMark.getValue());
+        old.setTitle(mark.getTitle());
+        old.setNote(mark.getNote());
+        old.setDate(mark.getDate(), mark.getIsFirstQuarter());
+        old.setValue(mark.getValue());
         mRealm.commitTransaction();
 
-        return mId;
+        return id;
     }
 
     @Override
-    public void delete(long mId) {
+    public void delete(long id) {
         mRealm.beginTransaction();
-        getById(mId).first().deleteFromRealm();
+        getById(id).first().deleteFromRealm();
         mRealm.commitTransaction();
     }
 
     /**
      * Fetch marks, filtered by subject and / or time
      *
-     * @param mTitle subject name
-     * @param mQuarter time filter
+     * @param filter subject name
+     * @param quarter time filter
      * @return list of filtered marks
      */
-    public RealmResults<Mark> getFilteredMarks(@Nullable String mTitle, int mQuarter) {
-        if (mTitle == null || mTitle.isEmpty()) {
-            switch (mQuarter) {
+    RealmResults<Mark> getFilteredMarks(@Nullable String filter, int quarter) {
+        if (filter == null || filter.isEmpty()) {
+            switch (quarter) {
                 case 1:
                     return mRealm.where(Mark.class).equalTo("isFirstQuarter", true)
                             .findAll();
@@ -78,15 +78,15 @@ public class MarksController extends RealmController<Mark> {
                     return mRealm.where(Mark.class).findAll();
             }
         } else {
-            switch (mQuarter) {
+            switch (quarter) {
                 case 1:
-                    return mRealm.where(Mark.class).equalTo("title", mTitle)
+                    return mRealm.where(Mark.class).equalTo("title", filter)
                             .equalTo("isFirstQuarter", true).findAll();
                 case 2:
-                    return mRealm.where(Mark.class).equalTo("title", mTitle)
+                    return mRealm.where(Mark.class).equalTo("title", filter)
                             .equalTo("isFirstQuarter", false).findAll();
                 default:
-                    return mRealm.where(Mark.class).equalTo("title", mTitle).findAll();
+                    return mRealm.where(Mark.class).equalTo("title", filter).findAll();
             }
         }
     }
@@ -94,35 +94,42 @@ public class MarksController extends RealmController<Mark> {
     /**
      * Get average value, optionally filtered by subject and / or time
      *
-     * @param mTitle subject name
-     * @param mQuarter time filter
+     * @param filter subject name
+     * @param quarter time filter
      * @return average mark
      */
-    public double getAverage(String mTitle, int mQuarter) {
-        List<Mark> mMarks = getFilteredMarks(mTitle, mQuarter);
-        double mSum = 0;
-        if (mMarks.isEmpty()) {
+    double getAverage(String filter, int quarter) {
+        List<Mark> marks = getFilteredMarks(filter, quarter);
+        double sum = 0;
+        if (marks.isEmpty()) {
             return 0;
         } else {
-            for (Mark mark : mMarks) {
-                mSum += mark.getValue();
+            for (Mark mark : marks) {
+                sum += mark.getValue();
             }
-            mSum /= 100;
+            sum /= 100;
 
-            return mSum / mMarks.size();
+            return sum / marks.size();
         }
     }
 
-    public double whatShouldIGet(String mTitle, int mQuarter) {
-        double mSum = 0;
+    /**
+     * Get the next item needed to make average at least 6
+     *
+     * @param filter subject name
+     * @param quarter time filter
+     * @return next expected mark
+     */
+    double whatShouldIGet(String filter, int quarter) {
+        double sum = 0;
 
-        List<Mark> mMarks = getFilteredMarks(mTitle, mQuarter);
-        for (Mark mMark : mMarks) {
-            mSum += mMark.getValue();
+        List<Mark> marks = getFilteredMarks(filter, quarter);
+        for (Mark mark : marks) {
+            sum += mark.getValue();
         }
-        mSum /= 100;
+        sum /= 100;
 
-        return !mMarks.isEmpty() ? 6 * (mMarks.size() + 1) - mSum : 0;
+        return !marks.isEmpty() ? 6 * (marks.size() + 1) - sum : 0;
     }
 
 

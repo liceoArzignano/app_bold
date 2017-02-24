@@ -9,8 +9,8 @@ import it.liceoarzignano.bold.realm.RealmController;
 
 public class NewsController extends RealmController<News> {
 
-    public NewsController(RealmConfiguration mConfig) {
-        super(mConfig);
+    public NewsController(RealmConfiguration config) {
+        super(config);
     }
 
     @Override
@@ -19,39 +19,39 @@ public class NewsController extends RealmController<News> {
     }
 
     @Override
-    public RealmResults<News> getById(long mId) {
-        return mRealm.where(News.class).equalTo("id", mId).findAllSorted("date", Sort.ASCENDING);
+    public RealmResults<News> getById(long id) {
+        return mRealm.where(News.class).equalTo("id", id).findAllSorted("date", Sort.ASCENDING);
     }
 
     @Override
-    public long add(News mNews) {
-        long mNewId = Calendar.getInstance().getTimeInMillis();
+    public long add(News news) {
+        long id = Calendar.getInstance().getTimeInMillis();
 
-        mNews.setId(mNewId);
+        news.setId(id);
         mRealm.beginTransaction();
-        mRealm.copyToRealm(mNews);
+        mRealm.copyToRealm(news);
         mRealm.commitTransaction();
-        return mNewId;
+        return id;
     }
 
     @Override
-    public long update(News mNews) {
-        long mId = mNews.getId();
-        News mOld = getById(mId).first();
+    public long update(News news) {
+        long id = news.getId();
+        News old = getById(id).first();
         mRealm.beginTransaction();
-        mOld.setTitle(mNews.getTitle());
-        mOld.setDate(mNews.getDate());
-        mOld.setMessage(mNews.getMessage());
-        mOld.setUrl(mNews.getUrl());
+        old.setTitle(news.getTitle());
+        old.setDate(news.getDate());
+        old.setMessage(news.getMessage());
+        old.setUrl(news.getUrl());
         mRealm.commitTransaction();
 
-        return mId;
+        return id;
     }
 
     @Override
-    public void delete(long mId) {
+    public void delete(long id) {
         mRealm.beginTransaction();
-        getById(mId).first().deleteFromRealm();
+        getById(id).first().deleteFromRealm();
         mRealm.commitTransaction();
     }
 

@@ -16,22 +16,19 @@ import it.liceoarzignano.bold.Utils;
 class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectHolder> {
     private final List<Mark> mMarks;
 
-    SubjectAdapter(List<Mark> mMarks) {
-        this.mMarks = mMarks;
+    SubjectAdapter(List<Mark> marks) {
+        this.mMarks = marks;
     }
 
     @Override
-    public SubjectHolder onCreateViewHolder(ViewGroup mParent, int mType) {
-        View mItem = LayoutInflater.from(mParent.getContext())
-                .inflate(R.layout.item_mark, mParent, false);
-
-        return new SubjectHolder(mItem);
+    public SubjectHolder onCreateViewHolder(ViewGroup parent, int type) {
+        return new SubjectHolder(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_mark, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(SubjectHolder mHolder, int mPosition) {
-        Mark mMark = mMarks.get(mPosition);
-        mHolder.setData(mMark);
+    public void onBindViewHolder(SubjectHolder holder, int position) {
+        holder.setData(mMarks.get(position));
     }
 
     @Override
@@ -44,22 +41,22 @@ class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectHolder> 
         private final TextView mValue;
         private final TextView mDate;
 
-        SubjectHolder(View mView) {
-            super(mView);
-            mTitle = (TextView) mView.findViewById(R.id.row_mark_title);
-            mValue = (TextView) mView.findViewById(R.id.row_mark_value);
-            mDate = (TextView) mView.findViewById(R.id.row_mark_date);
+        SubjectHolder(View view) {
+            super(view);
+            mTitle = (TextView) view.findViewById(R.id.row_mark_title);
+            mValue = (TextView) view.findViewById(R.id.row_mark_value);
+            mDate = (TextView) view.findViewById(R.id.row_mark_date);
         }
 
-        void setData(Mark mMark) {
-            mTitle.setText(mMark.getTitle());
-            mDate.setText(Utils.dateToStr(mMark.getDate()));
+        void setData(Mark mark) {
+            mTitle.setText(mark.getTitle());
+            mDate.setText(Utils.dateToStr(mark.getDate()));
 
-            Double mDoubleVal = (double) mMark.getValue() / 100;
-            if (mDoubleVal < 6) {
+            Double val = (double) mark.getValue() / 100;
+            if (val < 6) {
                 mValue.setTextColor(Color.RED);
             }
-            mValue.setText(String.format(Locale.ENGLISH, "%.2f", mDoubleVal));
+            mValue.setText(String.format(Locale.ENGLISH, "%.2f", val));
         }
     }
 }

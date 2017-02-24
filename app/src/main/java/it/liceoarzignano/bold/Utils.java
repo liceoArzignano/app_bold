@@ -53,20 +53,20 @@ public class Utils {
     private static final String NOTIF_EVENT_TIME = "notification_events_time_key";
     private static final String USERNAME = "username_key";
 
-    private static SharedPreferences mPrefs;
+    private static SharedPreferences prefs;
 
     /**
      * Animate fab with delay
      *
-     * @param mFab        :  the fab that will be animated
+     * @param fab        :  the fab that will be animated
      * @param shouldShow: whether to show the fab
      */
-    public static void animFab(final FloatingActionButton mFab, final boolean shouldShow) {
+    static void animFab(final FloatingActionButton fab, final boolean shouldShow) {
         new Handler().postDelayed(() -> {
             if (shouldShow) {
-                mFab.show();
+                fab.show();
             } else {
-                mFab.hide();
+                fab.hide();
             }
         }, 500);
     }
@@ -74,28 +74,28 @@ public class Utils {
     /**
      * Animate fab and showcase it
      *
-     * @param mContext: used to create materialshowcase
-     * @param mFab:     fab that will be animated and exposed
-     * @param mTitle:   showcase title
-     * @param mMessage: showcase message
-     * @param mKey:     showcase key to show it only the first time
+     * @param context: used to create materialshowcase
+     * @param fab:     fab that will be animated and exposed
+     * @param title:   showcase title
+     * @param message: showcase message
+     * @param key:     showcase key to show it only the first time
      */
     @SuppressWarnings("SameParameterValue")
-    public static void animFabIntro(final Activity mContext, final FloatingActionButton mFab,
-                                    final String mTitle, final String mMessage, final String mKey) {
-        final SharedPreferences mPrefs = mContext.getSharedPreferences(EXTRA_PREFS, MODE_PRIVATE);
-        final boolean isFirstTime = mPrefs.getBoolean(mKey, true);
+    public static void animFabIntro(final Activity context, final FloatingActionButton fab,
+                                    final String title, final String message, final String key) {
+        final SharedPreferences prefs = context.getSharedPreferences(EXTRA_PREFS, MODE_PRIVATE);
+        final boolean isFirstTime = prefs.getBoolean(key, true);
         if (isNotLegacy()) {
-            mFab.show();
+            fab.show();
         }
         new Handler().postDelayed(() -> {
-            mFab.setVisibility(View.VISIBLE);
+            fab.setVisibility(View.VISIBLE);
             if (isFirstTime) {
-                mPrefs.edit().putBoolean(mKey, false).apply();
-                new MaterialTapTargetPrompt.Builder(mContext)
-                        .setTarget(mFab)
-                        .setPrimaryText(mTitle)
-                        .setSecondaryText(mMessage)
+                prefs.edit().putBoolean(key, false).apply();
+                new MaterialTapTargetPrompt.Builder(context)
+                        .setTarget(fab)
+                        .setPrimaryText(title)
+                        .setSecondaryText(message)
                         .setBackgroundColourFromRes(R.color.colorAccentDark)
                         .show();
             }
@@ -109,8 +109,8 @@ public class Utils {
      * @return today
      */
     public static Date getToday() {
-        Calendar mCal = Calendar.getInstance();
-        return mCal.getTime();
+        Calendar calendar = Calendar.getInstance();
+        return calendar.getTime();
     }
 
     /**
@@ -127,12 +127,12 @@ public class Utils {
      * Force enable Google Analytics Tracker
      * if overlay requires it (used for test builds)
      *
-     * @param mContext: used to access SharedPreferences
-     * @param mOverlay: boolean xml overlay value
+     * @param context: used to access SharedPreferences
+     * @param overlay: boolean xml overlay value
      */
-    static void enableTrackerIfOverlayRequests(Context mContext, boolean mOverlay) {
-        if (mOverlay) {
-            PreferenceManager.getDefaultSharedPreferences(mContext)
+    static void enableTrackerIfOverlayRequests(Context context, boolean overlay) {
+        if (overlay) {
+            PreferenceManager.getDefaultSharedPreferences(context)
                     .edit().putBoolean(ANALYTICS, true).apply();
         }
     }
@@ -140,13 +140,12 @@ public class Utils {
     /**
      * Getter for initialDayKey
      *
-     * @param mContext: used to get sharedprefs
+     * @param context: used to get sharedprefs
      * @return the date of the day the first usage happened
      */
-    private static String getFirstUsageDate(Context mContext) {
-        SharedPreferences mPrefs = mContext.getSharedPreferences(EXTRA_PREFS,
-                MODE_PRIVATE);
-        return mPrefs.getString(KEY_INITIAL_DAY, "2000-01-01");
+    private static String getFirstUsageDate(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(EXTRA_PREFS, MODE_PRIVATE);
+        return prefs.getString(KEY_INITIAL_DAY, "2000-01-01");
     }
 
     /**
@@ -155,52 +154,52 @@ public class Utils {
      * </br>
      * Format: yyyy-mm-dd (Locale.IT format)
      *
-     * @param mYear:  year from the date picker dialog
-     * @param mMonth: month from the date picker dialog
-     * @param mDay:   day of the month from the date picker dialog
+     * @param year:  year from the date picker dialog
+     * @param month: month from the date picker dialog
+     * @param day:   day of the month from the date picker dialog
      * @return string with formatted date
      */
-    static Date rightDate(int mYear, int mMonth, int mDay) {
-        Calendar mCal = Calendar.getInstance();
-        mCal.set(mYear, mMonth, mDay);
-        return mCal.getTime();
+    static Date rightDate(int year, int month, int day) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day);
+        return calendar.getTime();
     }
 
     /**
      * Convert date to string for UI elements
      *
-     * @param mDate given date
+     * @param date given date
      * @return yyyy-MM-dd string
      */
-    public static String dateToStr(Date mDate) {
-        return new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(mDate);
+    public static String dateToStr(Date date) {
+        return new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date);
     }
 
     /**
      * Use for adaptive feature discovery
      *
-     * @param mContext: used to call getFirstUsageDate(Context)
+     * @param context: used to call getFirstUsageDate(Context)
      * @return true if user has been using this for more than one week
      */
-    static boolean hasUsedForMoreThanOneWeek(Context mContext) {
-        SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ITALIAN);
-        String mFirstDay = getFirstUsageDate(mContext);
+    static boolean hasUsedForMoreThanOneWeek(Context context) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ITALIAN);
+        String firstDay = getFirstUsageDate(context);
 
-        if (mFirstDay.equals("2000-01-01")) {
+        if (firstDay.equals("2000-01-01")) {
             return false;
         }
 
         try {
-            Date mDate = getToday();
-            Calendar mFirstCal = Calendar.getInstance();
-            Calendar mSecondCal = Calendar.getInstance();
-            mSecondCal.setTimeInMillis(mDate.getTime());
-            mDate = mFormat.parse(mFirstDay);
-            mFirstCal.setTimeInMillis(mDate.getTime());
+            Date date = getToday();
+            Calendar firstCal = Calendar.getInstance();
+            Calendar secondCal = Calendar.getInstance();
+            secondCal.setTimeInMillis(date.getTime());
+            date = format.parse(firstDay);
+            firstCal.setTimeInMillis(date.getTime());
 
-            int mDiff = mSecondCal.get(Calendar.DAY_OF_YEAR) - mFirstCal.get(Calendar.DAY_OF_YEAR);
+            int diff = secondCal.get(Calendar.DAY_OF_YEAR) - firstCal.get(Calendar.DAY_OF_YEAR);
 
-            return mFirstCal.get(Calendar.YEAR) == mSecondCal.get(Calendar.YEAR) && mDiff > 7;
+            return firstCal.get(Calendar.YEAR) == secondCal.get(Calendar.YEAR) && diff > 7;
         } catch (ParseException e) {
             Log.e("Utils", e.getMessage());
             return false;
@@ -222,73 +221,73 @@ public class Utils {
      *
      * @return array of subjects
      */
-    public static String[] getAverageElements(Context mContext, int mFilter) {
-        int mSize = 0;
-        Realm mRealm = Realm.getInstance(((BoldApp) mContext.getApplicationContext()).getConfig());
-        List<Mark> mMarks;
-        switch (mFilter) {
+    public static String[] getAverageElements(Context context, int filter) {
+        int size = 0;
+        Realm realm = Realm.getInstance(((BoldApp) context.getApplicationContext()).getConfig());
+        List<Mark> marks;
+        switch (filter) {
             case 1:
-                mMarks = mRealm.where(Mark.class).equalTo("isFirstQuarter", true).findAll();
+                marks = realm.where(Mark.class).equalTo("isFirstQuarter", true).findAll();
                 break;
             case 2:
-                mMarks = mRealm.where(Mark.class).equalTo("isFirstQuarter", false).findAll();
+                marks = realm.where(Mark.class).equalTo("isFirstQuarter", false).findAll();
                 break;
             default:
-                mMarks = mRealm.where(Mark.class).findAll();
+                marks = realm.where(Mark.class).findAll();
         }
 
-        ArrayList<String> mElements = new ArrayList<>();
+        ArrayList<String> elements = new ArrayList<>();
 
-        for (Mark mMark : mMarks) {
-            if (!mElements.contains(mMark.getTitle())) {
-                mElements.add(mMark.getTitle());
-                mSize++;
+        for (Mark mark : marks) {
+            if (!elements.contains(mark.getTitle())) {
+                elements.add(mark.getTitle());
+                size++;
             }
         }
 
-        return mElements.toArray(new String[mSize]);
+        return elements.toArray(new String[size]);
     }
 
     /**
      * Get event category description from int
      *
-     * @param mCategory: event icon value
+     * @param category: event icon value
      * @return category name
      */
-    public static String eventCategoryToString(Context mContext, int mCategory) {
-        switch (mCategory) {
+    public static String eventCategoryToString(Context context, int category) {
+        switch (category) {
             case 0:
-                return mContext.getString(R.string.event_spinner_test);
+                return context.getString(R.string.event_spinner_test);
             case 1:
-                return mContext.getString(R.string.event_spinner_school);
+                return context.getString(R.string.event_spinner_school);
             case 2:
-                return mContext.getString(R.string.event_spinner_bday);
+                return context.getString(R.string.event_spinner_bday);
             case 3:
-                return mContext.getString(R.string.event_spinner_homework);
+                return context.getString(R.string.event_spinner_homework);
             case 4:
-                return mContext.getString(R.string.event_spinner_reminder);
+                return context.getString(R.string.event_spinner_reminder);
             case 5:
-                return mContext.getString(R.string.event_spinner_hang_out);
+                return context.getString(R.string.event_spinner_hang_out);
             default:
-                return mContext.getString(R.string.event_spinner_other);
+                return context.getString(R.string.event_spinner_other);
         }
     }
 
     /**
      * Convert string to date
      *
-     * @param mStringDate yyyy-MM-dd date
+     * @param string yyyy-MM-dd date
      * @return java date
      */
-    private static Date stringToDate(String mStringDate) {
-        if (mStringDate.length() != 10 || !mStringDate.contains("-")) {
-            throw new IllegalArgumentException(mStringDate
+    private static Date stringToDate(String string) {
+        if (string.length() != 10 || !string.contains("-")) {
+            throw new IllegalArgumentException(string
                     + ": invalid format. Must be yyyy-MM-dd");
         }
 
         try {
-            SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ITALIAN);
-            return mFormat.parse(mStringDate);
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ITALIAN);
+            return format.parse(string);
         } catch (ParseException e) {
             Log.e("Utils", e.getMessage());
             return new Date();
@@ -298,25 +297,24 @@ public class Utils {
     /**
      * Determine if a mark has been assigned during the first or second quarter
      *
-     * @param mDate given mark's date
+     * @param date given mark's date
      * @return true if first quarter, else false
      */
-    public static boolean isFirstQuarter(Context mContext, Date mDate) {
-        return stringToDate(mContext.getString(R.string.config_quarter_change)).after(mDate);
+    public static boolean isFirstQuarter(Context context, Date date) {
+        return stringToDate(context.getString(R.string.config_quarter_change)).after(date);
     }
 
     /**
      * Determine if given package is installed
      *
-     * @param mContext to invoke pm
-     * @param mPkg     package name
+     * @param context to invoke pm
+     * @param pkg     package name
      * @return true if installed
      */
-    public static boolean hasPackage(Context mContext, String mPkg) {
+    public static boolean hasPackage(Context context, String pkg) {
         try {
-            PackageInfo mPackageInfo = mContext.getPackageManager()
-                    .getPackageInfo(mPkg, 0);
-            return mPackageInfo.applicationInfo.enabled;
+            PackageInfo info = context.getPackageManager().getPackageInfo(pkg, 0);
+            return info.applicationInfo.enabled;
         } catch (PackageManager.NameNotFoundException e) {
             // Gotta catch 'em all
             return false;
@@ -327,14 +325,14 @@ public class Utils {
     /**
      * Get notification topic
      *
-     * @param mContext to read SharedPreferences
+     * @param context to read SharedPreferences
      * @return address-based topic
      */
-    static String getTopic(Context mContext) {
-        if (isTeacher(mContext)) {
+    static String getTopic(Context context) {
+        if (isTeacher(context)) {
             return "addr_6";
         } else {
-            switch (getAddress(mContext)) {
+            switch (getAddress(context)) {
                 case "1":
                     return "addr_1";
                 case "2":
@@ -356,221 +354,220 @@ public class Utils {
      *
      * @return content for events notification
      */
-    public static String getTomorrowInfo(Context mContext) {
-        Resources mRes = mContext.getResources();
-        String mContent = null;
+    public static String getTomorrowInfo(Context context) {
+        Resources res = context.getResources();
+        String content = null;
         boolean isFirstElement = true;
 
-        int mIcon;
-        int mTest = 0;
-        int mAtSchool = 0;
-        int mBirthday = 0;
-        int mHomework = 0;
-        int mReminder = 0;
-        int mHangout = 0;
-        int mOther = 0;
+        int icon;
+        int test = 0;
+        int atSchool = 0;
+        int bday = 0;
+        int homeWork = 0;
+        int reminder = 0;
+        int hangout = 0;
+        int others = 0;
 
-        // Use realm instead of RealmController to avoid NPE when onBoot intent is broadcast'ed
-        EventsController mController = new EventsController(
-                ((BoldApp) mContext.getApplicationContext()).getConfig());
-        List<Event> mEvents = mController.getAll();
+        EventsController controller = new EventsController(
+                ((BoldApp) context.getApplicationContext()).getConfig());
+        List<Event> events = controller.getAll();
 
-        List<Event> mUpcomingEvents = new ArrayList<>();
+        List<Event> newEvents = new ArrayList<>();
 
         // Create tomorrow events list
         //noinspection Convert2streamapi
-        for (Event mEvent : mEvents) {
-            if (Utils.getToday().equals(mEvent.getDate())) {
-                mUpcomingEvents.add(mEvent);
+        for (Event event : events) {
+            if (Utils.getToday().equals(event.getDate())) {
+                newEvents.add(event);
             }
         }
 
-        if (mUpcomingEvents.isEmpty()) {
+        if (newEvents.isEmpty()) {
             return null;
         }
 
         // Get data
-        for (Event mEvent : mUpcomingEvents) {
-            mIcon = mEvent.getIcon();
-            switch (mIcon) {
+        for (Event event : newEvents) {
+            icon = event.getIcon();
+            switch (icon) {
                 case 0:
-                    mTest++;
+                    test++;
                     break;
                 case 1:
-                    mAtSchool++;
+                    atSchool++;
                     break;
                 case 2:
-                    mBirthday++;
+                    bday++;
                     break;
                 case 3:
-                    mHomework++;
+                    homeWork++;
                     break;
                 case 4:
-                    mReminder++;
+                    reminder++;
                     break;
                 case 5:
-                    mHangout++;
+                    hangout++;
                     break;
                 case 6:
-                    mOther++;
+                    others++;
                     break;
             }
         }
 
         // Test
-        if (mTest > 0) {
+        if (test > 0) {
             // First element
-            mContent = mRes.getQuantityString(R.plurals.notification_message_first, mTest, mTest)
-                    + " " + mRes.getQuantityString(R.plurals.notification_test, mTest, mTest);
+            content = res.getQuantityString(R.plurals.notification_message_first, test, test)
+                    + " " + res.getQuantityString(R.plurals.notification_test, test, test);
             isFirstElement = false;
         }
 
         // School
-        if (mAtSchool > 0) {
+        if (atSchool > 0) {
             if (isFirstElement) {
-                mContent = mRes.getQuantityString(R.plurals.notification_message_first,
-                        mAtSchool, mAtSchool) + " ";
+                content = res.getQuantityString(R.plurals.notification_message_first,
+                        atSchool, atSchool) + " ";
                 isFirstElement = false;
             } else {
-                mContent += mBirthday == 0 && mHangout == 0 && mOther == 0 ? " " +
-                        String.format(mRes.getString(R.string.notification_message_half),
-                                mAtSchool) :
-                        String.format(mRes.getString(R.string.notification_message_half),
-                                mAtSchool);
+                content += bday == 0 && hangout == 0 && others == 0 ? " " +
+                        String.format(res.getString(R.string.notification_message_half),
+                                atSchool) :
+                        String.format(res.getString(R.string.notification_message_half),
+                                atSchool);
             }
-            mContent += " " + mRes.getQuantityString(R.plurals.notification_school,
-                    mAtSchool, mAtSchool);
+            content += " " + res.getQuantityString(R.plurals.notification_school,
+                    atSchool, atSchool);
         }
 
         // Birthday
-        if (mBirthday > 0) {
+        if (bday > 0) {
             if (isFirstElement) {
-                mContent = mRes.getQuantityString(R.plurals.notification_message_first,
-                        mBirthday, mBirthday) + " ";
+                content = res.getQuantityString(R.plurals.notification_message_first,
+                        bday, bday) + " ";
                 isFirstElement = false;
             } else {
-                mContent += String.format(mRes.getString(R.string.notification_message_half),
-                        mBirthday);
+                content += String.format(res.getString(R.string.notification_message_half),
+                        bday);
             }
-            mContent += " " + mRes.getQuantityString(R.plurals.notification_birthday,
-                    mBirthday, mBirthday);
+            content += " " + res.getQuantityString(R.plurals.notification_birthday,
+                    bday, bday);
         }
 
         // Homework
-        if (mHomework > 0) {
+        if (homeWork > 0) {
             if (isFirstElement) {
-                mContent = mRes.getQuantityString(R.plurals.notification_message_first,
-                        mHomework, mHomework) + " ";
+                content = res.getQuantityString(R.plurals.notification_message_first,
+                        homeWork, homeWork) + " ";
                 isFirstElement = false;
             } else {
-                mContent += String.format(mRes.getString(R.string.notification_message_half),
-                        mHomework);
+                content += String.format(res.getString(R.string.notification_message_half),
+                        homeWork);
             }
 
-            mContent += " " + mRes.getQuantityString(R.plurals.notification_homework,
-                    mHomework, mHomework);
+            content += " " + res.getQuantityString(R.plurals.notification_homework,
+                    homeWork, homeWork);
         }
 
         // Reminder
-        if (mReminder > 0) {
+        if (reminder > 0) {
             if (isFirstElement) {
-                mContent = mRes.getQuantityString(R.plurals.notification_message_first,
-                        mReminder, mReminder) + " ";
+                content = res.getQuantityString(R.plurals.notification_message_first,
+                        reminder, reminder) + " ";
                 isFirstElement = false;
             } else {
-                mContent += String.format(mRes.getString(R.string.notification_message_half),
-                        mReminder);
+                content += String.format(res.getString(R.string.notification_message_half),
+                        reminder);
             }
-            mContent += " " + mRes.getQuantityString(R.plurals.notification_reminder,
-                    mReminder, mReminder);
+            content += " " + res.getQuantityString(R.plurals.notification_reminder,
+                    reminder, reminder);
         }
 
         // Hangout
-        if (mHangout > 0) {
+        if (hangout > 0) {
             if (isFirstElement) {
-                mContent = mRes.getQuantityString(R.plurals.notification_message_first,
-                        mHangout, mHangout) + " ";
+                content = res.getQuantityString(R.plurals.notification_message_first,
+                        hangout, hangout) + " ";
                 isFirstElement = false;
             } else {
-                mContent += String.format(mRes.getString(R.string.notification_message_half),
-                        mAtSchool);
+                content += String.format(res.getString(R.string.notification_message_half),
+                        atSchool);
             }
-            mContent += " " + mRes.getQuantityString(R.plurals.notification_meeting,
-                    mHangout, mHangout);
+            content += " " + res.getQuantityString(R.plurals.notification_meeting,
+                    hangout, hangout);
         }
 
         // Other
-        if (mOther > 0) {
+        if (others > 0) {
             if (isFirstElement) {
-                mContent = mRes.getQuantityString(R.plurals.notification_message_first,
-                        mOther, mOther);
-                mContent += " ";
+                content = res.getQuantityString(R.plurals.notification_message_first,
+                        others, others);
+                content += " ";
             } else {
-                mContent += String.format(mRes.getString(R.string.notification_message_half),
-                        mOther);
+                content += String.format(res.getString(R.string.notification_message_half),
+                        others);
             }
-            mContent += " " + mRes.getQuantityString(R.plurals.notification_other,
-                    mOther, mOther);
+            content += " " + res.getQuantityString(R.plurals.notification_other,
+                    others, others);
         }
 
-        mContent += " " + mRes.getString(R.string.notification_message_end);
+        content += " " + res.getString(R.string.notification_message_end);
 
-        return mContent;
+        return content;
     }
 
     /**
      * Create an event notification that will be fired later
      */
-    public static void makeEventNotification(Context mContext) {
-        Calendar mCalendar = Calendar.getInstance();
-        mCalendar.setTimeInMillis(System.currentTimeMillis());
+    public static void makeEventNotification(Context context) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
 
-        switch (getEventsNotificationTime(mContext)) {
+        switch (getEventsNotificationTime(context)) {
             case "0":
-                if (mCalendar.get(Calendar.HOUR_OF_DAY) >= 6) {
+                if (calendar.get(Calendar.HOUR_OF_DAY) >= 6) {
                     // If it's too late for today's notification, plan one for tomorrow
-                    mCalendar.set(Calendar.DAY_OF_MONTH, mCalendar.get(Calendar.DAY_OF_MONTH) + 1);
+                    calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1);
                 }
-                mCalendar.set(Calendar.HOUR_OF_DAY, 6);
+                calendar.set(Calendar.HOUR_OF_DAY, 6);
                 break;
             case "1":
-                if (mCalendar.get(Calendar.HOUR_OF_DAY) >= 15) {
+                if (calendar.get(Calendar.HOUR_OF_DAY) >= 15) {
                     // If it's too late for today's notification, plan one for tomorrow
-                    mCalendar.set(Calendar.DAY_OF_MONTH, mCalendar.get(Calendar.DAY_OF_MONTH) + 1);
+                    calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1);
                 }
-                mCalendar.set(Calendar.HOUR_OF_DAY, 15);
+                calendar.set(Calendar.HOUR_OF_DAY, 15);
                 break;
             case "2":
-                if (mCalendar.get(Calendar.HOUR_OF_DAY) >= 21) {
+                if (calendar.get(Calendar.HOUR_OF_DAY) >= 21) {
                     // If it's too late for today's notification, plan one for tomorrow
-                    mCalendar.set(Calendar.DAY_OF_MONTH, mCalendar.get(Calendar.DAY_OF_MONTH) + 1);
+                    calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1);
                 }
-                mCalendar.set(Calendar.HOUR_OF_DAY, 21);
+                calendar.set(Calendar.HOUR_OF_DAY, 21);
                 break;
         }
 
         // Set alarm
-        Intent mNotifIntent = new Intent(mContext, AlarmService.class);
-        AlarmManager mAlarmManager = (AlarmManager)
-                mContext.getSystemService(Context.ALARM_SERVICE);
-        PendingIntent mPendingIntent = PendingIntent.getService(mContext, 0, mNotifIntent, 0);
-        mAlarmManager.set(AlarmManager.RTC, mCalendar.getTimeInMillis(), mPendingIntent);
+        AlarmManager manager = (AlarmManager)
+                context.getSystemService(Context.ALARM_SERVICE);
+        PendingIntent pIntent = PendingIntent.getService(context, 0,
+                new Intent(context, AlarmService.class), 0);
+        manager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pIntent);
     }
 
-    public static boolean hasInternetConnection(Context mContext) {
-        ConnectivityManager mManager = (ConnectivityManager)
-                mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-        return mManager.getActiveNetworkInfo() != null;
+    public static boolean hasInternetConnection(Context context) {
+        ConnectivityManager manager = (ConnectivityManager)
+                context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return manager.getActiveNetworkInfo() != null;
     }
 
-    public static boolean hasPassedSafetyNetTest(Context mContext) {
-        SharedPreferences mPrefs = mContext.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE);
-        return mPrefs.getBoolean(KEY_SAFE_PASSED, false);
+    public static boolean hasPassedSafetyNetTest(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE);
+        return prefs.getBoolean(KEY_SAFE_PASSED, false);
     }
 
-    public static void setSafetyNetResults(Context mContext, boolean hasPassed) {
-        SharedPreferences mPrefs = mContext.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE);
-        mPrefs.edit().putBoolean(KEY_SAFE_PASSED, hasPassed).apply();
+    public static void setSafetyNetResults(Context context, boolean hasPassed) {
+        SharedPreferences prefs = context.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE);
+        prefs.edit().putBoolean(KEY_SAFE_PASSED, hasPassed).apply();
     }
 
     /*
@@ -580,66 +577,66 @@ public class Utils {
      * @return the value from SharedPreferences
      */
 
-    public static boolean isTeacher(Context mContext) {
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        return mPrefs.getBoolean(IS_TEACHER, false);
+    public static boolean isTeacher(Context context) {
+        prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getBoolean(IS_TEACHER, false);
     }
 
-    static boolean hasAnalytics(Context mContext) {
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        return mPrefs.getBoolean(ANALYTICS, true);
+    static boolean hasAnalytics(Context context) {
+        prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getBoolean(ANALYTICS, true);
     }
 
-    public static boolean hasSuggestions(Context mContext) {
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        return mPrefs.getBoolean(SUGGESTIONS, true);
+    public static boolean hasSuggestions(Context context) {
+        prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getBoolean(SUGGESTIONS, true);
     }
 
-    public static boolean hasNewsNotification(Context mContext) {
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        return mPrefs.getBoolean(NOTIF_NEWS, true);
+    public static boolean hasNewsNotification(Context context) {
+        prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getBoolean(NOTIF_NEWS, true);
     }
 
-    public static boolean hasEventsNotification(Context mContext) {
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        return mPrefs.getBoolean(NOTIF_EVENT, true);
+    public static boolean hasEventsNotification(Context context) {
+        prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getBoolean(NOTIF_EVENT, true);
     }
 
-    private static String getEventsNotificationTime(Context mContext) {
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        return mPrefs.getString(NOTIF_EVENT_TIME, "0");
+    private static String getEventsNotificationTime(Context context) {
+        prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getString(NOTIF_EVENT_TIME, "0");
     }
 
-    public static String getAddress(Context mContext) {
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        return mPrefs.getString(ADDRESS, "0");
+    public static String getAddress(Context context) {
+        prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getString(ADDRESS, "0");
     }
 
     static String appVersionKey(Context mContext) {
-        mPrefs = mContext.getSharedPreferences(EXTRA_PREFS, MODE_PRIVATE);
-        return mPrefs.getString(KEY_VERSION, "0");
+        prefs = mContext.getSharedPreferences(EXTRA_PREFS, MODE_PRIVATE);
+        return prefs.getString(KEY_VERSION, "0");
     }
 
     public static String userNameKey(Context mContext) {
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        return mPrefs.getString(USERNAME, "");
+        prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        return prefs.getString(USERNAME, "");
     }
 
-    public static void setAddress(Context mContext, String mValue) {
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        mPrefs.edit().putString(ADDRESS, mValue).putBoolean(IS_TEACHER, false)
+    public static void setAddress(Context context, String value) {
+        prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        prefs.edit().putString(ADDRESS, value).putBoolean(IS_TEACHER, false)
                 .apply();
     }
 
-    public static void setTeacherMode(Context mContext) {
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        mPrefs.edit().putBoolean(IS_TEACHER, true).putString(ADDRESS, "0")
+    public static void setTeacherMode(Context context) {
+        prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        prefs.edit().putBoolean(IS_TEACHER, true).putString(ADDRESS, "0")
                 .apply();
     }
 
-    public static boolean hasSafe(Context mContext) {
-        mPrefs = mContext.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE);
-        return mPrefs.getBoolean(SAFE_DONE, false);
+    public static boolean hasSafe(Context context) {
+        prefs = context.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE);
+        return prefs.getBoolean(SAFE_DONE, false);
     }
 
 }

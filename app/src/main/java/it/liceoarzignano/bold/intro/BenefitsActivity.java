@@ -24,15 +24,16 @@ public class BenefitsActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_benefits);
 
-        InkPageIndicator mIndicator = (InkPageIndicator) findViewById(R.id.indicator);
+        InkPageIndicator indicator = (InkPageIndicator) findViewById(R.id.indicator);
         mViewPager = (BenefitViewPager) findViewById(R.id.container);
 
         mAdapter = new BenefitPageAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mAdapter);
-        mIndicator.setViewPager(mViewPager);
+        indicator.setViewPager(mViewPager);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            public void onPageScrolled(int position, float positionOffset,
+                                       int positionOffsetPixels) {
                 onPageChanged(position);
             }
 

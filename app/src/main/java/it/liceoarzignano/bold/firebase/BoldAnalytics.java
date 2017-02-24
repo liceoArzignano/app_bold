@@ -16,21 +16,21 @@ public class BoldAnalytics {
     private final Context mContext;
 
     @SuppressLint("HardwareIds")
-    public BoldAnalytics(Context mContext) {
-        this.mContext = mContext;
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
+    public BoldAnalytics(Context context) {
+        mContext = context;
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
         mFirebaseAnalytics.setUserId(Encryption.strToSHA(
-                Secure.getString(mContext.getContentResolver(), Secure.ANDROID_ID)));
+                Secure.getString(context.getContentResolver(), Secure.ANDROID_ID)));
         configUser();
     }
 
     /**
      * Send firebase analytics when settings are opened
      *
-     * @param mBundle event data
+     * @param bundle event data
      */
-    public void sendConfig(Bundle mBundle) {
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, mBundle);
+    public void sendConfig(Bundle bundle) {
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
     }
 
     /**

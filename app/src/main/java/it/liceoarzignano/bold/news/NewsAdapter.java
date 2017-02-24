@@ -23,23 +23,20 @@ class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
     private final List<News> mNewsList;
     private final Activity mActivity;
 
-    NewsAdapter(List<News> mNewsList, Activity mActivity) {
-        this.mNewsList = mNewsList;
-        this.mActivity = mActivity;
+    NewsAdapter(List<News> list, Activity activity) {
+        this.mNewsList = list;
+        this.mActivity = activity;
     }
 
     @Override
-    public NewsHolder onCreateViewHolder(ViewGroup mParent, int mType) {
-        View mItem = LayoutInflater.from(mParent.getContext())
-                .inflate(R.layout.item_news, mParent, false);
-
-        return new NewsHolder(mItem);
+    public NewsHolder onCreateViewHolder(ViewGroup parent, int type) {
+        return new NewsHolder(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_news, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(NewsHolder mHolder, int mPosition) {
-        News mNews = mNewsList.get(mPosition);
-        mHolder.setData(mActivity, mNews);
+    public void onBindViewHolder(NewsHolder holder, int position) {
+        holder.setData(mActivity, mNewsList.get(position));
     }
 
     @Override
@@ -53,67 +50,66 @@ class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
         private final TextView mMessage;
         private final ImageButton mUrlButton;
 
-        NewsHolder(View mView) {
-            super(mView);
-            mLayout = (RelativeLayout) mView.findViewById(R.id.row_news_layout);
-            mTitle = (TextView) mView.findViewById(R.id.row_news_title);
-            mMessage = (TextView) mView.findViewById(R.id.row_news_message);
-            mUrlButton = (ImageButton) mView.findViewById(R.id.row_news_url);
+        NewsHolder(View view) {
+            super(view);
+            mLayout = (RelativeLayout) view.findViewById(R.id.row_news_layout);
+            mTitle = (TextView) view.findViewById(R.id.row_news_title);
+            mMessage = (TextView) view.findViewById(R.id.row_news_message);
+            mUrlButton = (ImageButton) view.findViewById(R.id.row_news_url);
         }
 
-        void setData(final Activity mActivity, final News mNews) {
-            mTitle.setText(mNews.getTitle());
-            mMessage.setText(String.format("%1$s\n%2$s", mNews.getMessage(), mNews.getDate()));
+        void setData(final Activity activity, final News news) {
+            mTitle.setText(news.getTitle());
+            mMessage.setText(String.format("%1$s\n%2$s", news.getMessage(), news.getDate()));
 
-            final String mUrl = mNews.getUrl();
-            if (mUrl != null && !mUrl.isEmpty()) {
-                mUrlButton.setOnClickListener(view -> ((NewsListActivity) mActivity).showUrl(mUrl));
+            final String url = news.getUrl();
+            if (url != null && !url.isEmpty()) {
+                mUrlButton.setOnClickListener(view -> ((NewsListActivity) activity).showUrl(url));
             } else {
                 mUrlButton.setVisibility(View.GONE);
             }
 
             // Bottom sheet dialog
-            final BottomSheetDialog mSheet = new BottomSheetDialog(mActivity);
+            final BottomSheetDialog sheet = new BottomSheetDialog(activity);
 
             @SuppressLint("InflateParams")
-            View mSheetView = mActivity.getLayoutInflater()
+            View sheetView = activity.getLayoutInflater()
                     .inflate(R.layout.dialog_sheet_news, null);
-            LinearLayout mShareLayout =
-                    (LinearLayout) mSheetView.findViewById(R.id.news_sheet_share);
-            LinearLayout mToEventLayout =
-                    (LinearLayout) mSheetView.findViewById(R.id.news_sheet_to_event);
-            LinearLayout mDeleteLayout =
-                    (LinearLayout) mSheetView.findViewById(R.id.news_sheet_delete);
+            LinearLayout shareLayout =
+                    (LinearLayout) sheetView.findViewById(R.id.news_sheet_share);
+            LinearLayout toEventLayout =
+                    (LinearLayout) sheetView.findViewById(R.id.news_sheet_to_event);
+            LinearLayout deleteLayout =
+                    (LinearLayout) sheetView.findViewById(R.id.news_sheet_delete);
 
-            mShareLayout.setOnClickListener(view -> {
-                mSheet.hide();
-                Intent mShareIntent = new Intent(Intent.ACTION_SEND);
-                mShareIntent.setType("text/plain")
+            shareLayout.setOnClickListener(view -> {
+                sheet.hide();
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain")
                         .putExtra(Intent.EXTRA_TEXT, String.format("%1$s (%2$s)\n%3$s\n%4$s",
-                                mNews.getTitle(), mNews.getDate(), mNews.getMessage(),
-                                mNews.getUrl()));
-                mActivity.startActivity(Intent.createChooser(mShareIntent,
-                        mActivity.getString(R.string.news_sheet_share)));
+                                news.getTitle(), news.getDate(), news.getMessage(), news.getUrl()));
+                activity.startActivity(Intent.createChooser(shareIntent,
+                        activity.getString(R.string.news_sheet_share)));
 
             });
-            mDeleteLayout.setOnClickListener(view -> {
-                mSheet.hide();
-                NewsController mController = new NewsController(((BoldApp)
-                        mActivity.getApplication()).getConfig());
-                mController.delete(mNews.getId());
-                ((NewsListActivity) mActivity).refresh(mActivity, null);
+            deleteLayout.setOnClickListener(view -> {
+                sheet.hide();
+                NewsController controller = new NewsController(
+                        ((BoldApp) activity.getApplication()).getConfig());
+                controller.delete(news.getId());
+                ((NewsListActivity) activity).refresh(activity, null);
             });
-            mToEventLayout.setOnClickListener(view -> {
-                mSheet.hide();
-                Intent mToEventIntent = new Intent(mActivity, ManagerActivity.class);
-                mToEventIntent.putExtra("newsToEvent", mNews.getId());
-                mToEventIntent.putExtra("isMark", false);
-                mActivity.startActivity(mToEventIntent);
+            toEventLayout.setOnClickListener(view -> {
+                sheet.hide();
+                Intent toEventIntent = new Intent(activity, ManagerActivity.class);
+                toEventIntent.putExtra("newsToEvent", news.getId());
+                toEventIntent.putExtra("isMark", false);
+                activity.startActivity(toEventIntent);
             });
 
-            mSheet.setContentView(mSheetView);
+            sheet.setContentView(sheetView);
 
-            mLayout.setOnClickListener(view -> mSheet.show());
+            mLayout.setOnClickListener(view -> sheet.show());
         }
     }
 }

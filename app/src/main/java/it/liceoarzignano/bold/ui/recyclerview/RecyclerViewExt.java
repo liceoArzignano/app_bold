@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
 public class RecyclerViewExt extends RecyclerView {
-    private OnItemTouchListener itemTouchListener = null;
+    private OnItemTouchListener mItemTouchListener = null;
 
     public RecyclerViewExt(Context context) {
         super(context);
@@ -21,11 +21,11 @@ public class RecyclerViewExt extends RecyclerView {
 
     @Override
     public void addOnItemTouchListener(OnItemTouchListener listener) {
-        if (itemTouchListener != null) {
-            removeOnItemTouchListener(itemTouchListener);
+        if (mItemTouchListener != null) {
+            removeOnItemTouchListener(mItemTouchListener);
 
         }
-        itemTouchListener = listener;
+        mItemTouchListener = listener;
 
         super.addOnItemTouchListener(listener);
     }

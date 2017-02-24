@@ -27,16 +27,16 @@ class SafeLoginDialog {
     /**
      * Log in dialog with password input and hints
      *
-     * @param mContext    used to fetch resources
+     * @param context    used to fetch resources
      * @param isFirstTime adapt ui for first login
      */
     @SuppressLint("InflateParams")
-    SafeLoginDialog(Context mContext, final boolean isFirstTime) {
-        mRes = mContext.getResources();
+    SafeLoginDialog(Context context, final boolean isFirstTime) {
+        mRes = context.getResources();
 
-        LayoutInflater mInflater = (LayoutInflater)
-                mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mDialogView = mInflater.inflate(R.layout.dialog_safe_unlock, null);
+        LayoutInflater inflater = (LayoutInflater)
+                context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mDialogView = inflater.inflate(R.layout.dialog_safe_unlock, null);
 
         mPasswordEditText = (EditText) mDialogView.findViewById(R.id.safe_dialog_input);
         mHintTextView = (TextView) mDialogView.findViewById(R.id.safe_dialog_hint_text);
@@ -56,21 +56,21 @@ class SafeLoginDialog {
 
                 @Override
                 public void afterTextChanged(Editable editable) {
-                    String mInput = mPasswordEditText.getText().toString();
-                    int mMessage;
-                    if (!mInput.isEmpty()) {
-                        if (mInput.length() < 8) {
-                            mMessage = R.string.safe_dialog_first_hint_low;
-                        } else if (mInput.matches(".*\\d.*") &&
-                                mInput.matches(".*[a-zA-Z].*")) {
+                    String input = mPasswordEditText.getText().toString();
+                    int message;
+                    if (!input.isEmpty()) {
+                        if (input.length() < 8) {
+                            message = R.string.safe_dialog_first_hint_low;
+                        } else if (input.matches(".*\\d.*") &&
+                                input.matches(".*[a-zA-Z].*")) {
                             // Has at least 1 number, 1 letter and more than 8 chars
-                            mMessage = R.string.safe_dialog_first_hint_good;
+                            message = R.string.safe_dialog_first_hint_good;
                         } else {
                             // More than 8 chars but only numbers / letters
-                            mMessage = R.string.safe_dialog_first_hint_medium;
+                            message = R.string.safe_dialog_first_hint_medium;
                         }
 
-                        mHintTextView.setText(mRes.getString(mMessage));
+                        mHintTextView.setText(mRes.getString(message));
                     }
 
                 }

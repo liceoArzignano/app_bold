@@ -77,11 +77,11 @@ public class SafeActivity extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_safe);
-        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            mToolbar.setNavigationOnClickListener(view -> onBackPressed());
+            toolbar.setNavigationOnClickListener(view -> onBackPressed());
         }
 
         mPrefs = getSharedPreferences(SAFE_PREFS, MODE_PRIVATE);
@@ -136,18 +136,17 @@ public class SafeActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu mMenu) {
-        this.mMenu = mMenu;
-        getMenuInflater().inflate(R.menu.safe, mMenu);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        this.mMenu = menu;
+        getMenuInflater().inflate(R.menu.safe, menu);
         this.mMenu.findItem(R.id.action_info).setVisible(false);
         this.mMenu.findItem(R.id.action_reset).setVisible(false);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem mItem) {
-        int mId = mItem.getItemId();
-        switch (mId) {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.action_reset:
                 safeReset();
                 break;
@@ -160,7 +159,7 @@ public class SafeActivity extends AppCompatActivity {
                 break;
         }
 
-        return super.onOptionsItemSelected(mItem);
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -224,12 +223,12 @@ public class SafeActivity extends AppCompatActivity {
     /**
      * Encrypt a given string
      *
-     * @param mString: string to be encrypted
+     * @param string: string to be encrypted
      * @return encrypted string
      */
-    private String encrypt(String mString) {
+    private String encrypt(String string) {
         try {
-            return Encryption.encrypt(mString, mSecretKeys).toString();
+            return Encryption.encrypt(string, mSecretKeys).toString();
         } catch (UnsupportedEncodingException | GeneralSecurityException e) {
             Log.e("Safe", e.getMessage(), e);
             return "";
@@ -239,13 +238,13 @@ public class SafeActivity extends AppCompatActivity {
     /**
      * Decrypt a string
      *
-     * @param mString: string to be decrypted
+     * @param string: string to be decrypted
      * @return decrypted string
      */
-    private String decrypt(String mString) {
+    private String decrypt(String string) {
         try {
             return Encryption.decrypt(
-                    new Encryption.CipherTextIvMac(mString), mSecretKeys);
+                    new Encryption.CipherTextIvMac(string), mSecretKeys);
         } catch (UnsupportedEncodingException | GeneralSecurityException e) {
             Log.e("Safe", e.getMessage(), e);
             return "";
@@ -284,21 +283,21 @@ public class SafeActivity extends AppCompatActivity {
 
         // Always check if there's sth to decrypt, if not, pass
         // away to speed up this process
-        String mObj = mPrefs.getString(userKey, null);
-        if (mObj != null) {
-            mCrUserName = decrypt(mObj);
+        String obj = mPrefs.getString(userKey, null);
+        if (obj != null) {
+            mCrUserName = decrypt(obj);
         }
-        mObj = mPrefs.getString(regPwdKey, null);
-        if (mObj != null) {
-            mCrReg = decrypt(mObj);
+        obj = mPrefs.getString(regPwdKey, null);
+        if (obj != null) {
+            mCrReg = decrypt(obj);
         }
-        mObj = mPrefs.getString(pcPwdKey, null);
-        if (mObj != null) {
-            mCrPc = decrypt(mObj);
+        obj = mPrefs.getString(pcPwdKey, null);
+        if (obj != null) {
+            mCrPc = decrypt(obj);
         }
-        mObj = mPrefs.getString(internetPwdKey, null);
-        if (mObj != null) {
-            mCrInternet = decrypt(mObj);
+        obj = mPrefs.getString(internetPwdKey, null);
+        if (obj != null) {
+            mCrInternet = decrypt(obj);
         }
 
         mMenu.findItem(R.id.action_reset).setVisible(true);
@@ -321,7 +320,7 @@ public class SafeActivity extends AppCompatActivity {
         Utils.animFabIntro(this, mFab, getString(R.string.intro_fab_save_safe_title),
                 getString(R.string.intro_fab_save_safe), "safeKey");
 
-        mFab.setOnClickListener(v -> {
+        mFab.setOnClickListener(view -> {
             mMenu.findItem(R.id.action_reset).setVisible(false);
             mMenu.findItem(R.id.action_info).setVisible(false);
             mFab.hide();
@@ -379,10 +378,10 @@ public class SafeActivity extends AppCompatActivity {
      * Check if the device is ready to use Safe,
      * if so start it.
      *
-     * @param mResponse SafetyNet test results
+     * @param response SafetyNet test results
      */
-    private void prepareDevice(@Nullable String mResponse) {
-        if (Encryption.validateRespose(this, mResponse, BuildConfig.DEBUG) &&
+    private void prepareDevice(@Nullable String response) {
+        if (Encryption.validateRespose(this, response, BuildConfig.DEBUG) &&
                 Utils.hasPassedSafetyNetTest(this)) {
             Utils.setSafetyNetResults(this, true);
             mLoadingText.setText(R.string.safe_first_load);
@@ -398,19 +397,19 @@ public class SafeActivity extends AppCompatActivity {
     }
 
     private void safetyNetTest() {
-        GoogleApiClient mClient = new GoogleApiClient.Builder(this)
+        GoogleApiClient client = new GoogleApiClient.Builder(this)
                 .addApi(SafetyNet.API)
                 .build();
-        mClient.connect();
+        client.connect();
 
-        String mNonceData = String.valueOf(System.currentTimeMillis());
-        ByteArrayOutputStream mOstream = new ByteArrayOutputStream();
-        byte[] mRandBytes = new byte[24];
-        new SecureRandom().nextBytes(mRandBytes);
+        String nonce = String.valueOf(System.currentTimeMillis());
+        ByteArrayOutputStream oStream = new ByteArrayOutputStream();
+        byte[] randBytes = new byte[24];
+        new SecureRandom().nextBytes(randBytes);
 
         try {
-            mOstream.write(mRandBytes);
-            mOstream.write(mNonceData.getBytes());
+            oStream.write(randBytes);
+            oStream.write(nonce.getBytes());
         } catch (IOException e) {
             Log.e("SafetyNetTest", e.getMessage());
         }
@@ -418,7 +417,7 @@ public class SafeActivity extends AppCompatActivity {
         if (Utils.hasInternetConnection(this)) {
             // Run SafetyNet test
             SafetyNet.SafetyNetApi
-                    .attest(mClient, mOstream.toByteArray())
+                    .attest(client, oStream.toByteArray())
                     .setResultCallback((mResult) ->
                         prepareDevice(mResult.getJwsResult()));
         } else {
@@ -429,22 +428,22 @@ public class SafeActivity extends AppCompatActivity {
     /**
      * Encrypted password getter
      *
-     * @param mContext used to access sharedPreferences
+     * @param context used to access sharedPreferences
      * @return encrypted password from sharedPreferences
      */
-    public static String getEncryptedPassword(Context mContext) {
-        return mContext.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE).getString(accessKey, "");
+    public static String getEncryptedPassword(Context context) {
+        return context.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE).getString(accessKey, "");
     }
 
     /**
      * Public getter for hasShared password, used to prevent
      * encrypted password to be shared too many times from secret menu
      *
-     * @param mContext used to access to sharedPreferences
+     * @param context used to access to sharedPreferences
      * @return true if user has already shared the password
      */
-    public static boolean hasSharedPassword(Context mContext) {
-        return mContext.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE)
+    public static boolean hasSharedPassword(Context context) {
+        return context.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE)
                 .getBoolean(hasSharedKey, false);
     }
 
@@ -452,10 +451,10 @@ public class SafeActivity extends AppCompatActivity {
      * Public setter for hasShared password, used to prevent
      * encrypted password to be shared too many times from secret menu
      *
-     * @param mContext used to access SharedPreferences
+     * @param context used to access SharedPreferences
      */
-    public static void setSharedPassword(Context mContext) {
-        mContext.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE).edit()
+    public static void setSharedPassword(Context context) {
+        context.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE).edit()
                 .putBoolean(hasSharedKey, true).apply();
     }
 }

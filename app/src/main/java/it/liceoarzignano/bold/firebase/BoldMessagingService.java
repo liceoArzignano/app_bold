@@ -22,6 +22,7 @@ import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
 import it.liceoarzignano.bold.news.News;
+import it.liceoarzignano.bold.news.NewsController;
 import it.liceoarzignano.bold.news.NewsListActivity;
 
 public class BoldMessagingService extends FirebaseMessagingService {
@@ -30,23 +31,23 @@ public class BoldMessagingService extends FirebaseMessagingService {
     private News mNews;
 
     @Override
-    public void onMessageReceived(RemoteMessage mRemoteMessage) {
-        if (mRemoteMessage == null) {
+    public void onMessageReceived(RemoteMessage remoteMessage) {
+        if (remoteMessage == null) {
             return;
         }
 
         mContext = getApplicationContext();
 
-        if (!mRemoteMessage.getData().isEmpty()) {
+        if (!remoteMessage.getData().isEmpty()) {
             try {
-                JSONObject mJSON = new JSONObject(mRemoteMessage.getData().toString());
-                String mTitle = mJSON.getString("title");
-                String mMessage = mJSON.getString("message");
-                String mUrl = mJSON.getString("url");
-                boolean isPrivate = mJSON.getBoolean("isPrivate");
-                Intent mIntent;
+                JSONObject jston = new JSONObject(remoteMessage.getData().toString());
+                String title = jston.getString("title");
+                String message = jston.getString("message");
+                String url = jston.getString("url");
+                boolean isPrivate = jston.getBoolean("isPrivate");
+                Intent intent;
 
-                if (mMessage == null || mMessage.isEmpty()) {
+                if (message == null || message.isEmpty()) {
                     return;
                 }
 
@@ -55,20 +56,20 @@ public class BoldMessagingService extends FirebaseMessagingService {
                 }
 
                 mNews = new News();
-                mNews.setTitle(mTitle);
-                mNews.setMessage(mMessage);
+                mNews.setTitle(title);
+                mNews.setMessage(message);
                 mNews.setDate(Utils.getTodayStr());
-                mNews.setUrl(mUrl);
+                mNews.setUrl(url);
 
                 saveNews();
 
                 if (Utils.hasNewsNotification(mContext)) {
-                    mIntent = new Intent(mContext, NewsListActivity.class);
-                    mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    if (mUrl != null && !mUrl.isEmpty()) {
-                        mIntent.putExtra("newsId", mNews.getId());
+                    intent = new Intent(mContext, NewsListActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    if (url != null && !url.isEmpty()) {
+                        intent.putExtra("newsId", mNews.getId());
                     }
-                    publishNotification(mIntent);
+                    publishNotification(intent);
                 }
 
             } catch (JSONException e) {
@@ -77,36 +78,33 @@ public class BoldMessagingService extends FirebaseMessagingService {
         }
     }
 
-    private void publishNotification(Intent mIntent) {
-        mIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent mPendingIntent = PendingIntent.getActivity(mContext, 0,
-                mIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+    private void publishNotification(Intent intent) {
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent pIntent = PendingIntent.getActivity(mContext, 0,
+                intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mContext)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setAutoCancel(true)
                 .setContentTitle(mNews.getTitle())
                 .setContentText(mNews.getMessage() + '\u2026')
-                .setContentIntent(mPendingIntent)
+                .setContentIntent(pIntent)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(mNews.getMessage()));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            mBuilder.setColor(ContextCompat.getColor(mContext, R.color.colorAccent));
+            builder.setColor(ContextCompat.getColor(mContext, R.color.colorAccent));
         }
 
-        NotificationManager mManager = (NotificationManager)
+        NotificationManager manager = (NotificationManager)
                 mContext.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        mManager.notify((int) Calendar.getInstance().getTimeInMillis() * 100000, mBuilder.build());
+        manager.notify((int) Calendar.getInstance().getTimeInMillis() * 100000, builder.build());
     }
 
     private void saveNews() {
         mNews.setId(Calendar.getInstance().getTimeInMillis());
-
-        Realm mRealm = Realm.getInstance(((BoldApp) mContext).getConfig());
-        mRealm.beginTransaction();
-        mRealm.copyToRealm(mNews);
-        mRealm.commitTransaction();
+        NewsController mController = new NewsController(((BoldApp) mContext).getConfig());
+        mController.add(mNews);
     }
 
 }

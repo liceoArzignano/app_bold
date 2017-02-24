@@ -8,12 +8,12 @@ import android.view.MotionEvent;
 public class BenefitViewPager extends ViewPager {
     private boolean isScrollAllowed = false;
 
-    public BenefitViewPager(Context mContext) {
-        super(mContext);
+    public BenefitViewPager(Context context) {
+        super(context);
     }
 
-    public BenefitViewPager(Context mContext, AttributeSet mAttrs) {
-        super(mContext, mAttrs);
+    public BenefitViewPager(Context context, AttributeSet attrs) {
+        super(context, attrs);
     }
 
     void setScrollAllowed(boolean isScrollAllowed) {
@@ -21,12 +21,12 @@ public class BenefitViewPager extends ViewPager {
     }
 
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent mEvent) {
-        return isScrollAllowed && super.onInterceptTouchEvent(mEvent);
+    public boolean onInterceptTouchEvent(MotionEvent event) {
+        return isScrollAllowed && super.onInterceptTouchEvent(event);
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent mEvent) {
-        return isScrollAllowed && super.onTouchEvent(mEvent);
+    public boolean onTouchEvent(MotionEvent event) {
+        return isScrollAllowed && super.onTouchEvent(event);
     }
 }

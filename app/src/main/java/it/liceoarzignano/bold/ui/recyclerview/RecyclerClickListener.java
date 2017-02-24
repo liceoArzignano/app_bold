@@ -4,5 +4,5 @@ import android.view.View;
 
 public interface RecyclerClickListener {
     @SuppressWarnings("UnusedParameters")
-    void onClick(View mView, int mPosition);
+    void onClick(View view, int position);
 }

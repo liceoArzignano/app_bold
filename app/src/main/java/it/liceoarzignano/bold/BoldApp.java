@@ -54,10 +54,10 @@ public class BoldApp extends Application {
         Utils.enableTrackerIfOverlayRequests(this, getResources().getBoolean(R.bool.force_tracker));
 
         if (Utils.hasAnalytics(this)) {
-            BoldAnalytics mBoldAnalytics = new BoldAnalytics(this);
-            Bundle mBundle = new Bundle();
-            mBundle.putString(FirebaseAnalytics.Param.LEVEL, "App");
-            mBoldAnalytics.sendConfig(mBundle);
+            BoldAnalytics analytics = new BoldAnalytics(this);
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.LEVEL, "App");
+            analytics.sendConfig(bundle);
         }
     }
 

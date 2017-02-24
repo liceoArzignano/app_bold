@@ -13,22 +13,22 @@ import it.liceoarzignano.bold.R;
 public class HomeAdapter extends RecyclerView.Adapter<HomeHolder> {
     private final List<HomeCard> mObjects;
 
-    public HomeAdapter(List<HomeCard> mObjects) {
-        this.mObjects = mObjects;
+    public HomeAdapter(List<HomeCard> objects) {
+        this.mObjects = objects;
     }
 
     @Override
-    public HomeHolder onCreateViewHolder(ViewGroup mParent, int mType) {
-        View mItem = LayoutInflater.from(mParent.getContext())
-                .inflate(R.layout.item_home, mParent, false);
+    public HomeHolder onCreateViewHolder(ViewGroup parent, int type) {
+        View item = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_home, parent, false);
 
-        return new HomeHolder(mItem);
+        return new HomeHolder(item);
     }
 
     @Override
-    public void onBindViewHolder(HomeHolder mHolder, int mPosition) {
-        HomeCard mObj = mObjects.get(mPosition);
-        mHolder.init(mObj);
+    public void onBindViewHolder(HomeHolder holder, int position) {
+        HomeCard obj = mObjects.get(position);
+        holder.init(obj);
     }
 
     @Override

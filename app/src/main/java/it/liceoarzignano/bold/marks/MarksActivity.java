@@ -36,25 +36,25 @@ public class MarksActivity extends AppCompatActivity {
     private int mFilter;
 
     @Override
-    protected void onCreate(Bundle mSavedInstance) {
-        super.onCreate(mSavedInstance);
+    protected void onCreate(Bundle savedInstance) {
+        super.onCreate(savedInstance);
 
         setContentView(R.layout.activity_marks);
 
         mController = new MarksController(((BoldApp) getApplication()).getConfig());
         mPrefs = getSharedPreferences(Utils.EXTRA_PREFS, MODE_PRIVATE);
 
-        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         mList = (RecyclerViewExt) findViewById(R.id.marks_list);
         mEmptyLayout = (LinearLayout) findViewById(R.id.marks_empty_layout);
-        FloatingActionButton mFab = (FloatingActionButton) findViewById(R.id.fab);
 
-        mFab.setOnClickListener(v -> startActivity(new Intent(this, ManagerActivity.class)));
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(v -> startActivity(new Intent(this, ManagerActivity.class)));
 
         mList.setLayoutManager(new LinearLayoutManager(this));
         mList.addItemDecoration(new DividerDecoration(this));
@@ -69,24 +69,24 @@ public class MarksActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu mMenu) {
+    public boolean onCreateOptionsMenu(Menu menu) {
         if (!Utils.isFirstQuarter(this, Utils.getToday())) {
-            getMenuInflater().inflate(R.menu.marks, mMenu);
+            getMenuInflater().inflate(R.menu.marks, menu);
 
-            MenuItem mAllMarks = mMenu.findItem(R.id.filter_all);
-            MenuItem mFirstQMarks = mMenu.findItem(R.id.filter_first);
-            MenuItem mSecondQMarks = mMenu.findItem(R.id.filter_second);
+            MenuItem allQuarters = menu.findItem(R.id.filter_all);
+            MenuItem firstQuarter = menu.findItem(R.id.filter_first);
+            MenuItem secondQuarter = menu.findItem(R.id.filter_second);
 
             mFilter = mPrefs.getInt(PREF_QUARTER_SELECTOR, 0);
             switch (mFilter) {
                 case 0:
-                    mAllMarks.setChecked(true);
+                    allQuarters.setChecked(true);
                     break;
                 case 1:
-                    mFirstQMarks.setChecked(true);
+                    firstQuarter.setChecked(true);
                     break;
                 case 2:
-                    mSecondQMarks.setChecked(true);
+                    secondQuarter.setChecked(true);
                     break;
             }
             refresh();
@@ -95,10 +95,10 @@ public class MarksActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem mItem) {
-        int mId = mItem.getItemId();
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
 
-        switch (mId) {
+        switch (id) {
             case R.id.filter_all:
                 mFilter = 0;
                 break;
@@ -109,32 +109,32 @@ public class MarksActivity extends AppCompatActivity {
                 mFilter = 2;
                 break;
         }
-        mItem.setChecked(true);
+        item.setChecked(true);
         mPrefs.edit().putInt(PREF_QUARTER_SELECTOR, mFilter).apply();
         refresh();
 
-        return super.onOptionsItemSelected(mItem);
+        return super.onOptionsItemSelected(item);
     }
 
     private void refresh() {
-        String[] mMarks = Utils.getAverageElements(this, mFilter);
+        String[] marks = Utils.getAverageElements(this, mFilter);
 
-        if (mMarks.length == 0) {
+        if (marks.length == 0) {
             mList.setVisibility(View.GONE);
             mEmptyLayout.setVisibility(View.VISIBLE);
         } else {
             mEmptyLayout.setVisibility(View.GONE);
             mList.setVisibility(View.VISIBLE);
-            AverageAdapter mAdapter = new AverageAdapter(mController, mMarks);
-            RecyclerClickListener mListener = (mView, mPosition) -> {
+            AverageAdapter adapter = new AverageAdapter(mController, marks);
+            RecyclerClickListener listener = (mView, mPosition) -> {
                 Intent mIntent = new Intent(this, SubjectActivity.class);
-                mIntent.putExtra(SubjectActivity.EXTRA_TITLE, mMarks[mPosition]);
+                mIntent.putExtra(SubjectActivity.EXTRA_TITLE, marks[mPosition]);
                 mIntent.putExtra(SubjectActivity.EXTRA_FILTER, mFilter);
                 startActivity(mIntent);
             };
-            mList.setAdapter(mAdapter);
-            mList.addOnItemTouchListener(new RecyclerTouchListener(this, mListener));
-            mAdapter.notifyDataSetChanged();
+            mList.setAdapter(adapter);
+            mList.addOnItemTouchListener(new RecyclerTouchListener(this, listener));
+            adapter.notifyDataSetChanged();
         }
     }
 }

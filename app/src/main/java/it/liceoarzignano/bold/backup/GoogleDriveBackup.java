@@ -64,21 +64,20 @@ class GoogleDriveBackup implements Backup, GoogleApiClient.OnConnectionFailedLis
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult mResult) {
         if (mResult.hasResolution() && mReference != null && mReference.get() != null) {
-            Activity mActivity = mReference.get();
+            Activity activity = mReference.get();
             // show the localized error dialog.
             try {
-                mResult.startResolutionForResult(mActivity, 1);
+                mResult.startResolutionForResult(activity, 1);
             } catch (IntentSender.SendIntentException e) {
                 if (android.support.compat.BuildConfig.DEBUG) {
                     Log.e("Backup", e.getMessage());
                 }
                 GoogleApiAvailability.getInstance()
-                        .getErrorDialog(mActivity, mResult.getErrorCode(), 0).show();
+                        .getErrorDialog(activity, mResult.getErrorCode(), 0).show();
             }
         } else {
-            Log.e("GoogleDriveAPI", "Unable to connect!");
-            Log.e("GoogleDriveAPI", "Error code: " + mResult.getErrorCode());
-            Log.e("GoogleDriveAPI", "Error message: " + mResult.getErrorMessage());
+            Log.e("GoogleDriveAPI", "Unable to connect!\nError code: " +
+                    mResult.getErrorCode() + "\nError message: " + mResult.getErrorMessage());
         }
     }
 }

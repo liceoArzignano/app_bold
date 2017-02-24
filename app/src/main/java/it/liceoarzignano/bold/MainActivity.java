@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private final Calendar mCalendar = Calendar.getInstance();
-    private MarksController mController;
+    private MarksController mMarksController;
     private EventsController mEventsController;
     private NewsController mNewsController;
     private Toolbar mToolbar;
@@ -79,10 +79,10 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        RealmConfiguration mConfig = ((BoldApp) getApplication()).getConfig();
-        mController = new MarksController(mConfig);
-        mEventsController = new EventsController(mConfig);
-        mNewsController = new NewsController(mConfig);
+        RealmConfiguration config = ((BoldApp) getApplication()).getConfig();
+        mMarksController = new MarksController(config);
+        mEventsController = new EventsController(config);
+        mNewsController = new NewsController(config);
 
         // Intro
         showIntroIfNeeded();
@@ -100,9 +100,9 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
-        View mHeaderView = navigationView.getHeaderView(0);
-        mUserName = (TextView) mHeaderView.findViewById(R.id.header_username);
-        mAddressLogo = (ImageView) mHeaderView.findViewById(R.id.header_logo);
+        View header = navigationView.getHeaderView(0);
+        mUserName = (TextView) header.findViewById(R.id.header_username);
+        mAddressLogo = (ImageView) header.findViewById(R.id.header_logo);
 
         // Cards List
         mCardsList = (RecyclerView) findViewById(R.id.home_list);
@@ -143,14 +143,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem mItem) {
-        DrawerLayout mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawer.closeDrawer(GravityCompat.START);
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
 
         // Do action with some delay to prevent lags when
         // loading big lists of marks and events
         new Handler().postDelayed(() -> {
-            switch (mItem.getItemId()) {
+            switch (item.getItemId()) {
                 case R.id.nav_my_marks:
                     startActivity(new Intent(this, MarksActivity.class));
                     break;
@@ -197,22 +197,20 @@ public class MainActivity extends AppCompatActivity
             return;
         }
 
-
-        mCustomTabsServiceConnection =
-                new CustomTabsServiceConnection() {
-                    @Override
-                    public void onCustomTabsServiceConnected(ComponentName componentName,
+        mCustomTabsServiceConnection = new CustomTabsServiceConnection() {
+            @Override
+            public void onCustomTabsServiceConnected(ComponentName componentName,
                                                              CustomTabsClient customTabsClient) {
-                        mClient = customTabsClient;
-                        mClient.warmup(0L);
-                        mCustomTabsSession = mClient.newSession(null);
-                    }
+                mClient = customTabsClient;
+                mClient.warmup(0L);
+                mCustomTabsSession = mClient.newSession(null);
+            }
 
-                    @Override
-                    public void onServiceDisconnected(ComponentName name) {
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
                         mClient = null;
                     }
-                };
+        };
 
         CustomTabsClient.bindCustomTabsService(getBaseContext(), "com.android.chrome",
                 mCustomTabsServiceConnection);
@@ -234,10 +232,10 @@ public class MainActivity extends AppCompatActivity
      * an Analytics event.
      * If there's no chrome / chromium 46+ it will just open the default browser
      *
-     * @param mIndex: the selected item from the nav drawer menu
+     * @param index: the selected item from the nav drawer menu
      */
-    private void showWebViewUI(int mIndex) {
-        switch (mIndex) {
+    private void showWebViewUI(int index) {
+        switch (index) {
             case -1:
                 mUrl = getString(R.string.config_url_changelog);
                 break;
@@ -271,24 +269,23 @@ public class MainActivity extends AppCompatActivity
      * @return events card
      */
     private HomeCard createEventsCard() {
-        HomeCard.Builder mBuilder = new HomeCard.Builder()
-                .setName(getString(R.string.upcoming_events));
+        HomeCard.Builder builder = new HomeCard.Builder().setName(getString(R.string.upcoming_events));
 
         // Show 3 closest events
-        List<Event> mEvents = mEventsController.getAll();
+        List<Event> events = mEventsController.getAll();
 
-        for (int mCounter = 0; mCounter < 3 && mCounter < mEvents.size(); mCounter++) {
-            Event mEvent = mEvents.get(mCounter);
-            if (isThisWeek(mEvent.getDate())) {
-                mBuilder.addEntry(mEvent.getTitle(), Utils.dateToStr(mEvent.getDate()));
+        for (int counter = 0; counter < 3 && counter < events.size(); counter++) {
+            Event event = events.get(counter);
+            if (isThisWeek(event.getDate())) {
+                builder.addEntry(event.getTitle(), Utils.dateToStr(event.getDate()));
             }
         }
 
-        if (mBuilder.build().getSize() == 0) {
+        if (builder.build().getSize() == 0) {
             return null;
         }
 
-        return mBuilder.build();
+        return builder.build();
     }
 
     /**
@@ -298,21 +295,20 @@ public class MainActivity extends AppCompatActivity
      * @return news card
      */
     private HomeCard createNewsCard() {
-        HomeCard.Builder mBuilder = new HomeCard.Builder()
-                .setName(getString(R.string.nav_news));
+        HomeCard.Builder builder = new HomeCard.Builder().setName(getString(R.string.nav_news));
 
         // Show 3 lastest news
-        List<News> mNews = mNewsController.getAll();
-        if (mNews.isEmpty()) {
+        List<News> newsList = mNewsController.getAll();
+        if (newsList.isEmpty()) {
             return null;
         }
 
-        for (int mCounter = 0; mCounter < 3 && mCounter < mNews.size(); mCounter++) {
-            News mNewsObj = mNews.get(mCounter);
-            mBuilder.addEntry(mNewsObj.getTitle(), mNewsObj.getDate());
+        for (int counter = 0; counter < 3 && counter < newsList.size(); counter++) {
+            News news = newsList.get(counter);
+            builder.addEntry(news.getTitle(), news.getDate());
         }
 
-        return mBuilder.build();
+        return builder.build();
     }
 
     /**
@@ -322,20 +318,19 @@ public class MainActivity extends AppCompatActivity
      * @return marks card
      */
     private HomeCard createMarksCard() {
-        HomeCard.Builder mBuilder = new HomeCard.Builder()
-                .setName(getString(R.string.lastest_marks));
+        HomeCard.Builder builder = new HomeCard.Builder().setName(getString(R.string.lastest_marks));
 
-        List<Mark> mMarks = mController.getAll().sort("date", Sort.DESCENDING);
-        if (mMarks.isEmpty()) {
+        List<Mark> marks = mMarksController.getAll().sort("date", Sort.DESCENDING);
+        if (marks.isEmpty()) {
             return null;
         }
 
-        for (int mCounter = 0; mCounter < 3 && mCounter < mMarks.size(); mCounter++) {
-            Mark mMark = mMarks.get(mCounter);
-            mBuilder.addEntry(mMark.getTitle(), String.valueOf((double) mMark.getValue() / 100));
+        for (int counter = 0; counter < 3 && counter < marks.size(); counter++) {
+            Mark mark = marks.get(counter);
+            builder.addEntry(mark.getTitle(), String.valueOf((double) mark.getValue() / 100));
         }
 
-        return mBuilder.build();
+        return builder.build();
     }
 
     /**
@@ -353,17 +348,16 @@ public class MainActivity extends AppCompatActivity
     /**
      * Check if mDate is one of the next 7 days
      *
-     * @param mDate: string date from event database
+     * @param date: string date from event database
      * @return true if it's within 7 days, false if not
      */
-    private boolean isThisWeek(Date mDate) {
-        Calendar mDateCal = Calendar.getInstance();
-        mDateCal.setTime(mDate);
+    private boolean isThisWeek(Date date) {
+        Calendar dateCal = Calendar.getInstance();
+        dateCal.setTime(date);
 
-        int mDiff = mDateCal.get(Calendar.DAY_OF_YEAR) - mCalendar.get(Calendar.DAY_OF_YEAR);
+        int diff = dateCal.get(Calendar.DAY_OF_YEAR) - mCalendar.get(Calendar.DAY_OF_YEAR);
 
-        return mDateCal.get(Calendar.YEAR) == mCalendar.get(Calendar.YEAR) &&
-                mDiff >= 0 && mDiff < 8;
+        return dateCal.get(Calendar.YEAR) == mCalendar.get(Calendar.YEAR) && diff >= 0 && diff < 8;
     }
 
     /**
@@ -373,8 +367,8 @@ public class MainActivity extends AppCompatActivity
      * @return string with text for suggestion card
      */
     private String getSuggestion() {
-        Random mRandom = new SecureRandom();
-        switch (mRandom.nextInt(11) + 1) {
+        Random random = new SecureRandom();
+        switch (random.nextInt(11) + 1) {
             case 1:
                 return getString(Utils.hasSafe(this) ?
                         R.string.suggestion_safe_pwd : R.string.suggestion_safe);
@@ -407,37 +401,37 @@ public class MainActivity extends AppCompatActivity
      * a nice enter effect
      */
     private void populateCards() {
-        List<HomeCard> mCards = new ArrayList<>();
+        List<HomeCard> cards = new ArrayList<>();
 
         // Events
-        HomeCard mEventsCard = createEventsCard();
-        if (mEventsCard != null) {
-            mCards.add(mEventsCard);
+        HomeCard eventsCard = createEventsCard();
+        if (eventsCard != null) {
+            cards.add(eventsCard);
         }
 
         // News
-        HomeCard mNewsCard = createNewsCard();
-        if (mNewsCard != null) {
-            mCards.add(mNewsCard);
+        HomeCard newsCard = createNewsCard();
+        if (newsCard != null) {
+            cards.add(newsCard);
         }
 
         // Marks
         if (Utils.hasUsedForMoreThanOneWeek(this)) {
-            HomeCard mMarksCard = createMarksCard();
-            if (mMarksCard != null) {
-                mCards.add(mMarksCard);
+            HomeCard marksCard = createMarksCard();
+            if (marksCard != null) {
+                cards.add(marksCard);
             }
         }
 
         // Suggestions
         if (Utils.hasSuggestions(this)) {
-            mCards.add(createSuggestionsCard());
+            cards.add(createSuggestionsCard());
         }
 
-        HomeAdapter mAdapter = new HomeAdapter(mCards);
-        mCardsList.setAdapter(mAdapter);
+        HomeAdapter adapter = new HomeAdapter(cards);
+        mCardsList.setAdapter(adapter);
 
-        mAdapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
 
     /**
@@ -445,10 +439,10 @@ public class MainActivity extends AppCompatActivity
      * if it's the first time we fire the app
      */
     private void showIntroIfNeeded() {
-        SharedPreferences mPrefs = getSharedPreferences(Utils.EXTRA_PREFS, MODE_PRIVATE);
-        if (!mPrefs.getBoolean(Utils.KEY_INTRO_SCREEN, false)) {
-            Intent mIntent = new Intent(this, BenefitsActivity.class);
-            startActivity(mIntent);
+        SharedPreferences prefs = getSharedPreferences(Utils.EXTRA_PREFS, MODE_PRIVATE);
+        if (!prefs.getBoolean(Utils.KEY_INTRO_SCREEN, false)) {
+            Intent intent = new Intent(this, BenefitsActivity.class);
+            startActivity(intent);
             finish();
         }
     }
@@ -457,14 +451,14 @@ public class MainActivity extends AppCompatActivity
      * Show welcome / changelog dialog
      * when the app is installed / updated
      *
-     * @param mContext: used to get SharedPreferences
+     * @param context: used to get SharedPreferences
      */
-    private void showWelcomeIfNeeded(final Context mContext) {
-        final SharedPreferences mPrefs = getSharedPreferences(Utils.EXTRA_PREFS, MODE_PRIVATE);
+    private void showWelcomeIfNeeded(final Context context) {
+        final SharedPreferences prefs = getSharedPreferences(Utils.EXTRA_PREFS, MODE_PRIVATE);
         @SuppressLint("CommitPrefEdits")
-        final SharedPreferences.Editor mEditor = mPrefs.edit();
+        final SharedPreferences.Editor editor = prefs.edit();
 
-        if (!mPrefs.getBoolean(Utils.KEY_INTRO_SCREEN, false)) {
+        if (!prefs.getBoolean(Utils.KEY_INTRO_SCREEN, false)) {
             // If we're showing intro, don't display dialog
             return;
         }
@@ -475,29 +469,28 @@ public class MainActivity extends AppCompatActivity
             case "0":
                 // Used for feature discovery
                 final String today = Utils.getTodayStr();
-                mEditor.putString(Utils.KEY_VERSION, BuildConfig.VERSION_NAME).apply();
-                mEditor.putString(Utils.KEY_INITIAL_DAY, today).apply();
+                editor.putString(Utils.KEY_VERSION, BuildConfig.VERSION_NAME).apply();
+                editor.putString(Utils.KEY_INITIAL_DAY, today).apply();
                 break;
             default:
-                new MaterialDialog.Builder(mContext)
+                new MaterialDialog.Builder(context)
                         .title(R.string.dialog_updated_title)
                         .content(R.string.dialog_updated_content)
                         .positiveText(android.R.string.ok)
                         .negativeText(R.string.dialog_updated_changelog)
                         .canceledOnTouchOutside(false)
-                        .onPositive((dialog, which) -> mEditor.putString(Utils.KEY_VERSION,
+                        .onPositive((dialog, which) -> editor.putString(Utils.KEY_VERSION,
                                 BuildConfig.VERSION_NAME).apply())
                         .onNegative((dialog, which) -> {
                             dialog.hide();
                             showWebViewUI(-1);
                         })
-
                         .show();
                 break;
         }
 
-        if (mPrefs.getBoolean(Utils.KEY_INTRO_DRAWER, true)) {
-            mEditor.putBoolean(Utils.KEY_INTRO_DRAWER, false).apply();
+        if (prefs.getBoolean(Utils.KEY_INTRO_DRAWER, true)) {
+            editor.putBoolean(Utils.KEY_INTRO_DRAWER, false).apply();
             new MaterialTapTargetPrompt.Builder(this)
                     .setTarget(mToolbar.getChildAt(1))
                     .setPrimaryText(getString(R.string.intro_drawer_title))

@@ -50,8 +50,8 @@ public class EventListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_list);
 
-        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -62,18 +62,18 @@ public class EventListActivity extends AppCompatActivity {
 
         mDate = new Date();
 
-        Calendar mStart = Calendar.getInstance();
-        mStart.add(Calendar.YEAR, -1);
-        Calendar mEnd = Calendar.getInstance();
-        mEnd.add(Calendar.YEAR, 1);
-        HorizontalCalendar mHCalendar = new HorizontalCalendar.Builder(this, R.id.events_calendar)
-                .startDate(mStart.getTime())
-                .endDate(mEnd.getTime())
+        Calendar start = Calendar.getInstance();
+        start.add(Calendar.YEAR, -1);
+        Calendar end = Calendar.getInstance();
+        end.add(Calendar.YEAR, 1);
+        HorizontalCalendar hCalendar = new HorizontalCalendar.Builder(this, R.id.events_calendar)
+                .startDate(start.getTime())
+                .endDate(end.getTime())
                 .dayFormat("EEE")
                 .centerToday(true)
                 .build();
 
-        mHCalendar.setCalendarListener(new HorizontalCalendarListener() {
+        hCalendar.setCalendarListener(new HorizontalCalendarListener() {
             @Override
             public void onDateSelected(Date date, int position) {
                 mDate = date;
@@ -81,11 +81,11 @@ public class EventListActivity extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton mFab = (FloatingActionButton) findViewById(R.id.fab);
-        mFab.setOnClickListener(view -> {
-            Intent mIntent = new Intent(EventListActivity.this, ManagerActivity.class);
-            mIntent.putExtra("isMark", false);
-            startActivity(mIntent);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(view -> {
+            Intent intent = new Intent(EventListActivity.this, ManagerActivity.class);
+            intent.putExtra("isMark", false);
+            startActivity(intent);
         });
 
         mEventList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -97,18 +97,18 @@ public class EventListActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        Intent mCallingIntent = getIntent();
-        if (Intent.ACTION_SEARCH.equals(mCallingIntent.getAction())) {
-            mQuery = mCallingIntent.getStringExtra(SearchManager.QUERY);
+        Intent callingIntent = getIntent();
+        if (Intent.ACTION_SEARCH.equals(callingIntent.getAction())) {
+            mQuery = callingIntent.getStringExtra(SearchManager.QUERY);
         }
 
         refreshList(this, mDate, mQuery);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu mMenu) {
-        getMenuInflater().inflate(R.menu.search, mMenu);
-        setupSearchView(mMenu.findItem(R.id.menu_search));
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search, menu);
+        setupSearchView(menu.findItem(R.id.menu_search));
         return true;
     }
 
@@ -118,22 +118,22 @@ public class EventListActivity extends AppCompatActivity {
      * @param item search menu item
      */
     private void setupSearchView(MenuItem item) {
-        SearchView mSearchView = (SearchView) MenuItemCompat.getActionView(item);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
 
-        if (mSearchView == null) {
+        if (searchView == null) {
             return;
         }
 
-        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String mQuery) {
-                refreshList(getApplicationContext(), null, mQuery);
+            public boolean onQueryTextSubmit(String query) {
+                refreshList(getApplicationContext(), null, query);
                 return true;
             }
 
             @Override
-            public boolean onQueryTextChange(String mNewText) {
-                refreshList(getApplicationContext(), null, mNewText);
+            public boolean onQueryTextChange(String text) {
+                refreshList(getApplicationContext(), null, text);
                 return true;
             }
         });
@@ -162,52 +162,52 @@ public class EventListActivity extends AppCompatActivity {
     public void refreshList(Context context, Date date, String query) {
         boolean hasQuery = query != null && !query.isEmpty();
 
-        Calendar mPrevious = Calendar.getInstance();
+        Calendar previous = Calendar.getInstance();
         if (date != null) {
-            mPrevious.setTime(date);
-            mPrevious.add(Calendar.DAY_OF_YEAR, -1);
+            previous.setTime(date);
+            previous.add(Calendar.DAY_OF_YEAR, -1);
         }
 
-        Realm mRealm = Realm.getInstance(((BoldApp) getApplicationContext()).getConfig());
+        Realm realm = Realm.getInstance(((BoldApp) getApplicationContext()).getConfig());
 
-        RealmResults<Event> mEvents = date == null ?
+        RealmResults<Event> events = date == null ?
                 hasQuery ?
-                        mRealm.where(Event.class)
+                        realm.where(Event.class)
                                 .contains("title", query, Case.INSENSITIVE)
                                 .findAllSorted("date", Sort.DESCENDING) :
-                        mRealm.where(Event.class)
+                        realm.where(Event.class)
                                 .findAllSorted("date", Sort.DESCENDING) :
                 hasQuery ?
-                        mRealm.where(Event.class)
-                                .between("date", mPrevious.getTime(), date)
+                        realm.where(Event.class)
+                                .between("date", previous.getTime(), date)
                                 .contains("title", query,Case.INSENSITIVE)
                                 .findAllSorted("date", Sort.DESCENDING) :
-                        mRealm.where(Event.class)
-                                .between("date", mPrevious.getTime(), date)
+                        realm.where(Event.class)
+                                .between("date", previous.getTime(), date)
                                 .findAllSorted("date", Sort.DESCENDING);
 
-        mEmptyLayout.setVisibility(mEvents.isEmpty() ? View.VISIBLE : View.GONE);
+        mEmptyLayout.setVisibility(events.isEmpty() ? View.VISIBLE : View.GONE);
         mEmptyText.setText(context.getString(hasQuery ?
                 R.string.search_no_result : R.string.events_empty));
 
-        EventsAdapter mAdapter = new EventsAdapter(mEvents);
-        RecyclerClickListener mListener = (view, position) ->
-                viewEvent(mEvents.get(position).getId());
-        mEventList.setAdapter(mAdapter);
-        mEventList.addOnItemTouchListener(new RecyclerTouchListener(context, mListener));
+        EventsAdapter adapter = new EventsAdapter(events);
+        RecyclerClickListener listener = (view, position) ->
+                viewEvent(events.get(position).getId());
+        mEventList.setAdapter(adapter);
+        mEventList.addOnItemTouchListener(new RecyclerTouchListener(context, listener));
 
-        mAdapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
 
     /**
      * Fire ViewerDialog and pass the selected event data
      *
-     * @param mId: event id
+     * @param id: event id
      */
-    private void viewEvent(long mId) {
-        final BottomSheetDialog mSheet = new BottomSheetDialog(this);
-        View mBottomView = new ViewerDialog(this, mSheet).setData(mId, false);
-        mSheet.setContentView(mBottomView);
-        mSheet.show();
+    private void viewEvent(long id) {
+        final BottomSheetDialog sheet = new BottomSheetDialog(this);
+        View bottomView = new ViewerDialog(this, sheet).setData(id, false);
+        sheet.setContentView(bottomView);
+        sheet.show();
     }
 }

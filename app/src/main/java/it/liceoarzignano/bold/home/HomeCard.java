@@ -9,11 +9,11 @@ public class HomeCard {
     private final List<String> mTitle;
     private final List<String> mContent;
 
-    private HomeCard(int mSize, String mName, List<String> mTitle, List<String> mContent) {
-        this.mSize = mSize;
-        this.mName = mName;
-        this.mTitle = mTitle;
-        this.mContent = mContent;
+    private HomeCard(int size, String name, List<String> title, List<String> content) {
+        this.mSize = size;
+        this.mName = name;
+        this.mTitle = title;
+        this.mContent = content;
     }
 
     public int getSize() {
@@ -38,19 +38,19 @@ public class HomeCard {
         private int mCounter;
         private String mName;
 
-        public Builder setName(String mName) {
-            this.mName = mName;
+        public Builder setName(String name) {
+            this.mName = name;
             return this;
         }
 
-        public Builder addEntry(String mTitle, String mContent) {
+        public Builder addEntry(String title, String content) {
             if (mCounter > 2) {
                 return this;
             }
 
             mCounter++;
-            mTitleList.add(mTitle);
-            mContentList.add(mContent);
+            mTitleList.add(title);
+            mContentList.add(content);
             return this;
         }
 

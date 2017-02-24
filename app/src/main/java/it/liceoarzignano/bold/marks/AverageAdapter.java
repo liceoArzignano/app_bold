@@ -16,22 +16,20 @@ class AverageAdapter extends RecyclerView.Adapter<AverageAdapter.AverageHolder> 
     private final MarksController mController;
     private final String[] mResults;
 
-    AverageAdapter(MarksController mController, String[] mResults) {
-        this.mController = mController;
-        this.mResults = mResults;
+    AverageAdapter(MarksController controller, String[] results) {
+        mController = controller;
+        mResults = results;
     }
 
     @Override
-    public AverageAdapter.AverageHolder onCreateViewHolder(ViewGroup mParent, int mType) {
-        View mItem = LayoutInflater.from(mParent.getContext())
-                .inflate(R.layout.item_average, mParent, false);
-
-        return new AverageAdapter.AverageHolder(mItem);
+    public AverageAdapter.AverageHolder onCreateViewHolder(ViewGroup parent, int type) {
+        return new AverageAdapter.AverageHolder(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_average, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(AverageAdapter.AverageHolder mHolder, int mPosition) {
-        mHolder.setData(mResults[mPosition]);
+    public void onBindViewHolder(AverageAdapter.AverageHolder holder, int position) {
+        holder.setData(mResults[position]);
     }
 
     @Override
@@ -43,20 +41,20 @@ class AverageAdapter extends RecyclerView.Adapter<AverageAdapter.AverageHolder> 
         private final TextView mTitle;
         private final TextView mValue;
 
-        AverageHolder(View mView) {
-            super(mView);
-            mTitle = (TextView) mView.findViewById(R.id.row_avg_title);
-            mValue = (TextView) mView.findViewById(R.id.row_avg_value);
+        AverageHolder(View view) {
+            super(view);
+            mTitle = (TextView) view.findViewById(R.id.row_avg_title);
+            mValue = (TextView) view.findViewById(R.id.row_avg_value);
         }
 
-        void setData(String mResult) {
-            mTitle.setText(mResult);
+        void setData(String result) {
+            mTitle.setText(result);
 
-            Double mDoubleVal = mController.getAverage(mResult, 0);
-            if (mDoubleVal < 6) {
+            Double val = mController.getAverage(result, 0);
+            if (val < 6) {
                 mValue.setTextColor(Color.RED);
             }
-            mValue.setText(String.format(Locale.ENGLISH, "%.2f", mDoubleVal));
+            mValue.setText(String.format(Locale.ENGLISH, "%.2f", val));
         }
     }
 

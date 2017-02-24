@@ -20,17 +20,14 @@ class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventHolder> {
     }
 
     @Override
-    public EventHolder onCreateViewHolder(ViewGroup mParent, int mType) {
-        View mItem = LayoutInflater.from(mParent.getContext())
-                .inflate(R.layout.item_event, mParent, false);
-
-        return new EventHolder(mItem);
+    public EventHolder onCreateViewHolder(ViewGroup parent, int type) {
+        return new EventHolder(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_event, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(EventHolder mHolder, int mPosition) {
-        Event mEvent = mEvents.get(mPosition);
-        mHolder.setData(mEvent);
+    public void onBindViewHolder(EventHolder holder, int position) {
+        holder.setData(mEvents.get(position));
     }
 
     @Override
@@ -43,43 +40,43 @@ class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventHolder> {
         private final TextView mValue;
         private final ImageView mIcon;
 
-        EventHolder(View mView) {
-            super(mView);
-            mTitle = (TextView) mView.findViewById(R.id.row_event_title);
-            mValue = (TextView) mView.findViewById(R.id.row_event_value);
-            mIcon = (ImageView) mView.findViewById(R.id.row_event_icon);
+        EventHolder(View view) {
+            super(view);
+            mTitle = (TextView) view.findViewById(R.id.row_event_title);
+            mValue = (TextView) view.findViewById(R.id.row_event_value);
+            mIcon = (ImageView) view.findViewById(R.id.row_event_icon);
         }
 
-        void setData(Event mEvent) {
-            mTitle.setText(mEvent.getTitle());
-            mValue.setText(Utils.dateToStr(mEvent.getDate()));
-            int mIconAddress;
+        void setData(Event event) {
+            mTitle.setText(event.getTitle());
+            mValue.setText(Utils.dateToStr(event.getDate()));
+            int iconAddress;
 
-            switch (mEvent.getIcon()) {
+            switch (event.getIcon()) {
                 case 0:
-                    mIconAddress = R.drawable.ic_event_test;
+                    iconAddress = R.drawable.ic_event_test;
                     break;
                 case 1:
-                    mIconAddress = R.drawable.ic_event_school;
+                    iconAddress = R.drawable.ic_event_school;
                     break;
                 case 2:
-                    mIconAddress = R.drawable.ic_event_bday;
+                    iconAddress = R.drawable.ic_event_bday;
                     break;
                 case 3:
-                    mIconAddress = R.drawable.ic_event_homework;
+                    iconAddress = R.drawable.ic_event_homework;
                     break;
                 case 4:
-                    mIconAddress = R.drawable.ic_event_reminder;
+                    iconAddress = R.drawable.ic_event_reminder;
                     break;
                 case 5:
-                    mIconAddress = R.drawable.ic_event_hangout;
+                    iconAddress = R.drawable.ic_event_hangout;
                     break;
                 default:
-                    mIconAddress = R.drawable.ic_event_other;
+                    iconAddress = R.drawable.ic_event_other;
                     break;
             }
 
-            mIcon.setImageResource(mIconAddress);
+            mIcon.setImageResource(iconAddress);
         }
     }
 }

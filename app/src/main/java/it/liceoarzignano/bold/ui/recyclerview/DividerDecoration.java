@@ -16,36 +16,36 @@ public class DividerDecoration extends RecyclerView.ItemDecoration {
     private final Drawable mDivider;
     private final Context mContext;
 
-    public DividerDecoration(Context mContext) {
-        this.mContext = mContext;
-        TypedArray mTyped = mContext.obtainStyledAttributes(
+    public DividerDecoration(Context context) {
+        this.mContext = context;
+        TypedArray typed = context.obtainStyledAttributes(
                 new int[]{android.R.attr.listDivider});
-        mDivider = mTyped.getDrawable(0);
-        mTyped.recycle();
+        mDivider = typed.getDrawable(0);
+        typed.recycle();
     }
 
     @Override
-    public void onDrawOver(Canvas mCanvas, RecyclerView mParent, RecyclerView.State mState) {
-        int mLeft = mParent.getPaddingLeft();
-        int mRight = mParent.getWidth() - mParent.getPaddingRight();
+    public void onDrawOver(Canvas canvas, RecyclerView parent, RecyclerView.State state) {
+        int left = parent.getPaddingLeft();
+        int right = parent.getWidth() - parent.getPaddingRight();
 
-        int mChildCount = mParent.getChildCount();
-        for (int mCounter = 0; mCounter < mChildCount; mCounter++) {
-            View mChild = mParent.getChildAt(mCounter);
-            RecyclerView.LayoutParams mParams = (RecyclerView.LayoutParams) mChild
+        int size = parent.getChildCount();
+        for (int counter = 0; counter < size; counter++) {
+            View child = parent.getChildAt(counter);
+            RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child
                     .getLayoutParams();
-            int mTop = mChild.getBottom() + mParams.bottomMargin;
-            int mBottom = mTop + mDivider.getIntrinsicHeight();
-            mDivider.setBounds(mLeft, mTop, mRight, mBottom);
+            int top = child.getBottom() + params.bottomMargin;
+            int bottom = top + mDivider.getIntrinsicHeight();
+            mDivider.setBounds(left, top, right, bottom);
             mDivider.setColorFilter(ContextCompat.getColor(mContext,
                     R.color.list_divider), PorterDuff.Mode.SRC_ATOP);
-            mDivider.draw(mCanvas);
+            mDivider.draw(canvas);
         }
     }
 
     @Override
-    public void getItemOffsets(Rect mOut, View mView, RecyclerView mParent,
-                               RecyclerView.State mState) {
-        mOut.set(0, 0, 0, mDivider.getIntrinsicHeight());
+    public void getItemOffsets(Rect out, View view, RecyclerView parent,
+                               RecyclerView.State state) {
+        out.set(0, 0, 0, mDivider.getIntrinsicHeight());
     }
 }

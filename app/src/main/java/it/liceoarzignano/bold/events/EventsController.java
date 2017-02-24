@@ -19,39 +19,39 @@ public class EventsController extends RealmController<Event> {
     }
 
     @Override
-    public RealmResults<Event> getById(long mId) {
-        return mRealm.where(Event.class).equalTo("id", mId).findAllSorted("date", Sort.ASCENDING);
+    public RealmResults<Event> getById(long id) {
+        return mRealm.where(Event.class).equalTo("id", id).findAllSorted("date", Sort.ASCENDING);
     }
 
     @Override
-    public long add(Event mEvent) {
-        long mNewId = Calendar.getInstance().getTimeInMillis();
+    public long add(Event event) {
+        long id = Calendar.getInstance().getTimeInMillis();
 
-        mEvent.setId(mNewId);
+        event.setId(id);
         mRealm.beginTransaction();
-        mRealm.copyToRealm(mEvent);
+        mRealm.copyToRealm(event);
         mRealm.commitTransaction();
-        return mNewId;
+        return id;
     }
 
     @Override
-    public long update(Event mEvent) {
-        long mId = mEvent.getId();
-        Event mOld = getById(mId).first();
+    public long update(Event event) {
+        long id = event.getId();
+        Event old = getById(id).first();
         mRealm.beginTransaction();
-        mOld.setTitle(mEvent.getTitle());
-        mOld.setNote(mEvent.getNote());
-        mOld.setDate(mEvent.getDate());
-        mOld.setIcon(mEvent.getIcon());
+        old.setTitle(event.getTitle());
+        old.setNote(event.getNote());
+        old.setDate(event.getDate());
+        old.setIcon(event.getIcon());
         mRealm.commitTransaction();
 
-        return mId;
+        return id;
     }
 
     @Override
-    public void delete(long mId) {
+    public void delete(long id) {
         mRealm.beginTransaction();
-        getById(mId).first().deleteFromRealm();
+        getById(id).first().deleteFromRealm();
         mRealm.commitTransaction();
     }
 

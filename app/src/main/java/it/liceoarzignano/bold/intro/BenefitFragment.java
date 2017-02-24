@@ -31,8 +31,8 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 public class BenefitFragment extends Fragment {
 
-    private TextView mTitle;
-    private TextView mMessage;
+    private TextView title;
+    private TextView message;
 
     private ImageView mIntroImage;
 
@@ -53,105 +53,105 @@ public class BenefitFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater mInflater, ViewGroup mContainer,
-                             Bundle mSavedInstance) {
-        int mPosition = getArguments().getInt("section_number");
-        View mView = mInflater.inflate(R.layout.fragment_benefits_contents, mContainer, false);
-        mTitle = (TextView) mView.findViewById(R.id.intro_title);
-        mMessage = (TextView) mView.findViewById(R.id.intro_message);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstance) {
+        int position = getArguments().getInt("section_number");
+        View view = inflater.inflate(R.layout.fragment_benefits_contents, container, false);
+        title = (TextView) view.findViewById(R.id.intro_title);
+        message = (TextView) view.findViewById(R.id.intro_message);
 
         // Step
-        LinearLayout mStep1 = (LinearLayout) mView.findViewById(R.id.step_1);
-        mIntroImage = (ImageView) mView.findViewById(R.id.intro_animation);
+        LinearLayout step1 = (LinearLayout) view.findViewById(R.id.step_1);
+        mIntroImage = (ImageView) view.findViewById(R.id.intro_animation);
 
         // Step 2
-        RadioGroup mStep2 = (RadioGroup) mView.findViewById(R.id.step_2);
-        RadioButton mRadio1 = (RadioButton) mView.findViewById(R.id.intro_address_1);
-        RadioButton mRadio2 = (RadioButton) mView.findViewById(R.id.intro_address_2);
-        RadioButton mRadio3 = (RadioButton) mView.findViewById(R.id.intro_address_3);
-        RadioButton mRadio4 = (RadioButton) mView.findViewById(R.id.intro_address_4);
-        RadioButton mRadio5 = (RadioButton) mView.findViewById(R.id.intro_address_5);
-        RadioButton mRadio6 = (RadioButton) mView.findViewById(R.id.intro_address_6);
+        RadioGroup step2 = (RadioGroup) view.findViewById(R.id.step_2);
+        RadioButton radio1 = (RadioButton) view.findViewById(R.id.intro_address_1);
+        RadioButton radio2 = (RadioButton) view.findViewById(R.id.intro_address_2);
+        RadioButton radio3 = (RadioButton) view.findViewById(R.id.intro_address_3);
+        RadioButton radio4 = (RadioButton) view.findViewById(R.id.intro_address_4);
+        RadioButton radio5 = (RadioButton) view.findViewById(R.id.intro_address_5);
+        RadioButton radio6 = (RadioButton) view.findViewById(R.id.intro_address_6);
 
         // Step 3
-        LinearLayout mStep3 = (LinearLayout) mView.findViewById(R.id.step_3);
-        mSafeMessage = (TextView) mView.findViewById(R.id.intro_safe_message);
-        mSafeProgressBar = (MaterialProgressBar) mView.findViewById(R.id.intro_safe_bar);
-        mSafeImage = (ImageView) mView.findViewById(R.id.intro_safe_anim);
-        mSafeRetryButton = (AppCompatButton) mView.findViewById(R.id.intro_safe_retry);
+        LinearLayout step3 = (LinearLayout) view.findViewById(R.id.step_3);
+        mSafeMessage = (TextView) view.findViewById(R.id.intro_safe_message);
+        mSafeProgressBar = (MaterialProgressBar) view.findViewById(R.id.intro_safe_bar);
+        mSafeImage = (ImageView) view.findViewById(R.id.intro_safe_anim);
+        mSafeRetryButton = (AppCompatButton) view.findViewById(R.id.intro_safe_retry);
 
         mSafeRetryButton.setOnClickListener((mButtonView) -> doDeviceCheck(getActivity()));
 
-        switch (mPosition) {
+        switch (position) {
             case 0:
-                mTitle.setText(getString(R.string.slide0_title));
-                mTitle.setAlpha(0f);
-                mMessage.setText(getString(R.string.slide0_message));
-                mMessage.setAlpha(0f);
+                title.setText(getString(R.string.slide0_title));
+                title.setAlpha(0f);
+                message.setText(getString(R.string.slide0_message));
+                message.setAlpha(0f);
                 break;
             case 1:
-                mTitle.setText(getString(R.string.slide1_title));
-                mMessage.setText(getString(R.string.slide1_message));
-                mStep1.setVisibility(View.GONE);
-                mStep2.setVisibility(View.VISIBLE);
-                mStep3.setVisibility(View.GONE);
-                mRadio1.setOnClickListener((mRadioView) -> setAddress("1"));
-                mRadio2.setOnClickListener((mRadioView) -> setAddress("2"));
-                mRadio3.setOnClickListener((mRadioView) -> setAddress("3"));
-                mRadio4.setOnClickListener((mRadioView) -> setAddress("4"));
-                mRadio5.setOnClickListener((mRadioView) -> setAddress("5"));
-                mRadio6.setOnClickListener((mRadioView) -> setAddress(null));
+                title.setText(getString(R.string.slide1_title));
+                message.setText(getString(R.string.slide1_message));
+                step1.setVisibility(View.GONE);
+                step2.setVisibility(View.VISIBLE);
+                step3.setVisibility(View.GONE);
+                radio1.setOnClickListener((mRadioView) -> setAddress("1"));
+                radio2.setOnClickListener((mRadioView) -> setAddress("2"));
+                radio3.setOnClickListener((mRadioView) -> setAddress("3"));
+                radio4.setOnClickListener((mRadioView) -> setAddress("4"));
+                radio5.setOnClickListener((mRadioView) -> setAddress("5"));
+                radio6.setOnClickListener((mRadioView) -> setAddress(null));
                 break;
             case 2:
-                mTitle.setText(getString(R.string.slide2_title));
-                mMessage.setText(getString(R.string.slide2_message));
-                mStep1.setVisibility(View.GONE);
-                mStep2.setVisibility(View.GONE);
-                mStep3.setVisibility(View.VISIBLE);
+                title.setText(getString(R.string.slide2_title));
+                message.setText(getString(R.string.slide2_message));
+                step1.setVisibility(View.GONE);
+                step2.setVisibility(View.GONE);
+                step3.setVisibility(View.VISIBLE);
                 break;
         }
 
-        return mView;
+        return view;
     }
 
-    private void setAddress(String mVal) {
+    private void setAddress(String value) {
         ((BenefitsActivity) getActivity()).mViewPager.setScrollAllowed(true);
-        if (mVal == null) {
+        if (value == null) {
             Utils.setTeacherMode(getContext());
         } else {
-            Utils.setAddress(getContext(), mVal);
+            Utils.setAddress(getContext(), value);
         }
     }
 
-    void doDeviceCheck(Context mContext) {
+    void doDeviceCheck(Context context) {
         mSafeImage.setImageResource(R.drawable.ic_safe);
         mSafeProgressBar.setVisibility(View.VISIBLE);
         mSafeRetryButton.setVisibility(View.GONE);
         mSafeMessage.setText("");
 
-        GoogleApiClient mClient = new GoogleApiClient.Builder(mContext)
+        GoogleApiClient client = new GoogleApiClient.Builder(context)
                 .addApi(SafetyNet.API)
                 .build();
-        mClient.connect();
+        client.connect();
 
-        String mNonceData = String.valueOf(System.currentTimeMillis());
-        ByteArrayOutputStream mOstream = new ByteArrayOutputStream();
-        byte[] mRandBytes = new byte[24];
-        new SecureRandom().nextBytes(mRandBytes);
+        String nonce = String.valueOf(System.currentTimeMillis());
+        ByteArrayOutputStream oStream = new ByteArrayOutputStream();
+        byte[] randBytes = new byte[24];
+        new SecureRandom().nextBytes(randBytes);
 
         try {
-            mOstream.write(mRandBytes);
-            mOstream.write(mNonceData.getBytes());
+            oStream.write(randBytes);
+            oStream.write(nonce.getBytes());
         } catch (IOException e) {
             Log.e("SafetyNetTest", e.getMessage());
         }
 
         ((BenefitsActivity) getActivity()).mViewPager.setScrollAllowed(false);
-        if (Utils.hasInternetConnection(mContext)) {
+        if (Utils.hasInternetConnection(context)) {
             SafetyNet.SafetyNetApi
-                    .attest(mClient, mOstream.toByteArray())
-                    .setResultCallback((mResult) -> postDeviceCheck(mContext,
-                            Encryption.validateRespose(mContext, mResult.getJwsResult(),
+                    .attest(client, oStream.toByteArray())
+                    .setResultCallback((mResult) -> postDeviceCheck(context,
+                            Encryption.validateRespose(context, mResult.getJwsResult(),
                                     BuildConfig.DEBUG)));
         } else {
             mSafeImage.setImageResource(R.drawable.avd_intro_no_connection);
@@ -165,8 +165,8 @@ public class BenefitFragment extends Fragment {
         }
     }
 
-    private void postDeviceCheck(Context mContext, boolean hasPassed) {
-        Utils.setSafetyNetResults(mContext, hasPassed);
+    private void postDeviceCheck(Context context, boolean hasPassed) {
+        Utils.setSafetyNetResults(context, hasPassed);
 
         mSafeMessage.setVisibility(View.VISIBLE);
         mSafeRetryButton.setVisibility(View.VISIBLE);
@@ -180,7 +180,7 @@ public class BenefitFragment extends Fragment {
         } else {
             mSafeProgressBar.setVisibility(View.GONE);
             mSafeMessage.setVisibility(View.VISIBLE);
-            mSafeMessage.setTextColor(ContextCompat.getColor(mContext, R.color.red));
+            mSafeMessage.setTextColor(ContextCompat.getColor(context, R.color.red));
             mSafeMessage.setText(getString(R.string.intro_safe_failure));
         }
 
@@ -196,8 +196,8 @@ public class BenefitFragment extends Fragment {
 
     void animateIntro() {
         if (Utils.isNotLegacy()) {
-            mTitle.animate().alpha(1f).setStartDelay(800).start();
-            mMessage.animate().alpha(1f).setStartDelay(820).start();
+            title.animate().alpha(1f).setStartDelay(800).start();
+            message.animate().alpha(1f).setStartDelay(820).start();
 
             ((AnimatedVectorDrawable) mIntroImage.getDrawable()).start();
         }

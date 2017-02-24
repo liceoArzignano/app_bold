@@ -42,26 +42,25 @@ public class SubjectActivity extends AppCompatActivity {
     private int mFilter;
 
     @Override
-    protected void onCreate(Bundle mSavedInstance) {
-        super.onCreate(mSavedInstance);
+    protected void onCreate(Bundle savedInstance) {
+        super.onCreate(savedInstance);
 
         setContentView(R.layout.activity_subject);
 
         mController = new MarksController(((BoldApp) getApplication()).getConfig());
 
-        Intent mIntent = getIntent();
-        mTitle = mIntent.getStringExtra(EXTRA_TITLE);
-        mFilter = mIntent.getIntExtra(EXTRA_FILTER, 0);
+        Intent callingIntent = getIntent();
+        mTitle = callingIntent.getStringExtra(EXTRA_TITLE);
+        mFilter = callingIntent.getIntExtra(EXTRA_FILTER, 0);
 
-        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setTitle(mTitle);
-        setSupportActionBar(mToolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(mTitle);
+        setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         mNestedView = (NestedScrollView) findViewById(R.id.subject_nested_view);
-
         mProgressBar = (CircularProgressBar) findViewById(R.id.subject_hint_bar);
         mTextHint = (TextView) findViewById(R.id.subject_hint_text);
         mList = (RecyclerViewExt) findViewById(R.id.subject_list);
@@ -83,36 +82,36 @@ public class SubjectActivity extends AppCompatActivity {
 
     public void refresh() {
         mMarks = mController.getFilteredMarks(mTitle, mFilter);
-        SubjectAdapter mAdapter = new SubjectAdapter(mMarks);
-        RecyclerClickListener mListener = (mView, mPosition) -> {
-            BottomSheetDialog mSheet = new BottomSheetDialog(this);
-            View mBottomView = new ViewerDialog(this, mSheet)
-                    .setData(mMarks.get(mPosition).getId(), true);
-            mSheet.setContentView(mBottomView);
-            mSheet.show();
+        SubjectAdapter adapter = new SubjectAdapter(mMarks);
+        RecyclerClickListener listener = (view, position) -> {
+            BottomSheetDialog sheet = new BottomSheetDialog(this);
+            View bottomView = new ViewerDialog(this, sheet)
+                    .setData(mMarks.get(position).getId(), true);
+            sheet.setContentView(bottomView);
+            sheet.show();
         };
 
-        mList.setAdapter(mAdapter);
-        mList.addOnItemTouchListener(new RecyclerTouchListener(this, mListener));
-        mAdapter.notifyDataSetChanged();
+        mList.setAdapter(adapter);
+        mList.addOnItemTouchListener(new RecyclerTouchListener(this, listener));
+        adapter.notifyDataSetChanged();
         // Scroll to top
         new Handler().post(() -> mNestedView.scrollTo(0,0));
     }
 
-    private void setHint(double mAverage, double mExpected) {
+    private void setHint(double average, double expected) {
         mTextHint.setText(String.format("%1$s %2$s", getString(R.string.hint_content_common),
-                String.format(getString(mExpected < 6 ?
+                String.format(getString(expected < 6 ?
                         R.string.hint_content_above : R.string.hint_content_under),
-                        mExpected)));
-        int mColor;
-        if (mAverage < 5.5d) {
-            mColor = R.color.red;
-        } else if (mAverage < 6d) {
-            mColor = R.color.yellow;
+                        expected)));
+        int color;
+        if (average < 5.5d) {
+            color = R.color.red;
+        } else if (average < 6d) {
+            color = R.color.yellow;
         } else {
-            mColor = R.color.green;
+            color = R.color.green;
         }
-        mProgressBar.setProgressColor(ContextCompat.getColor(this, mColor));
-        mProgressBar.setProgress(mAverage);
+        mProgressBar.setProgressColor(ContextCompat.getColor(this, color));
+        mProgressBar.setProgress(average);
     }
 }

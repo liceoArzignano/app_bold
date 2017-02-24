@@ -27,8 +27,8 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstance);
         setContentView(R.layout.activity_settings);
 
-        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -38,7 +38,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public static class MyPreferenceFragment extends PreferenceFragment {
-        Context mContext;
+        private Context mContext;
 
         @Override
         public void onCreate(Bundle savedInstance) {
@@ -47,13 +47,13 @@ public class SettingsActivity extends AppCompatActivity {
 
             mContext = getActivity();
 
-            Preference mChangelog = findPreference("changelog_key");
-            final Preference mAnalytics = findPreference("analytics_key");
-            Preference mBackup = findPreference("backup_key");
-            final Preference mName = findPreference("username_key");
-            final Preference mSecret = findPreference("secret_key");
+            Preference changeLog = findPreference("changelog_key");
+            final Preference analytics = findPreference("analytics_key");
+            Preference backup = findPreference("backup_key");
+            final Preference name = findPreference("username_key");
+            final Preference secret = findPreference("secret_key");
 
-            mChangelog.setOnPreferenceClickListener(preference -> {
+            changeLog.setOnPreferenceClickListener(preference -> {
                 new MaterialDialog.Builder(mContext)
                         .title(getString(R.string.pref_changelog))
                         .content(getString(R.string.dialog_updated_content))
@@ -70,26 +70,26 @@ public class SettingsActivity extends AppCompatActivity {
                 return true;
             });
 
-            mAnalytics.setEnabled(!getResources().getBoolean(R.bool.force_tracker));
-            if (!mAnalytics.isEnabled()) {
-                mAnalytics.setSummary(getString(R.string.pref_metrics_summary_forced));
+            analytics.setEnabled(!getResources().getBoolean(R.bool.force_tracker));
+            if (!analytics.isEnabled()) {
+                analytics.setSummary(getString(R.string.pref_metrics_summary_forced));
             }
 
-            mBackup.setEnabled(GoogleApiAvailability.getInstance()
+            backup.setEnabled(GoogleApiAvailability.getInstance()
                     .isGooglePlayServicesAvailable(mContext) == ConnectionResult.SUCCESS &&
                     Utils.hasPackage(mContext, "com.google.android.apps.docs"));
-            mBackup.setOnPreferenceClickListener(preference -> {
+            backup.setOnPreferenceClickListener(preference -> {
                 startActivity(new Intent(mContext, BackupActivity.class));
                 return true;
             });
 
-            mName.setSummary(Utils.userNameKey(mContext));
-            mName.setOnPreferenceChangeListener((preference, newValue) -> {
-                mName.setSummary(newValue.toString());
+            name.setSummary(Utils.userNameKey(mContext));
+            name.setOnPreferenceChangeListener((preference, newValue) -> {
+                name.setSummary(newValue.toString());
                 return true;
             });
 
-            mSecret.setOnPreferenceClickListener(preference -> {
+            secret.setOnPreferenceClickListener(preference -> {
                 mCounter++;
                 if (mCounter == 9) {
                     if (SafeActivity.hasSharedPassword(mContext)) {
@@ -103,12 +103,12 @@ public class SettingsActivity extends AppCompatActivity {
                                 .negativeText(getString(android.R.string.cancel))
                                 .positiveText(getString(R.string.viewer_share))
                                 .onPositive((dialog, which) -> {
-                                    Intent mIntent = new Intent(Intent.ACTION_SEND);
-                                    mIntent.setType("text/plain");
-                                    mIntent.putExtra(Intent.EXTRA_TEXT, String.format(
+                                    Intent intent = new Intent(Intent.ACTION_SEND);
+                                    intent.setType("text/plain");
+                                    intent.putExtra(Intent.EXTRA_TEXT, String.format(
                                             getString(R.string.pref_secret_export_message),
                                             SafeActivity.getEncryptedPassword(mContext)));
-                                    startActivity(Intent.createChooser(mIntent,
+                                    startActivity(Intent.createChooser(intent,
                                             getString(R.string.pref_secret_export_title)));
                                     SafeActivity.setSharedPassword(mContext);
                                 })
