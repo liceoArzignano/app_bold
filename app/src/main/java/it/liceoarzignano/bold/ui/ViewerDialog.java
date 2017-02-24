@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.Date;
 import java.util.Locale;
 
 import io.realm.Realm;
@@ -157,7 +158,7 @@ public class ViewerDialog {
             if (isMark) {
                 ((SubjectActivity) mContext).refresh();
             } else {
-                ((EventListActivity) mContext).refreshList(mContext, null);
+                ((EventListActivity) mContext).refreshList(mContext, new Date(), null);
             }
             new Handler().postDelayed(mThisDialog::dismiss, 840);
         });

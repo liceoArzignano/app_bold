@@ -3,6 +3,7 @@ package it.liceoarzignano.bold.events;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
@@ -19,6 +20,11 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.Calendar;
+import java.util.Date;
+
+import devs.mulham.horizontalcalendar.HorizontalCalendar;
+import devs.mulham.horizontalcalendar.HorizontalCalendarListener;
 import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -26,7 +32,6 @@ import io.realm.Sort;
 import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.ManagerActivity;
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.Utils;
 import it.liceoarzignano.bold.ui.DividerDecoration;
 import it.liceoarzignano.bold.ui.RecyclerClickListener;
 import it.liceoarzignano.bold.ui.RecyclerTouchListener;
@@ -38,6 +43,7 @@ public class EventListActivity extends AppCompatActivity {
     private LinearLayout mEmptyLayout;
     private TextView mEmptyText;
 
+    private Date mDate;
     private String mQuery;
 
     @Override
@@ -54,6 +60,27 @@ public class EventListActivity extends AppCompatActivity {
         mEventList = (RecyclerView) findViewById(R.id.event_list);
         mEmptyLayout = (LinearLayout) findViewById(R.id.event_empty_layout);
         mEmptyText = (TextView) findViewById(R.id.events_empty_text);
+
+        mDate = new Date();
+
+        Calendar mStart = Calendar.getInstance();
+        mStart.add(Calendar.YEAR, -1);
+        Calendar mEnd = Calendar.getInstance();
+        mEnd.add(Calendar.YEAR, 1);
+        HorizontalCalendar mHCalendar = new HorizontalCalendar.Builder(this, R.id.events_calendar)
+                .startDate(mStart.getTime())
+                .endDate(mEnd.getTime())
+                .dayFormat("EEE")
+                .centerToday(true)
+                .build();
+
+        mHCalendar.setCalendarListener(new HorizontalCalendarListener() {
+            @Override
+            public void onDateSelected(Date date, int position) {
+                mDate = date;
+                refreshList(getApplication(), date, null);
+            }
+        });
 
         FloatingActionButton mFab = (FloatingActionButton) findViewById(R.id.fab);
         mFab.setOnClickListener(view -> {
@@ -76,7 +103,7 @@ public class EventListActivity extends AppCompatActivity {
             mQuery = mCallingIntent.getStringExtra(SearchManager.QUERY);
         }
 
-        refreshList(this, mQuery);
+        refreshList(this, mDate, mQuery);
     }
 
     @Override
@@ -86,51 +113,89 @@ public class EventListActivity extends AppCompatActivity {
         return true;
     }
 
-    private void setupSearchView(MenuItem mItem) {
-        SearchView mSearchView = (SearchView) MenuItemCompat.getActionView(mItem);
+    /**
+     * Setup search menu item behaviour
+     *
+     * @param item search menu item
+     */
+    private void setupSearchView(MenuItem item) {
+        SearchView mSearchView = (SearchView) MenuItemCompat.getActionView(item);
 
-        if (mSearchView != null) {
-            mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String mQuery) {
-                    refreshList(getApplicationContext(), mQuery);
-                    return true;
-                }
-
-                @Override
-                public boolean onQueryTextChange(String mNewText) {
-                    refreshList(getApplicationContext(), mNewText);
-                    return true;
-                }
-            });
+        if (mSearchView == null) {
+            return;
         }
+
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String mQuery) {
+                refreshList(getApplicationContext(), null, mQuery);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String mNewText) {
+                refreshList(getApplicationContext(), null, mNewText);
+                return true;
+            }
+        });
+
+        MenuItemCompat.setOnActionExpandListener(item, new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                refreshList(getApplicationContext(), null, null);
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                refreshList(getApplicationContext(), mDate, null);
+                return true;
+            }
+        });
     }
 
     /**
      * Update the RecyclerView content
      *
-     * @param mContext: needed to reload database data
-     * @param mQuery:   search query
+     * @param context: needed to reload database data
+     * @param query:   search query
      */
-    public void refreshList(Context mContext, String mQuery) {
-        boolean hasQuery = mQuery != null && !mQuery.isEmpty();
+    public void refreshList(Context context, Date date, String query) {
+        boolean hasQuery = query != null && !query.isEmpty();
 
-        Realm mRealm = Realm.getInstance(((BoldApp) mContext.getApplicationContext()).getConfig());
-        final RealmResults<Event> mEvents = hasQuery ?
-                mRealm.where(Event.class).contains("title", mQuery, Case.INSENSITIVE)
-                        .findAllSorted("date", Sort.DESCENDING) :
-                mRealm.where(Event.class).findAllSorted("date", Sort.DESCENDING);
+        Calendar mPrevious = Calendar.getInstance();
+        if (date != null) {
+            mPrevious.setTime(date);
+            mPrevious.add(Calendar.DAY_OF_YEAR, -1);
+        }
+
+        Realm mRealm = Realm.getInstance(((BoldApp) getApplicationContext()).getConfig());
+
+        RealmResults<Event> mEvents = date == null ?
+                hasQuery ?
+                        mRealm.where(Event.class)
+                                .contains("title", query, Case.INSENSITIVE)
+                                .findAllSorted("date", Sort.DESCENDING) :
+                        mRealm.where(Event.class)
+                                .findAllSorted("date", Sort.DESCENDING) :
+                hasQuery ?
+                        mRealm.where(Event.class)
+                                .between("date", mPrevious.getTime(), date)
+                                .contains("title", query,Case.INSENSITIVE)
+                                .findAllSorted("date", Sort.DESCENDING) :
+                        mRealm.where(Event.class)
+                                .between("date", mPrevious.getTime(), date)
+                                .findAllSorted("date", Sort.DESCENDING);
 
         mEmptyLayout.setVisibility(mEvents.isEmpty() ? View.VISIBLE : View.GONE);
-        mEmptyText.setText(mContext.getString(hasQuery ?
+        mEmptyText.setText(context.getString(hasQuery ?
                 R.string.search_no_result : R.string.events_empty));
 
         EventsAdapter mAdapter = new EventsAdapter(mEvents);
-        RecyclerClickListener mListener = (mView, mPosition) ->
-                viewEvent(mEvents.get(mPosition).getId());
-
+        RecyclerClickListener mListener = (view, position) ->
+                viewEvent(mEvents.get(position).getId());
         mEventList.setAdapter(mAdapter);
-        mEventList.addOnItemTouchListener(new RecyclerTouchListener(mContext, mListener));
+        mEventList.addOnItemTouchListener(new RecyclerTouchListener(context, mListener));
 
         mAdapter.notifyDataSetChanged();
     }
