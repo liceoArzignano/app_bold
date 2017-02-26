@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -21,14 +20,9 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.safetynet.SafetyNet;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
-import java.security.SecureRandom;
 
 import it.liceoarzignano.bold.BuildConfig;
 import it.liceoarzignano.bold.R;
@@ -99,7 +93,7 @@ public class SafeActivity extends AppCompatActivity {
         mLoadingLayout.setVisibility(View.VISIBLE);
         isWorking = true;
 
-        safetyNetTest();
+        prepareDevice();
     }
 
     @Override
@@ -378,12 +372,11 @@ public class SafeActivity extends AppCompatActivity {
      * Check if the device is ready to use Safe,
      * if so start it.
      *
-     * @param response SafetyNet test results
      */
-    private void prepareDevice(@Nullable String response) {
-        if (Encryption.validateRespose(this, response, BuildConfig.DEBUG) &&
-                Utils.hasPassedSafetyNetTest(this)) {
-            Utils.setSafetyNetResults(this, true);
+    private void prepareDevice() {
+        // There's no need of doing a SafetyNet test now, just check app integrity
+        if (Utils.hasPassedSafetyNetTest(this) &&
+                Encryption.validateRespose(this, null, BuildConfig.DEBUG)) {
             mLoadingText.setText(R.string.safe_first_load);
             new Handler().postDelayed(() -> {
                 setupEncryption();
@@ -394,35 +387,6 @@ public class SafeActivity extends AppCompatActivity {
             mLoadingText.setText(R.string.safe_error_security);
         }
 
-    }
-
-    private void safetyNetTest() {
-        GoogleApiClient client = new GoogleApiClient.Builder(this)
-                .addApi(SafetyNet.API)
-                .build();
-        client.connect();
-
-        String nonce = String.valueOf(System.currentTimeMillis());
-        ByteArrayOutputStream oStream = new ByteArrayOutputStream();
-        byte[] randBytes = new byte[24];
-        new SecureRandom().nextBytes(randBytes);
-
-        try {
-            oStream.write(randBytes);
-            oStream.write(nonce.getBytes());
-        } catch (IOException e) {
-            Log.e("SafetyNetTest", e.getMessage());
-        }
-
-        if (Utils.hasInternetConnection(this)) {
-            // Run SafetyNet test
-            SafetyNet.SafetyNetApi
-                    .attest(client, oStream.toByteArray())
-                    .setResultCallback((mResult) ->
-                        prepareDevice(mResult.getJwsResult()));
-        } else {
-            prepareDevice(null);
-        }
     }
 
     /**
