@@ -73,6 +73,19 @@
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="http"
+                    android:host="www.liceoarzignano.it"
+                    android:pathPrefix="/circolari" />
+                <data android:scheme="http"
+                    android:host="www.liceoarzignano.it"
+                    android:pathPrefix="/circolari/appcircolaripub/ricerca.php?numero=0" />
+                <data android:scheme="http"
+                    android:host="www.liceoarzignano.it"
+                    android:pathPrefix="/comunicati/appcircolaripub/ricerca.php?numero=0" />
             </intent-filter>
 
             <meta-data
