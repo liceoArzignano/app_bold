@@ -154,7 +154,6 @@
     <string name="pref_metrics_summary_forced">You\'re using a beta build. You\'re not allowed to turn off metrics reports</string>
     <string name="pref_info">Info</string>
     <string name="pref_app_version_title">App version</string>
-    <string name="pref_dev_info">Developed by Joey</string>
     <string name="pref_getintouch">Get in touch</string>
     <string name="pref_mail_title">Email</string>
     <string name="pref_phone_title">Phone</string>
@@ -181,6 +180,8 @@
     <string name="pref_secret_export_message">My encrypted password: %1$s</string>
     <string name="pref_secret_export_title">Share password</string>
     <string name="pref_secret_export_already_shared">You can\'t share the password unless you change it</string>
+    <string name="pref_opensource_title">Open source</string>
+    <string name="pref_opensource_message">Released under LGPL v3</string>
 
     <!-- Safe -->
     <string name="title_activity_safe">Safe</string>

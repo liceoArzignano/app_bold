@@ -103,8 +103,12 @@
             android:summary="@string/pref_app_version_summary"
             android:title="@string/pref_app_version_title" />
 
-        <Preference
-            android:key="secret_key"
-            android:title="@string/pref_dev_info" />
+        <PreferenceScreen
+            android:title="@string/pref_opensource_title"
+            android:summary="@string/pref_opensource_message">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/config_url_sources" />
+        </PreferenceScreen>
     </PreferenceCategory>
 </PreferenceScreen>

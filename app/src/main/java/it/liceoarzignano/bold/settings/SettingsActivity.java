@@ -51,7 +51,7 @@ public class SettingsActivity extends AppCompatActivity {
             final Preference analytics = findPreference("analytics_key");
             Preference backup = findPreference("backup_key");
             final Preference name = findPreference("username_key");
-            final Preference secret = findPreference("secret_key");
+            //TODO: final Preference secret = findPreference("secret_key");
 
             changeLog.setOnPreferenceClickListener(preference -> {
                 new MaterialDialog.Builder(mContext)
@@ -89,6 +89,7 @@ public class SettingsActivity extends AppCompatActivity {
                 return true;
             });
 
+            /*
             secret.setOnPreferenceClickListener(preference -> {
                 mCounter++;
                 if (mCounter == 9) {
@@ -117,6 +118,7 @@ public class SettingsActivity extends AppCompatActivity {
                 }
                 return true;
             });
+            */
         }
     }
 }
