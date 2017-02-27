@@ -13,8 +13,8 @@
             android:alpha="1">
             <group
                 android:name="group"
-                android:pivotX="6"
-                android:pivotY="12"
+                android:pivotX="-2"
+                android:pivotY="-1"
                 android:translateX="-2"
                 android:translateY="-1">
                 <path
@@ -24,8 +24,6 @@
             </group>
             <group
                 android:name="group_1"
-                android:pivotX="12"
-                android:pivotY="12"
                 android:translateY="-1">
                 <path
                     android:name="path_1"
@@ -34,8 +32,6 @@
             </group>
             <group
                 android:name="group_2"
-                android:pivotX="18"
-                android:pivotY="12"
                 android:translateX="2"
                 android:translateY="-1">
                 <path
@@ -51,45 +47,51 @@
                 <objectAnimator
                     android:name="group"
                     android:propertyName="translateX"
-                    android:duration="100"
+                    android:duration="400"
                     android:valueFrom="-2"
-                    android:valueTo="2"
+                    android:valueTo="6"
+                    android:valueType="floatType"
+                    android:interpolator="@android:anim/accelerate_decelerate_interpolator"/>
+                <objectAnimator
+                    android:name="group"
+                    android:propertyName="translateY"
+                    android:duration="200"
+                    android:valueFrom="-1"
+                    android:valueTo="-6"
                     android:valueType="floatType"
                     android:interpolator="@android:anim/accelerate_interpolator"/>
                 <objectAnimator
                     android:name="group"
-                    android:propertyName="translateX"
-                    android:startOffset="300"
+                    android:propertyName="translateY"
+                    android:startOffset="200"
                     android:duration="200"
-                    android:valueFrom="2"
-                    android:valueTo="-2"
+                    android:valueFrom="-6"
+                    android:valueTo="-1"
                     android:valueType="floatType"
                     android:interpolator="@android:anim/decelerate_interpolator"/>
+                <objectAnimator
+                    android:name="group"
+                    android:propertyName="translateX"
+                    android:startOffset="550"
+                    android:duration="225"
+                    android:valueFrom="6"
+                    android:valueTo="14"
+                    android:valueType="floatType"
+                    android:interpolator="@android:interpolator/fast_out_linear_in"/>
             </set>
         </aapt:attr>
     </target>
     <target android:name="group_1">
         <aapt:attr name="android:animation">
-            <set xmlns:android="http://schemas.android.com/apk/res/android">
-                <objectAnimator
-                    android:name="group_1"
-                    android:propertyName="translateY"
-                    android:startOffset="100"
-                    android:duration="100"
-                    android:valueFrom="-1"
-                    android:valueTo="-2"
-                    android:valueType="floatType"
-                    android:interpolator="@android:anim/decelerate_interpolator"/>
-                <objectAnimator
-                    android:name="group_1"
-                    android:propertyName="translateY"
-                    android:startOffset="200"
-                    android:duration="100"
-                    android:valueFrom="-2"
-                    android:valueTo="-1"
-                    android:valueType="floatType"
-                    android:interpolator="@android:anim/accelerate_interpolator"/>
-            </set>
+            <objectAnimator
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:name="group_1"
+                android:propertyName="translateX"
+                android:startOffset="150"
+                android:duration="225"
+                android:valueFrom="0"
+                android:valueTo="-8"
+                android:valueType="floatType"/>
         </aapt:attr>
     </target>
     <target android:name="group_2">
@@ -98,18 +100,28 @@
                 <objectAnimator
                     android:name="group_2"
                     android:propertyName="translateX"
-                    android:duration="100"
+                    android:startOffset="400"
+                    android:duration="400"
                     android:valueFrom="2"
-                    android:valueTo="-2"
+                    android:valueTo="-6"
+                    android:valueType="floatType"
+                    android:interpolator="@android:anim/accelerate_decelerate_interpolator"/>
+                <objectAnimator
+                    android:name="group_2"
+                    android:propertyName="translateY"
+                    android:startOffset="600"
+                    android:duration="200"
+                    android:valueFrom="4"
+                    android:valueTo="-1"
                     android:valueType="floatType"
                     android:interpolator="@android:anim/accelerate_interpolator"/>
                 <objectAnimator
                     android:name="group_2"
-                    android:propertyName="translateX"
-                    android:startOffset="300"
+                    android:propertyName="translateY"
+                    android:startOffset="400"
                     android:duration="200"
-                    android:valueFrom="-2"
-                    android:valueTo="2"
+                    android:valueFrom="-1"
+                    android:valueTo="4"
                     android:valueType="floatType"
                     android:interpolator="@android:anim/decelerate_interpolator"/>
             </set>

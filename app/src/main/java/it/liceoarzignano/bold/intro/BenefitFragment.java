@@ -3,8 +3,8 @@ package it.liceoarzignano.bold.intro;
 import android.content.Context;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -27,19 +28,17 @@ import it.liceoarzignano.bold.BuildConfig;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
 import it.liceoarzignano.bold.safe.mod.Encryption;
-import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 public class BenefitFragment extends Fragment {
 
-    private TextView title;
-    private TextView message;
-
+    private TextView mTitle;
+    private TextView mMessage;
     private ImageView mIntroImage;
+    private AppCompatButton mButton;
+    private BenefitViewPager mViewPager;
 
-    private TextView mSafeMessage;
-    private MaterialProgressBar mSafeProgressBar;
-    private ImageView mSafeImage;
-    private AppCompatButton mSafeRetryButton;
+    private Thread mAnimThread;
+    private boolean isWorking;
 
     public BenefitFragment() {
     }
@@ -57,10 +56,11 @@ public class BenefitFragment extends Fragment {
                              Bundle savedInstance) {
         int position = getArguments().getInt("section_number");
         View view = inflater.inflate(R.layout.fragment_benefits_contents, container, false);
-        title = (TextView) view.findViewById(R.id.intro_title);
-        message = (TextView) view.findViewById(R.id.intro_message);
+        mTitle = (TextView) view.findViewById(R.id.intro_title);
+        mMessage = (TextView) view.findViewById(R.id.intro_message);
+        mViewPager = ((BenefitsActivity) getActivity()).getViewPager();
 
-        // Step
+        // Step 1
         LinearLayout step1 = (LinearLayout) view.findViewById(R.id.step_1);
         mIntroImage = (ImageView) view.findViewById(R.id.intro_animation);
 
@@ -72,42 +72,28 @@ public class BenefitFragment extends Fragment {
         RadioButton radio4 = (RadioButton) view.findViewById(R.id.intro_address_4);
         RadioButton radio5 = (RadioButton) view.findViewById(R.id.intro_address_5);
         RadioButton radio6 = (RadioButton) view.findViewById(R.id.intro_address_6);
-
-        // Step 3
-        LinearLayout step3 = (LinearLayout) view.findViewById(R.id.step_3);
-        mSafeMessage = (TextView) view.findViewById(R.id.intro_safe_message);
-        mSafeProgressBar = (MaterialProgressBar) view.findViewById(R.id.intro_safe_bar);
-        mSafeImage = (ImageView) view.findViewById(R.id.intro_safe_anim);
-        mSafeRetryButton = (AppCompatButton) view.findViewById(R.id.intro_safe_retry);
-
-        mSafeRetryButton.setOnClickListener((mButtonView) -> doDeviceCheck(getActivity()));
+        mButton = ((BenefitsActivity) getActivity()).getButton();
 
         switch (position) {
             case 0:
-                title.setText(getString(R.string.slide0_title));
-                title.setAlpha(0f);
-                message.setText(getString(R.string.slide0_message));
-                message.setAlpha(0f);
+                mTitle.setText(getString(R.string.slide0_title));
+                mMessage.setText(getString(R.string.slide0_message_loading));
+                mTitle.setAlpha(0f);
+                mMessage.setAlpha(0f);
                 break;
             case 1:
-                title.setText(getString(R.string.slide1_title));
-                message.setText(getString(R.string.slide1_message));
+                mTitle.setText(getString(R.string.slide1_title));
+                mMessage.setText(getString(R.string.slide1_message));
                 step1.setVisibility(View.GONE);
                 step2.setVisibility(View.VISIBLE);
-                step3.setVisibility(View.GONE);
                 radio1.setOnClickListener((mRadioView) -> setAddress("1"));
                 radio2.setOnClickListener((mRadioView) -> setAddress("2"));
                 radio3.setOnClickListener((mRadioView) -> setAddress("3"));
                 radio4.setOnClickListener((mRadioView) -> setAddress("4"));
                 radio5.setOnClickListener((mRadioView) -> setAddress("5"));
                 radio6.setOnClickListener((mRadioView) -> setAddress(null));
-                break;
-            case 2:
-                title.setText(getString(R.string.slide2_title));
-                message.setText(getString(R.string.slide2_message));
-                step1.setVisibility(View.GONE);
-                step2.setVisibility(View.GONE);
-                step3.setVisibility(View.VISIBLE);
+                mButton.setVisibility(View.INVISIBLE);
+                mButton.setOnClickListener(null);
                 break;
         }
 
@@ -115,20 +101,62 @@ public class BenefitFragment extends Fragment {
     }
 
     private void setAddress(String value) {
-        ((BenefitsActivity) getActivity()).mViewPager.setScrollAllowed(true);
+        mViewPager.setScrollAllowed(true);
         if (value == null) {
             Utils.setTeacherMode(getContext());
         } else {
             Utils.setAddress(getContext(), value);
         }
+
+        mButton.setVisibility(View.VISIBLE);
+        mButton.setText(getString(R.string.intro_btn_done));
+        mButton.setOnClickListener(view -> ((BenefitsActivity) getActivity()).onPageChanged(2));
     }
 
     void doDeviceCheck(Context context) {
-        mSafeImage.setImageResource(R.drawable.ic_safe);
-        mSafeProgressBar.setVisibility(View.VISIBLE);
-        mSafeRetryButton.setVisibility(View.GONE);
-        mSafeMessage.setText("");
+        mButton.setVisibility(View.INVISIBLE);
 
+        // Check for internet connection
+        if (!Utils.hasInternetConnection(context)) {
+            mButton.setVisibility(View.VISIBLE);
+            mButton.setOnClickListener(view -> doDeviceCheck(context));
+            mMessage.setText(getString(R.string.slide0_message_failed));
+            if (Utils.isNotLegacy()) {
+                isWorking = false;
+                mIntroImage.setImageResource(R.drawable.avd_intro_failed);
+                ((AnimatedVectorDrawable) mIntroImage.getDrawable()).start();
+            }
+            return;
+        }
+
+        /*
+         * Warning: contains hackery because avd animation callbacks are
+         * api23+ only. Animations will be shown on api21+.
+         */
+        if (Utils.isNotLegacy()) {
+            mAnimThread = new Thread(() -> {
+                do { // At least once
+                    // Run on UI thread
+                    new Handler(getContext().getMainLooper()).post(() ->
+                            ((AnimatedVectorDrawable) mIntroImage.getDrawable()).start());
+                    try {
+                        // Wait for current animation to end
+                        Thread.sleep(800);
+                    } catch (InterruptedException e) {
+                        Log.e("Intro", e.getMessage());
+                    }
+                } while (isWorking);
+            });
+
+            isWorking = true;
+            // Let the previous animation end
+            new Handler().postDelayed(() -> {
+                mIntroImage.setImageResource(R.drawable.avd_intro_load);
+                mAnimThread.start();
+            }, 500);
+        }
+
+        // Safety net + integrity check
         GoogleApiClient client = new GoogleApiClient.Builder(context)
                 .addApi(SafetyNet.API)
                 .build();
@@ -146,60 +174,46 @@ public class BenefitFragment extends Fragment {
             Log.e("SafetyNetTest", e.getMessage());
         }
 
-        ((BenefitsActivity) getActivity()).mViewPager.setScrollAllowed(false);
-        if (Utils.hasInternetConnection(context)) {
-            SafetyNet.SafetyNetApi
-                    .attest(client, oStream.toByteArray())
-                    .setResultCallback((mResult) -> postDeviceCheck(context,
-                            Encryption.validateRespose(context, mResult.getJwsResult(),
-                                    BuildConfig.DEBUG)));
-        } else {
-            mSafeImage.setImageResource(R.drawable.avd_intro_no_connection);
-            mSafeProgressBar.setVisibility(View.GONE);
-            mSafeRetryButton.setVisibility(View.VISIBLE);
-            mSafeMessage.setText(getString(R.string.intro_safe_retry_message));
-            if (Utils.isNotLegacy()) {
-                ((AnimatedVectorDrawable) mSafeImage.getDrawable()).start();
-            }
-            mSafeRetryButton.setVisibility(View.VISIBLE);
-        }
+        ((BenefitsActivity) getActivity()).getViewPager().setScrollAllowed(false);
+        SafetyNet.SafetyNetApi.attest(client, oStream.toByteArray())
+                .setResultCallback((mResult) ->
+                        postDeviceCheck(context, Encryption.validateRespose(context,
+                                mResult.getJwsResult(), BuildConfig.DEBUG)));
     }
 
     private void postDeviceCheck(Context context, boolean hasPassed) {
+        // Save safetynet results
         Utils.setSafetyNetResults(context, hasPassed);
 
-        mSafeMessage.setVisibility(View.VISIBLE);
-        mSafeRetryButton.setVisibility(View.VISIBLE);
-        mSafeRetryButton.setText(getString(R.string.intro_safe_done));
-        mSafeRetryButton.setOnClickListener((mButtonView) ->
-                ((BenefitsActivity) getActivity()).onPageChanged(3));
-
-        if (hasPassed) {
-            mSafeProgressBar.setVisibility(View.GONE);
-            mSafeMessage.setText(getString(R.string.intro_safe_retry_success));
-        } else {
-            mSafeProgressBar.setVisibility(View.GONE);
-            mSafeMessage.setVisibility(View.VISIBLE);
-            mSafeMessage.setTextColor(ContextCompat.getColor(context, R.color.red));
-            mSafeMessage.setText(getString(R.string.intro_safe_failure));
-        }
-
         if (Utils.isNotLegacy()) {
-            mSafeImage.setImageResource(hasPassed ?
-                    R.drawable.avd_intro_done : R.drawable.avd_intro_failed);
-            ((AnimatedVectorDrawable) mSafeImage.getDrawable()).start();
-        } else {
-            mSafeImage.setImageResource(hasPassed ?
-                    R.drawable.ic_done : R.drawable.ic_safe);
+            isWorking = false;
+            try {
+                mAnimThread.join();
+            } catch (InterruptedException e) {
+                Log.e("Intro", e.getMessage());
+            }
+            new Handler().postDelayed(() -> {
+                mIntroImage.setImageResource(R.drawable.avd_intro_done);
+                ((AnimatedVectorDrawable) mIntroImage.getDrawable()).start();
+
+                // Allow scrolling when animation ends
+                new Handler().postDelayed(() -> {
+                    mViewPager.setScrollAllowed(true);
+                    mMessage.setText(getString(R.string.slide0_message_done));
+                }, 2800);
+            }, 800);
         }
     }
 
     void animateIntro() {
         if (Utils.isNotLegacy()) {
-            title.animate().alpha(1f).setStartDelay(800).start();
-            message.animate().alpha(1f).setStartDelay(820).start();
+            mTitle.animate().alpha(1f).setStartDelay(400).start();
+            mMessage.animate().alpha(1f).setStartDelay(420).start();
+            mIntroImage.setImageResource(R.drawable.avd_intro_start);
 
             ((AnimatedVectorDrawable) mIntroImage.getDrawable()).start();
+        } else {
+            mIntroImage.setImageResource(R.drawable.ic_hat);
         }
     }
 }

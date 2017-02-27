@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,30 +17,44 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingBottom="?attr/actionBarSize"
-            android:paddingTop="16dp"
             android:paddingLeft="18dp"
-            android:paddingRight="18dp" />
+            android:paddingRight="18dp"
+            android:paddingTop="16dp" />
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_gravity="center"
             android:orientation="vertical"
+            android:animateLayoutChanges="true"
             android:paddingBottom="@dimen/activity_horizontal_margin"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_horizontal_margin">
 
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/benefit_button"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="@string/intro_btn_retry"
+                android:textColor="@color/white"
+                android:visibility="invisible"
+                app:backgroundTint="@color/colorAccent" />
+
             <it.liceoarzignano.bold.ui.InkPageIndicator
                 android:id="@+id/indicator"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_above="@id/benefit_button"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp" />
-        </LinearLayout>
+        </RelativeLayout>
 
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

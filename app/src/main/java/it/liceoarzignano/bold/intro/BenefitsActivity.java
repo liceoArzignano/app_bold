@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatButton;
 
 import it.liceoarzignano.bold.MainActivity;
 import it.liceoarzignano.bold.R;
@@ -13,7 +14,7 @@ import it.liceoarzignano.bold.ui.InkPageIndicator;
 
 public class BenefitsActivity extends AppCompatActivity {
 
-    BenefitViewPager mViewPager;
+    private BenefitViewPager mViewPager;
     private BenefitPageAdapter mAdapter;
 
     private int setupLevel = 0;
@@ -46,31 +47,27 @@ public class BenefitsActivity extends AppCompatActivity {
             }
         });
         mViewPager.setCurrentItem(0);
-
-        new Handler().postDelayed(() -> {
-            (mAdapter.getFragment(0)).animateIntro();
-            new Handler().postDelayed(() -> mViewPager.setScrollAllowed(true), 1300);
-        }, 500);
     }
 
     void onPageChanged(int position) {
         switch (position) {
-            case 1:
+            case 0:
                 if (setupLevel != 0) {
+                    break;
+                }
+                mViewPager.setScrollAllowed(false);
+                mAdapter.getFragment(0).animateIntro();
+                new Handler().postDelayed(() -> mAdapter.getFragment(0).doDeviceCheck(this), 500);
+                setupLevel++;
+                break;
+            case 1:
+                if (setupLevel != 1) {
                     break;
                 }
                 mViewPager.setScrollAllowed(false);
                 setupLevel++;
                 break;
             case 2:
-                if (setupLevel != 1) {
-                    break;
-                }
-                mViewPager.setScrollAllowed(false);
-                new Handler().postDelayed(() -> mAdapter.getFragment(2).doDeviceCheck(this), 1000);
-                setupLevel++;
-                break;
-            case 3:
                 if (setupLevel != 2) {
                     break;
                 }
@@ -80,5 +77,13 @@ public class BenefitsActivity extends AppCompatActivity {
                 finish();
                 break;
         }
+    }
+
+    AppCompatButton getButton() {
+        return (AppCompatButton) findViewById(R.id.benefit_button);
+    }
+
+    BenefitViewPager getViewPager() {
+        return mViewPager;
     }
 }

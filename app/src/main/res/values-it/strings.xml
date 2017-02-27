@@ -107,20 +107,17 @@
 
     <!-- Welcome -->
     <string name="slide0_title">Benvenuto</string>
-    <string name="slide0_message">Scorri per iniziare</string>
+    <string name="slide0_message_loading">Aspetta un attimo, ci stiamo preparando\u2026</string>
+    <string name="slide0_message_failed">Oops, connessione internet assente</string>
+    <string name="slide0_message_done">Tutto pronto, scorri per cominciare!</string>
     <string name="slide1_title">Indirizzo di studi</string>
-    <string name="slide1_message">Seleziona il tuo indirizzo di studi</string>
-    <string name="slide2_title">Safe</string>
-    <string name="slide2_message">Safe ti consente di archiviare le tue password scolastiche.\nAttendi il completamento del test di sicurezza</string>
+    <string name="slide1_message">Prima di cominciare, seleziona il tuo indirizzo di studi</string>
+    <string name="intro_btn_retry">Riprova</string>
+    <string name="intro_btn_done">Iniziamo</string>
     <string name="intro_drawer_title">Inizia qui</string>
-    <string name="intro_drawer">Tocca per navigare nell\'app.\nLa schermata principale si riempir\u00E0 d\'informazioni pi\u00F9 tardi</string>
+    <string name="intro_drawer">Da questo menu potrai per navigare nell\'app.\nLa schermata principale si riempir\u00E0 d\'informazioni pi\u00F9 tardi</string>
     <string name="intro_fab_save_safe_title">Benvenuto!</string>
     <string name="intro_fab_save_safe">Annota le tue credenziali, poi tocca qui per salvare</string>
-    <string name="intro_safe_retry">Riprova</string>
-    <string name="intro_safe_retry_message">Connetti il dispositivo a internet per effettuare il test</string>
-    <string name="intro_safe_retry_success">Ottimo, possiamo cominciare!</string>
-    <string name="intro_safe_failure">Test fallito, riproveremo pi\u00F9 avanti</string>
-    <string name="intro_safe_done">Inizia</string>
 
     <!-- Subjects -->
     <string name="subject_english">Inglese</string>
