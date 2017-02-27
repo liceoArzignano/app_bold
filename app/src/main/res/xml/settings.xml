@@ -103,6 +103,10 @@
             android:summary="@string/pref_app_version_summary"
             android:title="@string/pref_app_version_title" />
 
+        <Preference
+            android:key="safe_key"
+            android:title="@string/pref_safe_status_title" />
+
         <PreferenceScreen
             android:title="@string/pref_opensource_title"
             android:summary="@string/pref_opensource_message">

@@ -175,13 +175,21 @@
     <string name="pref_notification_time_evening">Sera</string>
     <string name="pref_backup_summary">Backup e ripristino</string>
     <string name="pref_backup_title">Salva i tuoi dati su Google Drive</string>
+    <string name="pref_safe_status_title">Stato Safe</string>
+    <string name="pref_safe_status_message_enabled">Attivato (dispositivo sicuro)</string>
+    <string name="pref_safe_status_message_disabled">Disattivato (dispositivo non sicuro)</string>
+    <string name="pref_secret_safe_test_title">Test sicurezza dispositivo</string>
+    <string name="pref_secret_safe_test_running">Controllo sicurezza dispositivo\u2026</string>
+    <string name="pref_secret_safe_test_connection">\U00C8 necessaria una connessione ad internet per effetuare il test</string>
+    <string name="pref_secret_safe_test_fail">Test fallito. Il dispositivo non \u00E8 sicuro. Safe non sar\u00E0 attivato</string>
+    <string name="pref_secret_safe_test_success">Test passato. Il dispositivo \u00E8 sicuro. Safe sar\u00E0 attivato</string>
     <string name="pref_secret_export_safe_title">Condivisione password di Safe</string>
     <string name="pref_secret_export_safe_message">Puoi condividere la tua password criptata.\nPuoi compiere quest\'operazione una sola volta.\nLa condivisione della password \u00E8 pericolosa in quanto qualcun\'altro potrebbe accedere a Safe.</string>
     <string name="pref_secret_export_message">La mia password criptata \u00E8: %1$s</string>
     <string name="pref_secret_export_title">Condividi password</string>
     <string name="pref_secret_export_already_shared">Non puoi condividere la password fino a quando non la cambierai</string>
     <string name="pref_opensource_title">Open source</string>
-    <string name="pref_opensource_message">Released under LGPL v3</string>
+    <string name="pref_opensource_message">Rilasciato sotto licenza LGPL v3</string>
 
     <!-- Safe -->
     <string name="title_activity_safe">Safe</string>

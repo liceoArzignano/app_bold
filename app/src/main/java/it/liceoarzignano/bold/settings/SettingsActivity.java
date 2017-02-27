@@ -8,16 +8,25 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.safetynet.SafetyNet;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.security.SecureRandom;
+
+import it.liceoarzignano.bold.BuildConfig;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
 import it.liceoarzignano.bold.backup.BackupActivity;
 import it.liceoarzignano.bold.safe.SafeActivity;
+import it.liceoarzignano.bold.safe.mod.Encryption;
 
 public class SettingsActivity extends AppCompatActivity {
     private static int mCounter = 0;
@@ -51,7 +60,7 @@ public class SettingsActivity extends AppCompatActivity {
             final Preference analytics = findPreference("analytics_key");
             Preference backup = findPreference("backup_key");
             final Preference name = findPreference("username_key");
-            //TODO: final Preference secret = findPreference("secret_key");
+            final Preference safe = findPreference("safe_key");
 
             changeLog.setOnPreferenceClickListener(preference -> {
                 new MaterialDialog.Builder(mContext)
@@ -89,8 +98,10 @@ public class SettingsActivity extends AppCompatActivity {
                 return true;
             });
 
-            /*
-            secret.setOnPreferenceClickListener(preference -> {
+            safe.setSummary(getString(Utils.hasPassedSafetyNetTest(mContext) ?
+                    R.string.pref_safe_status_message_enabled :
+                    R.string.pref_safe_status_message_disabled));
+            safe.setOnPreferenceClickListener(preference -> {
                 mCounter++;
                 if (mCounter == 9) {
                     if (SafeActivity.hasSharedPassword(mContext)) {
@@ -115,10 +126,60 @@ public class SettingsActivity extends AppCompatActivity {
                                 })
                                 .show();
                     }
+                } else {
+                    safetyNetTest();
                 }
                 return true;
             });
-            */
+        }
+
+        private void safetyNetTest() {
+            if (!Utils.hasInternetConnection(mContext)) {
+                Toast.makeText(mContext, getString(R.string.pref_secret_safe_test_connection),
+                        Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            MaterialDialog dialog = new MaterialDialog.Builder(mContext)
+                    .title(R.string.pref_secret_safe_test_title)
+                    .content(R.string.pref_secret_safe_test_running)
+                    .cancelable(false)
+                    .progress(true, 100)
+                    .progressIndeterminateStyle(false)
+                    .build();
+
+            dialog.show();
+
+            GoogleApiClient client = new GoogleApiClient.Builder(mContext)
+                    .addApi(SafetyNet.API)
+                    .build();
+            client.connect();
+
+            String nonce = String.valueOf(System.currentTimeMillis());
+            ByteArrayOutputStream oStream = new ByteArrayOutputStream();
+            byte[] randBytes = new byte[24];
+            new SecureRandom().nextBytes(randBytes);
+
+            try {
+                oStream.write(randBytes);
+                oStream.write(nonce.getBytes());
+            } catch (IOException e) {
+                Log.e("SafetyNetTest", e.getMessage());
+            }
+
+            SafetyNet.SafetyNetApi.attest(client, oStream.toByteArray())
+                    .setResultCallback((result) -> {
+                        dialog.dismiss();
+                        boolean hasPassed = Encryption.validateRespose(mContext,
+                                result.getJwsResult(), BuildConfig.DEBUG);
+                        Utils.setSafetyNetResults(mContext, hasPassed);
+                        new MaterialDialog.Builder(mContext)
+                                .title(R.string.pref_secret_safe_test_title)
+                                .content(hasPassed ? R.string.pref_secret_safe_test_success :
+                                        R.string.pref_secret_safe_test_fail)
+                                .neutralText(android.R.string.ok)
+                                .show();
+                    });
         }
     }
 }
