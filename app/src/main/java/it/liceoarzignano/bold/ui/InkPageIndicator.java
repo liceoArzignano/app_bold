@@ -92,7 +92,6 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     private boolean pageChanging;
     // animation
     private ValueAnimator moveAnimation;
-    private PendingRetreatAnimator retreatAnimation;
     private PendingRevealAnimator[] revealAnimations;
 
     public InkPageIndicator(Context context) {
@@ -570,12 +569,12 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
         ValueAnimator moveSelected = ValueAnimator.ofFloat(selectedDotX, moveTo);
 
         // also set up a pending retreat anim – this starts when the move is 75% complete
-        retreatAnimation = new InkPageIndicator.PendingRetreatAnimator(was, now, steps,
-                now > was ?
-                        new InkPageIndicator.RightwardStartPredicate(
-                                moveTo - (moveTo - selectedDotX) * 0.25f) :
-                        new InkPageIndicator.LeftwardStartPredicate(
-                                moveTo + (selectedDotX - moveTo) * 0.25f));
+        PendingRetreatAnimator retreatAnimation = new InkPageIndicator.PendingRetreatAnimator(was,
+                now, steps, now > was ?
+                new InkPageIndicator.RightwardStartPredicate(
+                        moveTo - (moveTo - selectedDotX) * 0.25f) :
+                new InkPageIndicator.LeftwardStartPredicate(
+                        moveTo + (selectedDotX - moveTo) * 0.25f));
         retreatAnimation.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {

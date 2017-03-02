@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -39,9 +38,6 @@ public class BenefitFragment extends Fragment {
 
     private Thread mAnimThread;
     private boolean isWorking;
-
-    public BenefitFragment() {
-    }
 
     BenefitFragment newInstance(int sectionNumber) {
         BenefitFragment fragment = new BenefitFragment();

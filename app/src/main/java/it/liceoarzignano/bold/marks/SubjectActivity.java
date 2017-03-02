@@ -18,11 +18,11 @@ import java.util.List;
 import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.ui.CircularProgressBar;
+import it.liceoarzignano.bold.ui.ViewerDialog;
 import it.liceoarzignano.bold.ui.recyclerview.DividerDecoration;
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerClickListener;
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerTouchListener;
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt;
-import it.liceoarzignano.bold.ui.ViewerDialog;
 
 
 public class SubjectActivity extends AppCompatActivity {
@@ -36,7 +36,6 @@ public class SubjectActivity extends AppCompatActivity {
     private NestedScrollView mNestedView;
 
     private MarksController mController;
-    private List<Mark> mMarks;
 
     private String mTitle;
     private int mFilter;
@@ -81,7 +80,7 @@ public class SubjectActivity extends AppCompatActivity {
     }
 
     public void refresh() {
-        mMarks = mController.getFilteredMarks(mTitle, mFilter);
+        List<Mark> mMarks = mController.getFilteredMarks(mTitle, mFilter);
         SubjectAdapter adapter = new SubjectAdapter(mMarks);
         RecyclerClickListener listener = (view, position) -> {
             BottomSheetDialog sheet = new BottomSheetDialog(this);

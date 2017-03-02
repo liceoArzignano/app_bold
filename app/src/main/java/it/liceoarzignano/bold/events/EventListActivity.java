@@ -12,7 +12,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,11 +30,11 @@ import io.realm.Sort;
 import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.ManagerActivity;
 import it.liceoarzignano.bold.R;
+import it.liceoarzignano.bold.ui.ViewerDialog;
 import it.liceoarzignano.bold.ui.recyclerview.DividerDecoration;
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerClickListener;
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerTouchListener;
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt;
-import it.liceoarzignano.bold.ui.ViewerDialog;
 
 public class EventListActivity extends AppCompatActivity {
 

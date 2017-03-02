@@ -44,6 +44,7 @@ public class Utils {
     public static final String SAFE_DONE = "doneSetup";
     public static final String EXTRA_PREFS = "extraPrefs";
     public static final String KEY_INTRO_SCREEN = "introScreen";
+    public static final String KEY_SAFE_SETUP = "hasCompletedSetup";
     static final String KEY_INTRO_DRAWER = "introDrawer";
     static final String KEY_INITIAL_DAY = "introDay";
     static final String KEY_VERSION = "introVersion";
@@ -185,7 +186,7 @@ public class Utils {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ITALIAN);
         String firstDay = getFirstUsageDate(context);
 
-        if (firstDay.equals("2000-01-01")) {
+        if ("2000-01-01".equals(firstDay)) {
             return false;
         }
 
@@ -234,6 +235,7 @@ public class Utils {
                 break;
             default:
                 marks = realm.where(Mark.class).findAll();
+                break;
         }
 
         ArrayList<String> elements = new ArrayList<>();

@@ -42,6 +42,7 @@ import io.realm.Sort;
 import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.events.EventListActivity;
 import it.liceoarzignano.bold.events.EventsController;
+import it.liceoarzignano.bold.home.HomeCardBuilder;
 import it.liceoarzignano.bold.home.HomeAdapter;
 import it.liceoarzignano.bold.home.HomeCard;
 import it.liceoarzignano.bold.intro.BenefitsActivity;
@@ -73,7 +74,6 @@ public class MainActivity extends AppCompatActivity
     private CustomTabsSession mCustomTabsSession;
     private CustomTabsIntent mCustomTabsIntent;
     private CustomTabsServiceConnection mCustomTabsServiceConnection;
-    private String mUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -235,30 +235,31 @@ public class MainActivity extends AppCompatActivity
      * @param index: the selected item from the nav drawer menu
      */
     private void showWebViewUI(int index) {
+        String url = null;
         switch (index) {
             case -1:
-                mUrl = getString(R.string.config_url_changelog);
+                url = getString(R.string.config_url_changelog);
                 break;
             case 0:
-                mUrl = getString(R.string.config_url_home);
+                url = getString(R.string.config_url_home);
                 break;
             case 1:
-                mUrl = getString(Utils.isTeacher(this) ?
+                url = getString(Utils.isTeacher(this) ?
                         R.string.config_url_reg_teacher : R.string.config_url_reg_student);
                 break;
             case 2:
-                mUrl = getString(R.string.config_url_moodle);
+                url = getString(R.string.config_url_moodle);
                 break;
             case 3:
-                mUrl = getString(R.string.config_url_copybook);
+                url = getString(R.string.config_url_copybook);
                 break;
             case 4:
-                mUrl = getString(R.string.config_url_teacherzone);
+                url = getString(R.string.config_url_teacherzone);
                 break;
         }
 
-        if (mUrl != null) {
-            mCustomTabsIntent.launchUrl(this, Uri.parse(mUrl));
+        if (url != null) {
+            mCustomTabsIntent.launchUrl(this, Uri.parse(url));
         }
     }
 
@@ -269,7 +270,7 @@ public class MainActivity extends AppCompatActivity
      * @return events card
      */
     private HomeCard createEventsCard() {
-        HomeCard.Builder builder = new HomeCard.Builder().setName(getString(R.string.upcoming_events));
+        HomeCardBuilder builder = new HomeCardBuilder().setName(getString(R.string.upcoming_events));
 
         // Show 3 closest events
         List<Event> events = mEventsController.getAll();
@@ -295,7 +296,7 @@ public class MainActivity extends AppCompatActivity
      * @return news card
      */
     private HomeCard createNewsCard() {
-        HomeCard.Builder builder = new HomeCard.Builder().setName(getString(R.string.nav_news));
+        HomeCardBuilder builder = new HomeCardBuilder().setName(getString(R.string.nav_news));
 
         // Show 3 lastest news
         List<News> newsList = mNewsController.getAll();
@@ -318,7 +319,7 @@ public class MainActivity extends AppCompatActivity
      * @return marks card
      */
     private HomeCard createMarksCard() {
-        HomeCard.Builder builder = new HomeCard.Builder().setName(getString(R.string.lastest_marks));
+        HomeCardBuilder builder = new HomeCardBuilder().setName(getString(R.string.lastest_marks));
 
         List<Mark> marks = mMarksController.getAll().sort("date", Sort.DESCENDING);
         if (marks.isEmpty()) {
@@ -339,7 +340,7 @@ public class MainActivity extends AppCompatActivity
      * @return suggestions card
      */
     private HomeCard createSuggestionsCard() {
-        return new HomeCard.Builder()
+        return new HomeCardBuilder()
                 .setName(getString(R.string.suggestions))
                 .addEntry("", getSuggestion())
                 .build();

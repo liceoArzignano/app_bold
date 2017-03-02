@@ -47,7 +47,6 @@ public class SafeActivity extends AppCompatActivity {
     private String mCrReg;
     private String mCrPc;
     private String mCrInternet;
-    private boolean hasCompletedSetup;
     private boolean isWorking = true;
     private Menu mMenu;
     private SafeLoginDialog mLoginDialog;
@@ -177,7 +176,7 @@ public class SafeActivity extends AppCompatActivity {
      * normal access
      */
     private void showPasswordDialog() {
-        hasCompletedSetup = mPrefs.getBoolean("hasCompletedSetup", false);
+        boolean hasCompletedSetup = mPrefs.getBoolean(Utils.KEY_SAFE_SETUP, false);
         mLoginDialog = new SafeLoginDialog(this, !hasCompletedSetup);
         mLoginDialog.build(new MaterialDialog.Builder(this)
                 .customView(mLoginDialog.getView(), false)
@@ -191,7 +190,7 @@ public class SafeActivity extends AppCompatActivity {
                         if (hasCompletedSetup) {
                             validateLogin();
                         } else {
-                            mEditor.putBoolean("hasCompletedSetup", true)
+                            mEditor.putBoolean(Utils.KEY_SAFE_SETUP, true)
                                     .putString(accessKey, encrypt(mLoginDialog.getInput()))
                                     .apply();
                             onCreateContinue();
@@ -360,7 +359,7 @@ public class SafeActivity extends AppCompatActivity {
                     mEditor.remove(pcPwdKey).apply();
                     mEditor.remove(internetPwdKey).apply();
                     mEditor.remove(hasSharedKey).apply();
-                    mEditor.remove("hasCompletedSetup").apply();
+                    mEditor.remove(Utils.KEY_SAFE_SETUP).apply();
 
                     new Handler().postDelayed(() ->
                             startActivity(new Intent(this, SafeActivity.class)), 700);

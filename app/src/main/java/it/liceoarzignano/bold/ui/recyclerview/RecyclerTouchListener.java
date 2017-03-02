@@ -6,8 +6,6 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
-import it.liceoarzignano.bold.ui.recyclerview.RecyclerClickListener;
-
 public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
     private final GestureDetector mDetector;
     private final RecyclerClickListener mListener;
