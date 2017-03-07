@@ -180,7 +180,8 @@ public class ViewerDialog {
             int time = 0;
             if (Utils.isNotLegacy()) {
                 ((AnimatedVectorDrawable) mEditIcon.getDrawable()).start();
-                new Handler().postDelayed(mDialog::dismiss, time += 1000);
+                time += 1000;
+                new Handler().postDelayed(mDialog::dismiss, time);
             } else {
                 mDialog.dismiss();
             }

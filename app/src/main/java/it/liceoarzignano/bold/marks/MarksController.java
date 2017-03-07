@@ -65,7 +65,7 @@ public class MarksController extends RealmController<Mark> {
      * @param quarter time filter
      * @return list of filtered marks
      */
-    RealmResults<Mark> getFilteredMarks(@Nullable String filter, int quarter) {
+    public RealmResults<Mark> getFilteredMarks(@Nullable String filter, int quarter) {
         if (filter == null || filter.isEmpty()) {
             switch (quarter) {
                 case 1:

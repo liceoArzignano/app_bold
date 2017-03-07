@@ -97,7 +97,7 @@ public class ManagerActivity extends AppCompatActivity
      * Intent-extra:
      * boolean isEditing
      * boolean isMark
-     * long mId
+     * long id
      * long newsToEvent
      */
 
@@ -165,21 +165,6 @@ public class ManagerActivity extends AppCompatActivity
         String loadNotes;
         double value = 0;
 
-        // Event categories
-        List<String> categories = new ArrayList<>();
-        categories.add(getString(R.string.event_spinner_test));
-        categories.add(getString(R.string.event_spinner_school));
-        categories.add(getString(R.string.event_spinner_bday));
-        categories.add(getString(R.string.event_spinner_homework));
-        categories.add(getString(R.string.event_spinner_reminder));
-        categories.add(getString(R.string.event_spinner_hang_out));
-        categories.add(getString(R.string.event_spinner_other));
-
-        // Event spinner
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_dropdown_item_1line, categories);
-        mEventSpinner.setAdapter(adapter);
-
         mDate = Calendar.getInstance().getTime();
         mDatePicker.setText(Utils.dateToStr(mDate));
         //noinspection deprecation
@@ -203,7 +188,6 @@ public class ManagerActivity extends AppCompatActivity
                 loadNotes = loadEvent.getNote();
                 mValue = loadEvent.getIcon();
                 loadDate = loadEvent.getDate();
-                mEventSpinner.setSelection(mValue);
             }
 
             mTitleInput.setText(mTitle);
@@ -220,121 +204,13 @@ public class ManagerActivity extends AppCompatActivity
         }
 
         if (isMark) {
-            // Hide events-related items
-            mEventSpinnerLayout.setVisibility(View.GONE);
-
-            // Subjects list
-            switch (Utils.getAddress(this)) {
-                case "1":
-                    mSubjects = getResources().getStringArray(R.array.subjects_lists_1);
-                    break;
-                case "2":
-                    mSubjects = getResources().getStringArray(R.array.subjects_lists_2);
-                    break;
-                case "3":
-                    mSubjects = getResources().getStringArray(R.array.subjects_lists_3);
-                    break;
-                case "4":
-                    mSubjects = getResources().getStringArray(R.array.subjects_lists_4);
-                    break;
-                case "5":
-                    mSubjects = getResources().getStringArray(R.array.subjects_lists_5);
-                    break;
-                default:
-                    mSubjects = getResources().getStringArray(R.array.subjects_lists_0);
-                    break;
-            }
-
-            // Subject selector
-            mSubjectSelector.setText(isEditMode ? mTitle : getString(R.string.select_subject));
-            mSubjectLayout.setOnClickListener(v -> new MaterialDialog.Builder(this)
-                    .title(R.string.select_subject)
-                    .items((CharSequence[]) mSubjects)
-                    .itemsCallback((dialog, view, which, text) -> {
-                        mSubjectSelector.setText(text);
-                        mTitle = text.toString();
-                    })
-                    .show());
-
-            // Mark mValue
-            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-            ViewGroup group = (ViewGroup) findViewById(R.id.dialog_root);
-            final View dialog = inflater.inflate(R.layout.dialog_seekbar, group);
-            final TextView preview = (TextView) dialog.findViewById(R.id.dialog_value);
-            final SeekBar seekBar = (SeekBar) dialog.findViewById(R.id.dialog_seekBar);
-
-            preview.setText(isEditMode ? String.valueOf((double) mValue / 100) : "0.0");
-            seekBar.setMax(40);
-            seekBar.setProgress((int) value / 40);
-            mDialogVal = mValue / 25;
-            seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {
-                }
-
-                @Override
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    preview.setText(String.valueOf((double) progress / 4));
-                }
-
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
-                    double progress = seekBar.getProgress();
-                    mDialogVal = seekBar.getProgress();
-                    preview.setText(String.valueOf(progress / 4));
-                }
-            });
-
-            mMarkValueLayout.setOnClickListener(view -> new MaterialDialog.Builder(this)
-                    .title(R.string.dialog_select_mark)
-                    .customView(dialog, false)
-                    .positiveText(android.R.string.ok)
-                    .negativeText(android.R.string.cancel)
-                    .onPositive((dialogView, which) -> {
-                        mValue = (int) (mDialogVal * 25);
-                        // Force English locale to use the "." instead of ","
-                        mMarkPreview.setText(String.format(Locale.ENGLISH, "%.2f",
-                                (double) (mDialogVal / 4)));
-                    })
-                    .show());
+            setupMarkUi(value);
         } else {
-            // Hide marks-related items
-            mSubjectLayout.setVisibility(View.GONE);
-            mMarkValueLayout.setVisibility(View.GONE);
-
-            // Title fixer
-            mTitleInput.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                }
-
-                @Override
-                public void onTextChanged(final CharSequence s, int start, int before, int count) {
-                    if (s.length() > 26) {
-                        Snackbar.make(mCoordinatorLayout, getString(R.string.editor_text_too_long),
-                                Snackbar.LENGTH_LONG).setAction(
-                                getString(R.string.editor_text_too_long_fix),
-                                snackView -> mTitleInput.setText(String.format("%1$s \u2026",
-                                        s.subSequence(0, 25)))).show();
-                    }
-                }
-            });
+            setupEventUi();
         }
 
         // News to event
-        long newsId = mCallingIntent.getLongExtra("newsToEvent", -1);
-        if (newsId > 0) {
-            NewsController newsController =
-                    new NewsController(((BoldApp) getApplicationContext()).getConfig());
-            News news = newsController.getById(newsId).first();
-            mTitleInput.setText(news.getTitle());
-            mNotesInput.setText(String.format("%1$s\n%2$s", news.getMessage(), news.getUrl()));
-            mEventSpinner.setSelection(1);
-        }
+        setupNewsUi(mCallingIntent.getLongExtra("newsToEvent", -1));
     }
 
     @SuppressWarnings("deprecation")
@@ -423,6 +299,156 @@ public class ManagerActivity extends AppCompatActivity
 
             Snackbar.make(fab, getString(R.string.saved), Snackbar.LENGTH_SHORT).show();
             new Handler().postDelayed(this::onBackPressed, 1000);
+        }
+    }
+
+    /**
+     * Setup marks ui
+     *
+     * @param value mark value
+     */
+    private void setupMarkUi(double value) {
+        // Hide events-related items
+        mEventSpinnerLayout.setVisibility(View.GONE);
+
+        // Subjects list
+        switch (Utils.getAddress(this)) {
+            case "1":
+                mSubjects = getResources().getStringArray(R.array.subjects_lists_1);
+                break;
+            case "2":
+                mSubjects = getResources().getStringArray(R.array.subjects_lists_2);
+                break;
+            case "3":
+                mSubjects = getResources().getStringArray(R.array.subjects_lists_3);
+                break;
+            case "4":
+                mSubjects = getResources().getStringArray(R.array.subjects_lists_4);
+                break;
+            case "5":
+                mSubjects = getResources().getStringArray(R.array.subjects_lists_5);
+                break;
+            default:
+                mSubjects = getResources().getStringArray(R.array.subjects_lists_0);
+                break;
+        }
+
+        // Subject selector
+        mSubjectSelector.setText(isEditMode ? mTitle : getString(R.string.select_subject));
+        mSubjectLayout.setOnClickListener(v -> new MaterialDialog.Builder(this)
+                .title(R.string.select_subject)
+                .items((CharSequence[]) mSubjects)
+                .itemsCallback((dialog, view, which, text) -> {
+                    mSubjectSelector.setText(text);
+                    mTitle = text.toString();
+                })
+                .show());
+
+        // Mark mValue
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        ViewGroup group = (ViewGroup) findViewById(R.id.dialog_root);
+        final View dialog = inflater.inflate(R.layout.dialog_seekbar, group);
+        final TextView preview = (TextView) dialog.findViewById(R.id.dialog_value);
+        final SeekBar seekBar = (SeekBar) dialog.findViewById(R.id.dialog_seekBar);
+
+        preview.setText(isEditMode ? String.valueOf((double) mValue / 100) : "0.0");
+        seekBar.setMax(40);
+        seekBar.setProgress((int) value / 40);
+        mDialogVal = mValue / 25;
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                preview.setText(String.valueOf((double) progress / 4));
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                double progress = seekBar.getProgress();
+                mDialogVal = seekBar.getProgress();
+                preview.setText(String.valueOf(progress / 4));
+            }
+        });
+
+        mMarkValueLayout.setOnClickListener(view -> new MaterialDialog.Builder(this)
+                .title(R.string.dialog_select_mark)
+                .customView(dialog, false)
+                .positiveText(android.R.string.ok)
+                .negativeText(android.R.string.cancel)
+                .onPositive((dialogView, which) -> {
+                    mValue = (int) (mDialogVal * 25);
+                    // Force English locale to use the "." instead of ","
+                    mMarkPreview.setText(String.format(Locale.ENGLISH, "%.2f",
+                            (double) (mDialogVal / 4)));
+                })
+                .show());
+    }
+
+    /**
+     * Setup events ui
+     */
+    private void setupEventUi() {
+        // Hide marks-related items
+        mSubjectLayout.setVisibility(View.GONE);
+        mMarkValueLayout.setVisibility(View.GONE);
+
+        // Event categories
+        List<String> categories = new ArrayList<>();
+        categories.add(getString(R.string.event_spinner_test));
+        categories.add(getString(R.string.event_spinner_school));
+        categories.add(getString(R.string.event_spinner_bday));
+        categories.add(getString(R.string.event_spinner_homework));
+        categories.add(getString(R.string.event_spinner_reminder));
+        categories.add(getString(R.string.event_spinner_hang_out));
+        categories.add(getString(R.string.event_spinner_other));
+
+        // Event spinner
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_dropdown_item_1line, categories);
+        mEventSpinner.setAdapter(adapter);
+        if (isEditMode) {
+            mEventSpinner.setSelection(mValue);
+        }
+
+        // Title fixer
+        mTitleInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+
+            @Override
+            public void onTextChanged(final CharSequence s, int start, int before, int count) {
+                if (s.length() > 26) {
+                    Snackbar.make(mCoordinatorLayout, getString(R.string.editor_text_too_long),
+                            Snackbar.LENGTH_LONG).setAction(
+                            getString(R.string.editor_text_too_long_fix),
+                            snackView -> mTitleInput.setText(String.format("%1$s \u2026",
+                                    s.subSequence(0, 25)))).show();
+                }
+            }
+        });
+    }
+
+    /**
+     * Setup news ui
+     *
+     * @param newsId news id
+     */
+    private void setupNewsUi(long newsId) {
+        if (newsId > 0) {
+            NewsController newsController =
+                    new NewsController(((BoldApp) getApplicationContext()).getConfig());
+            News news = newsController.getById(newsId).first();
+            mTitleInput.setText(news.getTitle());
+            mNotesInput.setText(String.format("%1$s\n%2$s", news.getMessage(), news.getUrl()));
+            mEventSpinner.setSelection(1);
         }
     }
 }

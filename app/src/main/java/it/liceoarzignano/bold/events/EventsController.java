@@ -55,4 +55,19 @@ public class EventsController extends RealmController<Event> {
         mRealm.commitTransaction();
     }
 
+    public RealmResults<Event> getTomorrow() {
+        Calendar tomorrow = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+        tomorrow.add(Calendar.DAY_OF_YEAR, 1);
+        tomorrow.set(Calendar.HOUR_OF_DAY, 23);
+        tomorrow.set(Calendar.MINUTE, 59);
+        tomorrow.set(Calendar.SECOND, 59);
+        today.set(Calendar.HOUR_OF_DAY, 23);
+        today.set(Calendar.MINUTE, 59);
+        today.set(Calendar.SECOND, 59);
+
+        return mRealm.where(Event.class).between("date", today.getTime(), tomorrow.getTime())
+                .findAll();
+    }
+
 }

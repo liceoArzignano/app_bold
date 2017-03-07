@@ -295,7 +295,9 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if (viewPager == null || pageCount == 0) return;
+        if (viewPager == null || pageCount == 0) {
+            return;
+        }
         drawUnselected(canvas);
         drawSelected(canvas);
     }
@@ -535,7 +537,9 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     }
 
     private void setSelectedPage(int now) {
-        if (now == currentPage) return;
+        if (now == currentPage) {
+            return;
+        }
 
         pageChanging = true;
         previousPage = currentPage;

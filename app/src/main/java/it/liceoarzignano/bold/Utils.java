@@ -25,17 +25,19 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import io.realm.Realm;
 import it.liceoarzignano.bold.events.AlarmService;
 import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.events.EventsController;
 import it.liceoarzignano.bold.marks.Mark;
+import it.liceoarzignano.bold.marks.MarksController;
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
-
-import static android.content.Context.MODE_PRIVATE;
 
 @SuppressWarnings("SameParameterValue")
 public class Utils {
+    private static final String TAG = Utils.class.getSimpleName();
+    private static final String DEFAULT_DATE = "2000-01-01";
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
+
     public static final String IS_TEACHER = "isTeacher_key";
     public static final String SUGGESTIONS = "showSuggestions_key";
     public static final String NOTIF_NEWS = "notification_news_key";
@@ -53,8 +55,6 @@ public class Utils {
     private static final String ANALYTICS = "analytics_key";
     private static final String NOTIF_EVENT_TIME = "notification_events_time_key";
     private static final String USERNAME = "username_key";
-
-    private static SharedPreferences prefs;
 
     /**
      * Animate fab with delay
@@ -84,7 +84,8 @@ public class Utils {
     @SuppressWarnings("SameParameterValue")
     public static void animFabIntro(final Activity context, final FloatingActionButton fab,
                                     final String title, final String message, final String key) {
-        final SharedPreferences prefs = context.getSharedPreferences(EXTRA_PREFS, MODE_PRIVATE);
+        final SharedPreferences prefs = context.getSharedPreferences(EXTRA_PREFS,
+                Context.MODE_PRIVATE);
         final boolean isFirstTime = prefs.getBoolean(key, true);
         if (isNotLegacy()) {
             fab.show();
@@ -145,8 +146,8 @@ public class Utils {
      * @return the date of the day the first usage happened
      */
     private static String getFirstUsageDate(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(EXTRA_PREFS, MODE_PRIVATE);
-        return prefs.getString(KEY_INITIAL_DAY, "2000-01-01");
+        SharedPreferences prefs = context.getSharedPreferences(EXTRA_PREFS, Context.MODE_PRIVATE);
+        return prefs.getString(KEY_INITIAL_DAY, DEFAULT_DATE);
     }
 
     /**
@@ -173,7 +174,7 @@ public class Utils {
      * @return yyyy-MM-dd string
      */
     public static String dateToStr(Date date) {
-        return new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date);
+        return new SimpleDateFormat(DATE_FORMAT, Locale.getDefault()).format(date);
     }
 
     /**
@@ -183,10 +184,10 @@ public class Utils {
      * @return true if user has been using this for more than one week
      */
     static boolean hasUsedForMoreThanOneWeek(Context context) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ITALIAN);
+        SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT, Locale.ITALIAN);
         String firstDay = getFirstUsageDate(context);
 
-        if ("2000-01-01".equals(firstDay)) {
+        if (DEFAULT_DATE.equals(firstDay)) {
             return false;
         }
 
@@ -202,7 +203,7 @@ public class Utils {
 
             return firstCal.get(Calendar.YEAR) == secondCal.get(Calendar.YEAR) && diff > 7;
         } catch (ParseException e) {
-            Log.e("Utils", e.getMessage());
+            Log.e(TAG, e.getMessage());
             return false;
         }
     }
@@ -224,20 +225,10 @@ public class Utils {
      */
     public static String[] getAverageElements(Context context, int filter) {
         int size = 0;
-        Realm realm = Realm.getInstance(((BoldApp) context.getApplicationContext()).getConfig());
-        List<Mark> marks;
-        switch (filter) {
-            case 1:
-                marks = realm.where(Mark.class).equalTo("isFirstQuarter", true).findAll();
-                break;
-            case 2:
-                marks = realm.where(Mark.class).equalTo("isFirstQuarter", false).findAll();
-                break;
-            default:
-                marks = realm.where(Mark.class).findAll();
-                break;
-        }
+        MarksController controller = new MarksController(
+                ((BoldApp) context.getApplicationContext()).getConfig());
 
+        List<Mark> marks = controller.getFilteredMarks(null, filter);
         ArrayList<String> elements = new ArrayList<>();
 
         for (Mark mark : marks) {
@@ -288,10 +279,10 @@ public class Utils {
         }
 
         try {
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ITALIAN);
+            SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT, Locale.ITALIAN);
             return format.parse(string);
         } catch (ParseException e) {
-            Log.e("Utils", e.getMessage());
+            Log.e(TAG, e.getMessage());
             return new Date();
         }
     }
@@ -358,163 +349,58 @@ public class Utils {
      */
     public static String getTomorrowInfo(Context context) {
         Resources res = context.getResources();
-        String content = null;
-        boolean isFirstElement = true;
+        String content = "";
 
-        int icon;
-        int test = 0;
-        int atSchool = 0;
-        int bday = 0;
-        int homeWork = 0;
-        int reminder = 0;
-        int hangout = 0;
-        int others = 0;
+        int categories[] = new int[] {
+                0 /* test */, 0 /* atSchool */, 0 /* bday */,
+                0 /* homeworks */, 0 /* reminder */, 0 /* meeting */,
+                0 /* others */
+        };
+
+        int messages[] = new int[] {
+                R.plurals.notification_test, R.plurals.notification_school,
+                R.plurals.notification_birthday, R.plurals.notification_homework,
+                R.plurals.notification_reminder, R.plurals.notification_meeting,
+                R.plurals.notification_other
+        };
 
         EventsController controller = new EventsController(
                 ((BoldApp) context.getApplicationContext()).getConfig());
-        List<Event> events = controller.getAll();
+        List<Event> events = controller.getTomorrow();
 
-        List<Event> newEvents = new ArrayList<>();
-
-        // Create tomorrow events list
-        //noinspection Convert2streamapi
-        for (Event event : events) {
-            if (Utils.getToday().equals(event.getDate())) {
-                newEvents.add(event);
-            }
-        }
-
-        if (newEvents.isEmpty()) {
+        if (events.isEmpty()) {
             return null;
         }
 
         // Get data
-        for (Event event : newEvents) {
-            icon = event.getIcon();
-            switch (icon) {
-                case 0:
-                    test++;
-                    break;
-                case 1:
-                    atSchool++;
-                    break;
-                case 2:
-                    bday++;
-                    break;
-                case 3:
-                    homeWork++;
-                    break;
-                case 4:
-                    reminder++;
-                    break;
-                case 5:
-                    hangout++;
-                    break;
-                case 6:
-                    others++;
-                    break;
-            }
+        for (Event event : events) {
+            categories[event.getIcon()]++;
         }
 
-        // Test
-        if (test > 0) {
-            // First element
-            content = res.getQuantityString(R.plurals.notification_message_first, test, test)
-                    + " " + res.getQuantityString(R.plurals.notification_test, test, test);
-            isFirstElement = false;
+        // Build message
+        for (int counter = 0; counter < categories.length; counter++) {
+            content += eventInfoBuilder(res, content, categories[counter], messages[counter]);
         }
-
-        // School
-        if (atSchool > 0) {
-            if (isFirstElement) {
-                content = res.getQuantityString(R.plurals.notification_message_first,
-                        atSchool, atSchool) + " ";
-                isFirstElement = false;
-            } else {
-                content += bday == 0 && hangout == 0 && others == 0 ? " " +
-                        String.format(res.getString(R.string.notification_message_half),
-                                atSchool) :
-                        String.format(res.getString(R.string.notification_message_half),
-                                atSchool);
-            }
-            content += " " + res.getQuantityString(R.plurals.notification_school,
-                    atSchool, atSchool);
-        }
-
-        // Birthday
-        if (bday > 0) {
-            if (isFirstElement) {
-                content = res.getQuantityString(R.plurals.notification_message_first,
-                        bday, bday) + " ";
-                isFirstElement = false;
-            } else {
-                content += String.format(res.getString(R.string.notification_message_half),
-                        bday);
-            }
-            content += " " + res.getQuantityString(R.plurals.notification_birthday,
-                    bday, bday);
-        }
-
-        // Homework
-        if (homeWork > 0) {
-            if (isFirstElement) {
-                content = res.getQuantityString(R.plurals.notification_message_first,
-                        homeWork, homeWork) + " ";
-                isFirstElement = false;
-            } else {
-                content += String.format(res.getString(R.string.notification_message_half),
-                        homeWork);
-            }
-
-            content += " " + res.getQuantityString(R.plurals.notification_homework,
-                    homeWork, homeWork);
-        }
-
-        // Reminder
-        if (reminder > 0) {
-            if (isFirstElement) {
-                content = res.getQuantityString(R.plurals.notification_message_first,
-                        reminder, reminder) + " ";
-                isFirstElement = false;
-            } else {
-                content += String.format(res.getString(R.string.notification_message_half),
-                        reminder);
-            }
-            content += " " + res.getQuantityString(R.plurals.notification_reminder,
-                    reminder, reminder);
-        }
-
-        // Hangout
-        if (hangout > 0) {
-            if (isFirstElement) {
-                content = res.getQuantityString(R.plurals.notification_message_first,
-                        hangout, hangout) + " ";
-                isFirstElement = false;
-            } else {
-                content += String.format(res.getString(R.string.notification_message_half),
-                        atSchool);
-            }
-            content += " " + res.getQuantityString(R.plurals.notification_meeting,
-                    hangout, hangout);
-        }
-
-        // Other
-        if (others > 0) {
-            if (isFirstElement) {
-                content = res.getQuantityString(R.plurals.notification_message_first,
-                        others, others);
-                content += " ";
-            } else {
-                content += String.format(res.getString(R.string.notification_message_half),
-                        others);
-            }
-            content += " " + res.getQuantityString(R.plurals.notification_other,
-                    others, others);
-        }
-
         content += " " + res.getString(R.string.notification_message_end);
 
         return content;
+    }
+
+    /**
+     * Build part of summary for notification (only the given category)
+     *
+     * @param res to fetch strings
+     * @param orig original message
+     * @param size quantity of events
+     * @param id string id
+     * @return updated message
+     */
+    private static String eventInfoBuilder(Resources res, String orig, int size, int id) {
+        String val = orig.isEmpty() ?
+                res.getQuantityString(R.plurals.notification_message_first, size, size) + " " :
+                orig + String.format(res.getString(R.string.notification_message_half), size);
+
+        return val + " " + res.getQuantityString(id, size, size);
     }
 
     /**
@@ -556,19 +442,37 @@ public class Utils {
         manager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pIntent);
     }
 
+    /**
+     * Check if device is connected has an internet connection
+     *
+     * @param context to access ConnectivityManager
+     * @return true if device is connected to the internet
+     */
     public static boolean hasInternetConnection(Context context) {
         ConnectivityManager manager = (ConnectivityManager)
                 context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return manager.getActiveNetworkInfo() != null;
     }
 
+    /**
+     * Check if device passed SafetyNet test
+     *
+     * @param context to access the shared preferences
+     * @return false if test failed
+     */
     public static boolean hasPassedSafetyNetTest(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE);
+        SharedPreferences prefs = context.getSharedPreferences(SAFE_PREFS, Context.MODE_PRIVATE);
         return prefs.getBoolean(KEY_SAFE_PASSED, false);
     }
 
+    /**
+     * Store SafetyNet test results
+     *
+     * @param context to access the shared preferences editor
+     * @param hasPassed whether the device passed the test
+     */
     public static void setSafetyNetResults(Context context, boolean hasPassed) {
-        SharedPreferences prefs = context.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE);
+        SharedPreferences prefs = context.getSharedPreferences(SAFE_PREFS, Context.MODE_PRIVATE);
         prefs.edit().putBoolean(KEY_SAFE_PASSED, hasPassed).apply();
     }
 
@@ -580,64 +484,64 @@ public class Utils {
      */
 
     public static boolean isTeacher(Context context) {
-        prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getBoolean(IS_TEACHER, false);
     }
 
     static boolean hasAnalytics(Context context) {
-        prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getBoolean(ANALYTICS, true);
     }
 
     public static boolean hasSuggestions(Context context) {
-        prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getBoolean(SUGGESTIONS, true);
     }
 
     public static boolean hasNewsNotification(Context context) {
-        prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getBoolean(NOTIF_NEWS, true);
     }
 
     public static boolean hasEventsNotification(Context context) {
-        prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getBoolean(NOTIF_EVENT, true);
     }
 
     private static String getEventsNotificationTime(Context context) {
-        prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getString(NOTIF_EVENT_TIME, "0");
     }
 
     public static String getAddress(Context context) {
-        prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getString(ADDRESS, "0");
     }
 
     static String appVersionKey(Context mContext) {
-        prefs = mContext.getSharedPreferences(EXTRA_PREFS, MODE_PRIVATE);
+        SharedPreferences prefs = mContext.getSharedPreferences(EXTRA_PREFS, Context.MODE_PRIVATE);
         return prefs.getString(KEY_VERSION, "0");
     }
 
     public static String userNameKey(Context mContext) {
-        prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         return prefs.getString(USERNAME, "");
     }
 
     public static void setAddress(Context context, String value) {
-        prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         prefs.edit().putString(ADDRESS, value).putBoolean(IS_TEACHER, false)
                 .apply();
     }
 
     public static void setTeacherMode(Context context) {
-        prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         prefs.edit().putBoolean(IS_TEACHER, true).putString(ADDRESS, "0")
                 .apply();
     }
 
     public static boolean hasSafe(Context context) {
-        prefs = context.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE);
+        SharedPreferences prefs = context.getSharedPreferences(SAFE_PREFS, Context.MODE_PRIVATE);
         return prefs.getBoolean(SAFE_DONE, false);
     }
 

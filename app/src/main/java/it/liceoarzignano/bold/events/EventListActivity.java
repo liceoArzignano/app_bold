@@ -179,9 +179,35 @@ public class EventListActivity extends AppCompatActivity {
             today.set(Calendar.MILLISECOND, 999);
         }
 
-        Realm realm = Realm.getInstance(((BoldApp) getApplicationContext()).getConfig());
+        RealmResults<Event> events = getEventsForQuery(date, query, previous, today);
 
-        RealmResults<Event> events = date == null ?
+        mEmptyLayout.setVisibility(events.isEmpty() ? View.VISIBLE : View.GONE);
+        mEmptyText.setText(context.getString(hasQuery ?
+                R.string.search_no_result : R.string.events_empty));
+
+        EventsAdapter adapter = new EventsAdapter(events);
+        RecyclerClickListener listener = (view, position) ->
+                viewEvent(events.get(position).getId());
+        mEventList.setAdapter(adapter);
+        mEventList.addOnItemTouchListener(new RecyclerTouchListener(context, listener));
+
+        adapter.notifyDataSetChanged();
+    }
+
+    /**
+     * Get events list basing on current ui query
+     *
+     * @param date viewed date
+     * @param query search query
+     * @param previous previous day
+     * @param today next day
+     * @return event list
+     */
+    private RealmResults<Event> getEventsForQuery(Date date, String query,
+                                                  Calendar previous, Calendar today) {
+        boolean hasQuery = query != null && !query.isEmpty();
+        Realm realm = Realm.getInstance(((BoldApp) getApplicationContext()).getConfig());
+        return date == null ?
                 hasQuery ?
                         realm.where(Event.class)
                                 .contains("title", query, Case.INSENSITIVE)
@@ -197,17 +223,6 @@ public class EventListActivity extends AppCompatActivity {
                                 .between("date", previous.getTime(), today.getTime())
                                 .findAllSorted("date", Sort.DESCENDING);
 
-        mEmptyLayout.setVisibility(events.isEmpty() ? View.VISIBLE : View.GONE);
-        mEmptyText.setText(context.getString(hasQuery ?
-                R.string.search_no_result : R.string.events_empty));
-
-        EventsAdapter adapter = new EventsAdapter(events);
-        RecyclerClickListener listener = (view, position) ->
-                viewEvent(events.get(position).getId());
-        mEventList.setAdapter(adapter);
-        mEventList.addOnItemTouchListener(new RecyclerTouchListener(context, listener));
-
-        adapter.notifyDataSetChanged();
     }
 
     /**

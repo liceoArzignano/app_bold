@@ -89,7 +89,7 @@ public class CircularProgressBar extends View {
         mPaint.setColor(mTextColor);
 
         // Center text
-        int posX = (canvas.getWidth() / 2);
+        int posX = canvas.getWidth() / 2;
         int posY = (int) ((canvas.getHeight() / 2) - ((mPaint.descent() + mPaint.ascent()) / 2));
 
         canvas.drawText(String.format(Locale.ENGLISH, "%.2f", mValue), posX, posY, mPaint);
@@ -109,7 +109,7 @@ public class CircularProgressBar extends View {
         mValue = progress;
 
         ValueAnimator animator = ValueAnimator.ofFloat(mSweepAngle,
-                calcSweepAngleFromProgress((int) ((progress < 1) ? 100 : progress * 100)));
+                calcSweepAngleFromProgress((int) (progress < 1 ? 100 : progress * 100)));
 
         animator.setInterpolator(new FastOutSlowInInterpolator());
         animator.setDuration(1600);

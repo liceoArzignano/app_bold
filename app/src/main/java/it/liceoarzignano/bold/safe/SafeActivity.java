@@ -92,6 +92,35 @@ public class SafeActivity extends AppCompatActivity {
         mLoadingLayout.setVisibility(View.VISIBLE);
         isWorking = true;
 
+        mFab.setOnClickListener(view -> {
+            mMenu.findItem(R.id.action_reset).setVisible(false);
+            mMenu.findItem(R.id.action_info).setVisible(false);
+            mFab.hide();
+            mContentLayout.setVisibility(View.GONE);
+            mLoadingText.setText(R.string.safe_encrypting);
+            mLoadingLayout.setVisibility(View.VISIBLE);
+
+            new Handler().postDelayed(() -> {
+                String text = mUserEdit.getText().toString();
+                if (!text.isEmpty()) {
+                    mEditor.putString(userKey, encrypt(text)).apply();
+                }
+                text = mRegEdit.getText().toString();
+                if (!text.isEmpty()) {
+                    mEditor.putString(regPwdKey, encrypt(text)).apply();
+                }
+                text = mPcEdit.getText().toString();
+                if (!text.isEmpty()) {
+                    mEditor.putString(pcPwdKey, encrypt(text)).apply();
+                }
+                text = mInternetEdit.getText().toString();
+                if (!text.isEmpty()) {
+                    mEditor.putString(internetPwdKey, encrypt(text)).apply();
+                }
+                finish();
+            }, 1000);
+        });
+
         prepareDevice();
     }
 
@@ -220,6 +249,11 @@ public class SafeActivity extends AppCompatActivity {
      * @return encrypted string
      */
     private String encrypt(String string) {
+        // Don't waste time if there's nothing to do
+        if (string == null) {
+            return "";
+        }
+
         try {
             return Encryption.encrypt(string, mSecretKeys).toString();
         } catch (UnsupportedEncodingException | GeneralSecurityException e) {
@@ -235,6 +269,11 @@ public class SafeActivity extends AppCompatActivity {
      * @return decrypted string
      */
     private String decrypt(String string) {
+        // Don't waste time if there's nothing to do
+        if (string == null) {
+            return "";
+        }
+
         try {
             return Encryption.decrypt(
                     new Encryption.CipherTextIvMac(string), mSecretKeys);
@@ -274,24 +313,10 @@ public class SafeActivity extends AppCompatActivity {
     private void onCreateContinue() {
         isWorking = false;
 
-        // Always check if there's sth to decrypt, if not, pass
-        // away to speed up this process
-        String obj = mPrefs.getString(userKey, null);
-        if (obj != null) {
-            mCrUserName = decrypt(obj);
-        }
-        obj = mPrefs.getString(regPwdKey, null);
-        if (obj != null) {
-            mCrReg = decrypt(obj);
-        }
-        obj = mPrefs.getString(pcPwdKey, null);
-        if (obj != null) {
-            mCrPc = decrypt(obj);
-        }
-        obj = mPrefs.getString(internetPwdKey, null);
-        if (obj != null) {
-            mCrInternet = decrypt(obj);
-        }
+        mCrUserName = decrypt(mPrefs.getString(userKey, null));
+        mCrReg = decrypt(mPrefs.getString(regPwdKey, null));
+        mCrPc = decrypt(mPrefs.getString(pcPwdKey, null));
+        mCrInternet = decrypt(mPrefs.getString(internetPwdKey, null));
 
         mMenu.findItem(R.id.action_reset).setVisible(true);
         mMenu.findItem(R.id.action_info).setVisible(true);
@@ -312,35 +337,6 @@ public class SafeActivity extends AppCompatActivity {
 
         Utils.animFabIntro(this, mFab, getString(R.string.intro_fab_save_safe_title),
                 getString(R.string.intro_fab_save_safe), "safeKey");
-
-        mFab.setOnClickListener(view -> {
-            mMenu.findItem(R.id.action_reset).setVisible(false);
-            mMenu.findItem(R.id.action_info).setVisible(false);
-            mFab.hide();
-            mContentLayout.setVisibility(View.GONE);
-            mLoadingText.setText(R.string.safe_encrypting);
-            mLoadingLayout.setVisibility(View.VISIBLE);
-
-            new Handler().postDelayed(() -> {
-                String text = mUserEdit.getText().toString();
-                if (!text.isEmpty()) {
-                    mEditor.putString(userKey, encrypt(text)).apply();
-                }
-                text = mRegEdit.getText().toString();
-                if (!text.isEmpty()) {
-                    mEditor.putString(regPwdKey, encrypt(text)).apply();
-                }
-                text = mPcEdit.getText().toString();
-                if (!text.isEmpty()) {
-                    mEditor.putString(pcPwdKey, encrypt(text)).apply();
-                }
-                text = mInternetEdit.getText().toString();
-                if (!text.isEmpty()) {
-                    mEditor.putString(internetPwdKey, encrypt(text)).apply();
-                }
-                finish();
-            }, 1000);
-        });
     }
 
     /**
@@ -385,7 +381,6 @@ public class SafeActivity extends AppCompatActivity {
             Utils.setSafetyNetResults(this, false);
             mLoadingText.setText(R.string.safe_error_security);
         }
-
     }
 
     /**
