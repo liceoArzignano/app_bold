@@ -146,7 +146,14 @@ public class SettingsActivity extends AppCompatActivity {
 
             dialog.show();
 
-            GoogleApiClient client = new GoogleApiClient.Builder(mContext)
+            // Don't run SafetyNet test on devices without GMS
+            if (Utils.hasNoGMS(mContext)) {
+                Utils.setSafetyNetResults(mContext, Encryption.validateRespose(mContext,
+                        null, BuildConfig.DEBUG));
+                return;
+            }
+
+                GoogleApiClient client = new GoogleApiClient.Builder(mContext)
                     .addApi(SafetyNet.API)
                     .build();
             client.connect();

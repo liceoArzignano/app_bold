@@ -17,6 +17,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.View;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -452,6 +455,17 @@ public class Utils {
         ConnectivityManager manager = (ConnectivityManager)
                 context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return manager.getActiveNetworkInfo() != null;
+    }
+
+    /**
+     * Check if GoogleMobileServices are installed on the device
+     *
+     * @param context to check GoogleApi availability
+     * @return true if GMS is not installed
+     */
+    public static boolean hasNoGMS(Context context) {
+        return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context) !=
+                ConnectionResult.SUCCESS;
     }
 
     /**

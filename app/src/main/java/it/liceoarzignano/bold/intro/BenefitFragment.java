@@ -152,6 +152,14 @@ public class BenefitFragment extends Fragment {
             }, 500);
         }
 
+        ((BenefitsActivity) getActivity()).getViewPager().setScrollAllowed(false);
+
+        // Don't run SafetyNet test on devices without GMS
+        if (Utils.hasNoGMS(context)) {
+            postDeviceCheck(context, Encryption.validateRespose(context, null, BuildConfig.DEBUG));
+            return;
+        }
+
         // Safety net + integrity check
         GoogleApiClient client = new GoogleApiClient.Builder(context)
                 .addApi(SafetyNet.API)
@@ -170,7 +178,6 @@ public class BenefitFragment extends Fragment {
             Log.e("SafetyNetTest", e.getMessage());
         }
 
-        ((BenefitsActivity) getActivity()).getViewPager().setScrollAllowed(false);
         SafetyNet.SafetyNetApi.attest(client, oStream.toByteArray())
                 .setResultCallback((mResult) ->
                         postDeviceCheck(context, Encryption.validateRespose(context,
@@ -198,18 +205,19 @@ public class BenefitFragment extends Fragment {
                     mMessage.setText(getString(R.string.slide0_message_done));
                 }, 2800);
             }, 800);
+        } else {
+            mViewPager.setScrollAllowed(true);
+            mMessage.setText(getString(R.string.slide0_message_done));
         }
     }
 
     void animateIntro() {
+        mTitle.animate().alpha(1f).setStartDelay(400).start();
+        mMessage.animate().alpha(1f).setStartDelay(420).start();
+        mIntroImage.setImageResource(Utils.isNotLegacy() ?
+                R.drawable.avd_intro_start : R.drawable.ic_hat);
         if (Utils.isNotLegacy()) {
-            mTitle.animate().alpha(1f).setStartDelay(400).start();
-            mMessage.animate().alpha(1f).setStartDelay(420).start();
-            mIntroImage.setImageResource(R.drawable.avd_intro_start);
-
             ((AnimatedVectorDrawable) mIntroImage.getDrawable()).start();
-        } else {
-            mIntroImage.setImageResource(R.drawable.ic_hat);
         }
     }
 }
