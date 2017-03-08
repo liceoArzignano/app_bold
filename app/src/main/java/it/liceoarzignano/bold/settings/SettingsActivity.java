@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.Toast;
@@ -41,17 +41,13 @@ public class SettingsActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-
-        getFragmentManager().beginTransaction()
-                .replace(R.id.content_frame, new MyPreferenceFragment()).commit();
     }
 
-    public static class MyPreferenceFragment extends PreferenceFragment {
+    public static class MyPreferenceFragment extends PreferenceFragmentCompat {
         private Context mContext;
 
         @Override
-        public void onCreate(Bundle savedInstance) {
-            super.onCreate(savedInstance);
+        public void onCreatePreferences(Bundle savedInstance, String key) {
             addPreferencesFromResource(R.xml.settings);
 
             mContext = getActivity();

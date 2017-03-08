@@ -20,6 +20,7 @@
 
     <style name="AppTheme.SettingsTheme" parent="@style/AppTheme.NoActionBar">
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+        <item name="alertDialogTheme">@style/AppTheme.PreferenceDialog</item>
     </style>
 
 </resources>

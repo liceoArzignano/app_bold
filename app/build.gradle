@@ -66,6 +66,8 @@ dependencies {
     compile "com.android.support:design:${androidSupportVersion}"
     compile "com.android.support:cardview-v7:${androidSupportVersion}"
     compile "com.android.support:customtabs:${androidSupportVersion}"
+    compile "com.android.support:preference-v7:${androidSupportVersion}"
+    compile "com.android.support:preference-v14:${androidSupportVersion}"
     // google + fireBase
     compile "com.google.android.gms:play-services-drive:${googlePlayServicesVersion}"
     compile "com.google.android.gms:play-services-safetynet:${googlePlayServicesVersion}"

@@ -15,8 +15,9 @@
         app:theme="@style/AppTheme.ToolbarTheme"
         tools:targetApi="lollipop" />
 
-    <FrameLayout
-        android:id="@+id/content_frame"
+    <fragment
+        android:name="it.liceoarzignano.bold.settings.SettingsActivity$MyPreferenceFragment"
+        android:tag="it.liceoarzignano.bold.settings.SettingsActivity$MyPreferenceFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar" />
