@@ -153,7 +153,7 @@ public class SettingsActivity extends AppCompatActivity {
                 return;
             }
 
-                GoogleApiClient client = new GoogleApiClient.Builder(mContext)
+            GoogleApiClient client = new GoogleApiClient.Builder(mContext)
                     .addApi(SafetyNet.API)
                     .build();
             client.connect();

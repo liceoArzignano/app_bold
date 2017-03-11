@@ -51,6 +51,10 @@
             android:icon="@drawable/ic_safe"
             android:title="@string/nav_safe" />
         <item
+            android:id="@+id/nav_share"
+            android:icon="@drawable/avd_share"
+            android:title="@string/nav_share" />
+        <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings"
             android:title="@string/nav_settings" />

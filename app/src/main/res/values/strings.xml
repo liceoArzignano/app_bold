@@ -16,6 +16,7 @@
     <string name="nav_teacherzone">Teacher area</string>
     <string name="nav_settings">Settings</string>
     <string name="nav_safe">Safe</string>
+    <string name="nav_share">Share</string>
 
     <!-- Home -->
     <string name="upcoming_events">Upcoming events</string>
@@ -33,6 +34,7 @@
     <string name="suggestion_notification">You will be notified about your events the day before</string>
     <string name="suggestion_backups">Create a backup in Google Drive, you\'ll be able to restore your data in case you lose or change your phone</string>
     <string name="suggestion_news">You will find the most important news from the right in the app by opening the news section</string>
+    <string name="share_title">Share with a friend</string>
 
     <!-- Search -->
     <string name="search_action">Search\u2026</string>

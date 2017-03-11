@@ -103,6 +103,9 @@ public class MainActivity extends AppCompatActivity
         View header = navigationView.getHeaderView(0);
         mUserName = (TextView) header.findViewById(R.id.header_username);
         mAddressLogo = (ImageView) header.findViewById(R.id.header_logo);
+        if (Utils.isTeacher(this)) {
+            navigationView.getMenu().findItem(R.id.nav_share).setVisible(false);
+        }
 
         // Cards List
         mCardsList = (RecyclerView) findViewById(R.id.home_list);
@@ -183,6 +186,12 @@ public class MainActivity extends AppCompatActivity
                     Intent safeIntent = new Intent(this, SafeActivity.class);
                     startActivity(safeIntent);
                     break;
+                case R.id.nav_share:
+                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                    shareIntent.setType("text/plain");
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.config_url_share));
+                    startActivity(Intent.createChooser(shareIntent,
+                            getString(R.string.share_title)));
             }
         }, 130);
 
