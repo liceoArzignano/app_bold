@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,12 +24,15 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -36,6 +40,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import io.realm.RealmConfiguration;
 import io.realm.Sort;
@@ -61,14 +66,18 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private final Calendar mCalendar = Calendar.getInstance();
+
+    private FirebaseRemoteConfig mRemoteConfig;
+
     private MarksController mMarksController;
     private EventsController mEventsController;
     private NewsController mNewsController;
+
     private Toolbar mToolbar;
+    private ImageView mBanner;
+    private RecyclerView mCardsList;
     private TextView mUserName;
     private ImageView mAddressLogo;
-
-    private RecyclerView mCardsList;
 
     private CustomTabsClient mClient;
     private CustomTabsSession mCustomTabsSession;
@@ -79,10 +88,14 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Realm config
         RealmConfiguration config = ((BoldApp) getApplication()).getConfig();
         mMarksController = new MarksController(config);
         mEventsController = new EventsController(config);
         mNewsController = new NewsController(config);
+
+        // Firebase config
+        setupRemoteConfig();
 
         // Intro
         showIntroIfNeeded();
@@ -93,6 +106,7 @@ public class MainActivity extends AppCompatActivity
         // Toolbar and NavDrawer
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+        mBanner = (ImageView) findViewById(R.id.home_toolbar_banner);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, mToolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -189,7 +203,7 @@ public class MainActivity extends AppCompatActivity
                 case R.id.nav_share:
                     Intent shareIntent = new Intent(Intent.ACTION_SEND);
                     shareIntent.setType("text/plain");
-                    shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.config_url_share));
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, mRemoteConfig.getString("share_url"));
                     startActivity(Intent.createChooser(shareIntent,
                             getString(R.string.share_title)));
             }
@@ -445,6 +459,24 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
+     * Load remote configs, they get applied once the app is
+     */
+    private void setupRemoteConfig() {
+        mRemoteConfig = FirebaseRemoteConfig.getInstance();
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setDeveloperModeEnabled(BuildConfig.DEBUG)
+                .build();
+        mRemoteConfig.setConfigSettings(configSettings);
+        mRemoteConfig.setDefaults(R.xml.firebase_remote_config_defaults);
+        mRemoteConfig.fetch(BuildConfig.DEBUG ? 0 : TimeUnit.HOURS.toMillis(12))
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        mRemoteConfig.activateFetched();
+                    }
+                });
+    }
+
+    /**
      * Show the intro / tutorial activity
      * if it's the first time we fire the app
      */
@@ -519,27 +551,33 @@ public class MainActivity extends AppCompatActivity
     private void setupNavHeader() {
         mUserName.setText(Utils.userNameKey(this));
 
-        if (Utils.isNotLegacy()) {
-            if (Utils.isTeacher(this)) {
-                mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_6));
-            } else {
-                switch (Utils.getAddress(this)) {
-                    case "1":
-                        mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_1));
-                        break;
-                    case "2":
-                        mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_2));
-                        break;
-                    case "3":
-                        mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_3));
-                        break;
-                    case "4":
-                        mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_4));
-                        break;
-                    case "5":
-                        mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_5));
-                        break;
-                }
+        byte[] imgB64 = Base64.decode(mRemoteConfig.getString("home_banner").getBytes(),
+                Base64.DEFAULT);
+        mBanner.setImageBitmap(BitmapFactory.decodeByteArray(imgB64, 0, imgB64.length));
+
+        if (!Utils.isNotLegacy()) {
+            return;
+        }
+
+        if (Utils.isTeacher(this)) {
+            mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_6));
+        } else {
+            switch (Utils.getAddress(this)) {
+                case "1":
+                    mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_1));
+                    break;
+                case "2":
+                    mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_2));
+                    break;
+                case "3":
+                    mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_3));
+                    break;
+                case "4":
+                    mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_4));
+                    break;
+                case "5":
+                    mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_5));
+                    break;
             }
         }
     }

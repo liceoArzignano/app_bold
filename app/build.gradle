@@ -74,6 +74,7 @@ dependencies {
     compile "com.google.firebase:firebase-core:${googlePlayServicesVersion}"
     compile "com.google.firebase:firebase-messaging:${googlePlayServicesVersion}"
     compile "com.google.firebase:firebase-crash:${googlePlayServicesVersion}"
+    compile "com.google.firebase:firebase-config:${googlePlayServicesVersion}"
     // others
     compile 'uk.co.samuelwall:material-tap-target-prompt:1.9.3'
     compile 'devs.mulham.horizontalcalendar:horizontalcalendar:1.0.0'
