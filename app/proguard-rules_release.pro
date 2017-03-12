@@ -23,5 +23,3 @@
 -forceprocessing
 -optimizations 25
 -dontskipnonpubliclibraryclasses
-
--assumenosideeffects class android.util.Log { *; }
