@@ -9,11 +9,14 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.drawable.AnimatedVectorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
+import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.util.Log;
 import android.view.View;
 
@@ -489,6 +492,23 @@ public class Utils {
         SharedPreferences prefs = context.getSharedPreferences(SAFE_PREFS, Context.MODE_PRIVATE);
         prefs.edit().putBoolean(KEY_SAFE_PASSED, hasPassed).apply();
     }
+
+    /**
+     * Start an avd animation using proper class basing on api level
+     *
+     * @param drawable animated drawable
+     */
+    public static void animateAVD(Drawable drawable) {
+        if (!Utils.isNotLegacy()) {
+            return;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            ((AnimatedVectorDrawable) drawable).start();
+        } else {
+            ((AnimatedVectorDrawableCompat) drawable).start();
+        }
+    }
+
 
     /*
      * SharedPreferences getters

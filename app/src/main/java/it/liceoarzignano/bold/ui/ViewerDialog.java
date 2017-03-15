@@ -3,7 +3,6 @@ package it.liceoarzignano.bold.ui;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Handler;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.Snackbar;
@@ -128,7 +127,7 @@ public class ViewerDialog {
             shareIntent.putExtra(Intent.EXTRA_TEXT, msg);
 
             if (Utils.isNotLegacy()) {
-                ((AnimatedVectorDrawable) mShareIcon.getDrawable()).start();
+                Utils.animateAVD(mShareIcon.getDrawable());
                 new Handler().postDelayed(() -> {
                     mDialog.dismiss();
                     mContext.startActivity(Intent.createChooser(shareIntent,
@@ -142,9 +141,7 @@ public class ViewerDialog {
         });
 
         mRemoveLayout.setOnClickListener(view -> {
-            if (Utils.isNotLegacy()) {
-                ((AnimatedVectorDrawable) mRemoveIcon.getDrawable()).start();
-            }
+            Utils.animateAVD(mRemoveIcon.getDrawable());
 
             if (isMark) {
                 RealmResults<Mark> results =
@@ -179,7 +176,7 @@ public class ViewerDialog {
 
             int time = 0;
             if (Utils.isNotLegacy()) {
-                ((AnimatedVectorDrawable) mEditIcon.getDrawable()).start();
+                Utils.animateAVD(mEditIcon.getDrawable());
                 time += 1000;
                 new Handler().postDelayed(mDialog::dismiss, time);
             } else {

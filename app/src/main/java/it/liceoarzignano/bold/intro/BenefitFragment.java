@@ -1,7 +1,6 @@
 package it.liceoarzignano.bold.intro;
 
 import android.content.Context;
-import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -120,7 +119,7 @@ public class BenefitFragment extends Fragment {
             if (Utils.isNotLegacy()) {
                 isWorking = false;
                 mIntroImage.setImageResource(R.drawable.avd_intro_failed);
-                ((AnimatedVectorDrawable) mIntroImage.getDrawable()).start();
+                Utils.animateAVD(mIntroImage.getDrawable());
             }
             return;
         }
@@ -134,7 +133,7 @@ public class BenefitFragment extends Fragment {
                 do { // At least once
                     // Run on UI thread
                     new Handler(getContext().getMainLooper()).post(() ->
-                            ((AnimatedVectorDrawable) mIntroImage.getDrawable()).start());
+                            Utils.animateAVD(mIntroImage.getDrawable()));
                     try {
                         // Wait for current animation to end
                         Thread.sleep(800);
@@ -197,7 +196,7 @@ public class BenefitFragment extends Fragment {
             }
             new Handler().postDelayed(() -> {
                 mIntroImage.setImageResource(R.drawable.avd_intro_done);
-                ((AnimatedVectorDrawable) mIntroImage.getDrawable()).start();
+                Utils.animateAVD(mIntroImage.getDrawable());
 
                 // Allow scrolling when animation ends
                 new Handler().postDelayed(() -> {
@@ -216,8 +215,6 @@ public class BenefitFragment extends Fragment {
         mMessage.animate().alpha(1f).setStartDelay(420).start();
         mIntroImage.setImageResource(Utils.isNotLegacy() ?
                 R.drawable.avd_intro_start : R.drawable.ic_hat);
-        if (Utils.isNotLegacy()) {
-            ((AnimatedVectorDrawable) mIntroImage.getDrawable()).start();
-        }
+        Utils.animateAVD(mIntroImage.getDrawable());
     }
 }
