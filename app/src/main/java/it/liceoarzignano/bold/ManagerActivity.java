@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -81,17 +80,7 @@ public class ManagerActivity extends AppCompatActivity
     private int mMonth;
     private int mDay;
     private Date mDate;
-    private final DatePickerDialog.OnDateSetListener dpickerListener
-            = new DatePickerDialog.OnDateSetListener() {
-        @Override
-        public void onDateSet(DatePicker view, int year, int month, int day) {
-            mYear = year;
-            mMonth = month;
-            mDay = day;
-            mDate = Utils.rightDate(mYear, mMonth, mDay);
-            mDatePicker.setText(Utils.dateToStr(mDate));
-        }
-    };
+    private DatePickerDialog.OnDateSetListener mDatePickerListener;
 
     /*
      * Intent-extra:
@@ -109,11 +98,7 @@ public class ManagerActivity extends AppCompatActivity
         mMarksController = new MarksController(((BoldApp) getApplicationContext()).getConfig());
         mEventsController = new EventsController(((BoldApp) getApplicationContext()).getConfig());
 
-        // Init calendar
-        Calendar calendar = Calendar.getInstance();
-        mYear = calendar.get(Calendar.YEAR);
-        mMonth = calendar.get(Calendar.MONTH) + 1;
-        mDay = calendar.get(Calendar.DAY_OF_MONTH);
+        mDate = Calendar.getInstance().getTime();
 
         mCallingIntent = getIntent();
         isMark = mCallingIntent.getBooleanExtra("isMark", true);
@@ -128,6 +113,14 @@ public class ManagerActivity extends AppCompatActivity
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+        mDatePickerListener = (view, year, month, day) -> {
+            mYear = year;
+            mMonth = month;
+            mDay = day;
+            mDate = Utils.rightDate(mYear, mMonth, mDay);
+            mDatePicker.setText(Utils.dateToStr(mDate));
+        };
 
         mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
         mTitleLayout = (RelativeLayout) findViewById(R.id.manager_title_layout);
@@ -165,10 +158,9 @@ public class ManagerActivity extends AppCompatActivity
         String loadNotes;
         double value = 0;
 
-        mDate = Calendar.getInstance().getTime();
+        // Init calendar
+        Calendar calendar = Calendar.getInstance();
         mDatePicker.setText(Utils.dateToStr(mDate));
-        //noinspection deprecation
-        mDatePickerLayout.setOnClickListener(v -> showDialog(33));
 
         // Load intent data
         if (isEditMode) {
@@ -193,6 +185,7 @@ public class ManagerActivity extends AppCompatActivity
             mTitleInput.setText(mTitle);
             mDatePicker.setText(Utils.dateToStr(loadDate));
             mNotesInput.setText(loadNotes);
+            calendar.setTime(loadDate);
         }
 
         // Setup UI
@@ -202,6 +195,12 @@ public class ManagerActivity extends AppCompatActivity
         } else {
             mTitleLayout.setVisibility(View.GONE);
         }
+
+        mYear = calendar.get(Calendar.YEAR);
+        mMonth = calendar.get(Calendar.MONTH) + 1;
+        mDay = calendar.get(Calendar.DAY_OF_MONTH);
+        //noinspection deprecation
+        mDatePickerLayout.setOnClickListener(v -> showDialog(33));
 
         if (isMark) {
             setupMarkUi(value);
@@ -217,7 +216,7 @@ public class ManagerActivity extends AppCompatActivity
     @Override
     protected Dialog onCreateDialog(int id) {
         if (id == 33) {
-            return new DatePickerDialog(this, dpickerListener, mYear, mMonth - 1, mDay);
+            return new DatePickerDialog(this, mDatePickerListener, mYear, mMonth - 1, mDay);
         }
         return null;
     }
