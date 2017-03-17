@@ -18,6 +18,7 @@ import org.json.JSONObject;
 import java.util.Calendar;
 
 import it.liceoarzignano.bold.BoldApp;
+import it.liceoarzignano.bold.BuildConfig;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
 import it.liceoarzignano.bold.news.News;
@@ -40,8 +41,8 @@ public class BoldMessagingService extends FirebaseMessagingService {
         if (!remoteMessage.getData().isEmpty()) {
             try {
                 JSONObject jston = new JSONObject(remoteMessage.getData().toString());
-                String title = jston.getString("title");
-                String message = jston.getString("message");
+                String title = jston.getString(BuildConfig.DEBUG ? "d_title" : "title");
+                String message = jston.getString(BuildConfig.DEBUG ? "d_message" : "message");
                 String url = jston.getString("url");
                 boolean isPrivate = jston.getBoolean("isPrivate");
                 Intent intent;
