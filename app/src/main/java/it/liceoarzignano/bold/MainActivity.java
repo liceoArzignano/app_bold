@@ -206,6 +206,10 @@ public class MainActivity extends AppCompatActivity
                     shareIntent.putExtra(Intent.EXTRA_TEXT, mRemoteConfig.getString("share_url"));
                     startActivity(Intent.createChooser(shareIntent,
                             getString(R.string.share_title)));
+                    break;
+                case R.id.nav_help:
+                    showWebViewUI(5);
+                    break;
             }
         }, 130);
 
@@ -278,6 +282,9 @@ public class MainActivity extends AppCompatActivity
                 break;
             case 4:
                 url = getString(R.string.config_url_teacherzone);
+                break;
+            case 5:
+                url = getString(R.string.config_url_help);
                 break;
         }
 

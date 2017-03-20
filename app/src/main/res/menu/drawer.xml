@@ -55,6 +55,10 @@
             android:icon="@drawable/avd_share"
             android:title="@string/nav_share" />
         <item
+            android:id="@+id/nav_help"
+            android:icon="@drawable/ic_help"
+            android:title="@string/nav_help" />
+        <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings"
             android:title="@string/nav_settings" />
