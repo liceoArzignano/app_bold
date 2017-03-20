@@ -1,14 +1,5 @@
 package it.liceoarzignano.bold.ui;
 
-/**
- * Simple single android view component that can be used to showing a round progress bar.
- * It can be customized with size, stroke size, colors and text etc.
- * Progress change will be animated.
- * Created by Kristoffer, http://kmdev.se
- * <p>
- * Customized for it.liceoarzignano.bold by joey
- */
-
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -23,6 +14,14 @@ import java.util.Locale;
 
 import it.liceoarzignano.bold.R;
 
+/**
+ * Simple single android view component that can be used to showing a round progress bar.
+ * It can be customized with size, stroke size, colors and text etc.
+ * Progress change will be animated.
+ * Created by Kristoffer, http://kmdev.se
+ * <p>
+ * Customized for it.liceoarzignano.bold by joey
+ */
 public class CircularProgressBar extends View {
 
     // Allocate paint outside onDraw to avoid unnecessary object creation

@@ -112,7 +112,7 @@ public class BenefitFragment extends Fragment {
         mButton.setVisibility(View.INVISIBLE);
 
         // Check for internet connection
-        if (!Utils.hasInternetConnection(context)) {
+        if (Utils.hasNoInternetConnection(context)) {
             mButton.setVisibility(View.VISIBLE);
             mButton.setOnClickListener(view -> doDeviceCheck(context));
             mMessage.setText(getString(R.string.slide0_message_failed));

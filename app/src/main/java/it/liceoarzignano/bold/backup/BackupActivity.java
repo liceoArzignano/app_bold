@@ -466,7 +466,7 @@ public class BackupActivity extends AppCompatActivity {
      * @param isSuccess success or failure
      */
     private void showResult(final boolean isSuccess) {
-        int message = 0;
+        int message;
         switch (mStatus) {
             case 2:
                 message = isSuccess ?

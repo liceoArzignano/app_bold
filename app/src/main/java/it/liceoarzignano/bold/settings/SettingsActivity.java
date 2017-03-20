@@ -130,7 +130,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         private void safetyNetTest() {
-            if (!Utils.hasInternetConnection(mContext)) {
+            if (Utils.hasNoInternetConnection(mContext)) {
                 Toast.makeText(mContext, getString(R.string.pref_secret_safe_test_connection),
                         Toast.LENGTH_LONG).show();
                 return;

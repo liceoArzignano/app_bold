@@ -454,10 +454,10 @@ public class Utils {
      * @param context to access ConnectivityManager
      * @return true if device is connected to the internet
      */
-    public static boolean hasInternetConnection(Context context) {
+    public static boolean hasNoInternetConnection(Context context) {
         ConnectivityManager manager = (ConnectivityManager)
                 context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        return manager.getActiveNetworkInfo() != null;
+        return manager.getActiveNetworkInfo() == null;
     }
 
     /**
