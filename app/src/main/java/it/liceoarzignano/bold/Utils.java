@@ -385,7 +385,9 @@ public class Utils {
 
         // Build message
         for (int counter = 0; counter < categories.length; counter++) {
-            content += eventInfoBuilder(res, content, categories[counter], messages[counter]);
+            if (categories[counter] > 0) {
+                content = eventInfoBuilder(res, content, categories[counter], messages[counter]);
+            }
         }
         content += " " + res.getString(R.string.notification_message_end);
 
@@ -403,8 +405,8 @@ public class Utils {
      */
     private static String eventInfoBuilder(Resources res, String orig, int size, int id) {
         String val = orig.isEmpty() ?
-                res.getQuantityString(R.plurals.notification_message_first, size, size) + " " :
-                orig + String.format(res.getString(R.string.notification_message_half), size);
+                res.getQuantityString(R.plurals.notification_message_first, size, size) :
+                orig + res.getQuantityString(R.plurals.notification_message_half, size, size);
 
         return val + " " + res.getQuantityString(id, size, size);
     }
@@ -508,7 +510,6 @@ public class Utils {
             ((AnimatedVectorDrawableCompat) drawable).start();
         }
     }
-
 
     /*
      * SharedPreferences getters

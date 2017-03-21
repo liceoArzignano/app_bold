@@ -226,11 +226,14 @@
     <!-- Notification -->
     <string name="notification_title">Prossimi eventi</string>
     <plurals name="notification_message_first">
-        <item quantity="one">C\'\u00E8 un</item>
-        <item quantity="other">Ci sono %d</item>
+        <item quantity="one">Domani ci sar\u00E0 un</item>
+        <item quantity="other">Domani ci saranno %d</item>
     </plurals>
-    <string name="notification_message_half">, %1$d</string>
-    <string name="notification_message_end">domani</string>
+    <plurals name="notification_message_half">
+        <item quantity="one">, un</item>
+        <item quantity="other">, %1$d</item>
+    </plurals>
+    <string name="notification_message_end">.</string>
     <plurals name="notification_test">
         <item quantity="one">compito</item>
         <item quantity="other">compiti</item>

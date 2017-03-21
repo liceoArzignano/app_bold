@@ -229,8 +229,11 @@
         <item quantity="one">There is one</item>
         <item quantity="other">There are %d</item>
     </plurals>
-    <string name="notification_message_half">, %1$d</string>
-    <string name="notification_message_end">tomorrow</string>
+    <plurals name="notification_message_half">
+        <item quantity="one">, one</item>
+        <item quantity="other">, %1$d</item>
+    </plurals>
+    <string name="notification_message_end">tomorrow.</string>
     <plurals name="notification_test">
         <item quantity="one">test</item>
         <item quantity="other">tests</item>
