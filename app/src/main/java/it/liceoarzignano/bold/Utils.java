@@ -523,7 +523,7 @@ public class Utils {
         return prefs.getBoolean(IS_TEACHER, false);
     }
 
-    static boolean hasAnalytics(Context context) {
+    public static boolean hasAnalytics(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getBoolean(ANALYTICS, true);
     }

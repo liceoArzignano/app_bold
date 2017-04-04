@@ -13,11 +13,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.util.List;
 
 import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.ManagerActivity;
 import it.liceoarzignano.bold.R;
+import it.liceoarzignano.bold.firebase.BoldAnalytics;
 
 class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
     private final List<News> mNewsList;
@@ -83,6 +86,8 @@ class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
                     (LinearLayout) sheetView.findViewById(R.id.news_sheet_delete);
 
             shareLayout.setOnClickListener(view -> {
+                new BoldAnalytics(mActivity).log(FirebaseAnalytics.Event.SHARE,
+                        FirebaseAnalytics.Param.ITEM_NAME, "Share news");
                 sheet.hide();
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain")
@@ -93,6 +98,8 @@ class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
 
             });
             deleteLayout.setOnClickListener(view -> {
+                new BoldAnalytics(mActivity).log(FirebaseAnalytics.Event.SELECT_CONTENT,
+                        FirebaseAnalytics.Param.ITEM_NAME, "Delete news");
                 sheet.hide();
                 NewsController controller = new NewsController(
                         ((BoldApp) activity.getApplication()).getConfig());
@@ -100,6 +107,8 @@ class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
                 ((NewsListActivity) activity).refresh(activity, null);
             });
             toEventLayout.setOnClickListener(view -> {
+                new BoldAnalytics(mActivity).log(FirebaseAnalytics.Event.SELECT_CONTENT,
+                        FirebaseAnalytics.Param.ITEM_NAME, "Convert news");
                 sheet.hide();
                 Intent toEventIntent = new Intent(activity, ManagerActivity.class);
                 toEventIntent.putExtra("newsToEvent", news.getId());

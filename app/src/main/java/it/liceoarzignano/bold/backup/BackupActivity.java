@@ -34,6 +34,7 @@ import com.google.android.gms.drive.query.Query;
 import com.google.android.gms.drive.query.SearchableField;
 import com.google.android.gms.drive.query.SortOrder;
 import com.google.android.gms.drive.query.SortableField;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -52,8 +53,10 @@ import io.realm.Realm;
 import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
+import it.liceoarzignano.bold.firebase.BoldAnalytics;
 
 public class BackupActivity extends AppCompatActivity {
+    private static final String TAG = BackupActivity.class.getSimpleName();
     private static final String BACKUP_FOLDER = "BACKUP_FOLDER";
 
     private Backup mBackup = null;
@@ -132,6 +135,8 @@ public class BackupActivity extends AppCompatActivity {
 
         final Context context = this;
         mRestoreButton.setOnClickListener(view -> {
+            new BoldAnalytics(this).log(FirebaseAnalytics.Event.SELECT_CONTENT,
+                    FirebaseAnalytics.Param.ITEM_NAME, "Restore");
             pickBackup(context);
             setUI();
         });
@@ -147,6 +152,8 @@ public class BackupActivity extends AppCompatActivity {
 
         mBackupButton.setText(getString(backButtonText));
         mBackupButton.setOnClickListener(view -> {
+            new BoldAnalytics(this).log(FirebaseAnalytics.Event.SELECT_CONTENT,
+                    FirebaseAnalytics.Param.ITEM_NAME, "Backup");
             if (mBackup == null) {
                 initBackup();
             }

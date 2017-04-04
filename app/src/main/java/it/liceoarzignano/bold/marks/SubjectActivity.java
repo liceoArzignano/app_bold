@@ -13,10 +13,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.util.List;
 
 import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.R;
+import it.liceoarzignano.bold.firebase.BoldAnalytics;
 import it.liceoarzignano.bold.ui.CircularProgressBar;
 import it.liceoarzignano.bold.ui.ViewerDialog;
 import it.liceoarzignano.bold.ui.recyclerview.DividerDecoration;
@@ -83,6 +86,8 @@ public class SubjectActivity extends AppCompatActivity {
         List<Mark> mMarks = mController.getFilteredMarks(mTitle, mFilter);
         SubjectAdapter adapter = new SubjectAdapter(mMarks);
         RecyclerClickListener listener = (view, position) -> {
+            new BoldAnalytics(this).log(FirebaseAnalytics.Event.VIEW_ITEM,
+                    FirebaseAnalytics.Param.ITEM_NAME, "Mark");
             BottomSheetDialog sheet = new BottomSheetDialog(this);
             View bottomView = new ViewerDialog(this, sheet)
                     .setData(mMarks.get(position).getId(), true);

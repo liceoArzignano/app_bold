@@ -18,6 +18,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -30,6 +32,7 @@ import io.realm.Sort;
 import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.ManagerActivity;
 import it.liceoarzignano.bold.R;
+import it.liceoarzignano.bold.firebase.BoldAnalytics;
 import it.liceoarzignano.bold.ui.ViewerDialog;
 import it.liceoarzignano.bold.ui.recyclerview.DividerDecoration;
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerClickListener;
@@ -83,6 +86,8 @@ public class EventListActivity extends AppCompatActivity {
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
+            new BoldAnalytics(this).log(FirebaseAnalytics.Event.SELECT_CONTENT,
+                    FirebaseAnalytics.Param.ITEM_NAME, "Add event");
             Intent intent = new Intent(EventListActivity.this, ManagerActivity.class);
             intent.putExtra("isMark", false);
             startActivity(intent);
@@ -231,6 +236,8 @@ public class EventListActivity extends AppCompatActivity {
      * @param id: event id
      */
     private void viewEvent(long id) {
+        new BoldAnalytics(this).log(FirebaseAnalytics.Event.VIEW_ITEM,
+                FirebaseAnalytics.Param.ITEM_NAME, "Event");
         final BottomSheetDialog sheet = new BottomSheetDialog(this);
         View bottomView = new ViewerDialog(this, sheet).setData(id, false);
         sheet.setContentView(bottomView);

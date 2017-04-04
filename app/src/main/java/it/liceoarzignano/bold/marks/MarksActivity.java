@@ -13,10 +13,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.ManagerActivity;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
+import it.liceoarzignano.bold.firebase.BoldAnalytics;
 import it.liceoarzignano.bold.ui.recyclerview.DividerDecoration;
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerClickListener;
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerTouchListener;
@@ -54,7 +57,11 @@ public class MarksActivity extends AppCompatActivity {
         mEmptyLayout = (LinearLayout) findViewById(R.id.marks_empty_layout);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(v -> startActivity(new Intent(this, ManagerActivity.class)));
+        fab.setOnClickListener(v -> {
+            new BoldAnalytics(this).log(FirebaseAnalytics.Event.SELECT_CONTENT,
+                    FirebaseAnalytics.Param.ITEM_NAME, "Add mark");
+            startActivity(new Intent(this, ManagerActivity.class));
+        });
 
         mList.setLayoutManager(new LinearLayoutManager(this));
         mList.addItemDecoration(new DividerDecoration(this));
@@ -127,6 +134,8 @@ public class MarksActivity extends AppCompatActivity {
             mList.setVisibility(View.VISIBLE);
             AverageAdapter adapter = new AverageAdapter(mController, marks);
             RecyclerClickListener listener = (mView, mPosition) -> {
+                new BoldAnalytics(this).log(FirebaseAnalytics.Event.VIEW_ITEM,
+                        FirebaseAnalytics.Param.ITEM_NAME, "Subject");
                 Intent mIntent = new Intent(this, SubjectActivity.class);
                 mIntent.putExtra(SubjectActivity.EXTRA_TITLE, marks[mPosition]);
                 mIntent.putExtra(SubjectActivity.EXTRA_FILTER, mFilter);

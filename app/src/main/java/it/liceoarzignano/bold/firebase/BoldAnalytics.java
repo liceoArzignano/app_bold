@@ -48,8 +48,17 @@ public class BoldAnalytics {
         mFirebaseAnalytics.setUserProperty(Utils.SAFE_DONE,
                 String.valueOf(Utils.hasSafe(mContext)));
         if (!Utils.isTeacher(mContext)) {
-            mFirebaseAnalytics.setUserProperty(Utils.ADDRESS,
-                    Utils.getAddress(mContext));
+            mFirebaseAnalytics.setUserProperty(Utils.ADDRESS, Utils.getAddress(mContext));
         }
+    }
+
+    public void log(String tag, String category, String message) {
+        if (!Utils.hasAnalytics(mContext)) {
+            return;
+        }
+
+        Bundle bundle = new Bundle();
+        bundle.putString(category, message);
+        mFirebaseAnalytics.logEvent(tag, bundle);
     }
 }

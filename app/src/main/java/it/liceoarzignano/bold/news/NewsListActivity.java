@@ -24,12 +24,15 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
 import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.R;
+import it.liceoarzignano.bold.firebase.BoldAnalytics;
 import it.liceoarzignano.bold.ui.recyclerview.DividerDecoration;
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt;
 
@@ -175,6 +178,8 @@ public class NewsListActivity extends AppCompatActivity {
      * @param url website url
      */
     void showUrl(String url) {
+        new BoldAnalytics(this).log(FirebaseAnalytics.Event.VIEW_ITEM,
+                FirebaseAnalytics.Param.ITEM_NAME, "News url");
         setupCCustomTabs();
         mCustomTabIntent.launchUrl(mActivity, Uri.parse(url));
     }
