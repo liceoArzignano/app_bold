@@ -76,8 +76,8 @@ dependencies {
     releaseCompile "com.google.firebase:firebase-crash:${googlePlayServicesVersion}"
     compile "com.google.firebase:firebase-config:${googlePlayServicesVersion}"
     // others
-    compile 'uk.co.samuelwall:material-tap-target-prompt:1.9.3'
-    compile 'devs.mulham.horizontalcalendar:horizontalcalendar:1.0.0'
+    compile 'uk.co.samuelwall:material-tap-target-prompt:1.9.5'
+    compile 'devs.mulham.horizontalcalendar:horizontalcalendar:1.1.0'
     compile('com.afollestad.material-dialogs:core:0.9.4.1') { transitive = true }
 }
 
