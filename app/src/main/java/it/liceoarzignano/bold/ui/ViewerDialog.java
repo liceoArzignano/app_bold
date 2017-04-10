@@ -169,7 +169,7 @@ public class ViewerDialog {
             if (isMark) {
                 ((SubjectActivity) mContext).refresh();
             } else {
-                ((EventListActivity) mContext).refreshList(mContext, new Date(), null);
+                ((EventListActivity) mContext).refreshList(new Date(), null);
             }
             new Handler().postDelayed(mDialog::dismiss, 840);
         });

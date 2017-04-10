@@ -13,10 +13,10 @@ import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.Utils;
 
 class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventHolder> {
-    private final List<Event> mEvents;
+    private List<Event> mEvents;
 
-    EventsAdapter(List<Event> mEvents) {
-        this.mEvents = mEvents;
+    EventsAdapter(List<Event> events) {
+        mEvents = events;
     }
 
     @Override
@@ -34,6 +34,11 @@ class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventHolder> {
     public int getItemCount() {
         return mEvents.size();
     }
+
+    void updateList(List<Event> newList) {
+        mEvents = newList;
+    }
+
 
     class EventHolder extends RecyclerView.ViewHolder {
         private final TextView mTitle;

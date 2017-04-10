@@ -70,23 +70,23 @@ public class MarksController extends RealmController<Mark> {
             switch (quarter) {
                 case 1:
                     return mRealm.where(Mark.class).equalTo("isFirstQuarter", true)
-                            .findAll();
+                            .findAllSorted("date");
                 case 2:
                     return mRealm.where(Mark.class).equalTo("isFirstQuarter", false)
-                            .findAll();
+                            .findAllSorted("date");
                 default:
-                    return mRealm.where(Mark.class).findAll();
+                    return mRealm.where(Mark.class).findAllSorted("date");
             }
         } else {
             switch (quarter) {
                 case 1:
                     return mRealm.where(Mark.class).equalTo("title", filter)
-                            .equalTo("isFirstQuarter", true).findAll();
+                            .equalTo("isFirstQuarter", true).findAllSorted("date");
                 case 2:
                     return mRealm.where(Mark.class).equalTo("title", filter)
-                            .equalTo("isFirstQuarter", false).findAll();
+                            .equalTo("isFirstQuarter", false).findAllSorted("date");
                 default:
-                    return mRealm.where(Mark.class).equalTo("title", filter).findAll();
+                    return mRealm.where(Mark.class).equalTo("title", filter).findAllSorted("date");
             }
         }
     }

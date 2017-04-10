@@ -2,6 +2,7 @@ package it.liceoarzignano.bold.news;
 
 import java.util.Calendar;
 
+import io.realm.Case;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 import io.realm.Sort;
@@ -55,4 +56,9 @@ public class NewsController extends RealmController<News> {
         mRealm.commitTransaction();
     }
 
+    RealmResults<News> getByQuery(String query) {
+        return mRealm.where(News.class).contains("title", query, Case.INSENSITIVE)
+                .or().contains("message", query, Case.INSENSITIVE)
+                .findAllSorted("date", Sort.DESCENDING);
+    }
 }

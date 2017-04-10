@@ -1,7 +1,6 @@
 package it.liceoarzignano.bold.events;
 
 import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialog;
@@ -20,6 +19,7 @@ import android.widget.TextView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -44,6 +44,8 @@ public class EventListActivity extends AppCompatActivity {
     private RecyclerViewExt mEventList;
     private LinearLayout mEmptyLayout;
     private TextView mEmptyText;
+
+    private EventsAdapter mAdapter;
 
     private Date mDate;
     private String mQuery;
@@ -72,7 +74,7 @@ public class EventListActivity extends AppCompatActivity {
         HorizontalCalendar hCalendar = new HorizontalCalendar.Builder(this, R.id.events_calendar)
                 .startDate(start.getTime())
                 .endDate(end.getTime())
-                .dayFormat("EEE")
+                .dayNameFormat("EEE")
                 .centerToday(true)
                 .build();
 
@@ -80,7 +82,7 @@ public class EventListActivity extends AppCompatActivity {
             @Override
             public void onDateSelected(Date date, int position) {
                 mDate = date;
-                refreshList(getApplication(), date, null);
+                refreshList(date, null);
             }
         });
 
@@ -96,6 +98,8 @@ public class EventListActivity extends AppCompatActivity {
         mEventList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         mEventList.setItemAnimator(new DefaultItemAnimator());
         mEventList.addItemDecoration(new DividerDecoration(getApplicationContext()));
+        mAdapter = new EventsAdapter(new ArrayList<>());
+        mEventList.setAdapter(mAdapter);
     }
 
     @Override
@@ -107,7 +111,7 @@ public class EventListActivity extends AppCompatActivity {
             mQuery = callingIntent.getStringExtra(SearchManager.QUERY);
         }
 
-        refreshList(this, mDate, mQuery);
+        refreshList(mDate, mQuery);
     }
 
     @Override
@@ -132,13 +136,13 @@ public class EventListActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                refreshList(getApplicationContext(), null, query);
+                refreshList(null, query);
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String text) {
-                refreshList(getApplicationContext(), null, text);
+                refreshList(null, text);
                 return true;
             }
         });
@@ -146,13 +150,13 @@ public class EventListActivity extends AppCompatActivity {
         MenuItemCompat.setOnActionExpandListener(item, new MenuItemCompat.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
-                refreshList(getApplicationContext(), null, null);
+                refreshList(null, null);
                 return true;
             }
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
-                refreshList(getApplicationContext(), mDate, null);
+                refreshList(mDate, null);
                 return true;
             }
         });
@@ -161,10 +165,9 @@ public class EventListActivity extends AppCompatActivity {
     /**
      * Update the RecyclerView content
      *
-     * @param context: needed to reload database data
      * @param query:   search query
      */
-    public void refreshList(Context context, Date date, String query) {
+    public void refreshList(Date date, String query) {
         boolean hasQuery = query != null && !query.isEmpty();
 
         Calendar today = Calendar.getInstance();
@@ -183,20 +186,14 @@ public class EventListActivity extends AppCompatActivity {
             today.set(Calendar.SECOND, 59);
             today.set(Calendar.MILLISECOND, 999);
         }
-
         RealmResults<Event> events = getEventsForQuery(date, query, previous, today);
-
         mEmptyLayout.setVisibility(events.isEmpty() ? View.VISIBLE : View.GONE);
-        mEmptyText.setText(context.getString(hasQuery ?
-                R.string.search_no_result : R.string.events_empty));
-
-        EventsAdapter adapter = new EventsAdapter(events);
+        mEmptyText.setText(getString(hasQuery ? R.string.search_no_result : R.string.events_empty));
+        mAdapter.updateList(events);
         RecyclerClickListener listener = (view, position) ->
                 viewEvent(events.get(position).getId());
-        mEventList.setAdapter(adapter);
-        mEventList.addOnItemTouchListener(new RecyclerTouchListener(context, listener));
-
-        adapter.notifyDataSetChanged();
+        mEventList.addOnItemTouchListener(new RecyclerTouchListener(this, listener));
+        mAdapter.notifyDataSetChanged();
     }
 
     /**
