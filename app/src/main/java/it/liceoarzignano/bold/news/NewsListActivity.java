@@ -1,10 +1,8 @@
 package it.liceoarzignano.bold.news;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.SearchManager;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,25 +26,22 @@ import android.widget.TextView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmResults;
 import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.ManagerActivity;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.firebase.BoldAnalytics;
 import it.liceoarzignano.bold.ui.recyclerview.DividerDecoration;
-import it.liceoarzignano.bold.ui.recyclerview.RecyclerClickListener;
-import it.liceoarzignano.bold.ui.recyclerview.RecyclerTouchListener;
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt;
 
 public class NewsListActivity extends AppCompatActivity {
-    private Activity mActivity;
-    private RecyclerViewExt mNewsList;
+
     private LinearLayout mEmptyLayout;
     private TextView mEmptyText;
 
+    private NewsController mController;
     private NewsAdapter mAdapter;
 
     private CustomTabsClient mClient;
@@ -65,9 +60,7 @@ public class NewsListActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        mActivity = this;
-
-        mNewsList = (RecyclerViewExt) findViewById(R.id.news_list);
+        RecyclerViewExt newsList = (RecyclerViewExt) findViewById(R.id.news_list);
         mEmptyLayout = (LinearLayout) findViewById(R.id.news_empty_layout);
         mEmptyText = (TextView) findViewById(R.id.news_empty_text);
 
@@ -75,31 +68,18 @@ public class NewsListActivity extends AppCompatActivity {
         long id = callingIntent.getLongExtra("newsId", -1);
 
         if (id > 0) {
-            News mCalledNews = Realm.getInstance(((BoldApp)
-                    mActivity.getApplicationContext()).getConfig())
+            News mCalledNews = Realm.getInstance(((BoldApp) getApplication()).getConfig())
                     .where(News.class).equalTo("id", id).findFirst();
             showUrl(mCalledNews.getUrl());
         }
 
-        String query = null;
-        if (Intent.ACTION_SEARCH.equals(getIntent().getAction())) {
-            query = getIntent().getStringExtra(SearchManager.QUERY);
-        }
+        mController = new NewsController(((BoldApp) getApplication()).getConfig());
 
-        mNewsList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        mNewsList.setItemAnimator(new DefaultItemAnimator());
-        mNewsList.addItemDecoration(new DividerDecoration(getApplicationContext()));
-        mAdapter = new NewsAdapter(new ArrayList<>(), this);
-        mNewsList.setAdapter(mAdapter);
-
-        refresh(query);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.search, menu);
-        setupSearchView(this, menu.findItem(R.id.menu_search));
-        return true;
+        newsList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        newsList.setItemAnimator(new DefaultItemAnimator());
+        newsList.addItemDecoration(new DividerDecoration(getApplicationContext()));
+        mAdapter = new NewsAdapter(mController.getAll(), this);
+        newsList.setAdapter(mAdapter);
     }
 
     @Override
@@ -109,7 +89,13 @@ public class NewsListActivity extends AppCompatActivity {
         // Chrome custom tabs
         setupCCustomTabs();
 
-        refresh(getIntent().getStringExtra(SearchManager.QUERY));
+        String query = null;
+        Intent callingIntent = getIntent();
+        if (Intent.ACTION_SEARCH.equals(callingIntent.getAction())) {
+            query = callingIntent.getStringExtra(SearchManager.QUERY);
+        }
+
+        refresh(query);
     }
 
     @Override
@@ -121,26 +107,52 @@ public class NewsListActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search, menu);
+        setupSearchView(menu.findItem(R.id.menu_search));
+        return true;
+    }
+
+    /**
+     * Initialize search view
+     *
+     * @param item menu item
+     */
+    private void setupSearchView(MenuItem item) {
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+
+        if (searchView == null) {
+            return;
+        }
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String mQuery) {
+                refresh(mQuery);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String mNewText) {
+                refresh(mNewText);
+                return true;
+            }
+        });
+    }
+
     /**
      * Refresh list
      *
      * @param query search query
      */
     void refresh(String query) {
-        boolean hasQuery = query != null && !query.isEmpty();
-
-        NewsController controller = new NewsController(((BoldApp) getApplication()).getConfig());
-        final RealmResults<News> news = hasQuery ?
-                controller.getByQuery(query) : controller.getAll();
+        final List<News> news = mController.getByQuery(query);
+        mAdapter.updateList(news);
         mEmptyLayout.setVisibility(news.isEmpty() ? View.VISIBLE : View.GONE);
-        mEmptyText.setText(getString(hasQuery ?
+        mEmptyText.setText(getString(query != null && !query.isEmpty() ?
                 R.string.search_no_result : R.string.news_empty));
 
-        mAdapter.updateList(news);
-        RecyclerClickListener listener = (view, position) -> viewNews(news.get(position));
-        mNewsList.addOnItemTouchListener(new RecyclerTouchListener(this, listener));
-
-        mAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -166,14 +178,14 @@ public class NewsListActivity extends AppCompatActivity {
                     }
         };
 
-        CustomTabsClient.bindCustomTabsService(mActivity, "com.android.chrome",
+        CustomTabsClient.bindCustomTabsService(this, "com.android.chrome",
                 mCustomTabsServiceConnection);
 
         mCustomTabIntent = new CustomTabsIntent.Builder(mCustomTabsSession)
-                .setToolbarColor(ContextCompat.getColor(mActivity, R.color.colorPrimary))
+                .setToolbarColor(ContextCompat.getColor(this, R.color.colorPrimary))
                 .setShowTitle(true)
-                .setStartAnimations(mActivity, R.anim.slide_in_right, R.anim.slide_out_left)
-                .setExitAnimations(mActivity, android.R.anim.slide_in_left,
+                .setStartAnimations(this, R.anim.slide_in_right, R.anim.slide_out_left)
+                .setExitAnimations(this, android.R.anim.slide_in_left,
                         android.R.anim.slide_out_right)
                 .build();
     }
@@ -187,38 +199,10 @@ public class NewsListActivity extends AppCompatActivity {
         new BoldAnalytics(this).log(FirebaseAnalytics.Event.VIEW_ITEM,
                 FirebaseAnalytics.Param.ITEM_NAME, "News url");
         setupCCustomTabs();
-        mCustomTabIntent.launchUrl(mActivity, Uri.parse(url));
+        mCustomTabIntent.launchUrl(this, Uri.parse(url));
     }
 
-    /**
-     * Initialize search view
-     *
-     * @param context used to fetch resources
-     * @param item menu item
-     */
-    private void setupSearchView(final Context context, MenuItem item) {
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
-
-        if (searchView == null) {
-            return;
-        }
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String mQuery) {
-                refresh(mQuery);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String mNewText) {
-                refresh(mNewText);
-                return true;
-            }
-        });
-    }
-
-    private void viewNews(News news) {
+    void viewNews(News news) {
         // Bottom sheet dialog
         final BottomSheetDialog sheet = new BottomSheetDialog(this);
 
@@ -229,7 +213,7 @@ public class NewsListActivity extends AppCompatActivity {
         LinearLayout deleteLayout = (LinearLayout) sheetView.findViewById(R.id.news_sheet_delete);
 
         shareLayout.setOnClickListener(view -> {
-            new BoldAnalytics(mActivity).log(FirebaseAnalytics.Event.SHARE,
+            new BoldAnalytics(this).log(FirebaseAnalytics.Event.SHARE,
                     FirebaseAnalytics.Param.ITEM_NAME, "Share news");
             sheet.hide();
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -240,7 +224,7 @@ public class NewsListActivity extends AppCompatActivity {
 
         });
         deleteLayout.setOnClickListener(view -> {
-            new BoldAnalytics(mActivity).log(FirebaseAnalytics.Event.SELECT_CONTENT,
+            new BoldAnalytics(this).log(FirebaseAnalytics.Event.SELECT_CONTENT,
                     FirebaseAnalytics.Param.ITEM_NAME, "Delete news");
             sheet.hide();
             NewsController controller = new NewsController(
@@ -249,7 +233,7 @@ public class NewsListActivity extends AppCompatActivity {
             refresh(null);
         });
         eventLayout.setOnClickListener(view -> {
-            new BoldAnalytics(mActivity).log(FirebaseAnalytics.Event.SELECT_CONTENT,
+            new BoldAnalytics(this).log(FirebaseAnalytics.Event.SELECT_CONTENT,
                     FirebaseAnalytics.Param.ITEM_NAME, "Convert news");
             sheet.hide();
             Intent toEventIntent = new Intent(this, ManagerActivity.class);

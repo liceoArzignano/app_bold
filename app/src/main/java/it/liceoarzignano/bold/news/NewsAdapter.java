@@ -1,6 +1,6 @@
 package it.liceoarzignano.bold.news;
 
-import android.app.Activity;
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,61 +8,107 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.zhukic.sectionedrecyclerview.SectionedRecyclerViewAdapter;
+
+import java.util.Date;
 import java.util.List;
 
 import it.liceoarzignano.bold.R;
+import it.liceoarzignano.bold.ui.recyclerview.HeaderViewHolder;
+import it.liceoarzignano.bold.utils.DateUtils;
 
-class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
+class NewsAdapter extends SectionedRecyclerViewAdapter<HeaderViewHolder, NewsAdapter.NewsHolder> {
     private List<News> mNewsList;
-    private final Activity mActivity;
+    private final Context mContext;
 
-    NewsAdapter(List<News> list, Activity activity) {
+    NewsAdapter(List<News> list, Context context) {
         this.mNewsList = list;
-        this.mActivity = activity;
+        this.mContext = context;
     }
 
     @Override
-    public NewsHolder onCreateViewHolder(ViewGroup parent, int type) {
+    public NewsHolder onCreateItemViewHolder(ViewGroup parent, int type) {
         return new NewsHolder(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_news, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(NewsHolder holder, int position) {
-        holder.setData(mActivity, mNewsList.get(position));
+    public void onBindItemViewHolder(NewsHolder holder, int position) {
+        holder.setData(mContext, mNewsList.get(position));
     }
 
     @Override
-    public int getItemCount() {
+    public HeaderViewHolder onCreateSubheaderViewHolder(ViewGroup parent, int type) {
+        return new HeaderViewHolder(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_subheader, parent, false));
+    }
+
+    @Override
+    public void onBindSubheaderViewHolder(HeaderViewHolder holder, int position) {
+        String title;
+        Date eventDate = DateUtils.stringToDate(mNewsList.get(position).getDate());
+        Date yesterday = DateUtils.getDate(-1);
+        Date today = DateUtils.getDate(0);
+        Date tomorrow = DateUtils.getDate(1);
+
+        if (DateUtils.dateDiff(eventDate, yesterday) == 0) {
+            title = mContext.getString(R.string.events_time_yesterday);
+        } else if (DateUtils.dateDiff(eventDate, today) == 0) {
+            title = mContext.getString(R.string.events_time_today);
+        } else if (DateUtils.dateDiff(eventDate, tomorrow) == 0) {
+            title = mContext.getString(R.string.events_time_tomorrow);
+        } else {
+            title = DateUtils.dateToWorldsString(mContext, eventDate);
+        }
+
+        holder.setTitle(title);
+    }
+
+    @Override
+    public int getItemSize() {
         return mNewsList.size();
     }
 
+    @Override
+    public boolean onPlaceSubheaderBetweenItems(int itemPosition) {
+        Date a = DateUtils.stringToDate(mNewsList.get(itemPosition).getDate());
+        Date b = DateUtils.stringToDate(mNewsList.get(itemPosition + 1).getDate());
+
+        return DateUtils.dateDiff(a, b) >= 1;
+    }
+
+
     void updateList(List<News> list) {
         mNewsList = list;
+        notifyDataChanged();
     }
 
     class NewsHolder extends RecyclerView.ViewHolder {
+        private final View mView;
         private final TextView mTitle;
         private final TextView mMessage;
         private final ImageButton mUrlButton;
 
         NewsHolder(View view) {
             super(view);
+            mView = view;
             mTitle = (TextView) view.findViewById(R.id.row_news_title);
             mMessage = (TextView) view.findViewById(R.id.row_news_message);
             mUrlButton = (ImageButton) view.findViewById(R.id.row_news_url);
         }
 
-        void setData(final Activity activity, final News news) {
+        void setData(final Context context, final News news) {
             mTitle.setText(news.getTitle());
-            mMessage.setText(String.format("%1$s\n%2$s", news.getMessage(), news.getDate()));
+            mMessage.setText(news.getMessage());
 
             final String url = news.getUrl();
             if (url != null && !url.isEmpty()) {
-                mUrlButton.setOnClickListener(view -> ((NewsListActivity) activity).showUrl(url));
+                mUrlButton.setOnClickListener(view -> ((NewsListActivity) context).showUrl(url));
             } else {
                 mUrlButton.setVisibility(View.GONE);
             }
+
+            mView.setOnClickListener(v -> ((NewsListActivity) mContext).viewNews(news));
         }
     }
 }

@@ -57,8 +57,10 @@ public class NewsController extends RealmController<News> {
     }
 
     RealmResults<News> getByQuery(String query) {
-        return mRealm.where(News.class).contains("title", query, Case.INSENSITIVE)
-                .or().contains("message", query, Case.INSENSITIVE)
-                .findAllSorted("date", Sort.DESCENDING);
+        return query != null && !query.isEmpty() ?
+                mRealm.where(News.class).contains("title", query, Case.INSENSITIVE)
+                        .or().contains("message", query, Case.INSENSITIVE)
+                        .findAllSorted("date", Sort.DESCENDING) :
+                getAll();
     }
 }
