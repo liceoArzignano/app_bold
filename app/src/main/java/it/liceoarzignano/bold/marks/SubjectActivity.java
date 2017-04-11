@@ -86,8 +86,7 @@ public class SubjectActivity extends AppCompatActivity {
         List<Mark> mMarks = mController.getFilteredMarks(mTitle, mFilter);
         SubjectAdapter adapter = new SubjectAdapter(mMarks);
         RecyclerClickListener listener = (view, position) -> {
-            new BoldAnalytics(this).log(FirebaseAnalytics.Event.VIEW_ITEM,
-                    FirebaseAnalytics.Param.ITEM_NAME, "Mark");
+            new BoldAnalytics(this).log(FirebaseAnalytics.Event.VIEW_ITEM, "Mark");
             BottomSheetDialog sheet = new BottomSheetDialog(this);
             View bottomView = new ViewerDialog(this, sheet)
                     .setData(mMarks.get(position).getId(), true);

@@ -146,7 +146,7 @@ public class NewsListActivity extends AppCompatActivity {
      *
      * @param query search query
      */
-    void refresh(String query) {
+    private void refresh(String query) {
         final List<News> news = mController.getByQuery(query);
         mAdapter.updateList(news);
         mEmptyLayout.setVisibility(news.isEmpty() ? View.VISIBLE : View.GONE);
@@ -196,8 +196,7 @@ public class NewsListActivity extends AppCompatActivity {
      * @param url website url
      */
     void showUrl(String url) {
-        new BoldAnalytics(this).log(FirebaseAnalytics.Event.VIEW_ITEM,
-                FirebaseAnalytics.Param.ITEM_NAME, "News url");
+        new BoldAnalytics(this).log(FirebaseAnalytics.Event.VIEW_ITEM, "News url");
         setupCCustomTabs();
         mCustomTabIntent.launchUrl(this, Uri.parse(url));
     }
@@ -214,7 +213,7 @@ public class NewsListActivity extends AppCompatActivity {
 
         shareLayout.setOnClickListener(view -> {
             new BoldAnalytics(this).log(FirebaseAnalytics.Event.SHARE,
-                    FirebaseAnalytics.Param.ITEM_NAME, "Share news");
+                    "Share news");
             sheet.hide();
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain")
@@ -225,7 +224,7 @@ public class NewsListActivity extends AppCompatActivity {
         });
         deleteLayout.setOnClickListener(view -> {
             new BoldAnalytics(this).log(FirebaseAnalytics.Event.SELECT_CONTENT,
-                    FirebaseAnalytics.Param.ITEM_NAME, "Delete news");
+                    "Delete news");
             sheet.hide();
             NewsController controller = new NewsController(
                     ((BoldApp) getApplication()).getConfig());
@@ -234,7 +233,7 @@ public class NewsListActivity extends AppCompatActivity {
         });
         eventLayout.setOnClickListener(view -> {
             new BoldAnalytics(this).log(FirebaseAnalytics.Event.SELECT_CONTENT,
-                    FirebaseAnalytics.Param.ITEM_NAME, "Convert news");
+                    "Convert news");
             sheet.hide();
             Intent toEventIntent = new Intent(this, ManagerActivity.class);
             toEventIntent.putExtra("newsToEvent", news.getId());

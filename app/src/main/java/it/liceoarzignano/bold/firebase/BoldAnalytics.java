@@ -52,13 +52,13 @@ public class BoldAnalytics {
         }
     }
 
-    public void log(String tag, String category, String message) {
+    public void log(String tag, String message) {
         if (!Utils.hasAnalytics(mContext)) {
             return;
         }
 
         Bundle bundle = new Bundle();
-        bundle.putString(category, message);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, message);
         mFirebaseAnalytics.logEvent(tag, bundle);
     }
 }

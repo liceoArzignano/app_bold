@@ -34,9 +34,8 @@ public class EventListActivity extends AppCompatActivity {
     private LinearLayout mEmptyLayout;
     private TextView mEmptyText;
 
-    private EventsController controller;
+    private EventsController mController;
     private EventsAdapter mAdapter;
-    private String mQuery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,20 +54,19 @@ public class EventListActivity extends AppCompatActivity {
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
-            new BoldAnalytics(this).log(FirebaseAnalytics.Event.SELECT_CONTENT,
-                    FirebaseAnalytics.Param.ITEM_NAME, "Add event");
+            new BoldAnalytics(this).log(FirebaseAnalytics.Event.SELECT_CONTENT, "Add event");
             Intent intent = new Intent(EventListActivity.this, ManagerActivity.class);
             intent.putExtra("isMark", false);
             startActivity(intent);
         });
 
-        controller = new EventsController(((BoldApp) getApplication()).getConfig());
+        mController = new EventsController(((BoldApp) getApplication()).getConfig());
 
         eventList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         eventList.setItemAnimator(new DefaultItemAnimator());
         eventList.addItemDecoration(new DividerDecoration(getApplicationContext()));
         // Load by query for reverse order
-        mAdapter = new EventsAdapter(controller.getByQuery(null), this);
+        mAdapter = new EventsAdapter(mController.getByQuery(null), this);
         eventList.setAdapter(mAdapter);
     }
 
@@ -76,12 +74,13 @@ public class EventListActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        String query = null;
         Intent callingIntent = getIntent();
         if (Intent.ACTION_SEARCH.equals(callingIntent.getAction())) {
-            mQuery = callingIntent.getStringExtra(SearchManager.QUERY);
+            query = callingIntent.getStringExtra(SearchManager.QUERY);
         }
 
-        refreshList(mQuery);
+        refreshList(query);
     }
 
     @Override
@@ -140,7 +139,7 @@ public class EventListActivity extends AppCompatActivity {
     public void refreshList(String query) {
         boolean hasQuery = query != null && !query.isEmpty();
 
-        List<Event> events = controller.getByQuery(query);
+        List<Event> events = mController.getByQuery(query);
         mAdapter.updateList(events);
         mEmptyLayout.setVisibility(events.isEmpty() ? View.VISIBLE : View.GONE);
         mEmptyText.setText(getString(hasQuery ? R.string.search_no_result : R.string.events_empty));
@@ -152,8 +151,7 @@ public class EventListActivity extends AppCompatActivity {
      * @param id: event id
      */
     void viewEvent(long id) {
-        new BoldAnalytics(this).log(FirebaseAnalytics.Event.VIEW_ITEM,
-                FirebaseAnalytics.Param.ITEM_NAME, "Event");
+        new BoldAnalytics(this).log(FirebaseAnalytics.Event.VIEW_ITEM, "Event");
         final BottomSheetDialog sheet = new BottomSheetDialog(this);
         View bottomView = new ViewerDialog(this, sheet).setData(id, false);
         sheet.setContentView(bottomView);

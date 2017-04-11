@@ -60,7 +60,7 @@ public class MarksActivity extends AppCompatActivity {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(v -> {
             new BoldAnalytics(this).log(FirebaseAnalytics.Event.SELECT_CONTENT,
-                    FirebaseAnalytics.Param.ITEM_NAME, "Add mark");
+                    "Add mark");
             startActivity(new Intent(this, ManagerActivity.class));
         });
 
@@ -135,8 +135,7 @@ public class MarksActivity extends AppCompatActivity {
             mList.setVisibility(View.VISIBLE);
             AverageAdapter adapter = new AverageAdapter(mController, marks);
             RecyclerClickListener listener = (mView, mPosition) -> {
-                new BoldAnalytics(this).log(FirebaseAnalytics.Event.VIEW_ITEM,
-                        FirebaseAnalytics.Param.ITEM_NAME, "Subject");
+                new BoldAnalytics(this).log(FirebaseAnalytics.Event.VIEW_ITEM, "Subject");
                 Intent mIntent = new Intent(this, SubjectActivity.class);
                 mIntent.putExtra(SubjectActivity.EXTRA_TITLE, marks[mPosition]);
                 mIntent.putExtra(SubjectActivity.EXTRA_FILTER, mFilter);

@@ -119,7 +119,7 @@ public class ViewerDialog {
 
         mShareLayout.setOnClickListener(view -> {
             new BoldAnalytics(mContext).log(FirebaseAnalytics.Event.SHARE,
-                    FirebaseAnalytics.Param.ITEM_NAME, isMark ? "Share mark" : "Share event");
+                    isMark ? "Share mark" : "Share event");
             String msg = isMark ?
                     String.format(mContext.getString(Utils.isTeacher(mContext) ?
                                     R.string.viewer_share_teacher : R.string.viewer_share_student),
@@ -147,7 +147,7 @@ public class ViewerDialog {
 
         mRemoveLayout.setOnClickListener(view -> {
             new BoldAnalytics(mContext).log(FirebaseAnalytics.Event.VIEW_ITEM,
-                    FirebaseAnalytics.Param.ITEM_NAME, isMark ? "Delete mark" : "Delete event");
+                    isMark ? "Delete mark" : "Delete event");
             Utils.animateAVD(mRemoveIcon.getDrawable());
 
             if (isMark) {
@@ -176,7 +176,7 @@ public class ViewerDialog {
 
         mEditLayout.setOnClickListener(view -> {
             new BoldAnalytics(mContext).log(FirebaseAnalytics.Event.VIEW_ITEM,
-                    FirebaseAnalytics.Param.ITEM_NAME, isMark ? "Edit mark" : "Edit event");
+                    isMark ? "Edit mark" : "Edit event");
             final Intent editIntent = new Intent(mContext, ManagerActivity.class);
 
             editIntent.putExtra("isEditing", true);
