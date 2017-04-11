@@ -37,7 +37,6 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -308,11 +307,15 @@ public class MainActivity extends AppCompatActivity
         // Show 3 closest events
         List<Event> events = mEventsController.getAll();
 
-        for (int counter = 0; counter < 3 && counter < events.size(); counter++) {
-            Event event = events.get(counter);
-            if (isThisWeek(event.getDate())) {
-                builder.addEntry(event.getTitle(), DateUtils.dateToWorldsString(this,
-                        event.getDate()));
+        int added = 0;
+        for (Event event : events) {
+            if (!DateUtils.dateDiff(DateUtils.getDate(7), event.getDate(), 8)) {
+                added++;
+                builder.addEntry(event.getTitle(),
+                        DateUtils.dateToWorldsString(this, event.getDate()));
+            }
+            if (added == 3) {
+                break;
             }
         }
 
@@ -378,21 +381,6 @@ public class MainActivity extends AppCompatActivity
                 .setName(getString(R.string.suggestions))
                 .addEntry("", getSuggestion())
                 .build();
-    }
-
-    /**
-     * Check if mDate is one of the next 7 days
-     *
-     * @param date: string date from event database
-     * @return true if it's within 7 days, false if not
-     */
-    private boolean isThisWeek(Date date) {
-        Calendar dateCal = Calendar.getInstance();
-        dateCal.setTime(date);
-
-        int diff = dateCal.get(Calendar.DAY_OF_YEAR) - mCalendar.get(Calendar.DAY_OF_YEAR);
-
-        return dateCal.get(Calendar.YEAR) == mCalendar.get(Calendar.YEAR) && diff >= 0 && diff < 8;
     }
 
     /**
