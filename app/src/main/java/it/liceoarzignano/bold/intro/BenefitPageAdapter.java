@@ -31,7 +31,7 @@ class BenefitPageAdapter extends FragmentPagerAdapter {
         return 2;
     }
 
-    BenefitFragment getFragment(int position) {
-        return mFragments.get(position);
+    BenefitFragment getFirstFragment() {
+        return mFragments.get(0);
     }
 }

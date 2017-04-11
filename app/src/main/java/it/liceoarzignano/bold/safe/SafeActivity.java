@@ -26,7 +26,8 @@ import java.security.GeneralSecurityException;
 
 import it.liceoarzignano.bold.BuildConfig;
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.Utils;
+import it.liceoarzignano.bold.utils.UiUtils;
+import it.liceoarzignano.bold.utils.PrefsUtils;
 import it.liceoarzignano.bold.safe.mod.Encryption;
 
 public class SafeActivity extends AppCompatActivity {
@@ -205,7 +206,7 @@ public class SafeActivity extends AppCompatActivity {
      * normal access
      */
     private void showPasswordDialog() {
-        boolean hasCompletedSetup = mPrefs.getBoolean(Utils.KEY_SAFE_SETUP, false);
+        boolean hasCompletedSetup = mPrefs.getBoolean(PrefsUtils.KEY_SAFE_SETUP, false);
         mLoginDialog = new SafeLoginDialog(this, !hasCompletedSetup);
         mLoginDialog.build(new MaterialDialog.Builder(this)
                 .customView(mLoginDialog.getView(), false)
@@ -219,7 +220,7 @@ public class SafeActivity extends AppCompatActivity {
                         if (hasCompletedSetup) {
                             validateLogin();
                         } else {
-                            mEditor.putBoolean(Utils.KEY_SAFE_SETUP, true)
+                            mEditor.putBoolean(PrefsUtils.KEY_SAFE_SETUP, true)
                                     .putString(accessKey, encrypt(mLoginDialog.getInput()))
                                     .apply();
                             onCreateContinue();
@@ -335,7 +336,7 @@ public class SafeActivity extends AppCompatActivity {
             mContentLayout.animate().alpha(1f).setDuration(750);
         }, 250);
 
-        Utils.animFabIntro(this, mFab, getString(R.string.intro_fab_save_safe_title),
+        UiUtils.animFabIntro(this, mFab, getString(R.string.intro_fab_save_safe_title),
                 getString(R.string.intro_fab_save_safe), "safeKey");
     }
 
@@ -355,7 +356,7 @@ public class SafeActivity extends AppCompatActivity {
                     mEditor.remove(pcPwdKey).apply();
                     mEditor.remove(internetPwdKey).apply();
                     mEditor.remove(hasSharedKey).apply();
-                    mEditor.remove(Utils.KEY_SAFE_SETUP).apply();
+                    mEditor.remove(PrefsUtils.KEY_SAFE_SETUP).apply();
 
                     new Handler().postDelayed(() ->
                             startActivity(new Intent(this, SafeActivity.class)), 700);
@@ -370,7 +371,7 @@ public class SafeActivity extends AppCompatActivity {
      */
     private void prepareDevice() {
         // There's no need of doing a SafetyNet test now, just check app integrity
-        if (Utils.hasPassedSafetyNetTest(this) &&
+        if (PrefsUtils.hasPassedSafetyNetTest(this) &&
                 Encryption.validateRespose(this, null, BuildConfig.DEBUG)) {
             mLoadingText.setText(R.string.safe_first_load);
             new Handler().postDelayed(() -> {
@@ -378,7 +379,7 @@ public class SafeActivity extends AppCompatActivity {
                 showPasswordDialog();
             }, 100);
         } else {
-            Utils.setSafetyNetResults(this, false);
+            PrefsUtils.setSafetyNetResults(this, false);
             mLoadingText.setText(R.string.safe_error_security);
         }
     }

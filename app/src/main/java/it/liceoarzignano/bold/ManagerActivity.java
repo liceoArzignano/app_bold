@@ -39,6 +39,7 @@ import it.liceoarzignano.bold.marks.MarksController;
 import it.liceoarzignano.bold.news.News;
 import it.liceoarzignano.bold.news.NewsController;
 import it.liceoarzignano.bold.utils.DateUtils;
+import it.liceoarzignano.bold.utils.PrefsUtils;
 
 public class ManagerActivity extends AppCompatActivity
         implements AdapterView.OnItemSelectedListener {
@@ -138,7 +139,7 @@ public class ManagerActivity extends AppCompatActivity
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
         setupFromIntent();
-        fab.setOnClickListener(this::save);
+        fab.setOnClickListener(v -> save(fab));
 
         // Animate layout transition for shared fab animation when editing
         if (isEditMode) {
@@ -190,7 +191,7 @@ public class ManagerActivity extends AppCompatActivity
         }
 
         // Setup UI
-        if (Utils.isTeacher(this) || !isMark) {
+        if (PrefsUtils.isTeacher(this) || !isMark) {
             mTitleInput.setHint(getString(isMark ? R.string.hint_student : R.string.hint_event));
             mSubjectLayout.setVisibility(View.GONE);
         } else {
@@ -235,15 +236,15 @@ public class ManagerActivity extends AppCompatActivity
      * Save the mark / event using data collected from the various
      * UI components
      *
-     * @param fabView: fab view that's animated when the content has been successfully saved
+     * @param fab: fab view that's animated when the content has been successfully saved
      */
-    private void save(View fabView) {
+    private void save(FloatingActionButton fab) {
         if (isMark) {
             mMark = new Mark();
-            saveMark(fabView);
+            saveMark(fab);
         } else {
             mEvent = new Event();
-            saveEvent(fabView);
+            saveEvent(fab);
         }
     }
 
@@ -252,19 +253,20 @@ public class ManagerActivity extends AppCompatActivity
      *
      * @param fab: fab that will be animated when the mark is saved
      */
-    private void saveMark(View fab) {
-        if (Utils.isTeacher(this)) {
+    private void saveMark(FloatingActionButton fab) {
+        if (PrefsUtils.isTeacher(this)) {
             mTitle = mTitleInput.getText().toString();
         }
 
         if (mTitle != null && !mTitle.isEmpty() && mValue != 0) {
-            Utils.animFab((FloatingActionButton) fab, false);
+            new Handler().postDelayed(fab::hide, 500);
+
 
             mMark.setId(mObjId);
             mMark.setTitle(mTitle);
             mMark.setNote(mNotesInput.getText().toString());
             mMark.setValue(mValue);
-            mMark.setDate(mDate, Utils.isFirstQuarter(this, mDate));
+            mMark.setDate(mDate, PrefsUtils.isFirstQuarter(this, mDate));
 
             mObjId = isEditMode ? mMarksController.update(mMark) : mMarksController.add(mMark);
 
@@ -281,13 +283,14 @@ public class ManagerActivity extends AppCompatActivity
      *
      * @param fab: fab that will be animated when the event is saved
      */
-    private void saveEvent(View fab) {
+    private void saveEvent(FloatingActionButton fab) {
         mTitle = mTitleInput.getText().toString();
 
         if (mTitle.isEmpty()) {
             Snackbar.make(fab, getString(R.string.manager_invalid), Snackbar.LENGTH_SHORT).show();
         } else {
-            Utils.animFab((FloatingActionButton) fab, false);
+            new Handler().postDelayed(fab::hide, 500);
+
 
             mEvent.setId(mObjId);
             mEvent.setTitle(mTitle);
@@ -312,7 +315,7 @@ public class ManagerActivity extends AppCompatActivity
         mEventSpinnerLayout.setVisibility(View.GONE);
 
         // Subjects list
-        switch (Utils.getAddress(this)) {
+        switch (PrefsUtils.getAddress(this)) {
             case "1":
                 mSubjects = getResources().getStringArray(R.array.subjects_lists_1);
                 break;

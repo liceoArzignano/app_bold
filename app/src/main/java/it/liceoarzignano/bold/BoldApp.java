@@ -12,6 +12,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import it.liceoarzignano.bold.firebase.BoldAnalytics;
+import it.liceoarzignano.bold.utils.PrefsUtils;
 
 public class BoldApp extends Application {
 
@@ -30,8 +31,8 @@ public class BoldApp extends Application {
         Realm.setDefaultConfiguration(mConfig);
 
         FirebaseMessaging.getInstance().subscribeToTopic("global");
-        FirebaseMessaging.getInstance().subscribeToTopic(Utils.getTopic(this));
-        if (!Utils.isTeacher(this)) {
+        FirebaseMessaging.getInstance().subscribeToTopic(PrefsUtils.getTopic(this));
+        if (!PrefsUtils.isTeacher(this)) {
             FirebaseMessaging.getInstance().subscribeToTopic("students");
         }
 
@@ -46,14 +47,14 @@ public class BoldApp extends Application {
         }
 
         // Turn on support library vectorDrawables supports on legacy devices
-        if (!Utils.isNotLegacy()) {
+        if (!PrefsUtils.isNotLegacy()) {
             AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         }
 
         // Analytics
-        Utils.enableTrackerIfOverlayRequests(this, getResources().getBoolean(R.bool.force_tracker));
+        PrefsUtils.enableTrackerIfOverlayRequests(this, getResources().getBoolean(R.bool.force_tracker));
 
-        if (Utils.hasAnalytics(this)) {
+        if (PrefsUtils.hasAnalytics(this)) {
             BoldAnalytics analytics = new BoldAnalytics(this);
             Bundle bundle = new Bundle();
             bundle.putString(FirebaseAnalytics.Param.LEVEL, "App");

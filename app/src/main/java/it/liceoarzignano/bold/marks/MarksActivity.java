@@ -18,7 +18,8 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.ManagerActivity;
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.Utils;
+import it.liceoarzignano.bold.utils.ContentUtils;
+import it.liceoarzignano.bold.utils.PrefsUtils;
 import it.liceoarzignano.bold.firebase.BoldAnalytics;
 import it.liceoarzignano.bold.ui.recyclerview.DividerDecoration;
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerClickListener;
@@ -46,7 +47,7 @@ public class MarksActivity extends AppCompatActivity {
         setContentView(R.layout.activity_marks);
 
         mController = new MarksController(((BoldApp) getApplication()).getConfig());
-        mPrefs = getSharedPreferences(Utils.EXTRA_PREFS, MODE_PRIVATE);
+        mPrefs = getSharedPreferences(PrefsUtils.EXTRA_PREFS, MODE_PRIVATE);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -78,7 +79,7 @@ public class MarksActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!Utils.isFirstQuarter(this, DateUtils.getDate(0))) {
+        if (!PrefsUtils.isFirstQuarter(this, DateUtils.getDate(0))) {
             getMenuInflater().inflate(R.menu.marks, menu);
 
             MenuItem allQuarters = menu.findItem(R.id.filter_all);
@@ -125,7 +126,7 @@ public class MarksActivity extends AppCompatActivity {
     }
 
     private void refresh() {
-        String[] marks = Utils.getAverageElements(this, mFilter);
+        String[] marks = ContentUtils.getAverageElements(this, mFilter);
 
         if (marks.length == 0) {
             mList.setVisibility(View.GONE);

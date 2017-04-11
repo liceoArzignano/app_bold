@@ -60,7 +60,9 @@ import it.liceoarzignano.bold.news.NewsListActivity;
 import it.liceoarzignano.bold.safe.SafeActivity;
 import it.liceoarzignano.bold.settings.SettingsActivity;
 import it.liceoarzignano.bold.ui.recyclerview.DividerDecoration;
+import it.liceoarzignano.bold.utils.ContentUtils;
 import it.liceoarzignano.bold.utils.DateUtils;
+import it.liceoarzignano.bold.utils.PrefsUtils;
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 public class MainActivity extends AppCompatActivity
@@ -118,7 +120,7 @@ public class MainActivity extends AppCompatActivity
         View header = navigationView.getHeaderView(0);
         mUserName = (TextView) header.findViewById(R.id.header_username);
         mAddressLogo = (ImageView) header.findViewById(R.id.header_logo);
-        if (Utils.isTeacher(this)) {
+        if (PrefsUtils.isTeacher(this)) {
             navigationView.getMenu().findItem(R.id.nav_share).setVisible(false);
         }
 
@@ -132,8 +134,8 @@ public class MainActivity extends AppCompatActivity
         showWelcomeIfNeeded(this);
 
         // Notification
-        if (Utils.hasEventsNotification(this)) {
-            Utils.makeEventNotification(this);
+        if (PrefsUtils.hasEventsNotification(this)) {
+            ContentUtils.makeEventNotification(this);
         }
     }
 
@@ -272,7 +274,7 @@ public class MainActivity extends AppCompatActivity
                 url = getString(R.string.config_url_home);
                 break;
             case 1:
-                url = getString(Utils.isTeacher(this) ?
+                url = getString(PrefsUtils.isTeacher(this) ?
                         R.string.config_url_reg_teacher : R.string.config_url_reg_student);
                 break;
             case 2:
@@ -403,7 +405,7 @@ public class MainActivity extends AppCompatActivity
         Random random = new SecureRandom();
         switch (random.nextInt(11) + 1) {
             case 1:
-                return getString(Utils.hasSafe(this) ?
+                return getString(PrefsUtils.hasSafe(this) ?
                         R.string.suggestion_safe_pwd : R.string.suggestion_safe);
             case 2:
                 return getString(R.string.suggestion_avg);
@@ -449,7 +451,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         // Marks
-        if (Utils.hasUsedForMoreThanOneWeek(this)) {
+        if (DateUtils.dateDiff(DateUtils.getDate(0), PrefsUtils.getFirstUsageDate(this), 7)) {
             HomeCard marksCard = createMarksCard();
             if (marksCard != null) {
                 cards.add(marksCard);
@@ -457,7 +459,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         // Suggestions
-        if (Utils.hasSuggestions(this)) {
+        if (PrefsUtils.hasSuggestions(this)) {
             cards.add(createSuggestionsCard());
         }
 
@@ -490,8 +492,8 @@ public class MainActivity extends AppCompatActivity
      * if it's the first time we fire the app
      */
     private void showIntroIfNeeded() {
-        SharedPreferences prefs = getSharedPreferences(Utils.EXTRA_PREFS, MODE_PRIVATE);
-        if (!prefs.getBoolean(Utils.KEY_INTRO_SCREEN, false)) {
+        SharedPreferences prefs = getSharedPreferences(PrefsUtils.EXTRA_PREFS, MODE_PRIVATE);
+        if (!prefs.getBoolean(PrefsUtils.KEY_INTRO_SCREEN, false)) {
             Intent intent = new Intent(this, BenefitsActivity.class);
             startActivity(intent);
             finish();
@@ -505,23 +507,23 @@ public class MainActivity extends AppCompatActivity
      * @param context: used to get SharedPreferences
      */
     private void showWelcomeIfNeeded(final Context context) {
-        final SharedPreferences prefs = getSharedPreferences(Utils.EXTRA_PREFS, MODE_PRIVATE);
+        final SharedPreferences prefs = getSharedPreferences(PrefsUtils.EXTRA_PREFS, MODE_PRIVATE);
         @SuppressLint("CommitPrefEdits")
         final SharedPreferences.Editor editor = prefs.edit();
 
-        if (!prefs.getBoolean(Utils.KEY_INTRO_SCREEN, false)) {
+        if (!prefs.getBoolean(PrefsUtils.KEY_INTRO_SCREEN, false)) {
             // If we're showing intro, don't display dialog
             return;
         }
 
-        switch (Utils.appVersionKey(this)) {
+        switch (PrefsUtils.appVersionKey(this)) {
             case BuildConfig.VERSION_NAME:
                 break;
             case "0":
                 // Used for feature discovery
                 final String today = DateUtils.getDateString(0);
-                editor.putString(Utils.KEY_VERSION, BuildConfig.VERSION_NAME).apply();
-                editor.putString(Utils.KEY_INITIAL_DAY, today).apply();
+                editor.putString(PrefsUtils.KEY_VERSION, BuildConfig.VERSION_NAME).apply();
+                editor.putString(PrefsUtils.KEY_INITIAL_DAY, today).apply();
                 break;
             default:
                 new MaterialDialog.Builder(context)
@@ -530,7 +532,7 @@ public class MainActivity extends AppCompatActivity
                         .positiveText(android.R.string.ok)
                         .negativeText(R.string.dialog_updated_changelog)
                         .canceledOnTouchOutside(false)
-                        .onPositive((dialog, which) -> editor.putString(Utils.KEY_VERSION,
+                        .onPositive((dialog, which) -> editor.putString(PrefsUtils.KEY_VERSION,
                                 BuildConfig.VERSION_NAME).apply())
                         .onNegative((dialog, which) -> {
                             dialog.hide();
@@ -540,8 +542,8 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
 
-        if (prefs.getBoolean(Utils.KEY_INTRO_DRAWER, true)) {
-            editor.putBoolean(Utils.KEY_INTRO_DRAWER, false).apply();
+        if (prefs.getBoolean(PrefsUtils.KEY_INTRO_DRAWER, true)) {
+            editor.putBoolean(PrefsUtils.KEY_INTRO_DRAWER, false).apply();
             new MaterialTapTargetPrompt.Builder(this)
                     .setTarget(mToolbar.getChildAt(1))
                     .setPrimaryText(getString(R.string.intro_drawer_title))
@@ -558,20 +560,20 @@ public class MainActivity extends AppCompatActivity
      * (api 21+ only)
      */
     private void setupNavHeader() {
-        mUserName.setText(Utils.userNameKey(this));
+        mUserName.setText(PrefsUtils.userNameKey(this));
 
         byte[] imgB64 = Base64.decode(mRemoteConfig.getString("home_banner").getBytes(),
                 Base64.DEFAULT);
         mBanner.setImageBitmap(BitmapFactory.decodeByteArray(imgB64, 0, imgB64.length));
 
-        if (!Utils.isNotLegacy()) {
+        if (!PrefsUtils.isNotLegacy()) {
             return;
         }
 
-        if (Utils.isTeacher(this)) {
+        if (PrefsUtils.isTeacher(this)) {
             mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_6));
         } else {
-            switch (Utils.getAddress(this)) {
+            switch (PrefsUtils.getAddress(this)) {
                 case "1":
                     mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_1));
                     break;

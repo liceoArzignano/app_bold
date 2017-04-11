@@ -10,8 +10,9 @@ import java.util.Locale;
 
 import it.liceoarzignano.bold.R;
 
+@SuppressWarnings("SameParameterValue")
 public final class DateUtils {
-    public static final String DATE_FORMAT = "yyyy-MM-dd";
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
 
     private DateUtils() {
     }

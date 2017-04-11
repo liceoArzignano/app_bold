@@ -23,7 +23,7 @@ import java.security.SecureRandom;
 
 import it.liceoarzignano.bold.BuildConfig;
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.Utils;
+import it.liceoarzignano.bold.utils.PrefsUtils;
 import it.liceoarzignano.bold.backup.BackupActivity;
 import it.liceoarzignano.bold.safe.SafeActivity;
 import it.liceoarzignano.bold.safe.mod.Encryption;
@@ -82,19 +82,19 @@ public class SettingsActivity extends AppCompatActivity {
 
             backup.setEnabled(GoogleApiAvailability.getInstance()
                     .isGooglePlayServicesAvailable(mContext) == ConnectionResult.SUCCESS &&
-                    Utils.hasPackage(mContext, "com.google.android.apps.docs"));
+                    PrefsUtils.hasGDrive(mContext));
             backup.setOnPreferenceClickListener(preference -> {
                 startActivity(new Intent(mContext, BackupActivity.class));
                 return true;
             });
 
-            name.setSummary(Utils.userNameKey(mContext));
+            name.setSummary(PrefsUtils.userNameKey(mContext));
             name.setOnPreferenceChangeListener((preference, newValue) -> {
                 name.setSummary(newValue.toString());
                 return true;
             });
 
-            safe.setSummary(getString(Utils.hasPassedSafetyNetTest(mContext) ?
+            safe.setSummary(getString(PrefsUtils.hasPassedSafetyNetTest(mContext) ?
                     R.string.pref_safe_status_message_enabled :
                     R.string.pref_safe_status_message_disabled));
             safe.setOnPreferenceClickListener(preference -> {
@@ -130,7 +130,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         private void safetyNetTest() {
-            if (Utils.hasNoInternetConnection(mContext)) {
+            if (PrefsUtils.hasNoInternetConnection(mContext)) {
                 Toast.makeText(mContext, getString(R.string.pref_secret_safe_test_connection),
                         Toast.LENGTH_LONG).show();
                 return;
@@ -147,8 +147,8 @@ public class SettingsActivity extends AppCompatActivity {
             dialog.show();
 
             // Don't run SafetyNet test on devices without GMS
-            if (Utils.hasNoGMS(mContext)) {
-                Utils.setSafetyNetResults(mContext, Encryption.validateRespose(mContext,
+            if (PrefsUtils.hasNoGMS(mContext)) {
+                PrefsUtils.setSafetyNetResults(mContext, Encryption.validateRespose(mContext,
                         null, BuildConfig.DEBUG));
                 return;
             }
@@ -175,7 +175,7 @@ public class SettingsActivity extends AppCompatActivity {
                         dialog.dismiss();
                         boolean hasPassed = Encryption.validateRespose(mContext,
                                 result.getJwsResult(), BuildConfig.DEBUG);
-                        Utils.setSafetyNetResults(mContext, hasPassed);
+                        PrefsUtils.setSafetyNetResults(mContext, hasPassed);
                         new MaterialDialog.Builder(mContext)
                                 .title(R.string.pref_secret_safe_test_title)
                                 .content(hasPassed ? R.string.pref_secret_safe_test_success :

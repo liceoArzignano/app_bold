@@ -21,7 +21,9 @@ import io.realm.RealmResults;
 import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.ManagerActivity;
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.Utils;
+import it.liceoarzignano.bold.utils.ContentUtils;
+import it.liceoarzignano.bold.utils.UiUtils;
+import it.liceoarzignano.bold.utils.PrefsUtils;
 import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.events.EventListActivity;
 import it.liceoarzignano.bold.firebase.BoldAnalytics;
@@ -111,7 +113,7 @@ public class ViewerDialog {
             mValueIcon.setImageResource(R.drawable.ic_trophy);
         } else {
             mNotesText.setText(mEvent.getNote());
-            mValueText.setText(Utils.eventCategoryToString(mContext, mEvent.getIcon()));
+            mValueText.setText(ContentUtils.eventCategoryToString(mContext, mEvent.getIcon()));
             mValueIcon.setImageResource(R.drawable.ic_category);
         }
 
@@ -121,7 +123,7 @@ public class ViewerDialog {
             new BoldAnalytics(mContext).log(FirebaseAnalytics.Event.SHARE,
                     isMark ? "Share mark" : "Share event");
             String msg = isMark ?
-                    String.format(mContext.getString(Utils.isTeacher(mContext) ?
+                    String.format(mContext.getString(PrefsUtils.isTeacher(mContext) ?
                                     R.string.viewer_share_teacher : R.string.viewer_share_student),
                             mValueText.getText(), mTitleText.getText()) :
                     String.format("%1$s (%2$s)\n%3$s", mTitleText.getText(),
@@ -131,8 +133,8 @@ public class ViewerDialog {
             shareIntent.setType("text/plain");
             shareIntent.putExtra(Intent.EXTRA_TEXT, msg);
 
-            if (Utils.isNotLegacy()) {
-                Utils.animateAVD(mShareIcon.getDrawable());
+            if (PrefsUtils.isNotLegacy()) {
+                UiUtils.animateAVD(mShareIcon.getDrawable());
                 new Handler().postDelayed(() -> {
                     mDialog.dismiss();
                     mContext.startActivity(Intent.createChooser(shareIntent,
@@ -148,7 +150,7 @@ public class ViewerDialog {
         mRemoveLayout.setOnClickListener(view -> {
             new BoldAnalytics(mContext).log(FirebaseAnalytics.Event.VIEW_ITEM,
                     isMark ? "Delete mark" : "Delete event");
-            Utils.animateAVD(mRemoveIcon.getDrawable());
+            UiUtils.animateAVD(mRemoveIcon.getDrawable());
 
             if (isMark) {
                 RealmResults<Mark> results =
@@ -184,8 +186,8 @@ public class ViewerDialog {
             editIntent.putExtra("id", id);
 
             int time = 0;
-            if (Utils.isNotLegacy()) {
-                Utils.animateAVD(mEditIcon.getDrawable());
+            if (PrefsUtils.isNotLegacy()) {
+                UiUtils.animateAVD(mEditIcon.getDrawable());
                 time += 1000;
                 new Handler().postDelayed(mDialog::dismiss, time);
             } else {

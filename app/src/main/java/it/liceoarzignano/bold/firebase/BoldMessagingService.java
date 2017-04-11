@@ -20,7 +20,7 @@ import java.util.Calendar;
 import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.BuildConfig;
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.Utils;
+import it.liceoarzignano.bold.utils.PrefsUtils;
 import it.liceoarzignano.bold.news.News;
 import it.liceoarzignano.bold.news.NewsController;
 import it.liceoarzignano.bold.news.NewsListActivity;
@@ -52,7 +52,7 @@ public class BoldMessagingService extends FirebaseMessagingService {
                     return;
                 }
 
-                if (isPrivate && !Utils.isTeacher(mContext)) {
+                if (isPrivate && !PrefsUtils.isTeacher(mContext)) {
                     return;
                 }
 
@@ -64,7 +64,7 @@ public class BoldMessagingService extends FirebaseMessagingService {
 
                 saveNews();
 
-                if (Utils.hasNewsNotification(mContext)) {
+                if (PrefsUtils.hasNewsNotification(mContext)) {
                     intent = new Intent(mContext, NewsListActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     if (url != null && !url.isEmpty()) {

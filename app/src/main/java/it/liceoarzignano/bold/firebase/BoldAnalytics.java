@@ -7,7 +7,7 @@ import android.provider.Settings.Secure;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-import it.liceoarzignano.bold.Utils;
+import it.liceoarzignano.bold.utils.PrefsUtils;
 import it.liceoarzignano.bold.safe.mod.Encryption;
 
 
@@ -37,23 +37,23 @@ public class BoldAnalytics {
      * Setup user props basing on sharedPreferences
      */
     private void configUser() {
-        mFirebaseAnalytics.setUserProperty(Utils.IS_TEACHER,
-                String.valueOf(Utils.isTeacher(mContext)));
-        mFirebaseAnalytics.setUserProperty(Utils.SUGGESTIONS,
-                String.valueOf(Utils.hasSuggestions(mContext)));
-        mFirebaseAnalytics.setUserProperty(Utils.NOTIF_EVENT,
-                String.valueOf(Utils.hasEventsNotification(mContext)));
-        mFirebaseAnalytics.setUserProperty(Utils.NOTIF_NEWS,
-                String.valueOf(Utils.hasNewsNotification(mContext)));
-        mFirebaseAnalytics.setUserProperty(Utils.SAFE_DONE,
-                String.valueOf(Utils.hasSafe(mContext)));
-        if (!Utils.isTeacher(mContext)) {
-            mFirebaseAnalytics.setUserProperty(Utils.ADDRESS, Utils.getAddress(mContext));
+        mFirebaseAnalytics.setUserProperty(PrefsUtils.IS_TEACHER,
+                String.valueOf(PrefsUtils.isTeacher(mContext)));
+        mFirebaseAnalytics.setUserProperty(PrefsUtils.SUGGESTIONS,
+                String.valueOf(PrefsUtils.hasSuggestions(mContext)));
+        mFirebaseAnalytics.setUserProperty(PrefsUtils.NOTIF_EVENT,
+                String.valueOf(PrefsUtils.hasEventsNotification(mContext)));
+        mFirebaseAnalytics.setUserProperty(PrefsUtils.NOTIF_NEWS,
+                String.valueOf(PrefsUtils.hasNewsNotification(mContext)));
+        mFirebaseAnalytics.setUserProperty(PrefsUtils.SAFE_DONE,
+                String.valueOf(PrefsUtils.hasSafe(mContext)));
+        if (!PrefsUtils.isTeacher(mContext)) {
+            mFirebaseAnalytics.setUserProperty(PrefsUtils.ADDRESS, PrefsUtils.getAddress(mContext));
         }
     }
 
     public void log(String tag, String message) {
-        if (!Utils.hasAnalytics(mContext)) {
+        if (!PrefsUtils.hasAnalytics(mContext)) {
             return;
         }
 

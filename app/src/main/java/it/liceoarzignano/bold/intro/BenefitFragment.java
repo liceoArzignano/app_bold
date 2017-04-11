@@ -24,7 +24,8 @@ import java.security.SecureRandom;
 
 import it.liceoarzignano.bold.BuildConfig;
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.Utils;
+import it.liceoarzignano.bold.utils.UiUtils;
+import it.liceoarzignano.bold.utils.PrefsUtils;
 import it.liceoarzignano.bold.safe.mod.Encryption;
 
 public class BenefitFragment extends Fragment {
@@ -98,9 +99,9 @@ public class BenefitFragment extends Fragment {
     private void setAddress(String value) {
         mViewPager.setScrollAllowed(true);
         if (value == null) {
-            Utils.setTeacherMode(getContext());
+            PrefsUtils.setTeacherMode(getContext());
         } else {
-            Utils.setAddress(getContext(), value);
+            PrefsUtils.setAddress(getContext(), value);
         }
 
         mButton.setVisibility(View.VISIBLE);
@@ -112,14 +113,14 @@ public class BenefitFragment extends Fragment {
         mButton.setVisibility(View.INVISIBLE);
 
         // Check for internet connection
-        if (Utils.hasNoInternetConnection(context)) {
+        if (PrefsUtils.hasNoInternetConnection(context)) {
             mButton.setVisibility(View.VISIBLE);
             mButton.setOnClickListener(view -> doDeviceCheck(context));
             mMessage.setText(getString(R.string.slide0_message_failed));
-            if (Utils.isNotLegacy()) {
+            if (PrefsUtils.isNotLegacy()) {
                 isWorking = false;
                 mIntroImage.setImageResource(R.drawable.avd_intro_failed);
-                Utils.animateAVD(mIntroImage.getDrawable());
+                UiUtils.animateAVD(mIntroImage.getDrawable());
             }
             return;
         }
@@ -128,12 +129,12 @@ public class BenefitFragment extends Fragment {
          * Warning: contains hackery because avd animation callbacks are
          * api23+ only. Animations will be shown on api21+.
          */
-        if (Utils.isNotLegacy()) {
+        if (PrefsUtils.isNotLegacy()) {
             mAnimThread = new Thread(() -> {
                 do { // At least once
                     // Run on UI thread
                     new Handler(getContext().getMainLooper()).post(() ->
-                            Utils.animateAVD(mIntroImage.getDrawable()));
+                            UiUtils.animateAVD(mIntroImage.getDrawable()));
                     try {
                         // Wait for current animation to end
                         Thread.sleep(800);
@@ -154,7 +155,7 @@ public class BenefitFragment extends Fragment {
         ((BenefitsActivity) getActivity()).getViewPager().setScrollAllowed(false);
 
         // Don't run SafetyNet test on devices without GMS
-        if (Utils.hasNoGMS(context)) {
+        if (PrefsUtils.hasNoGMS(context)) {
             postDeviceCheck(context, Encryption.validateRespose(context, null, BuildConfig.DEBUG));
             return;
         }
@@ -185,9 +186,9 @@ public class BenefitFragment extends Fragment {
 
     private void postDeviceCheck(Context context, boolean hasPassed) {
         // Save safetynet results
-        Utils.setSafetyNetResults(context, hasPassed);
+        PrefsUtils.setSafetyNetResults(context, hasPassed);
 
-        if (Utils.isNotLegacy()) {
+        if (PrefsUtils.isNotLegacy()) {
             isWorking = false;
             try {
                 mAnimThread.join();
@@ -196,7 +197,7 @@ public class BenefitFragment extends Fragment {
             }
             new Handler().postDelayed(() -> {
                 mIntroImage.setImageResource(R.drawable.avd_intro_done);
-                Utils.animateAVD(mIntroImage.getDrawable());
+                UiUtils.animateAVD(mIntroImage.getDrawable());
 
                 // Allow scrolling when animation ends
                 new Handler().postDelayed(() -> {
@@ -213,8 +214,8 @@ public class BenefitFragment extends Fragment {
     void animateIntro() {
         mTitle.animate().alpha(1f).setStartDelay(400).start();
         mMessage.animate().alpha(1f).setStartDelay(420).start();
-        mIntroImage.setImageResource(Utils.isNotLegacy() ?
+        mIntroImage.setImageResource(PrefsUtils.isNotLegacy() ?
                 R.drawable.avd_intro_start : R.drawable.ic_hat);
-        Utils.animateAVD(mIntroImage.getDrawable());
+        UiUtils.animateAVD(mIntroImage.getDrawable());
     }
 }

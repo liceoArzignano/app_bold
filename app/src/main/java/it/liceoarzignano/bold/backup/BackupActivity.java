@@ -52,7 +52,7 @@ import java.util.Locale;
 import io.realm.Realm;
 import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.Utils;
+import it.liceoarzignano.bold.utils.PrefsUtils;
 import it.liceoarzignano.bold.firebase.BoldAnalytics;
 
 public class BackupActivity extends AppCompatActivity {
@@ -90,7 +90,7 @@ public class BackupActivity extends AppCompatActivity {
         mBackupButton = (AppCompatButton) findViewById(R.id.backup_button);
         mRestoreButton = (AppCompatButton) findViewById(R.id.restore_button);
 
-        mPrefs = getSharedPreferences(Utils.EXTRA_PREFS, MODE_PRIVATE);
+        mPrefs = getSharedPreferences(PrefsUtils.EXTRA_PREFS, MODE_PRIVATE);
         mBackupFolder = mPrefs.getString(BACKUP_FOLDER, "");
 
         hasValidFolder = !mBackupFolder.isEmpty();

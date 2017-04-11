@@ -9,7 +9,7 @@ import android.support.v7.widget.AppCompatButton;
 
 import it.liceoarzignano.bold.MainActivity;
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.Utils;
+import it.liceoarzignano.bold.utils.PrefsUtils;
 import it.liceoarzignano.bold.ui.InkPageIndicator;
 
 public class BenefitsActivity extends AppCompatActivity {
@@ -56,8 +56,9 @@ public class BenefitsActivity extends AppCompatActivity {
                     break;
                 }
                 mViewPager.setScrollAllowed(false);
-                mAdapter.getFragment(0).animateIntro();
-                new Handler().postDelayed(() -> mAdapter.getFragment(0).doDeviceCheck(this), 500);
+                BenefitFragment fragment = mAdapter.getFirstFragment();
+                fragment.animateIntro();
+                new Handler().postDelayed(() -> fragment.doDeviceCheck(this), 500);
                 setupLevel++;
                 break;
             case 1:
@@ -71,8 +72,8 @@ public class BenefitsActivity extends AppCompatActivity {
                 if (setupLevel != 2) {
                     break;
                 }
-                getSharedPreferences(Utils.EXTRA_PREFS, MODE_PRIVATE).edit()
-                        .putBoolean(Utils.KEY_INTRO_SCREEN, true).apply();
+                getSharedPreferences(PrefsUtils.EXTRA_PREFS, MODE_PRIVATE).edit()
+                        .putBoolean(PrefsUtils.KEY_INTRO_SCREEN, true).apply();
                 startActivity(new Intent(BenefitsActivity.this, MainActivity.class));
                 finish();
                 break;

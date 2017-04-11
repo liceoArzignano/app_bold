@@ -9,14 +9,14 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.Utils;
+import it.liceoarzignano.bold.utils.ContentUtils;
 
 public class AlarmService extends Service {
 
     @Override
     public void onCreate() {
         Context context = getApplicationContext();
-        String message = Utils.getTomorrowInfo(context);
+        String message = ContentUtils.getTomorrowInfo(context);
         PendingIntent pIntent = PendingIntent.getActivity(context, 0,
                 new Intent(context, EventListActivity.class), 0);
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);

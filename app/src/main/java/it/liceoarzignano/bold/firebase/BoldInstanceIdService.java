@@ -6,7 +6,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import it.liceoarzignano.bold.Utils;
+import it.liceoarzignano.bold.utils.PrefsUtils;
 
 
 public class BoldInstanceIdService extends FirebaseInstanceIdService {
@@ -23,10 +23,10 @@ public class BoldInstanceIdService extends FirebaseInstanceIdService {
         Context context = getApplicationContext();
         String topic;
 
-        if (Utils.isTeacher(context)) {
+        if (PrefsUtils.isTeacher(context)) {
             topic = ADDR6_TOPIC;
         } else {
-            switch (Utils.getAddress(context)) {
+            switch (PrefsUtils.getAddress(context)) {
                 case "1":
                     topic = ADDR1_TOPIC;
                     break;
