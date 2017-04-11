@@ -24,6 +24,7 @@ import it.liceoarzignano.bold.Utils;
 import it.liceoarzignano.bold.news.News;
 import it.liceoarzignano.bold.news.NewsController;
 import it.liceoarzignano.bold.news.NewsListActivity;
+import it.liceoarzignano.bold.utils.DateUtils;
 
 public class BoldMessagingService extends FirebaseMessagingService {
     private static final String TAG = "BoldFireBase";
@@ -58,7 +59,7 @@ public class BoldMessagingService extends FirebaseMessagingService {
                 mNews = new News();
                 mNews.setTitle(title);
                 mNews.setMessage(message);
-                mNews.setDate(Utils.getTodayStr());
+                mNews.setDate(DateUtils.getDateString(0));
                 mNews.setUrl(url);
 
                 saveNews();

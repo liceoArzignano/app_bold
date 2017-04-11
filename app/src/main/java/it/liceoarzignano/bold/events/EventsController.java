@@ -2,6 +2,7 @@ package it.liceoarzignano.bold.events;
 
 import java.util.Calendar;
 
+import io.realm.Case;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 import io.realm.Sort;
@@ -68,6 +69,15 @@ public class EventsController extends RealmController<Event> {
 
         return mRealm.where(Event.class).between("date", today.getTime(), tomorrow.getTime())
                 .findAll();
+    }
+
+    RealmResults<Event> getByQuery(String query) {
+        return query != null && !query.isEmpty() ?
+                mRealm.where(Event.class)
+                        .contains("title", query, Case.INSENSITIVE)
+                        .findAllSorted("date", Sort.DESCENDING) :
+                mRealm.where(Event.class)
+                        .findAllSorted("date", Sort.DESCENDING);
     }
 
 }

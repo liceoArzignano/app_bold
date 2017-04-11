@@ -101,6 +101,9 @@
     <!-- My events -->
     <string name="title_activity_event_list">Events</string>
     <string name="events_empty">There\'s no event</string>
+    <string name="events_time_yesterday">Yesterday</string>
+    <string name="events_time_today">Today</string>
+    <string name="events_time_tomorrow">Tomorrow</string>
 
     <!-- News -->
     <string name="news_empty">You have received no news so far</string>
@@ -279,7 +282,7 @@
     <string name="backup_button_restore">Restore\u2026</string>
     <string name="restore_dialog_title">Restore</string>
     <string name="restore_dialog_message">Backup info:\nDate: %1$s\nSize: %2$s\nWarning: you will override all the existing marks, events and news with those in the backup.\nDo you want to continue?</string>
-    <string name="date_formatting">MMMM dd, yyyy</string>
+    <string name="date_formatting">EEEE, MMMM dd yyyy</string>
 
     <!-- Shortcuts -->
     <string name="shortcut_marks_short">Marks</string>
@@ -294,7 +297,6 @@
 
     <!-- Accessibility -->
     <string name="accessibility_drawer">Header</string>
-    <string name="accessibility_event_icon">Event icon</string>
     <string name="accessibility_safe_icon">Safe status icon</string>
     <string name="accessibility_generic_icon">Icon</string>
 </resources>

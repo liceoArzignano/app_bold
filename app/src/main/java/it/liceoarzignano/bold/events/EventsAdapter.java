@@ -1,87 +1,132 @@
 package it.liceoarzignano.bold.events;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.zhukic.sectionedrecyclerview.SectionedRecyclerViewAdapter;
+
+import java.util.Date;
 import java.util.List;
 
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.Utils;
+import it.liceoarzignano.bold.ui.recyclerview.HeaderViewHolder;
+import it.liceoarzignano.bold.utils.DateUtils;
 
-class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventHolder> {
+class EventsAdapter extends SectionedRecyclerViewAdapter<HeaderViewHolder,
+        EventsAdapter.EventHolder> {
     private List<Event> mEvents;
+    private final Context mContext;
 
-    EventsAdapter(List<Event> events) {
+    EventsAdapter(List<Event> events, Context context) {
         mEvents = events;
+        mContext = context;
     }
 
     @Override
-    public EventHolder onCreateViewHolder(ViewGroup parent, int type) {
+    public EventHolder onCreateItemViewHolder(ViewGroup parent, int type) {
         return new EventHolder(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_event, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(EventHolder holder, int position) {
+    public void onBindItemViewHolder(EventHolder holder, int position) {
         holder.setData(mEvents.get(position));
     }
 
     @Override
-    public int getItemCount() {
+    public HeaderViewHolder onCreateSubheaderViewHolder(ViewGroup parent, int type) {
+        return new HeaderViewHolder(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_subheader, parent, false));
+    }
+
+    @Override
+    public void onBindSubheaderViewHolder(HeaderViewHolder holder, int position) {
+        String title;
+        Date eventDate = mEvents.get(position).getDate();
+        Date yesterday = DateUtils.getDate(-1);
+        Date today = DateUtils.getDate(0);
+        Date tomorrow = DateUtils.getDate(1);
+
+        if (DateUtils.dateDiff(eventDate, yesterday) == 0) {
+            title = mContext.getString(R.string.events_time_yesterday);
+        } else if (DateUtils.dateDiff(eventDate, today) == 0) {
+            title = mContext.getString(R.string.events_time_today);
+        } else if (DateUtils.dateDiff(eventDate, tomorrow) == 0) {
+            title = mContext.getString(R.string.events_time_tomorrow);
+        } else {
+            title = DateUtils.dateToWorldsString(mContext, eventDate);
+        }
+
+        holder.setTitle(title);
+    }
+
+    @Override
+    public int getItemSize() {
         return mEvents.size();
+    }
+
+    @Override
+    public boolean onPlaceSubheaderBetweenItems(int itemPosition) {
+        Date a = mEvents.get(itemPosition).getDate();
+        Date b = mEvents.get(itemPosition + 1).getDate();
+
+        return DateUtils.dateDiff(a, b) >= 1;
     }
 
     void updateList(List<Event> newList) {
         mEvents = newList;
+        notifyDataChanged();
     }
 
-
     class EventHolder extends RecyclerView.ViewHolder {
+        private final View mView;
         private final TextView mTitle;
         private final TextView mValue;
-        private final ImageView mIcon;
+        private final TextView mTag;
 
         EventHolder(View view) {
             super(view);
+            mView = view;
             mTitle = (TextView) view.findViewById(R.id.row_event_title);
             mValue = (TextView) view.findViewById(R.id.row_event_value);
-            mIcon = (ImageView) view.findViewById(R.id.row_event_icon);
+            mTag = (TextView) view.findViewById(R.id.row_event_tag);
         }
 
         void setData(Event event) {
             mTitle.setText(event.getTitle());
-            mValue.setText(Utils.dateToStr(event.getDate()));
-            int iconAddress;
+            mValue.setText(event.getNote());
+            int tagAddr;
 
             switch (event.getIcon()) {
                 case 0:
-                    iconAddress = R.drawable.ic_event_test;
+                    tagAddr = R.string.event_spinner_test;
                     break;
                 case 1:
-                    iconAddress = R.drawable.ic_event_school;
+                    tagAddr = R.string.event_spinner_school;
                     break;
                 case 2:
-                    iconAddress = R.drawable.ic_event_bday;
+                    tagAddr = R.string.event_spinner_bday;
                     break;
                 case 3:
-                    iconAddress = R.drawable.ic_event_homework;
+                    tagAddr = R.string.event_spinner_homework;
                     break;
                 case 4:
-                    iconAddress = R.drawable.ic_event_reminder;
+                    tagAddr = R.string.event_spinner_reminder;
                     break;
                 case 5:
-                    iconAddress = R.drawable.ic_event_hangout;
+                    tagAddr = R.string.event_spinner_hang_out;
                     break;
                 default:
-                    iconAddress = R.drawable.ic_event_other;
+                    tagAddr = R.string.event_spinner_other;
                     break;
             }
 
-            mIcon.setImageResource(iconAddress);
+            mTag.setText(tagAddr);
+            mView.setOnClickListener(v -> ((EventListActivity) mContext).viewEvent(event.getId()));
         }
     }
 }

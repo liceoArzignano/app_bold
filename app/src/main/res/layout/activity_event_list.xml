@@ -7,63 +7,43 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:titleTextColor="@color/icon"
+        android:elevation="8dp"
+        app:theme="@style/AppTheme.ToolbarTheme"
+        tools:targetApi="m" />
+
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:paddingTop="?actionBarSize">
 
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/app_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:elevation="8dp"
-            tools:targetApi="lollipop">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                android:titleTextColor="@color/icon"
-                app:theme="@style/AppTheme.ToolbarTheme"
-                tools:targetApi="m" />
-
-            <devs.mulham.horizontalcalendar.HorizontalCalendarView
-                android:id="@+id/events_calendar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/colorPrimary"
-                app:selectorColor="@color/colorAccent"
-                app:textColorNormal="@color/empty_text"
-                app:textColorSelected="@color/white" />
-        </android.support.design.widget.AppBarLayout>
-
-        <RelativeLayout
+        <it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt
+            android:id="@+id/event_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/app_bar">
+            android:scrollbars="vertical" />
 
-            <it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt
-                android:id="@+id/event_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbars="vertical" />
+        <LinearLayout
+            android:id="@+id/event_empty_layout"
+            style="@style/AppTheme.EmptyLayout"
+            tools:ignore="UseCompoundDrawables">
 
-            <LinearLayout
-                android:id="@+id/event_empty_layout"
-                style="@style/AppTheme.EmptyLayout"
-                tools:ignore="UseCompoundDrawables">
+            <ImageView
+                style="@style/AppTheme.EmptyImage"
+                app:srcCompat="@drawable/ic_empty_events" />
 
-                <ImageView
-                    style="@style/AppTheme.EmptyImage"
-                    app:srcCompat="@drawable/ic_empty_events" />
+            <TextView
+                android:id="@+id/events_empty_text"
+                style="@style/AppTheme.EmptyText"
+                android:text="@string/events_empty" />
+        </LinearLayout>
 
-                <TextView
-                    android:id="@+id/events_empty_text"
-                    style="@style/AppTheme.EmptyText"
-                    android:text="@string/events_empty" />
-            </LinearLayout>
-
-        </RelativeLayout>
     </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton

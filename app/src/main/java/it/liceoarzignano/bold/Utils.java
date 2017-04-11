@@ -36,13 +36,13 @@ import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.events.EventsController;
 import it.liceoarzignano.bold.marks.Mark;
 import it.liceoarzignano.bold.marks.MarksController;
+import it.liceoarzignano.bold.utils.DateUtils;
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 @SuppressWarnings("SameParameterValue")
 public class Utils {
     private static final String TAG = Utils.class.getSimpleName();
     private static final String DEFAULT_DATE = "2000-01-01";
-    private static final String DATE_FORMAT = "yyyy-MM-dd";
 
     public static final String IS_TEACHER = "isTeacher_key";
     public static final String SUGGESTIONS = "showSuggestions_key";
@@ -112,26 +112,6 @@ public class Utils {
     }
 
     /**
-     * Get today date
-     *
-     * @return today
-     */
-    public static Date getToday() {
-        Calendar calendar = Calendar.getInstance();
-        return calendar.getTime();
-    }
-
-    /**
-     * Get today date
-     *
-     * @return today
-     */
-    public static String getTodayStr() {
-        return dateToStr(getToday());
-    }
-
-
-    /**
      * Force enable Google Analytics Tracker
      * if overlay requires it (used for test builds)
      *
@@ -156,32 +136,6 @@ public class Utils {
         return prefs.getString(KEY_INITIAL_DAY, DEFAULT_DATE);
     }
 
-    /**
-     * Convert calendar dialog results to a string that will be
-     * saved in the events database.
-     * </br>
-     * Format: yyyy-mm-dd (Locale.IT format)
-     *
-     * @param year:  year from the date picker dialog
-     * @param month: month from the date picker dialog
-     * @param day:   day of the month from the date picker dialog
-     * @return string with formatted date
-     */
-    static Date rightDate(int year, int month, int day) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day);
-        return calendar.getTime();
-    }
-
-    /**
-     * Convert date to string for UI elements
-     *
-     * @param date given date
-     * @return yyyy-MM-dd string
-     */
-    public static String dateToStr(Date date) {
-        return new SimpleDateFormat(DATE_FORMAT, Locale.getDefault()).format(date);
-    }
 
     /**
      * Use for adaptive feature discovery
@@ -190,28 +144,21 @@ public class Utils {
      * @return true if user has been using this for more than one week
      */
     static boolean hasUsedForMoreThanOneWeek(Context context) {
-        SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT, Locale.ITALIAN);
+        SimpleDateFormat format = new SimpleDateFormat(DateUtils.DATE_FORMAT, Locale.ITALIAN);
         String firstDay = getFirstUsageDate(context);
 
         if (DEFAULT_DATE.equals(firstDay)) {
             return false;
         }
 
+        Date date;
         try {
-            Date date = getToday();
-            Calendar firstCal = Calendar.getInstance();
-            Calendar secondCal = Calendar.getInstance();
-            secondCal.setTimeInMillis(date.getTime());
             date = format.parse(firstDay);
-            firstCal.setTimeInMillis(date.getTime());
-
-            int diff = secondCal.get(Calendar.DAY_OF_YEAR) - firstCal.get(Calendar.DAY_OF_YEAR);
-
-            return firstCal.get(Calendar.YEAR) == secondCal.get(Calendar.YEAR) && diff > 7;
         } catch (ParseException e) {
             Log.e(TAG, e.getMessage());
             return false;
         }
+        return DateUtils.dateDiff(DateUtils.getDate(0), date, 7);
     }
 
     /**
@@ -272,26 +219,6 @@ public class Utils {
         }
     }
 
-    /**
-     * Convert string to date
-     *
-     * @param string yyyy-MM-dd date
-     * @return java date
-     */
-    private static Date stringToDate(String string) {
-        if (string.length() != 10 || !string.contains("-")) {
-            throw new IllegalArgumentException(string
-                    + ": invalid format. Must be yyyy-MM-dd");
-        }
-
-        try {
-            SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT, Locale.ITALIAN);
-            return format.parse(string);
-        } catch (ParseException e) {
-            Log.e(TAG, e.getMessage());
-            return new Date();
-        }
-    }
 
     /**
      * Determine if a mark has been assigned during the first or second quarter
@@ -300,7 +227,8 @@ public class Utils {
      * @return true if first quarter, else false
      */
     public static boolean isFirstQuarter(Context context, Date date) {
-        return stringToDate(context.getString(R.string.config_quarter_change)).after(date);
+        return DateUtils.stringToDate(context.getString(R.string.config_quarter_change))
+                .after(date);
     }
 
     /**

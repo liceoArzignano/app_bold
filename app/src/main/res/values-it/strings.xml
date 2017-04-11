@@ -101,6 +101,9 @@
     <!-- My events -->
     <string name="title_activity_event_list">Eventi</string>
     <string name="events_empty">Non ci sono eventi</string>
+    <string name="events_time_yesterday">Ieri</string>
+    <string name="events_time_today">Oggi</string>
+    <string name="events_time_tomorrow">Domani</string>
 
     <!-- News -->
     <string name="news_empty">Non hai ricevuto nessuna notizia</string>
@@ -278,7 +281,7 @@
     <string name="backup_button_restore">Ripristina\u2026</string>
     <string name="restore_dialog_title">Ripristino</string>
     <string name="restore_dialog_message">Informazioni backup:\nData: %1$s\nDimensione: %2$s\nAttenzione: i voti, eventi e notizie esistenti saranno rimpiazzati con quelli presenti nel backup.\nVuoi continuare?</string>
-    <string name="date_formatting">dd MMMM yyyy</string>
+    <string name="date_formatting">EEEE dd MMMM yyyy</string>
 
     <!-- Shortcuts -->
     <string name="shortcut_marks_short">Voti</string>
@@ -293,7 +296,6 @@
 
     <!-- Accessibility -->
     <string name="accessibility_drawer">Intestazione</string>
-    <string name="accessibility_event_icon">Icona evento</string>
     <string name="accessibility_safe_icon">Immagine stato di Safe</string>
     <string name="accessibility_generic_icon">Icona</string>
 </resources>

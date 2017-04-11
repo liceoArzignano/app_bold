@@ -20,7 +20,8 @@
         android:supportsRtl="false"
         android:extractNativeLibs="false"
         android:theme="@style/AppTheme"
-        tools:targetApi="23">
+        tools:targetApi="23"
+        tools:replace="android:supportsRtl">
 
         <!-- Main -->
         <activity

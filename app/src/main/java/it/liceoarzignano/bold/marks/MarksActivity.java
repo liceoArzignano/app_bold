@@ -24,6 +24,7 @@ import it.liceoarzignano.bold.ui.recyclerview.DividerDecoration;
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerClickListener;
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerTouchListener;
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt;
+import it.liceoarzignano.bold.utils.DateUtils;
 
 
 public class MarksActivity extends AppCompatActivity {
@@ -77,7 +78,7 @@ public class MarksActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!Utils.isFirstQuarter(this, Utils.getToday())) {
+        if (!Utils.isFirstQuarter(this, DateUtils.getDate(0))) {
             getMenuInflater().inflate(R.menu.marks, menu);
 
             MenuItem allQuarters = menu.findItem(R.id.filter_all);

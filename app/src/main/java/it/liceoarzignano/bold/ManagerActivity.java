@@ -38,6 +38,7 @@ import it.liceoarzignano.bold.marks.Mark;
 import it.liceoarzignano.bold.marks.MarksController;
 import it.liceoarzignano.bold.news.News;
 import it.liceoarzignano.bold.news.NewsController;
+import it.liceoarzignano.bold.utils.DateUtils;
 
 public class ManagerActivity extends AppCompatActivity
         implements AdapterView.OnItemSelectedListener {
@@ -118,8 +119,8 @@ public class ManagerActivity extends AppCompatActivity
             mYear = year;
             mMonth = month;
             mDay = day;
-            mDate = Utils.rightDate(mYear, mMonth, mDay);
-            mDatePicker.setText(Utils.dateToStr(mDate));
+            mDate = DateUtils.intToDate(mYear, mMonth, mDay);
+            mDatePicker.setText(DateUtils.dateToString(mDate));
         };
 
         mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
@@ -160,7 +161,7 @@ public class ManagerActivity extends AppCompatActivity
 
         // Init calendar
         Calendar calendar = Calendar.getInstance();
-        mDatePicker.setText(Utils.dateToStr(mDate));
+        mDatePicker.setText(DateUtils.dateToString(mDate));
 
         // Load intent data
         if (isEditMode) {
@@ -183,7 +184,7 @@ public class ManagerActivity extends AppCompatActivity
             }
 
             mTitleInput.setText(mTitle);
-            mDatePicker.setText(Utils.dateToStr(loadDate));
+            mDatePicker.setText(DateUtils.dateToString(loadDate));
             mNotesInput.setText(loadNotes);
             calendar.setTime(loadDate);
         }

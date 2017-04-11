@@ -60,6 +60,7 @@ import it.liceoarzignano.bold.news.NewsListActivity;
 import it.liceoarzignano.bold.safe.SafeActivity;
 import it.liceoarzignano.bold.settings.SettingsActivity;
 import it.liceoarzignano.bold.ui.recyclerview.DividerDecoration;
+import it.liceoarzignano.bold.utils.DateUtils;
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 public class MainActivity extends AppCompatActivity
@@ -308,7 +309,8 @@ public class MainActivity extends AppCompatActivity
         for (int counter = 0; counter < 3 && counter < events.size(); counter++) {
             Event event = events.get(counter);
             if (isThisWeek(event.getDate())) {
-                builder.addEntry(event.getTitle(), Utils.dateToStr(event.getDate()));
+                builder.addEntry(event.getTitle(), DateUtils.dateToWorldsString(this,
+                        event.getDate()));
             }
         }
 
@@ -336,7 +338,7 @@ public class MainActivity extends AppCompatActivity
 
         for (int counter = 0; counter < 3 && counter < newsList.size(); counter++) {
             News news = newsList.get(counter);
-            builder.addEntry(news.getTitle(), news.getDate());
+            builder.addEntry(news.getTitle(), DateUtils.dateToWorldsString(this, news.getDate()));
         }
 
         return builder.build();
@@ -517,7 +519,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             case "0":
                 // Used for feature discovery
-                final String today = Utils.getTodayStr();
+                final String today = DateUtils.getDateString(0);
                 editor.putString(Utils.KEY_VERSION, BuildConfig.VERSION_NAME).apply();
                 editor.putString(Utils.KEY_INITIAL_DAY, today).apply();
                 break;

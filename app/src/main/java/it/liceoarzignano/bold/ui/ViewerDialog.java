@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-import java.util.Date;
 import java.util.Locale;
 
 import io.realm.Realm;
@@ -28,6 +27,7 @@ import it.liceoarzignano.bold.events.EventListActivity;
 import it.liceoarzignano.bold.firebase.BoldAnalytics;
 import it.liceoarzignano.bold.marks.Mark;
 import it.liceoarzignano.bold.marks.SubjectActivity;
+import it.liceoarzignano.bold.utils.DateUtils;
 
 public class ViewerDialog {
     private final Realm mRealm;
@@ -115,7 +115,7 @@ public class ViewerDialog {
             mValueIcon.setImageResource(R.drawable.ic_category);
         }
 
-        mDateText.setText(Utils.dateToStr(isMark ? mMark.getDate() : mEvent.getDate()));
+        mDateText.setText(DateUtils.dateToString(isMark ? mMark.getDate() : mEvent.getDate()));
 
         mShareLayout.setOnClickListener(view -> {
             new BoldAnalytics(mContext).log(FirebaseAnalytics.Event.SHARE,
@@ -169,7 +169,7 @@ public class ViewerDialog {
             if (isMark) {
                 ((SubjectActivity) mContext).refresh();
             } else {
-                ((EventListActivity) mContext).refreshList(new Date(), null);
+                ((EventListActivity) mContext).refreshList(null);
             }
             new Handler().postDelayed(mDialog::dismiss, 840);
         });
