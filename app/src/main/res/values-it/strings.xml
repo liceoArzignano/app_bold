@@ -186,7 +186,7 @@
     <string name="pref_safe_status_message_disabled">Disattivato (dispositivo non sicuro)</string>
     <string name="pref_secret_safe_test_title">Test sicurezza dispositivo</string>
     <string name="pref_secret_safe_test_running">Controllo sicurezza dispositivo\u2026</string>
-    <string name="pref_secret_safe_test_connection">\U00C8 necessaria una connessione ad internet per effetuare il test</string>
+    <string name="pref_secret_safe_test_connection">\u00C8 necessaria una connessione ad internet per effetuare il test</string>
     <string name="pref_secret_safe_test_fail">Test fallito. Il dispositivo non \u00E8 sicuro. Safe non sar\u00E0 attivato</string>
     <string name="pref_secret_safe_test_success">Test passato. Il dispositivo \u00E8 sicuro. Safe sar\u00E0 attivato</string>
     <string name="pref_secret_export_safe_title">Condivisione password di Safe</string>
