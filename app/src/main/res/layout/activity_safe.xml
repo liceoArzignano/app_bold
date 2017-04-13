@@ -67,6 +67,7 @@
                         <EditText
                             android:id="@+id/safe_username"
                             style="@style/AppTheme.SafeInputText"
+                            android:inputType="numberPassword"
                             android:hint="@string/safe_username" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -78,6 +79,7 @@
                         <EditText
                             android:id="@+id/safe_register"
                             style="@style/AppTheme.SafeInputText"
+                            android:inputType="textPassword"
                             android:hint="@string/safe_reg_pwd" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -89,6 +91,7 @@
                         <EditText
                             android:id="@+id/safe_pc"
                             style="@style/AppTheme.SafeInputText"
+                            android:inputType="textPassword"
                             android:hint="@string/safe_pc_pwd" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -100,6 +103,7 @@
                         <EditText
                             android:id="@+id/safe_internet"
                             style="@style/AppTheme.SafeInputText"
+                            android:inputType="textPassword"
                             android:hint="@string/safe_internet_pwd" />
                     </android.support.design.widget.TextInputLayout>
 
