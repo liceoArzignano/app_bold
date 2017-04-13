@@ -11,10 +11,12 @@
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
         <!-- Toolbar -->
         <android.support.design.widget.AppBarLayout
+            android:id="@+id/home_app_bar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/app_bar_height_view"
             android:fitsSystemWindows="true"
