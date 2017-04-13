@@ -159,6 +159,9 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-    </application>
 
+        <!-- 2.25:1 aspect ratio -->
+        <meta-data android:name="android.max_aspect" android:value="2.1" />
+
+    </application>
 </manifest>
