@@ -18,7 +18,7 @@
             android:layout_height="?attr/actionBarSize"
             android:elevation="8dp"
             app:theme="@style/AppTheme.ToolbarTheme"
-            tools:targetApi="lollipop" />
+            tools:targetApi="lollipop"/>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -29,78 +29,78 @@
                 android:id="@+id/manager_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingTop="2dp">
+                android:paddingTop="2dp"
+                android:orientation="vertical">
 
                 <!-- Title -->
                 <RelativeLayout
-                    android:id="@+id/manager_title_layout"
                     style="@style/AppTheme.EditorIcon"
+                    android:id="@+id/manager_title_layout"
                     android:layout_width="match_parent"
                     android:layout_height="48dp">
 
                     <ImageView
                         style="@style/AppTheme.EditorIcon"
-                        app:srcCompat="@drawable/ic_title" />
+                        app:srcCompat="@drawable/ic_title"/>
 
                     <EditText
-                        android:id="@+id/manager_title_input"
                         style="@style/AppTheme.EditorEditText"
+                        android:id="@+id/manager_title_input"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        tools:ignore="TextFields" />
+                        tools:ignore="TextFields"/>
                 </RelativeLayout>
 
                 <!-- Subject picker -->
                 <RelativeLayout
-                    android:id="@+id/manager_subject_layout"
                     style="@style/AppTheme.EditorIcon"
+                    android:id="@+id/manager_subject_layout"
                     android:layout_width="match_parent"
                     android:layout_height="48dp">
 
                     <ImageView
                         style="@style/AppTheme.EditorIcon"
-                        app:srcCompat="@drawable/ic_title" />
+                        app:srcCompat="@drawable/ic_title"/>
 
                     <TextView
-                        android:id="@+id/manager_subjects_selector"
                         style="@style/AppTheme.EditorTextView"
-                        android:text="@string/select_subject" />
+                        android:id="@+id/manager_subjects_selector"
+                        android:text="@string/select_subject"/>
                 </RelativeLayout>
 
                 <!-- Event category spinner -->
                 <RelativeLayout
-                    android:id="@+id/manager_event_spinner_layout"
                     style="@style/AppTheme.EditorIcon"
+                    android:id="@+id/manager_event_spinner_layout"
                     android:layout_width="match_parent"
                     android:layout_height="48dp">
 
                     <ImageView
                         style="@style/AppTheme.EditorIcon"
-                        app:srcCompat="@drawable/ic_category" />
+                        app:srcCompat="@drawable/ic_category"/>
 
                     <Spinner
                         android:id="@+id/manager_event_spinner"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="64dp" />
+                        android:layout_marginLeft="64dp"/>
                 </RelativeLayout>
 
                 <!-- Mark value -->
                 <RelativeLayout
-                    android:id="@+id/manager_mark_value_layout"
                     style="@style/AppTheme.EditorIcon"
+                    android:id="@+id/manager_mark_value_layout"
                     android:layout_width="match_parent"
                     android:layout_height="48dp">
 
                     <ImageView
                         style="@style/AppTheme.EditorIcon"
-                        app:srcCompat="@drawable/ic_trophy" />
+                        app:srcCompat="@drawable/ic_trophy"/>
 
                     <TextView
-                        android:id="@+id/manager_mark_preview"
                         style="@style/AppTheme.EditorTextView"
-                        android:text="@string/default_mark" />
+                        android:id="@+id/manager_mark_preview"
+                        android:text="@string/default_mark"/>
                 </RelativeLayout>
 
                 <!-- Notes -->
@@ -111,31 +111,31 @@
 
                     <ImageView
                         style="@style/AppTheme.EditorIcon"
-                        app:srcCompat="@drawable/ic_notes" />
+                        app:srcCompat="@drawable/ic_notes"/>
 
                     <EditText
-                        android:id="@+id/manager_notes_input"
                         style="@style/AppTheme.EditorEditText"
+                        android:id="@+id/manager_notes_input"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:hint="@string/hint_notes"
-                        android:minHeight="48dp" />
+                        android:minHeight="48dp"
+                        android:hint="@string/hint_notes"/>
                 </RelativeLayout>
 
                 <!-- Date picker -->
                 <RelativeLayout
-                    android:id="@+id/manager_date_layout"
                     style="@style/AppTheme.EditorIcon"
+                    android:id="@+id/manager_date_layout"
                     android:layout_width="match_parent"
                     android:layout_height="48dp">
 
                     <ImageView
                         style="@style/AppTheme.EditorIcon"
-                        app:srcCompat="@drawable/ic_calendar" />
+                        app:srcCompat="@drawable/ic_calendar"/>
 
                     <TextView
-                        android:id="@+id/manager_datepicker_button"
-                        style="@style/AppTheme.EditorTextView" />
+                        style="@style/AppTheme.EditorTextView"
+                        android:id="@+id/manager_datepicker_button"/>
                 </RelativeLayout>
             </LinearLayout>
         </ScrollView>
@@ -149,5 +149,5 @@
         android:layout_margin="@dimen/fab_margin"
         android:transitionName="fab"
         app:srcCompat="@drawable/ic_done"
-        tools:targetApi="lollipop" />
+        tools:targetApi="lollipop"/>
 </android.support.design.widget.CoordinatorLayout>

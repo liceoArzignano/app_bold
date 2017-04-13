@@ -3,22 +3,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/menu_filter"
         android:orderInCategory="100"
         android:title="@string/marks_menu_filter"
-        app:showAsAction="ifRoom">
-        <group android:checkableBehavior="single">
-            <item
-                android:id="@+id/filter_all"
-                android:title="@string/marks_all"
-                app:showAsAction="never" />
-            <item
-                android:id="@+id/filter_first"
-                android:title="@string/viewer_first_quarter"
-                app:showAsAction="never" />
-            <item
-                android:id="@+id/filter_second"
-                android:title="@string/viewer_second_quarter"
-                app:showAsAction="never" />
-        </group>
-    </item>
+        android:icon="@drawable/ic_filter"
+        app:showAsAction="ifRoom" />
 </menu>

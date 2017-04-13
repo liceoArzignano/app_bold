@@ -87,6 +87,9 @@
     <string name="hint_content_above">must be %1$s or higher</string>
     <string name="error_noaddress">Set a valid address to use this feature</string>
     <string name="marks_empty">There\'s no mark</string>
+    <string name="marks_filter_description">Select what marks you want to see. Click on the quarter to toggle it</string>
+    <string name="marks_filter_error">Select at least one quarter</string>
+    <string name="marks_filter_action">Filter</string>
 
     <!-- View -->
     <string name="viewer_edit">Edit</string>

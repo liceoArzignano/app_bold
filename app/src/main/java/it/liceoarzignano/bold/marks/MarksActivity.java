@@ -1,29 +1,39 @@
 package it.liceoarzignano.bold.marks;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.ManagerActivity;
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.utils.ContentUtils;
-import it.liceoarzignano.bold.utils.PrefsUtils;
 import it.liceoarzignano.bold.firebase.BoldAnalytics;
 import it.liceoarzignano.bold.ui.recyclerview.DividerDecoration;
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerClickListener;
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerTouchListener;
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt;
+import it.liceoarzignano.bold.utils.ContentUtils;
 import it.liceoarzignano.bold.utils.DateUtils;
+import it.liceoarzignano.bold.utils.PrefsUtils;
 
 
 public class MarksActivity extends AppCompatActivity {
@@ -37,6 +47,8 @@ public class MarksActivity extends AppCompatActivity {
     private SharedPreferences mPrefs;
 
     private int mFilter;
+    private boolean isFirstEnabled;
+    private boolean isSecondEnabled;
 
     @Override
     protected void onCreate(Bundle savedInstance) {
@@ -79,24 +91,6 @@ public class MarksActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!PrefsUtils.isFirstQuarter(this, DateUtils.getDate(0))) {
             getMenuInflater().inflate(R.menu.marks, menu);
-
-            MenuItem allQuarters = menu.findItem(R.id.filter_all);
-            MenuItem firstQuarter = menu.findItem(R.id.filter_first);
-            MenuItem secondQuarter = menu.findItem(R.id.filter_second);
-
-            mFilter = mPrefs.getInt(PREF_QUARTER_SELECTOR, 0);
-            switch (mFilter) {
-                case 0:
-                    allQuarters.setChecked(true);
-                    break;
-                case 1:
-                    firstQuarter.setChecked(true);
-                    break;
-                case 2:
-                    secondQuarter.setChecked(true);
-                    break;
-            }
-            refresh();
         }
         return true;
     }
@@ -104,21 +98,9 @@ public class MarksActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
-        switch (id) {
-            case R.id.filter_all:
-                mFilter = 0;
-                break;
-            case R.id.filter_first:
-                mFilter = 1;
-                break;
-            case R.id.filter_second:
-                mFilter = 2;
-                break;
+        if (id == R.id.menu_filter) {
+            createFilterDialog();
         }
-        item.setChecked(true);
-        mPrefs.edit().putInt(PREF_QUARTER_SELECTOR, mFilter).apply();
-        refresh();
 
         return super.onOptionsItemSelected(item);
     }
@@ -143,5 +125,56 @@ public class MarksActivity extends AppCompatActivity {
             mList.addOnItemTouchListener(new RecyclerTouchListener(this, listener));
             mAdapter.updateList(marks);
         }
+    }
+
+    private void createFilterDialog() {
+        int val = mPrefs.getInt(PREF_QUARTER_SELECTOR, 0);
+        isFirstEnabled = val < 2;
+        isSecondEnabled = val != 1;
+
+        final Context context = this;
+        Drawable noBg = new ColorDrawable(Color.TRANSPARENT);
+
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        ViewGroup group = (ViewGroup) findViewById(R.id.dialog_root);
+        View view = inflater.inflate(R.layout.dialog_filter, group);
+        ImageView firstSel = (ImageView) view.findViewById(R.id.filter_first);
+        ImageView secondSel = (ImageView) view.findViewById(R.id.filter_second);
+
+        firstSel.setBackground(isFirstEnabled ?
+                ContextCompat.getDrawable(this, R.drawable.ic_filter_bg_enabled) : noBg);
+        secondSel.setBackground(isSecondEnabled ?
+                ContextCompat.getDrawable(this, R.drawable.ic_filter_bg_enabled) : noBg);
+
+        firstSel.setOnClickListener(v -> {
+            isFirstEnabled = !isFirstEnabled;
+            firstSel.setBackground(isFirstEnabled ?
+                    ContextCompat.getDrawable(this, R.drawable.ic_filter_bg_enabled) : noBg);
+        });
+        secondSel.setOnClickListener(v -> {
+            isSecondEnabled = !isSecondEnabled;
+            secondSel.setBackground(isSecondEnabled ?
+                    ContextCompat.getDrawable(this, R.drawable.ic_filter_bg_enabled) : noBg);
+        });
+
+        new MaterialDialog.Builder(this)
+                .title(R.string.marks_menu_filter)
+                .customView(view, false)
+                .canceledOnTouchOutside(false)
+                .autoDismiss(false)
+                .positiveText(R.string.marks_filter_action)
+                .onPositive((dialog, which) -> {
+                    if (!isFirstEnabled && !isSecondEnabled) {
+                        Toast.makeText(context, getString(R.string.marks_filter_error),
+                                Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
+                    mFilter = isFirstEnabled ? isSecondEnabled ? 0 : 1 : 2;
+                    mPrefs.edit().putInt(PREF_QUARTER_SELECTOR, mFilter).apply();
+                    dialog.dismiss();
+                    refresh();
+                })
+                .show();
     }
 }

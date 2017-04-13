@@ -80,13 +80,16 @@
 
     <!-- My marks -->
     <string name="title_activity_mark_list">Voti</string>
-    <string name="marks_menu_filter">Filtro voti</string>
+    <string name="marks_menu_filter">Filtra voti</string>
     <string name="marks_all">Tutti</string>
     <string name="hint_content_common">Per avere la sufficienza, il prossimo voto</string>
     <string name="hint_content_under">deve essere %1$s o superiore</string>
     <string name="hint_content_above">pu\u00F2 essere %1$s o superiore</string>
     <string name="error_noaddress">Imposta un indirizzo per utilizzare questa funzione</string>
     <string name="marks_empty">Non ci sono voti</string>
+    <string name="marks_filter_description">Seleziona quali voti vuoi visualizzare. Tocca su un quadrimestre per attivarlo o disattivarlo</string>
+    <string name="marks_filter_error">Select at least one quarter</string>
+    <string name="marks_filter_action">Filtra</string>
 
     <!-- Viewer -->
     <string name="viewer_edit">Modifica</string>
