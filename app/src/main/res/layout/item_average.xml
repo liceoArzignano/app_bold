@@ -15,17 +15,16 @@
     <TextView
         android:id="@+id/row_avg_value"
         style="@android:style/TextAppearance.Medium"
-        android:layout_width="72dp"
+        android:layout_width="56dp"
         android:layout_height="match_parent"
-        android:gravity="center"
         android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/row_avg_title"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_toRightOf="@id/row_avg_value"
-        android:gravity="center"
+        android:paddingLeft="56dp"
+        android:gravity="center_vertical"
         android:textColor="@color/black"
         android:textSize="16sp" />
 </RelativeLayout>

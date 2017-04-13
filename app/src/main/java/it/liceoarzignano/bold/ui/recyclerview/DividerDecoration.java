@@ -38,7 +38,7 @@ public class DividerDecoration extends RecyclerView.ItemDecoration {
             int bottom = top + mDivider.getIntrinsicHeight();
             mDivider.setBounds(left, top, right, bottom);
             mDivider.setColorFilter(ContextCompat.getColor(mContext,
-                    R.color.list_divider), PorterDuff.Mode.SRC_ATOP);
+                    R.color.list_header), PorterDuff.Mode.SRC_ATOP);
             mDivider.draw(canvas);
         }
     }

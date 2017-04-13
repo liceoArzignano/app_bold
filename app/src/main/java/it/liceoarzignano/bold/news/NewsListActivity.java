@@ -75,9 +75,6 @@ public class NewsListActivity extends AppCompatActivity {
 
         mController = new NewsController(((BoldApp) getApplication()).getConfig());
 
-        newsList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        newsList.setItemAnimator(new DefaultItemAnimator());
-        newsList.addItemDecoration(new DividerDecoration(getApplicationContext()));
         mAdapter = new NewsAdapter(mController.getAll(), this);
         newsList.setAdapter(mAdapter);
     }

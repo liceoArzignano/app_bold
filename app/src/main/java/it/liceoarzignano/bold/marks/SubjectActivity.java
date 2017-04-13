@@ -3,28 +3,19 @@ package it.liceoarzignano.bold.marks;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.TextView;
-
-import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.List;
 
 import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.firebase.BoldAnalytics;
 import it.liceoarzignano.bold.ui.CircularProgressBar;
-import it.liceoarzignano.bold.ui.ViewerDialog;
-import it.liceoarzignano.bold.ui.recyclerview.DividerDecoration;
-import it.liceoarzignano.bold.ui.recyclerview.RecyclerClickListener;
-import it.liceoarzignano.bold.ui.recyclerview.RecyclerTouchListener;
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt;
 
 
@@ -35,10 +26,10 @@ public class SubjectActivity extends AppCompatActivity {
 
     private CircularProgressBar mProgressBar;
     private TextView mTextHint;
-    private RecyclerViewExt mList;
     private NestedScrollView mNestedView;
 
     private MarksController mController;
+    private SubjectAdapter mAdapter;
 
     private String mTitle;
     private int mFilter;
@@ -65,14 +56,10 @@ public class SubjectActivity extends AppCompatActivity {
         mNestedView = (NestedScrollView) findViewById(R.id.subject_nested_view);
         mProgressBar = (CircularProgressBar) findViewById(R.id.subject_hint_bar);
         mTextHint = (TextView) findViewById(R.id.subject_hint_text);
-        mList = (RecyclerViewExt) findViewById(R.id.subject_list);
+        RecyclerViewExt marksList = (RecyclerViewExt) findViewById(R.id.subject_list);
 
-        mList.setLayoutManager(new LinearLayoutManager(this));
-        mList.addItemDecoration(new DividerDecoration(this));
-        mList.setItemAnimator(new DefaultItemAnimator());
-
-        setHint(mController.getAverage(mTitle, mFilter),
-                mController.whatShouldIGet(mTitle, mFilter));
+        mAdapter = new SubjectAdapter(mController.getFilteredMarks(mTitle, mFilter), this);
+        marksList.setAdapter(mAdapter);
     }
 
     @Override
@@ -83,22 +70,13 @@ public class SubjectActivity extends AppCompatActivity {
     }
 
     public void refresh() {
-        List<Mark> mMarks = mController.getFilteredMarks(mTitle, mFilter);
-        SubjectAdapter adapter = new SubjectAdapter(mMarks);
-        RecyclerClickListener listener = (view, position) -> {
-            new BoldAnalytics(this).log(FirebaseAnalytics.Event.VIEW_ITEM, "Mark");
-            BottomSheetDialog sheet = new BottomSheetDialog(this);
-            View bottomView = new ViewerDialog(this, sheet)
-                    .setData(mMarks.get(position).getId(), true);
-            sheet.setContentView(bottomView);
-            sheet.show();
-        };
-
-        mList.setAdapter(adapter);
-        mList.addOnItemTouchListener(new RecyclerTouchListener(this, listener));
-        adapter.notifyDataSetChanged();
+        List<Mark> marks = mController.getFilteredMarks(mTitle, mFilter);
+        mAdapter.updateList(marks);
         // Scroll to top
         new Handler().post(() -> mNestedView.scrollTo(0,0));
+
+        setHint(mController.getAverage(mTitle, mFilter),
+                mController.whatShouldIGet(mTitle, mFilter));
     }
 
     private void setHint(double average, double expected) {

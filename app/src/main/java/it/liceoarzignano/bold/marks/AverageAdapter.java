@@ -1,6 +1,8 @@
 package it.liceoarzignano.bold.marks;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +16,7 @@ import it.liceoarzignano.bold.R;
 
 class AverageAdapter extends RecyclerView.Adapter<AverageAdapter.AverageHolder> {
     private final MarksController mController;
-    private final String[] mResults;
+    private String[] mResults;
 
     AverageAdapter(MarksController controller, String[] results) {
         mController = controller;
@@ -35,6 +37,11 @@ class AverageAdapter extends RecyclerView.Adapter<AverageAdapter.AverageHolder> 
     @Override
     public int getItemCount() {
         return mResults != null ? mResults.length : 0;
+    }
+
+    void updateList(String[] results) {
+        mResults = results;
+        notifyDataSetChanged();
     }
 
     class AverageHolder extends RecyclerView.ViewHolder {

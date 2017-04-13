@@ -21,7 +21,8 @@
 
     <color name="home_bg">#fafafa</color>
     <color name="text_secondary">#8a000000</color>
-    <color name="list_divider">@color/grey</color>
+    <color name="list_divider">#dadada</color>
+    <color name="list_header">#8b000000</color>
     <color name="tag_background">#eeeeee</color>
     <color name="tag_text">#757575</color>
 

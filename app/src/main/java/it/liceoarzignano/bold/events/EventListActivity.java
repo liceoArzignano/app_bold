@@ -7,8 +7,6 @@ import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -26,7 +24,6 @@ import it.liceoarzignano.bold.ManagerActivity;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.firebase.BoldAnalytics;
 import it.liceoarzignano.bold.ui.ViewerDialog;
-import it.liceoarzignano.bold.ui.recyclerview.DividerDecoration;
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt;
 
 public class EventListActivity extends AppCompatActivity {
@@ -62,9 +59,6 @@ public class EventListActivity extends AppCompatActivity {
 
         mController = new EventsController(((BoldApp) getApplication()).getConfig());
 
-        eventList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        eventList.setItemAnimator(new DefaultItemAnimator());
-        eventList.addItemDecoration(new DividerDecoration(getApplicationContext()));
         // Load by query for reverse order
         mAdapter = new EventsAdapter(mController.getByQuery(null), this);
         eventList.setAdapter(mAdapter);

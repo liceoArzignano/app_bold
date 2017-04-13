@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinator_layout"
@@ -8,43 +7,41 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:titleTextColor="@color/icon"
+        android:elevation="8dp"
+        app:theme="@style/AppTheme.ToolbarTheme"
+        tools:targetApi="m" />
+
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:paddingTop="?actionBarSize">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:elevation="8dp"
-            app:theme="@style/AppTheme.ToolbarTheme"
-            tools:targetApi="lollipop" />
-
-        <RelativeLayout
+        <it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt
+            android:id="@+id/news_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="?actionBarSize">
+            android:scrollbars="vertical" />
 
-            <it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt
-                android:id="@+id/news_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollbars="vertical" />
+        <LinearLayout
+            android:id="@+id/news_empty_layout"
+            style="@style/AppTheme.EmptyLayout"
+            tools:ignore="UseCompoundDrawables">
 
-            <LinearLayout
-                android:id="@+id/news_empty_layout"
-                style="@style/AppTheme.EmptyLayout"
-                tools:ignore="UseCompoundDrawables">
+            <ImageView
+                style="@style/AppTheme.EmptyImage"
+                app:srcCompat="@drawable/ic_empty_news" />
 
-                <ImageView
-                    style="@style/AppTheme.EmptyImage"
-                    app:srcCompat="@drawable/ic_empty_news" />
-
-                <TextView
-                    android:id="@+id/news_empty_text"
-                    style="@style/AppTheme.EmptyText"
-                    android:text="@string/news_empty" />
-            </LinearLayout>
-        </RelativeLayout>
+            <TextView
+                android:id="@+id/news_empty_text"
+                style="@style/AppTheme.EmptyText"
+                android:text="@string/news_empty" />
+        </LinearLayout>
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

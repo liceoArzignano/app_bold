@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,9 +30,9 @@ public class MarksActivity extends AppCompatActivity {
 
     private static final String PREF_QUARTER_SELECTOR = "quarterSelector";
 
-    private MarksController mController;
     private RecyclerViewExt mList;
     private LinearLayout mEmptyLayout;
+    private AverageAdapter mAdapter;
 
     private SharedPreferences mPrefs;
 
@@ -46,7 +44,7 @@ public class MarksActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_marks);
 
-        mController = new MarksController(((BoldApp) getApplication()).getConfig());
+        MarksController mController = new MarksController(((BoldApp) getApplication()).getConfig());
         mPrefs = getSharedPreferences(PrefsUtils.EXTRA_PREFS, MODE_PRIVATE);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -60,14 +58,14 @@ public class MarksActivity extends AppCompatActivity {
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(v -> {
-            new BoldAnalytics(this).log(FirebaseAnalytics.Event.SELECT_CONTENT,
-                    "Add mark");
+            new BoldAnalytics(this).log(FirebaseAnalytics.Event.SELECT_CONTENT, "Add mark");
             startActivity(new Intent(this, ManagerActivity.class));
         });
 
-        mList.setLayoutManager(new LinearLayoutManager(this));
         mList.addItemDecoration(new DividerDecoration(this));
-        mList.setItemAnimator(new DefaultItemAnimator());
+        mAdapter = new AverageAdapter(mController,
+                ContentUtils.getAverageElements(this, mFilter));
+        mList.setAdapter(mAdapter);
     }
 
     @Override
@@ -134,7 +132,7 @@ public class MarksActivity extends AppCompatActivity {
         } else {
             mEmptyLayout.setVisibility(View.GONE);
             mList.setVisibility(View.VISIBLE);
-            AverageAdapter adapter = new AverageAdapter(mController, marks);
+
             RecyclerClickListener listener = (mView, mPosition) -> {
                 new BoldAnalytics(this).log(FirebaseAnalytics.Event.VIEW_ITEM, "Subject");
                 Intent mIntent = new Intent(this, SubjectActivity.class);
@@ -142,9 +140,8 @@ public class MarksActivity extends AppCompatActivity {
                 mIntent.putExtra(SubjectActivity.EXTRA_FILTER, mFilter);
                 startActivity(mIntent);
             };
-            mList.setAdapter(adapter);
             mList.addOnItemTouchListener(new RecyclerTouchListener(this, listener));
-            adapter.notifyDataSetChanged();
+            mAdapter.updateList(marks);
         }
     }
 }
