@@ -81,7 +81,6 @@
     <!-- My marks -->
     <string name="title_activity_mark_list">Voti</string>
     <string name="marks_menu_filter">Filtra voti</string>
-    <string name="marks_all">Tutti</string>
     <string name="hint_content_common">Per avere la sufficienza, il prossimo voto</string>
     <string name="hint_content_under">deve essere %1$s o superiore</string>
     <string name="hint_content_above">pu\u00F2 essere %1$s o superiore</string>

@@ -21,7 +21,7 @@ import it.liceoarzignano.bold.utils.DateUtils;
 
 class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectHolder> {
     private List<Mark> mMarks;
-    private Context mContext;
+    private final Context mContext;
 
     SubjectAdapter(List<Mark> marks, Context context) {
         mMarks = marks;

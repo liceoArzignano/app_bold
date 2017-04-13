@@ -81,7 +81,6 @@
     <!-- My marks -->
     <string name="title_activity_mark_list">Marks</string>
     <string name="marks_menu_filter">Filter marks</string>
-    <string name="marks_all">All</string>
     <string name="hint_content_common">To have sufficiency, the next mark</string>
     <string name="hint_content_under">might be %1$s or higher</string>
     <string name="hint_content_above">must be %1$s or higher</string>
