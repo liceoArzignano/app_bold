@@ -67,5 +67,8 @@ public final class UiUtils {
         }
     }
 
+    public static boolean isPhone(Context context) {
+        return context.getResources().getBoolean(R.bool.is_phone);
+    }
 
 }
