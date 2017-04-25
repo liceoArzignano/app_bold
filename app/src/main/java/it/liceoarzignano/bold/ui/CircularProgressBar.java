@@ -104,8 +104,15 @@ public class CircularProgressBar extends View {
      * @param progress progress between 0 and 100.
      */
     public void setProgress(double progress) {
-        mSweepAngle = 0f;
         mValue = progress;
+
+        // Animate only the first time
+        if (mSweepAngle != 0) {
+            mSweepAngle = calcSweepAngleFromProgress((int) (progress < 1 ? 100 : progress * 100));
+            return;
+        }
+
+        mSweepAngle = 0f;
 
         ValueAnimator animator = ValueAnimator.ofFloat(mSweepAngle,
                 calcSweepAngleFromProgress((int) (progress < 1 ? 100 : progress * 100)));
