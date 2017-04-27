@@ -109,7 +109,7 @@ public class SettingsActivity extends AppCompatActivity {
                                 .title(getString(R.string.pref_secret_export_safe_title))
                                 .content(getString(R.string.pref_secret_export_safe_message))
                                 .negativeText(getString(android.R.string.cancel))
-                                .positiveText(getString(R.string.viewer_share))
+                                .positiveText(getString(R.string.actions_share))
                                 .onPositive((dialog, which) -> {
                                     Intent intent = new Intent(Intent.ACTION_SEND);
                                     intent.setType("text/plain");

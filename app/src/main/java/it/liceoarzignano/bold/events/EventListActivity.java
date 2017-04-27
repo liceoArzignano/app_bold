@@ -3,8 +3,9 @@ package it.liceoarzignano.bold.events;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.BottomSheetDialog;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -23,11 +24,13 @@ import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.ManagerActivity;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.firebase.BoldAnalytics;
-import it.liceoarzignano.bold.ui.ViewerDialog;
+import it.liceoarzignano.bold.ui.ActionsDialog;
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt;
+import it.liceoarzignano.bold.utils.DateUtils;
 
 public class EventListActivity extends AppCompatActivity {
 
+    private CoordinatorLayout mCoordinator;
     private LinearLayout mEmptyLayout;
     private TextView mEmptyText;
 
@@ -45,6 +48,7 @@ public class EventListActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        mCoordinator = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
         RecyclerViewExt eventList = (RecyclerViewExt) findViewById(R.id.event_list);
         mEmptyLayout = (LinearLayout) findViewById(R.id.event_empty_layout);
         mEmptyText = (TextView) findViewById(R.id.events_empty_text);
@@ -130,7 +134,7 @@ public class EventListActivity extends AppCompatActivity {
      *
      * @param query:   search query
      */
-    public void refreshList(String query) {
+    private void refreshList(String query) {
         boolean hasQuery = query != null && !query.isEmpty();
 
         List<Event> events = mController.getByQuery(query);
@@ -139,16 +143,30 @@ public class EventListActivity extends AppCompatActivity {
         mEmptyText.setText(getString(hasQuery ? R.string.search_no_result : R.string.events_empty));
     }
 
-    /**
-     * Fire ViewerDialog and pass the selected event data
-     *
-     * @param id: event id
-     */
-    void viewEvent(long id) {
-        new BoldAnalytics(this).log(FirebaseAnalytics.Event.VIEW_ITEM, "Event");
-        final BottomSheetDialog sheet = new BottomSheetDialog(this);
-        View bottomView = new ViewerDialog(this, sheet).setData(id, false);
-        sheet.setContentView(bottomView);
-        sheet.show();
+    @SuppressWarnings("SameReturnValue")
+    boolean eventActions(Event event) {
+        ActionsDialog dialog = new ActionsDialog(this, true, event.getId());
+        dialog.setOnActionsListener(new ActionsDialog.OnActionsDialogListener() {
+            @Override
+            public void onShare() {
+                String message = String.format("%1$s (%2$s)\n%3$s", event.getTitle(),
+                        DateUtils.dateToString(event.getDate()), event.getNote());
+                startActivity(Intent.createChooser(new Intent(Intent.ACTION_SEND)
+                                .setType("text/plain")
+                                .putExtra(Intent.EXTRA_TEXT, message),
+                        getString(R.string.share_title)));
+            }
+
+            @Override
+            public void onDelete() {
+                mController.delete(event.getId());
+                Snackbar.make(mCoordinator, getString(R.string.actions_removed), Snackbar.LENGTH_LONG)
+                        .show();
+                refreshList(null);
+            }
+        });
+        dialog.show();
+
+        return true;
     }
 }

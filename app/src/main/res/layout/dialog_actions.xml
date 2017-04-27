@@ -7,11 +7,27 @@
     android:layout_height="180dp"
     android:background="@android:color/white"
     android:orientation="vertical"
+    android:paddingLeft="@dimen/sheet_margin"
+    android:paddingRight="@dimen/sheet_margin"
     app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
     tools:ignore="UseCompoundDrawables">
 
     <LinearLayout
-        android:id="@+id/news_sheet_share"
+        android:id="@+id/actions_dialog_edit"
+        android:visibility="gone"
+        style="@style/AppTheme.BottomSheetLayout">
+
+        <ImageView
+            style="@style/AppTheme.BottomSheetIcon"
+            app:srcCompat="@drawable/ic_edit" />
+
+        <TextView
+            style="@style/AppTheme.BottomSheetText"
+            android:text="@string/actions_edit" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/actions_dialog_share"
         style="@style/AppTheme.BottomSheetLayout">
 
         <ImageView
@@ -20,11 +36,12 @@
 
         <TextView
             style="@style/AppTheme.BottomSheetText"
-            android:text="@string/news_sheet_share" />
+            android:text="@string/actions_share" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/news_sheet_to_event"
+        android:id="@+id/actions_dialog_to_event"
+        android:visibility="gone"
         style="@style/AppTheme.BottomSheetLayout">
 
         <ImageView
@@ -37,7 +54,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/news_sheet_delete"
+        android:id="@+id/actions_dialog_remove"
         style="@style/AppTheme.BottomSheetLayout">
 
         <ImageView

@@ -3,12 +3,14 @@ package it.liceoarzignano.bold.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
+import android.util.DisplayMetrics;
 import android.view.View;
 
 import it.liceoarzignano.bold.R;
@@ -69,6 +71,10 @@ public final class UiUtils {
 
     public static boolean isPhone(Context context) {
         return context.getResources().getBoolean(R.bool.is_phone);
+    }
+
+    public static float dpToPx(Resources res, float dp) {
+        return dp * ((float) res.getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 
 }

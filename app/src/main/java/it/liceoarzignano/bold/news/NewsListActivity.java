@@ -1,6 +1,5 @@
 package it.liceoarzignano.bold.news;
 
-import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -10,7 +9,8 @@ import android.support.customtabs.CustomTabsClient;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.customtabs.CustomTabsServiceConnection;
 import android.support.customtabs.CustomTabsSession;
-import android.support.design.widget.BottomSheetDialog;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -28,13 +28,14 @@ import java.util.List;
 
 import io.realm.Realm;
 import it.liceoarzignano.bold.BoldApp;
-import it.liceoarzignano.bold.ManagerActivity;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.firebase.BoldAnalytics;
+import it.liceoarzignano.bold.ui.ActionsDialog;
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt;
 
 public class NewsListActivity extends AppCompatActivity {
 
+    private CoordinatorLayout mCoordinator;
     private LinearLayout mEmptyLayout;
     private TextView mEmptyText;
 
@@ -57,6 +58,7 @@ public class NewsListActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        mCoordinator = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
         RecyclerViewExt newsList = (RecyclerViewExt) findViewById(R.id.news_list);
         mEmptyLayout = (LinearLayout) findViewById(R.id.news_empty_layout);
         mEmptyText = (TextView) findViewById(R.id.news_empty_text);
@@ -195,47 +197,30 @@ public class NewsListActivity extends AppCompatActivity {
         mCustomTabIntent.launchUrl(this, Uri.parse(url));
     }
 
-    void viewNews(News news) {
-        // Bottom sheet dialog
-        final BottomSheetDialog sheet = new BottomSheetDialog(this);
+    @SuppressWarnings("SameReturnValue")
+    boolean newsActions(News news) {
+        ActionsDialog dialog = new ActionsDialog(this, false, news.getId());
+        dialog.setOnActionsListener(new ActionsDialog.OnActionsDialogListener() {
+            @Override
+            public void onShare() {
+                String message = String.format("%1$s (%2$s)\n%3$s", news.getTitle(),
+                        news.getDate(), news.getMessage());
+                startActivity(Intent.createChooser(new Intent(Intent.ACTION_SEND)
+                                .setType("text/plain")
+                                .putExtra(Intent.EXTRA_TEXT, message),
+                        getString(R.string.share_title)));
+            }
 
-        @SuppressLint("InflateParams")
-        View sheetView = getLayoutInflater().inflate(R.layout.dialog_sheet_news, null);
-        LinearLayout shareLayout = (LinearLayout) sheetView.findViewById(R.id.news_sheet_share);
-        LinearLayout eventLayout = (LinearLayout) sheetView.findViewById(R.id.news_sheet_to_event);
-        LinearLayout deleteLayout = (LinearLayout) sheetView.findViewById(R.id.news_sheet_delete);
-
-        shareLayout.setOnClickListener(view -> {
-            new BoldAnalytics(this).log(FirebaseAnalytics.Event.SHARE,
-                    "Share news");
-            sheet.hide();
-            Intent shareIntent = new Intent(Intent.ACTION_SEND);
-            shareIntent.setType("text/plain")
-                    .putExtra(Intent.EXTRA_TEXT, String.format("%1$s (%2$s)\n%3$s\n%4$s",
-                            news.getTitle(), news.getDate(), news.getMessage(), news.getUrl()));
-            startActivity(Intent.createChooser(shareIntent, getString(R.string.news_sheet_share)));
-
+            @Override
+            public void onDelete() {
+                mController.delete(news.getId());
+                Snackbar.make(mCoordinator, getString(R.string.actions_removed), Snackbar.LENGTH_LONG)
+                        .show();
+                refresh(null);
+            }
         });
-        deleteLayout.setOnClickListener(view -> {
-            new BoldAnalytics(this).log(FirebaseAnalytics.Event.SELECT_CONTENT,
-                    "Delete news");
-            sheet.hide();
-            NewsController controller = new NewsController(
-                    ((BoldApp) getApplication()).getConfig());
-            controller.delete(news.getId());
-            refresh(null);
-        });
-        eventLayout.setOnClickListener(view -> {
-            new BoldAnalytics(this).log(FirebaseAnalytics.Event.SELECT_CONTENT,
-                    "Convert news");
-            sheet.hide();
-            Intent toEventIntent = new Intent(this, ManagerActivity.class);
-            toEventIntent.putExtra("newsToEvent", news.getId());
-            toEventIntent.putExtra("isMark", false);
-            startActivity(toEventIntent);
-        });
+        dialog.show();
 
-        sheet.setContentView(sheetView);
-        sheet.show();
+        return true;
     }
 }

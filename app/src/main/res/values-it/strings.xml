@@ -89,16 +89,14 @@
     <string name="marks_filter_description">Seleziona quali voti vuoi visualizzare. Tocca su un quadrimestre per attivarlo o disattivarlo</string>
     <string name="marks_filter_error">Select at least one quarter</string>
     <string name="marks_filter_action">Filtra</string>
+    <string name="marks_share_student">Ho preso %1$s in %2$s</string>
+    <string name="marks_share_teacher">%1$s ha preso %2$s</string>
 
     <!-- Viewer -->
-    <string name="viewer_edit">Modifica</string>
-    <string name="viewer_remove">Rimuovi</string>
-    <string name="removed">Rimosso</string>
-    <string name="viewer_share">Condividi</string>
-    <string name="viewer_share_student">Ho preso %1$s in %2$s</string>
-    <string name="viewer_share_teacher">%1$s ha preso %2$s</string>
-    <string name="viewer_first_quarter">Primo quadrimenstre</string>
-    <string name="viewer_second_quarter">Secondo quadrimenstre</string>
+    <string name="actions_edit">Modifica</string>
+    <string name="actions_remove">Rimuovi</string>
+    <string name="actions_removed">Rimosso</string>
+    <string name="actions_share">Condividi</string>
 
     <!-- My events -->
     <string name="title_activity_event_list">Eventi</string>
@@ -109,7 +107,6 @@
 
     <!-- News -->
     <string name="news_empty">Non hai ricevuto nessuna notizia</string>
-    <string name="news_sheet_share">Condividi</string>
     <string name="news_sheet_to_event">Salva come evento</string>
     <string name="news_sheet_remove">Rimuovi</string>
 

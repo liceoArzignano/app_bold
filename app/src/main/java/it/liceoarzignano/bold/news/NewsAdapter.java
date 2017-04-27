@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.zhukic.sectionedrecyclerview.SectionedRecyclerViewAdapter;
@@ -87,14 +86,12 @@ class NewsAdapter extends SectionedRecyclerViewAdapter<HeaderViewHolder, NewsAda
         private final View mView;
         private final TextView mTitle;
         private final TextView mMessage;
-        private final ImageButton mUrlButton;
 
         NewsHolder(View view) {
             super(view);
             mView = view;
             mTitle = (TextView) view.findViewById(R.id.row_news_title);
             mMessage = (TextView) view.findViewById(R.id.row_news_message);
-            mUrlButton = (ImageButton) view.findViewById(R.id.row_news_url);
         }
 
         void setData(final Context context, final News news) {
@@ -103,12 +100,10 @@ class NewsAdapter extends SectionedRecyclerViewAdapter<HeaderViewHolder, NewsAda
 
             final String url = news.getUrl();
             if (url != null && !url.isEmpty()) {
-                mUrlButton.setOnClickListener(view -> ((NewsListActivity) context).showUrl(url));
-            } else {
-                mUrlButton.setVisibility(View.GONE);
+                mView.setOnClickListener(view -> ((NewsListActivity) context).showUrl(url));
             }
 
-            mView.setOnClickListener(v -> ((NewsListActivity) mContext).viewNews(news));
+            mView.setOnLongClickListener(v -> ((NewsListActivity) mContext).newsActions(news));
         }
     }
 }

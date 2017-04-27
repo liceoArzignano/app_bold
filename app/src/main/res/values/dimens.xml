@@ -7,4 +7,6 @@
     <dimen name="card_margin">16dp</dimen>
     <dimen name="item_horizontal_margin">16dp</dimen>
     <dimen name="app_bar_height_view">226dp</dimen>
+
+    <dimen name="sheet_margin">0dp</dimen>
 </resources>

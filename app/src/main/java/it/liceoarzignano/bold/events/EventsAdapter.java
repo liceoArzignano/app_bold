@@ -14,6 +14,7 @@ import java.util.List;
 
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.ui.recyclerview.HeaderViewHolder;
+import it.liceoarzignano.bold.utils.ContentUtils;
 import it.liceoarzignano.bold.utils.DateUtils;
 
 class EventsAdapter extends SectionedRecyclerViewAdapter<HeaderViewHolder,
@@ -99,34 +100,15 @@ class EventsAdapter extends SectionedRecyclerViewAdapter<HeaderViewHolder,
         void setData(Event event) {
             mTitle.setText(event.getTitle());
             mValue.setText(event.getNote());
-            int tagAddr;
 
-            switch (event.getIcon()) {
-                case 0:
-                    tagAddr = R.string.event_spinner_test;
-                    break;
-                case 1:
-                    tagAddr = R.string.event_spinner_school;
-                    break;
-                case 2:
-                    tagAddr = R.string.event_spinner_bday;
-                    break;
-                case 3:
-                    tagAddr = R.string.event_spinner_homework;
-                    break;
-                case 4:
-                    tagAddr = R.string.event_spinner_reminder;
-                    break;
-                case 5:
-                    tagAddr = R.string.event_spinner_hang_out;
-                    break;
-                default:
-                    tagAddr = R.string.event_spinner_other;
-                    break;
+            if (event.getNote() != null && !event.getNote().isEmpty()) {
+                mValue.setVisibility(View.VISIBLE);
             }
 
-            mTag.setText(tagAddr);
-            mView.setOnClickListener(v -> ((EventListActivity) mContext).viewEvent(event.getId()));
+            mTag.setText(ContentUtils.eventCategoryToString(mContext, event.getIcon()));
+            mView.setOnClickListener(v -> mValue.setMaxLines(mValue.getMaxLines() == 1
+                    ? Integer.MAX_VALUE : 1));
+            mView.setOnLongClickListener(v -> ((EventListActivity) mContext).eventActions(event));
         }
     }
 }

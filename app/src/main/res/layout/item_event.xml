@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="72dp"
-    android:background="?android:attr/selectableItemBackground"
-    android:clickable="true"
+    android:layout_height="wrap_content"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:minHeight="56dp"
     android:paddingBottom="16dp"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="16dp"
-    tools:ignore="Overdraw">
+    android:paddingTop="16dp">
 
     <TextView
         android:id="@+id/row_event_tag"
@@ -43,8 +41,8 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textColor="@color/text_secondary" />
+            android:minHeight="16dp"
+            android:textColor="@color/text_secondary"
+            android:visibility="gone" />
     </LinearLayout>
-
-
 </RelativeLayout>

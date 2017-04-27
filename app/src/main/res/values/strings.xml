@@ -89,16 +89,14 @@
     <string name="marks_filter_description">Select what marks you want to see. Click on the quarter to toggle it</string>
     <string name="marks_filter_error">Select at least one quarter</string>
     <string name="marks_filter_action">Filter</string>
+    <string name="marks_share_student">I got %1$s in %2$s</string>
+    <string name="marks_share_teacher">%1$s has got %2$s</string>
 
-    <!-- View -->
-    <string name="viewer_edit">Edit</string>
-    <string name="viewer_remove">Remove</string>
-    <string name="removed">Removed</string>
-    <string name="viewer_share">Share</string>
-    <string name="viewer_share_student">I got %1$s in %2$s</string>
-    <string name="viewer_share_teacher">%1$s has got %2$s</string>
-    <string name="viewer_first_quarter">First quarter</string>
-    <string name="viewer_second_quarter">Second quarter</string>
+    <!-- Actions -->
+    <string name="actions_edit">Edit</string>
+    <string name="actions_remove">Remove</string>
+    <string name="actions_removed">Removed</string>
+    <string name="actions_share">Share</string>
 
     <!-- My events -->
     <string name="title_activity_event_list">Events</string>
@@ -109,7 +107,6 @@
 
     <!-- News -->
     <string name="news_empty">You have received no news so far</string>
-    <string name="news_sheet_share">Share</string>
     <string name="news_sheet_to_event">Save as event</string>
     <string name="news_sheet_remove">Remove</string>
 
