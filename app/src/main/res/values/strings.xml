@@ -27,7 +27,7 @@
     <string name="suggestion_safe_pwd">Someone knows your Safe password? Log in and change it</string>
     <string name="suggestion_avg">Would you like to know what mark you should get to have the sufficiency in a subject? Pick a subject and look at the suggestions</string>
     <string name="suggestion_quarter">A new quarter has begun? No problem, marks will be automatically filtered</string>
-    <string name="suggestion_edit_event">Your classmates keep asing for homeworks? If you save them in an event, you\'ll be able to answer in a couple of seconds</string>
+    <string name="suggestion_edit_event">Your classmates keep asking for homework? If you save them in an event, you\'ll be able to answer in a couple of seconds</string>
     <string name="suggestion_notification_remote">Most important news from the school will be delivered as notifications</string>
     <string name="suggestion_get_touch">Need to get in touch with the school? You can call or send an email from the settings</string>
     <string name="suggestion_address">You can\'t find a subject int the list? Check the address</string>
@@ -182,11 +182,11 @@
     <string name="pref_backup_summary">Save your data on Google Drive</string>
     <string name="pref_safe_status_title">Safe status</string>
     <string name="pref_safe_status_message_enabled">Enabled (device is secure)</string>
-    <string name="pref_safe_status_message_disabled">Disabled (device is unsecure)</string>
+    <string name="pref_safe_status_message_disabled">Disabled (device is unsecured)</string>
     <string name="pref_secret_safe_test_title">Device security test</string>
     <string name="pref_secret_safe_test_running">Checking device security status\u2026</string>
     <string name="pref_secret_safe_test_connection">Internet connection is required to check device security</string>
-    <string name="pref_secret_safe_test_fail">Test failed. Your device is running usecure software, Safe won\'t be enabled</string>
+    <string name="pref_secret_safe_test_fail">Test failed. Your device is running unsecured software, Safe won\'t be enabled</string>
     <string name="pref_secret_safe_test_success">Test succeeded. Your device is secure, Safe will be enabled</string>
     <string name="pref_secret_export_safe_title">Password sharing tool</string>
     <string name="pref_secret_export_safe_message">You can share your encrypted password.\nYou can do this only once.\nSharing the password could be dangerous because someone else might be able to log in Safe. Be careful</string>
@@ -202,7 +202,7 @@
     <string name="safe_dialog_hint">Input your password to access your private data</string>
     <string name="safe_dialog_first_hint">Choose a password to access your private data</string>
     <string name="safe_dialog_first_hint_low">Weak password. An 8 characters long password would be better</string>
-    <string name="safe_dialog_first_hint_medium">Decent passwod. Password with both numbers and letters are even better</string>
+    <string name="safe_dialog_first_hint_medium">Decent password. Password with both numbers and letters are even better</string>
     <string name="safe_dialog_first_hint_good">Secure password. Well done</string>
     <string name="safe_dialog_password_input_hint">Password</string>
     <string name="safe_error_security">This device is not secure. Safe won\'t start</string>
@@ -213,7 +213,7 @@
     <string name="safe_pc_pwd">PC-account password</string>
     <string name="safe_internet_pwd">Internet password</string>
     <string name="safe_info_title">Info</string>
-    <string name="safe_info_content">The credentials are encrypted and decrypted using the AES algorythm with a 256-bit key. This means they are unreadable for eveyone but this app</string>
+    <string name="safe_info_content">The credentials are encrypted and decrypted using the AES algorythm with a 256-bit key. This means they are unreadable for everyone but this app</string>
     <string name="safe_reset_title">Reset password</string>
     <string name="safe_reset_content">If you rest your password you\'ll loose the other stored credentials as well.\nDo you want to continue?</string>
     <string name="safe_encrypting">Saving\u2026</string>
