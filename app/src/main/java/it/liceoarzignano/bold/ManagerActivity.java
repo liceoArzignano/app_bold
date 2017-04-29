@@ -43,11 +43,11 @@ import it.liceoarzignano.bold.utils.PrefsUtils;
 
 public class ManagerActivity extends AppCompatActivity
         implements AdapterView.OnItemSelectedListener {
-
-    private Intent mCallingIntent;
-    private MarksController mMarksController;
-    private EventsController mEventsController;
-
+    public static final String EXTRA_ID = "id";
+    public static final String EXTRA_EDIT = "editMode";
+    public static final String EXTRA_IS_MARK = "isMark";
+    public static final String EXTRA_TO_EVENT = "toEvent";
+    
     private CoordinatorLayout mCoordinatorLayout;
     // Title
     private RelativeLayout mTitleLayout;
@@ -66,6 +66,10 @@ public class ManagerActivity extends AppCompatActivity
     // Date picker
     private RelativeLayout mDatePickerLayout;
     private TextView mDatePicker;
+    
+    private Intent mCallingIntent;
+    private MarksController mMarksController;
+    private EventsController mEventsController;
 
     private long mObjId;
     private Mark mMark;
@@ -103,8 +107,8 @@ public class ManagerActivity extends AppCompatActivity
         mDate = Calendar.getInstance().getTime();
 
         mCallingIntent = getIntent();
-        isMark = mCallingIntent.getBooleanExtra("isMark", true);
-        isEditMode = mCallingIntent.getBooleanExtra("isEditing", false);
+        isMark = mCallingIntent.getBooleanExtra(EXTRA_IS_MARK, true);
+        isEditMode = mCallingIntent.getBooleanExtra(EXTRA_EDIT, false);
 
         // Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -166,7 +170,7 @@ public class ManagerActivity extends AppCompatActivity
 
         // Load intent data
         if (isEditMode) {
-            mObjId = mCallingIntent.getLongExtra("id", -1);
+            mObjId = mCallingIntent.getLongExtra(EXTRA_ID, -1);
 
             if (isMark) {
                 loadMark = mMarksController.getById(mObjId).first();
@@ -211,7 +215,7 @@ public class ManagerActivity extends AppCompatActivity
         }
 
         // News to event
-        setupNewsUi(mCallingIntent.getLongExtra("newsToEvent", -1));
+        setupNewsUi(mCallingIntent.getLongExtra(EXTRA_TO_EVENT, -1));
     }
 
     @SuppressWarnings("deprecation")

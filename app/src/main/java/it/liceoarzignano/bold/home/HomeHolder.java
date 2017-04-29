@@ -50,5 +50,4 @@ class HomeHolder extends RecyclerView.ViewHolder {
 
         mNameView.setText(name);
     }
-
 }

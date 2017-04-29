@@ -30,5 +30,4 @@ public class HomeCard {
     public List<String> getContent() {
         return mContent;
     }
-
 }

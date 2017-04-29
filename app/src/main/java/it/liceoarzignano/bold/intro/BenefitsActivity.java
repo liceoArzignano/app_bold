@@ -13,7 +13,6 @@ import it.liceoarzignano.bold.utils.PrefsUtils;
 import it.liceoarzignano.bold.ui.InkPageIndicator;
 
 public class BenefitsActivity extends AppCompatActivity {
-
     private BenefitViewPager mViewPager;
     private BenefitPageAdapter mAdapter;
 

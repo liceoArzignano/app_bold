@@ -9,10 +9,9 @@ import it.liceoarzignano.bold.utils.ContentUtils;
 public class BootReceiver extends BroadcastReceiver {
 
     @Override
-    public void onReceive(Context mContext, Intent mIntent) {
-        if ("android.intent.action.BOOT_COMPLETED".equals(mIntent.getAction())) {
-            ContentUtils.makeEventNotification(mContext);
+    public void onReceive(Context context, Intent intent) {
+        if ("android.intent.action.BOOT_COMPLETED".equals(intent.getAction())) {
+            ContentUtils.makeEventNotification(context);
         }
     }
-
 }

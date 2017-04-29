@@ -76,5 +76,4 @@ public final class UiUtils {
     public static float dpToPx(Resources res, float dp) {
         return dp * ((float) res.getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
-
 }

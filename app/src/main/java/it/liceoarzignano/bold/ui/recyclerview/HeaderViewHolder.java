@@ -7,7 +7,6 @@ import android.widget.TextView;
 import it.liceoarzignano.bold.R;
 
 public class HeaderViewHolder extends RecyclerView.ViewHolder {
-
     private final TextView mTitle;
 
     public HeaderViewHolder(View view) {

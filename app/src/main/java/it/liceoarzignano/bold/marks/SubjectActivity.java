@@ -27,7 +27,6 @@ import it.liceoarzignano.bold.utils.UiUtils;
 
 
 public class SubjectActivity extends AppCompatActivity {
-
     static final String EXTRA_TITLE = "extra_subject_position";
     static final String EXTRA_FILTER = "extra_subject_filter";
 
@@ -108,8 +107,8 @@ public class SubjectActivity extends AppCompatActivity {
     void editItem(ImageView icon, Mark item) {
         new BoldAnalytics(this).log(FirebaseAnalytics.Event.VIEW_ITEM, "Edit mark");
         Intent intent = new Intent(this, ManagerActivity.class);
-        intent.putExtra("isEditing", true);
-        intent.putExtra("id", item.getId());
+        intent.putExtra(ManagerActivity.EXTRA_EDIT, true);
+        intent.putExtra(ManagerActivity.EXTRA_ID, item.getId());
 
         if (PrefsUtils.isNotLegacy()) {
             UiUtils.animateAVD(icon.getDrawable());
@@ -132,7 +131,7 @@ public class SubjectActivity extends AppCompatActivity {
         new BoldAnalytics(this).log(FirebaseAnalytics.Event.SHARE, "Share mark");
         String message = getString(PrefsUtils.isTeacher(this) ?
                         R.string.marks_share_teacher : R.string.marks_share_student,
-                (item.getValue() / 100), item.getTitle());
+                item.getValue() / 100, item.getTitle());
 
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");

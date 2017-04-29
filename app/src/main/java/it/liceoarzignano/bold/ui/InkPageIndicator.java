@@ -837,7 +837,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
      * An Animator that animates a given dot's revealFraction i.e. scales it up
      */
     @SuppressWarnings({"CloneableClassInSecureContext", "NonStaticInnerClassInSecureContext"})
-    private class PendingRevealAnimator extends PendingStartAnimator {
+    private final class PendingRevealAnimator extends PendingStartAnimator {
 
         private final int dot;
 

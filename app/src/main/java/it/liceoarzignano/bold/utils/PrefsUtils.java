@@ -17,7 +17,6 @@ import it.liceoarzignano.bold.R;
 
 public class PrefsUtils {
     private static final String DEFAULT_DATE = "2000-01-01";
-
     public static final String IS_TEACHER = "isTeacher_key";
     public static final String SUGGESTIONS = "showSuggestions_key";
     public static final String NOTIF_NEWS = "notification_news_key";
@@ -240,5 +239,4 @@ public class PrefsUtils {
         SharedPreferences prefs = context.getSharedPreferences(SAFE_PREFS, Context.MODE_PRIVATE);
         return prefs.getBoolean(SAFE_DONE, false);
     }
-
 }

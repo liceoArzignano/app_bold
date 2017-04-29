@@ -29,6 +29,8 @@ import it.liceoarzignano.bold.utils.PrefsUtils;
 import it.liceoarzignano.bold.safe.mod.Encryption;
 
 public class BenefitFragment extends Fragment {
+    private static final String TAG = BenefitFragment.class.getSimpleName();
+    private static final String POSITION = "section_number";
 
     private TextView mTitle;
     private TextView mMessage;
@@ -42,7 +44,7 @@ public class BenefitFragment extends Fragment {
     BenefitFragment newInstance(int sectionNumber) {
         BenefitFragment fragment = new BenefitFragment();
         Bundle args = new Bundle();
-        args.putInt("section_number", sectionNumber);
+        args.putInt(POSITION, sectionNumber);
         fragment.setArguments(args);
         return fragment;
     }
@@ -50,7 +52,7 @@ public class BenefitFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstance) {
-        int position = getArguments().getInt("section_number");
+        int position = getArguments().getInt(POSITION);
         View view = inflater.inflate(R.layout.fragment_benefits_contents, container, false);
         mTitle = (TextView) view.findViewById(R.id.intro_title);
         mMessage = (TextView) view.findViewById(R.id.intro_message);
@@ -139,7 +141,7 @@ public class BenefitFragment extends Fragment {
                         // Wait for current animation to end
                         Thread.sleep(800);
                     } catch (InterruptedException e) {
-                        Log.e("Intro", e.getMessage());
+                        Log.e(TAG, e.getMessage());
                     }
                 } while (isWorking);
             });
@@ -175,7 +177,7 @@ public class BenefitFragment extends Fragment {
             oStream.write(randBytes);
             oStream.write(nonce.getBytes());
         } catch (IOException e) {
-            Log.e("SafetyNetTest", e.getMessage());
+            Log.e(TAG, e.getMessage());
         }
 
         SafetyNet.SafetyNetApi.attest(client, oStream.toByteArray())
@@ -185,7 +187,7 @@ public class BenefitFragment extends Fragment {
     }
 
     private void postDeviceCheck(Context context, boolean hasPassed) {
-        // Save safetynet results
+        // Save safetyNet results
         PrefsUtils.setSafetyNetResults(context, hasPassed);
 
         if (PrefsUtils.isNotLegacy()) {
@@ -193,7 +195,7 @@ public class BenefitFragment extends Fragment {
             try {
                 mAnimThread.join();
             } catch (InterruptedException e) {
-                Log.e("Intro", e.getMessage());
+                Log.e(TAG, e.getMessage());
             }
             new Handler().postDelayed(() -> {
                 mIntroImage.setImageResource(R.drawable.avd_intro_done);

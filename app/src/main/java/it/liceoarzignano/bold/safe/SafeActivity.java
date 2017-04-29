@@ -30,7 +30,6 @@ import it.liceoarzignano.bold.utils.PrefsUtils;
 import it.liceoarzignano.bold.safe.mod.Encryption;
 
 public class SafeActivity extends AppCompatActivity {
-
     private static final String SAFE_PREFS = "SafePrefs";
     private static final String accessKey = "access_pwd";
     private static final String userKey = "user_name";
@@ -42,12 +41,6 @@ public class SafeActivity extends AppCompatActivity {
     private SharedPreferences mPrefs;
     private SharedPreferences.Editor mEditor;
 
-    private Encryption.SecretKeys mSecretKeys = null;
-    private String mCrUserName;
-    private String mCrReg;
-    private String mCrPc;
-    private String mCrInternet;
-    private boolean isWorking = true;
     private Menu mMenu;
     private SafeLoginDialog mLoginDialog;
     private LinearLayout mLoadingLayout;
@@ -58,6 +51,13 @@ public class SafeActivity extends AppCompatActivity {
     private EditText mPcEdit;
     private EditText mInternetEdit;
     private FloatingActionButton mFab;
+
+    private Encryption.SecretKeys mSecretKeys = null;
+    private String mCrUserName;
+    private String mCrReg;
+    private String mCrPc;
+    private String mCrInternet;
+    private boolean isWorking = true;
 
     @SuppressLint("CommitPrefEdits")
     @Override

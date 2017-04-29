@@ -29,7 +29,6 @@ import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt;
 import it.liceoarzignano.bold.utils.DateUtils;
 
 public class EventListActivity extends AppCompatActivity {
-
     private CoordinatorLayout mCoordinator;
     private LinearLayout mEmptyLayout;
     private TextView mEmptyText;
@@ -57,7 +56,7 @@ public class EventListActivity extends AppCompatActivity {
         fab.setOnClickListener(view -> {
             new BoldAnalytics(this).log(FirebaseAnalytics.Event.SELECT_CONTENT, "Add event");
             Intent intent = new Intent(EventListActivity.this, ManagerActivity.class);
-            intent.putExtra("isMark", false);
+            intent.putExtra(ManagerActivity.EXTRA_IS_MARK, false);
             startActivity(intent);
         });
 

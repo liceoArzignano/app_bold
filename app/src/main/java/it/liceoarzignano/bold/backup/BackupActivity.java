@@ -2,7 +2,6 @@ package it.liceoarzignano.bold.backup;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
@@ -42,21 +41,26 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import io.realm.Realm;
 import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.utils.PrefsUtils;
 import it.liceoarzignano.bold.firebase.BoldAnalytics;
+import it.liceoarzignano.bold.utils.DateUtils;
+import it.liceoarzignano.bold.utils.PrefsUtils;
 
 public class BackupActivity extends AppCompatActivity {
+    private static final String TAG = BackupActivity.class.getSimpleName();
     private static final String BACKUP_FOLDER = "BACKUP_FOLDER";
+    private static final String BACKUP_FILE_NAME = "Liceo.realm";
+
+    private CoordinatorLayout mCoordinatorLayout;
+    private TextView mSummary;
+    private AppCompatButton mBackupButton;
+    private AppCompatButton mRestoreButton;
 
     private Backup mBackup = null;
     private GoogleApiClient mGoogleApiClient;
@@ -64,12 +68,6 @@ public class BackupActivity extends AppCompatActivity {
     private Realm mRealm;
     private SharedPreferences mPrefs;
     private List<BackupData> mBackupList;
-
-    private CoordinatorLayout mCoordinatorLayout;
-    private TextView mSummary;
-    private AppCompatButton mBackupButton;
-    private AppCompatButton mRestoreButton;
-
     private String mBackupFolder;
     private int mStatus = 0;
     private boolean hasValidFolder;
@@ -132,10 +130,9 @@ public class BackupActivity extends AppCompatActivity {
 
         mSummary.setText(getString(R.string.backup_summary));
 
-        final Context context = this;
         mRestoreButton.setOnClickListener(view -> {
             new BoldAnalytics(this).log(FirebaseAnalytics.Event.SELECT_CONTENT, "Restore");
-            pickBackup(context);
+            pickBackup();
             setUI();
         });
         mRestoreButton.setVisibility(hasValidFolder ? View.VISIBLE : View.GONE);
@@ -161,24 +158,18 @@ public class BackupActivity extends AppCompatActivity {
 
     /**
      * Show a dialog with backups list and let user pick one
-     *
-     * @param context used to show the dialog
      */
-    private void pickBackup(final Context context) {
+    private void pickBackup() {
         List<String> backupTitles = new ArrayList<>();
-        //noinspection Convert2streamapi,Convert2streamapi,Convert2streamapi
-        for (BackupData data : mBackupList) {
-            backupTitles.add(String.format("%1$s (%2$s)", backupDate(data.getDate()),
-                    backupSize(data.getSize())));
-        }
-
-        new MaterialDialog.Builder(context)
+        mBackupList.forEach(data -> backupTitles.add(String.format("%1$s (%2$s)",
+                DateUtils.dateToWordsString(this, data.getDate()), backupSize(data.getSize()))));
+        new MaterialDialog.Builder(this)
                 .title(R.string.backup_dialog_list_title)
                 .items(backupTitles)
                 .itemsCallback((dialog, itemView, position, text) -> {
                     dialog.hide();
-                    restoreBackupDialog(context, mBackupList.get(position).getId(),
-                            backupDate(mBackupList.get(position).getDate()),
+                    restoreBackupDialog(mBackupList.get(position).getId(),
+                            DateUtils.dateToWordsString(this, mBackupList.get(position).getDate()),
                             backupSize(mBackupList.get(position).getSize()));
                 })
                 .neutralText(android.R.string.cancel)
@@ -188,24 +179,22 @@ public class BackupActivity extends AppCompatActivity {
     /**
      * Ask for confirmation when restoring a dialog
      *
-     * @param context used to show the dialog
      * @param id      backup id
+     * @param date    backup date
+     * @param size    backup size
      */
-    private void restoreBackupDialog(final Context context, final DriveId id,
-                                     String date, String size) {
-        new MaterialDialog.Builder(context)
+    private void restoreBackupDialog(final DriveId id, String date, String size) {
+        new MaterialDialog.Builder(this)
                 .title(R.string.restore_dialog_title)
-                .content(String.format(
-                        getString(R.string.restore_dialog_message), date, size))
+                .content(String.format(getString(R.string.restore_dialog_message), date, size))
                 .positiveText(android.R.string.yes)
                 .neutralText(R.string.backup_dialog_pick_another)
                 .negativeText(android.R.string.no)
                 .onPositive((dialog, which) -> {
                     dialog.hide();
-                    ((BackupActivity) context).downloadFromDrive(id != null ?
-                            id.asDriveFile() : null);
+                    downloadFromDrive(id != null ? id.asDriveFile() : null);
                 })
-                .onNeutral((dialog, which) -> pickBackup(context))
+                .onNeutral((dialog, which) -> pickBackup())
                 .show();
     }
 
@@ -228,7 +217,7 @@ public class BackupActivity extends AppCompatActivity {
             } catch (IntentSender.SendIntentException e) {
                 Snackbar.make(mCoordinatorLayout, getString(R.string.backup_auth_fail),
                         Snackbar.LENGTH_LONG);
-                Log.e("Backup", e.getMessage());
+                Log.e(TAG, e.getMessage());
             }
         } else {
             uploadToDrive(DriveId.decodeFromString(mBackupFolder));
@@ -236,7 +225,7 @@ public class BackupActivity extends AppCompatActivity {
     }
 
     /**
-     * Download the mBackup file from GDrive
+     * Download the backup file from GDrive
      *
      * @param file selected file
      */
@@ -253,7 +242,7 @@ public class BackupActivity extends AppCompatActivity {
     }
 
     /**
-     * Restore mRealm mBackup from a
+     * Restore realm backup from a
      * file downloaded from GDrive.
      * Once it's done, restart the app
      *
@@ -275,22 +264,18 @@ public class BackupActivity extends AppCompatActivity {
             oStream.flush();
             oStream.close();
         } catch (IOException e) {
-            if (android.support.compat.BuildConfig.DEBUG) {
-                Log.e("Backup", e.getMessage());
-            }
+            Log.e(TAG, e.getMessage());
         }
 
         mStatus = 3;
         showResult(true);
         mStatus = 0;
 
-        Intent intent = new Intent(getApplicationContext(), BackupActivity.class);
-        PendingIntent mPendingIntent =
-                PendingIntent.getActivity(getApplicationContext(), 13092, intent,
-                        PendingIntent.FLAG_CANCEL_CURRENT);
-        AlarmManager alarmManager = (AlarmManager)
-                getApplicationContext().getSystemService(ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + 10, mPendingIntent);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 13092,
+                new Intent(this, BackupActivity.class),
+                PendingIntent.FLAG_CANCEL_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + 10, pendingIntent);
         new Handler().postDelayed(() -> System.exit(0), 650);
     }
 
@@ -300,17 +285,18 @@ public class BackupActivity extends AppCompatActivity {
      * @param folderId picked GDrive folder id
      */
     private void uploadToDrive(DriveId folderId) {
-        if (folderId != null) {
-            final DriveFolder mFolder = folderId.asDriveFolder();
-            Drive.DriveApi.newDriveContents(mGoogleApiClient)
-                    .setResultCallback(result -> {
-                        if (!result.getStatus().isSuccess()) {
-                            showResult(false);
-                            return;
-                        }
-                        uploadRealmBackup(result, mFolder);
-                    });
+        if (folderId == null) {
+            return;
         }
+        final DriveFolder mFolder = folderId.asDriveFolder();
+        Drive.DriveApi.newDriveContents(mGoogleApiClient)
+                .setResultCallback(result -> {
+                    if (!result.getStatus().isSuccess()) {
+                        showResult(false);
+                        return;
+                    }
+                    uploadRealmBackup(result, mFolder);
+                });
     }
 
     /**
@@ -339,11 +325,11 @@ public class BackupActivity extends AppCompatActivity {
                         oStream.write(buffer, 0, read);
                     }
                 } catch (IOException e) {
-                    Log.e("Backup", e.getMessage());
+                    Log.e(TAG, e.getMessage());
                 }
 
                 MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
-                        .setTitle("Liceo.realm")
+                        .setTitle(BACKUP_FILE_NAME)
                         .setMimeType("text/plain")
                         .build();
 
@@ -401,7 +387,7 @@ public class BackupActivity extends AppCompatActivity {
         SortOrder order = new SortOrder.Builder()
                 .addSortDescending(SortableField.MODIFIED_DATE).build();
         Query query = new Query.Builder()
-                .addFilter(Filters.eq(SearchableField.TITLE, "Liceo.realm"))
+                .addFilter(Filters.eq(SearchableField.TITLE, BACKUP_FILE_NAME))
                 .addFilter(Filters.eq(SearchableField.TRASHED, false))
                 .setSortOrder(order)
                 .build();
@@ -429,39 +415,11 @@ public class BackupActivity extends AppCompatActivity {
     private static String backupSize(long bytes) {
         int unit = 1000;
         if (bytes < unit) {
-            return bytes + " B";
+            return bytes + "B";
         }
         int exp = (int) (Math.log(bytes) / Math.log(unit));
         char prefix = "kMGTPE".charAt(exp - 1);
-        return String.format(Locale.ITALIAN, "%.1f %sB", bytes / Math.pow(unit, exp), prefix);
-    }
-
-    /**
-     * Convert backup date to human-friendly string
-     *
-     * @param date: backup date
-     * @return backup creation date
-     */
-    private String backupDate(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        @SuppressWarnings("deprecation")
-        String dateStr = new SimpleDateFormat(getString(R.string.date_formatting),
-                getResources().getConfiguration().locale).format(calendar.getTime());
-
-        int position = 0;
-        boolean isWorking = true;
-        while (isWorking) {
-            if (Character.isDigit(dateStr.charAt(position))) {
-                position++;
-            } else {
-                isWorking = false;
-            }
-        }
-
-        return dateStr.substring(0, position) +
-                String.valueOf(dateStr.charAt(position)).toUpperCase() +
-                dateStr.substring(position + 1, dateStr.length());
+        return String.format(Locale.getDefault(), "%.1f %sB", bytes / Math.pow(unit, exp), prefix);
     }
 
     /**

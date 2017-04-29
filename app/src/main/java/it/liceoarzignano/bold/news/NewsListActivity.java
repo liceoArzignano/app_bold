@@ -34,14 +34,12 @@ import it.liceoarzignano.bold.ui.ActionsDialog;
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt;
 
 public class NewsListActivity extends AppCompatActivity {
-
     private CoordinatorLayout mCoordinator;
     private LinearLayout mEmptyLayout;
     private TextView mEmptyText;
 
     private NewsController mController;
     private NewsAdapter mAdapter;
-
     private CustomTabsClient mClient;
     private CustomTabsSession mCustomTabsSession;
     private CustomTabsServiceConnection mCustomTabsServiceConnection;

@@ -33,5 +33,4 @@ class BackupData {
     public void setSize(long size) {
         this.mSize = size;
     }
-
 }

@@ -28,6 +28,7 @@ import it.liceoarzignano.bold.utils.DateUtils;
 
 public class BoldMessagingService extends FirebaseMessagingService {
     private static final String TAG = "BoldFireBase";
+
     private Context mContext;
     private News mNews;
 
@@ -39,43 +40,43 @@ public class BoldMessagingService extends FirebaseMessagingService {
 
         mContext = getApplicationContext();
 
-        if (!remoteMessage.getData().isEmpty()) {
-            try {
-                JSONObject jston = new JSONObject(remoteMessage.getData().toString());
-                String title = jston.getString(BuildConfig.DEBUG ? "d_title" : "title");
-                String message = jston.getString(BuildConfig.DEBUG ? "d_message" : "message");
-                String url = jston.getString("url");
-                boolean isPrivate = jston.getBoolean("isPrivate");
-                Intent intent;
+        if (remoteMessage.getData().isEmpty()) {
+            return;
+        }
 
-                if (message == null || message.isEmpty()) {
-                    return;
-                }
+        try {
+            JSONObject json = new JSONObject(remoteMessage.getData().toString());
+            String title = json.getString(BuildConfig.DEBUG ? "d_title" : "title");
+            String message = json.getString(BuildConfig.DEBUG ? "d_message" : "message");
+            String url = json.getString("url");
+            boolean isPrivate = json.getBoolean("isPrivate");
+            Intent intent;
 
-                if (isPrivate && !PrefsUtils.isTeacher(mContext)) {
-                    return;
-                }
-
-                mNews = new News();
-                mNews.setTitle(title);
-                mNews.setMessage(message);
-                mNews.setDate(DateUtils.getDateString(0));
-                mNews.setUrl(url);
-
-                saveNews();
-
-                if (PrefsUtils.hasNewsNotification(mContext)) {
-                    intent = new Intent(mContext, NewsListActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    if (url != null && !url.isEmpty()) {
-                        intent.putExtra("newsId", mNews.getId());
-                    }
-                    publishNotification(intent);
-                }
-
-            } catch (JSONException e) {
-                Log.e(TAG, e.getMessage());
+            if (message == null || message.isEmpty()) {
+                return;
             }
+            if (isPrivate && !PrefsUtils.isTeacher(mContext)) {
+                return;
+            }
+
+            mNews = new News();
+            mNews.setTitle(title);
+            mNews.setMessage(message);
+            mNews.setDate(DateUtils.getDateString(0));
+            mNews.setUrl(url);
+
+            saveNews();
+            if (PrefsUtils.hasNewsNotification(mContext)) {
+                intent = new Intent(mContext, NewsListActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                if (url != null && !url.isEmpty()) {
+                    intent.putExtra("newsId", mNews.getId());
+                }
+                publishNotification(intent);
+            }
+
+        } catch (JSONException e) {
+            Log.e(TAG, e.getMessage());
         }
     }
 
@@ -107,5 +108,4 @@ public class BoldMessagingService extends FirebaseMessagingService {
         NewsController mController = new NewsController(((BoldApp) mContext).getConfig());
         mController.add(mNews);
     }
-
 }

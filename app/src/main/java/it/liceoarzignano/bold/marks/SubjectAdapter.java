@@ -80,7 +80,7 @@ class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectHolder> 
 
         void setData(Mark mark) {
             // Title
-            mDate.setText(DateUtils.dateToWorldsString(mContext, mark.getDate()));
+            mDate.setText(DateUtils.dateToWordsString(mContext, mark.getDate()));
 
             // Value
             Double val = (double) mark.getValue() / 100;

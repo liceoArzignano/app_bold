@@ -173,6 +173,4 @@ public final class ContentUtils {
                 new Intent(context, AlarmService.class), 0);
         manager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pIntent);
     }
-
-
 }

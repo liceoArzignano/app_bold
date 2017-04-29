@@ -57,7 +57,7 @@ class NewsAdapter extends SectionedRecyclerViewAdapter<HeaderViewHolder, NewsAda
         } else if (DateUtils.dateDiff(eventDate, tomorrow) == 0) {
             title = mContext.getString(R.string.events_time_tomorrow);
         } else {
-            title = DateUtils.dateToWorldsString(mContext, eventDate);
+            title = DateUtils.dateToWordsString(mContext, eventDate);
         }
 
         holder.setTitle(title);

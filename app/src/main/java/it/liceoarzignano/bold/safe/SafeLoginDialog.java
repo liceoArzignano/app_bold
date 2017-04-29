@@ -16,13 +16,12 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import it.liceoarzignano.bold.R;
 
 class SafeLoginDialog {
-    private final Resources mRes;
-
     private MaterialDialog mDialog;
-
     private View mDialogView;
     private EditText mPasswordEditText;
     private TextView mHintTextView;
+
+    private final Resources mRes;
 
     /**
      * Log in dialog with password input and hints

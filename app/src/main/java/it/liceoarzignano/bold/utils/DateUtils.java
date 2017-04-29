@@ -46,15 +46,15 @@ public final class DateUtils {
         }
     }
 
-    public static String dateToWorldsString(Context context, Date date) {
+    public static String dateToWordsString(Context context, Date date) {
         String val = new SimpleDateFormat(context.getString(R.string.date_formatting),
                 Locale.getDefault()).format(date);
-        // Uppecase first char
+        // Uppercase first char
         return val.substring(0, 1).toUpperCase() + val.substring(1, val.length());
     }
 
-    public static String dateToWorldsString(Context context, String date) {
-        return dateToWorldsString(context, stringToDate(date));
+    public static String dateToWordsString(Context context, String date) {
+        return dateToWordsString(context, stringToDate(date));
     }
 
     public static int dateDiff(Date a, Date b) {
@@ -76,5 +76,4 @@ public final class DateUtils {
         return calA.get(Calendar.YEAR) == calB.get(Calendar.YEAR) &&
                 calA.get(Calendar.DAY_OF_YEAR) - calB.get(Calendar.DAY_OF_YEAR) >= minDiff;
     }
-
 }

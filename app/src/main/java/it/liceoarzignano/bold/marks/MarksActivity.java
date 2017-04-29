@@ -1,6 +1,5 @@
 package it.liceoarzignano.bold.marks;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -35,9 +34,7 @@ import it.liceoarzignano.bold.utils.ContentUtils;
 import it.liceoarzignano.bold.utils.DateUtils;
 import it.liceoarzignano.bold.utils.PrefsUtils;
 
-
 public class MarksActivity extends AppCompatActivity {
-
     private static final String PREF_QUARTER_SELECTOR = "quarterSelector";
 
     private RecyclerViewExt mList;
@@ -128,13 +125,33 @@ public class MarksActivity extends AppCompatActivity {
     }
 
     private void createFilterDialog() {
+        new MaterialDialog.Builder(this)
+                .title(R.string.marks_menu_filter)
+                .customView(getFilterView(), false)
+                .canceledOnTouchOutside(false)
+                .autoDismiss(false)
+                .positiveText(R.string.marks_filter_action)
+                .onPositive((dialog, which) -> {
+                    if (!isFirstEnabled && !isSecondEnabled) {
+                        Toast.makeText(this, getString(R.string.marks_filter_error),
+                                Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
+                    mFilter = isFirstEnabled ? isSecondEnabled ? 0 : 1 : 2;
+                    mPrefs.edit().putInt(PREF_QUARTER_SELECTOR, mFilter).apply();
+                    dialog.dismiss();
+                    refresh();
+                })
+                .show();
+    }
+
+    private View getFilterView() {
         int val = mPrefs.getInt(PREF_QUARTER_SELECTOR, 0);
         isFirstEnabled = val < 2;
         isSecondEnabled = val != 1;
 
-        final Context context = this;
         Drawable noBg = new ColorDrawable(Color.TRANSPARENT);
-
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         ViewGroup group = (ViewGroup) findViewById(R.id.dialog_root);
         View view = inflater.inflate(R.layout.dialog_filter, group);
@@ -157,24 +174,6 @@ public class MarksActivity extends AppCompatActivity {
                     ContextCompat.getDrawable(this, R.drawable.ic_filter_bg_enabled) : noBg);
         });
 
-        new MaterialDialog.Builder(this)
-                .title(R.string.marks_menu_filter)
-                .customView(view, false)
-                .canceledOnTouchOutside(false)
-                .autoDismiss(false)
-                .positiveText(R.string.marks_filter_action)
-                .onPositive((dialog, which) -> {
-                    if (!isFirstEnabled && !isSecondEnabled) {
-                        Toast.makeText(context, getString(R.string.marks_filter_error),
-                                Toast.LENGTH_LONG).show();
-                        return;
-                    }
-
-                    mFilter = isFirstEnabled ? isSecondEnabled ? 0 : 1 : 2;
-                    mPrefs.edit().putInt(PREF_QUARTER_SELECTOR, mFilter).apply();
-                    dialog.dismiss();
-                    refresh();
-                })
-                .show();
+        return view;
     }
 }

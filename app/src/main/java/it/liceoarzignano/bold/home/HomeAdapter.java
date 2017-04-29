@@ -35,6 +35,4 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeHolder> {
     public int getItemCount() {
         return mObjects.size();
     }
-
-
 }

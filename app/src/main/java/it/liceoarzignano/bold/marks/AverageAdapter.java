@@ -62,5 +62,4 @@ class AverageAdapter extends RecyclerView.Adapter<AverageAdapter.AverageHolder> 
             mValue.setText(String.format(Locale.ENGLISH, "%.2f", val));
         }
     }
-
 }

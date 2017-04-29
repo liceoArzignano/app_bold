@@ -14,7 +14,6 @@ import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.firebase.BoldAnalytics;
 
 public class ActionsDialog {
-
     private final BottomSheetDialog mDialog;
 
     private OnActionsDialogListener mListener;
@@ -54,17 +53,17 @@ public class ActionsDialog {
             new BoldAnalytics(context).log(FirebaseAnalytics.Event.VIEW_ITEM, "Edit");
             mDialog.hide();
             context.startActivity(new Intent(context, ManagerActivity.class)
-                    .putExtra("isMark", false)
-                    .putExtra("isEditing", true)
-                    .putExtra("id", id));
+                    .putExtra(ManagerActivity.EXTRA_IS_MARK, false)
+                    .putExtra(ManagerActivity.EXTRA_EDIT, true)
+                    .putExtra(ManagerActivity.EXTRA_ID, id));
         });
 
         toEvent.setOnClickListener(v -> {
             new BoldAnalytics(context).log(FirebaseAnalytics.Event.VIEW_ITEM, "Convert");
             mDialog.hide();
             context.startActivity(new Intent(context, ManagerActivity.class)
-                    .putExtra("isMark", false)
-                    .putExtra("newsToEvent", id));
+                    .putExtra(ManagerActivity.EXTRA_IS_MARK, false)
+                    .putExtra(ManagerActivity.EXTRA_TO_EVENT, id));
         });
 
         mDialog.setContentView(view);

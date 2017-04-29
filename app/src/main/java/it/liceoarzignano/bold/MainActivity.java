@@ -309,7 +309,7 @@ public class MainActivity extends AppCompatActivity
             if (!DateUtils.dateDiff(DateUtils.getDate(7), event.getDate(), 8)) {
                 added++;
                 builder.addEntry(event.getTitle(),
-                        DateUtils.dateToWorldsString(this, event.getDate()));
+                        DateUtils.dateToWordsString(this, event.getDate()));
             }
             if (added == 3) {
                 break;
@@ -340,7 +340,7 @@ public class MainActivity extends AppCompatActivity
 
         for (int counter = 0; counter < 3 && counter < newsList.size(); counter++) {
             News news = newsList.get(counter);
-            builder.addEntry(news.getTitle(), DateUtils.dateToWorldsString(this, news.getDate()));
+            builder.addEntry(news.getTitle(), DateUtils.dateToWordsString(this, news.getDate()));
         }
 
         return builder.build();
