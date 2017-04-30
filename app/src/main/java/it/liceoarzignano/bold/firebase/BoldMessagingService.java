@@ -61,7 +61,8 @@ public class BoldMessagingService extends FirebaseMessagingService {
 
             mNews = new News();
             mNews.setTitle(title);
-            mNews.setMessage(message);
+            mNews.setMessage(isPrivate ?
+                    mContext.getString(R.string.news_type_private, message) : message);
             mNews.setDate(DateUtils.getDateString(0));
             mNews.setUrl(url);
 

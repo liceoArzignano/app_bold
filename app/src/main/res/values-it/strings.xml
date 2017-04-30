@@ -109,6 +109,7 @@
     <string name="news_empty">Non hai ricevuto nessuna notizia</string>
     <string name="news_sheet_to_event">Salva come evento</string>
     <string name="news_sheet_remove">Rimuovi</string>
+    <string name="news_type_private">Comunicato: %1$s</string>
 
     <!-- Welcome -->
     <string name="slide0_title">Benvenuto</string>
