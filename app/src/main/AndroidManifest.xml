@@ -46,20 +46,16 @@
         <activity
             android:name=".marks.MarksActivity"
             android:label="@string/title_activity_mark_list"
-            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".marks.SubjectActivity"
-            android:parentActivityName=".marks.MarksActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- Events -->
         <activity
             android:name=".events.EventListActivity"
             android:label="@string/title_activity_event_list"
-            android:launchMode="singleTop"
-            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -74,7 +70,6 @@
         <activity
             android:name=".news.NewsListActivity"
             android:label="@string/nav_news"
-            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -103,7 +98,6 @@
         <activity
             android:name=".settings.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.SettingsTheme">
             <intent-filter>
                 <action android:name="android.intent.action.APPLICATION_PREFERENCES"/>
@@ -115,14 +109,12 @@
         <activity
             android:name=".safe.SafeActivity"
             android:label="@string/title_activity_safe"
-            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- Backup -->
         <activity
             android:name=".backup.BackupActivity"
             android:label="@string/title_activity_backup"
-            android:parentActivityName=".settings.SettingsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- Benefits -->

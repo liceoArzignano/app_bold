@@ -58,9 +58,8 @@ public class MarksActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        toolbar.setNavigationIcon(R.drawable.ic_toolbar_back);
+        toolbar.setNavigationOnClickListener(v -> finish());
 
         mList = (RecyclerViewExt) findViewById(R.id.marks_list);
         mEmptyLayout = (LinearLayout) findViewById(R.id.marks_empty_layout);

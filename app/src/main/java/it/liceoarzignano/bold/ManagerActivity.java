@@ -113,12 +113,11 @@ public class ManagerActivity extends AppCompatActivity
         // Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(getString(isMark ?
-                (isEditMode ? R.string.update_mark : R.string.new_mark) :
-                (isEditMode ? R.string.update_event : R.string.new_event)));
+                isEditMode ? R.string.update_mark : R.string.new_mark :
+                isEditMode ? R.string.update_event : R.string.new_event));
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        toolbar.setNavigationIcon(R.drawable.ic_toolbar_back);
+        toolbar.setNavigationOnClickListener(v -> finish());
 
         mDatePickerListener = (view, year, month, day) -> {
             mYear = year;

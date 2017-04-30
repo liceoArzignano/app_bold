@@ -72,10 +72,8 @@ public class SafeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_safe);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            toolbar.setNavigationOnClickListener(view -> onBackPressed());
-        }
+        toolbar.setNavigationIcon(R.drawable.ic_toolbar_back);
+        toolbar.setNavigationOnClickListener(v -> finish());
 
         mPrefs = getSharedPreferences(SAFE_PREFS, MODE_PRIVATE);
         mEditor = getSharedPreferences(SAFE_PREFS, MODE_PRIVATE).edit();

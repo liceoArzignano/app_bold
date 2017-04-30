@@ -79,9 +79,8 @@ public class BackupActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        toolbar.setNavigationIcon(R.drawable.ic_toolbar_back);
+        toolbar.setNavigationOnClickListener(v -> finish());
 
         mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
         mSummary = (TextView) findViewById(R.id.backup_summary);

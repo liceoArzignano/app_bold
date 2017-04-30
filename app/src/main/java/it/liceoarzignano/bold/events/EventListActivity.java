@@ -43,9 +43,8 @@ public class EventListActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        toolbar.setNavigationIcon(R.drawable.ic_toolbar_back);
+        toolbar.setNavigationOnClickListener(v -> finish());
 
         mCoordinator = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
         RecyclerViewExt eventList = (RecyclerViewExt) findViewById(R.id.event_list);
