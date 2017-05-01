@@ -23,3 +23,4 @@
 -forceprocessing
 -optimizations 25
 -dontskipnonpubliclibraryclasses
+-keep class android.support.v7.widget.SearchView { *; }
