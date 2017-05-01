@@ -24,9 +24,9 @@ import java.security.SecureRandom;
 
 import it.liceoarzignano.bold.BuildConfig;
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.utils.UiUtils;
-import it.liceoarzignano.bold.utils.PrefsUtils;
 import it.liceoarzignano.bold.safe.mod.Encryption;
+import it.liceoarzignano.bold.utils.PrefsUtils;
+import it.liceoarzignano.bold.utils.UiUtils;
 
 public class BenefitFragment extends Fragment {
     private static final String TAG = BenefitFragment.class.getSimpleName();
@@ -135,7 +135,7 @@ public class BenefitFragment extends Fragment {
             mAnimThread = new Thread(() -> {
                 do { // At least once
                     // Run on UI thread
-                    new Handler(getContext().getMainLooper()).post(() ->
+                    new Handler(context.getMainLooper()).post(() ->
                             UiUtils.animateAVD(mIntroImage.getDrawable()));
                     try {
                         // Wait for current animation to end
