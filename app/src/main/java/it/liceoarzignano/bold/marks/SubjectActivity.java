@@ -17,8 +17,8 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import java.util.List;
 
 import it.liceoarzignano.bold.BoldApp;
-import it.liceoarzignano.bold.ManagerActivity;
 import it.liceoarzignano.bold.R;
+import it.liceoarzignano.bold.editor.EditorActivity;
 import it.liceoarzignano.bold.firebase.BoldAnalytics;
 import it.liceoarzignano.bold.ui.CircularProgressBar;
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt;
@@ -105,9 +105,8 @@ public class SubjectActivity extends AppCompatActivity {
 
     void editItem(ImageView icon, Mark item) {
         new BoldAnalytics(this).log(FirebaseAnalytics.Event.VIEW_ITEM, "Edit mark");
-        Intent intent = new Intent(this, ManagerActivity.class);
-        intent.putExtra(ManagerActivity.EXTRA_EDIT, true);
-        intent.putExtra(ManagerActivity.EXTRA_ID, item.getId());
+        Intent intent = new Intent(this, EditorActivity.class);
+        intent.putExtra(EditorActivity.EXTRA_ID, item.getId());
 
         if (PrefsUtils.isNotLegacy()) {
             UiUtils.animateAVD(icon.getDrawable());

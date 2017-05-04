@@ -86,6 +86,16 @@
         <item>@string/subject_ped</item>
     </string-array>
 
+    <string-array name="event_categories" translatable="false">
+        <item>@string/events_test</item>
+        <item>@string/event_school</item>
+        <item>@string/event_birthday</item>
+        <item>@string/event_homework</item>
+        <item>@string/event_reminder</item>
+        <item>@string/event_meeting</item>
+        <item>@string/event_other</item>
+    </string-array>
+
     <string-array name="pref_entryvalues_address" translatable="false">
         <item>1</item>
         <item>2</item>

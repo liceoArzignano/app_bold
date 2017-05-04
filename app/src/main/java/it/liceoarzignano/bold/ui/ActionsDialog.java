@@ -9,8 +9,8 @@ import android.view.View;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-import it.liceoarzignano.bold.ManagerActivity;
 import it.liceoarzignano.bold.R;
+import it.liceoarzignano.bold.editor.EditorActivity;
 import it.liceoarzignano.bold.firebase.BoldAnalytics;
 
 public class ActionsDialog {
@@ -52,18 +52,17 @@ public class ActionsDialog {
         edit.setOnClickListener(v -> {
             new BoldAnalytics(context).log(FirebaseAnalytics.Event.VIEW_ITEM, "Edit");
             mDialog.hide();
-            context.startActivity(new Intent(context, ManagerActivity.class)
-                    .putExtra(ManagerActivity.EXTRA_IS_MARK, false)
-                    .putExtra(ManagerActivity.EXTRA_EDIT, true)
-                    .putExtra(ManagerActivity.EXTRA_ID, id));
+            context.startActivity(new Intent(context, EditorActivity.class)
+                    .putExtra(EditorActivity.EXTRA_IS_MARK, false)
+                    .putExtra(EditorActivity.EXTRA_ID, id));
         });
 
         toEvent.setOnClickListener(v -> {
             new BoldAnalytics(context).log(FirebaseAnalytics.Event.VIEW_ITEM, "Convert");
             mDialog.hide();
-            context.startActivity(new Intent(context, ManagerActivity.class)
-                    .putExtra(ManagerActivity.EXTRA_IS_MARK, false)
-                    .putExtra(ManagerActivity.EXTRA_TO_EVENT, id));
+            context.startActivity(new Intent(context, EditorActivity.class)
+                    .putExtra(EditorActivity.EXTRA_IS_NEWS, true)
+                    .putExtra(EditorActivity.EXTRA_ID, id));
         });
 
         mDialog.setContentView(view);

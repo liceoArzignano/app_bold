@@ -4,9 +4,9 @@
     android:id="@+id/dialog_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingRight="24dp"
     android:orientation="vertical"
     android:paddingBottom="24dp"
-    android:paddingRight="24dp"
     android:paddingTop="24dp">
 
     <TextView
@@ -19,11 +19,12 @@
         android:minEms="2" />
 
     <SeekBar
-        android:id="@+id/dialog_seekBar"
+        android:id="@+id/dialog_seek_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="8dp"
-        android:layout_toLeftOf="@id/dialog_value" />
+        android:layout_toLeftOf="@id/dialog_value"
+        android:max="40" />
 
 </RelativeLayout>

@@ -33,8 +33,9 @@
 
                 <!-- Title -->
                 <RelativeLayout
-                    android:id="@+id/manager_title_layout"
                     style="@style/AppTheme.EditorIcon"
+                    android:id="@+id/editor_title_layout"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="48dp">
 
@@ -43,8 +44,8 @@
                         app:srcCompat="@drawable/ic_title" />
 
                     <EditText
-                        android:id="@+id/manager_title_input"
                         style="@style/AppTheme.EditorEditText"
+                        android:id="@+id/editor_title_text"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         tools:ignore="TextFields" />
@@ -52,8 +53,9 @@
 
                 <!-- Subject picker -->
                 <RelativeLayout
-                    android:id="@+id/manager_subject_layout"
                     style="@style/AppTheme.EditorIcon"
+                    android:id="@+id/editor_subject_layout"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="48dp">
 
@@ -62,15 +64,16 @@
                         app:srcCompat="@drawable/ic_title" />
 
                     <TextView
-                        android:id="@+id/manager_subjects_selector"
                         style="@style/AppTheme.EditorTextView"
-                        android:text="@string/select_subject" />
+                        android:id="@+id/editor_subject_selector"
+                        android:text="@string/editor_hint_subject" />
                 </RelativeLayout>
 
                 <!-- Event category spinner -->
                 <RelativeLayout
-                    android:id="@+id/manager_event_spinner_layout"
                     style="@style/AppTheme.EditorIcon"
+                    android:id="@+id/editor_category_layout"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="48dp">
 
@@ -79,16 +82,17 @@
                         app:srcCompat="@drawable/ic_category" />
 
                     <Spinner
-                        android:id="@+id/manager_event_spinner"
+                        android:id="@+id/editor_category_spinner"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="64dp" />
+                        android:layout_marginLeft="56dp" />
                 </RelativeLayout>
 
                 <!-- Mark value -->
                 <RelativeLayout
-                    android:id="@+id/manager_mark_value_layout"
                     style="@style/AppTheme.EditorIcon"
+                    android:id="@+id/editor_value_layout"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="48dp">
 
@@ -97,8 +101,8 @@
                         app:srcCompat="@drawable/ic_trophy" />
 
                     <TextView
-                        android:id="@+id/manager_mark_preview"
                         style="@style/AppTheme.EditorTextView"
+                        android:id="@+id/editor_value_view"
                         android:text="@string/default_mark" />
                 </RelativeLayout>
 
@@ -113,18 +117,18 @@
                         app:srcCompat="@drawable/ic_notes" />
 
                     <EditText
-                        android:id="@+id/manager_notes_input"
                         style="@style/AppTheme.EditorEditText"
+                        android:id="@+id/editor_notes_text"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:hint="@string/hint_notes"
+                        android:hint="@string/editor_hint_notes"
                         android:minHeight="48dp" />
                 </RelativeLayout>
 
                 <!-- Date picker -->
                 <RelativeLayout
-                    android:id="@+id/manager_date_layout"
                     style="@style/AppTheme.EditorIcon"
+                    android:id="@+id/editor_date_layout"
                     android:layout_width="match_parent"
                     android:layout_height="48dp">
 
@@ -133,20 +137,10 @@
                         app:srcCompat="@drawable/ic_calendar" />
 
                     <TextView
-                        android:id="@+id/manager_datepicker_button"
+                        android:id="@+id/editor_date_view"
                         style="@style/AppTheme.EditorTextView" />
                 </RelativeLayout>
             </LinearLayout>
         </ScrollView>
     </RelativeLayout>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:transitionName="fab"
-        app:srcCompat="@drawable/ic_done"
-        tools:targetApi="lollipop" />
 </android.support.design.widget.CoordinatorLayout>

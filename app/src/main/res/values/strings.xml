@@ -55,28 +55,23 @@
     </string>
     <string name="dialog_updated_changelog">Changelog</string>
 
-    <!-- Manager -->
-    <string name="title_activity_manager">Editor</string>
-    <string name="update_mark">Edit mark</string>
-    <string name="update_event">Edit event</string>
-    <string name="new_mark">New mark</string>
-    <string name="new_event">New event</string>
-    <string name="hint_student">Student</string>
-    <string name="hint_event">Event</string>
-    <string name="hint_notes">Notes</string>
-    <string name="dialog_select_mark">Pick a mark</string>
-    <string name="manager_invalid">Check the values</string>
-    <string name="select_subject">Select subject</string>
-    <string name="event_spinner_test">Test</string>
-    <string name="event_spinner_school">At school</string>
-    <string name="event_spinner_bday">Birthday</string>
-    <string name="event_spinner_homework">Homework</string>
-    <string name="event_spinner_reminder">Reminder</string>
-    <string name="event_spinner_hang_out">Meeting</string>
-    <string name="event_spinner_other">Other</string>
-    <string name="editor_text_too_long">It\'s getting really long</string>
-    <string name="editor_text_too_long_fix">Fix</string>
-    <string name="saved">Saved</string>
+    <!-- Editor -->
+    <string name="title_activity_editor">Editor</string>
+    <string name="editor_new_mark">New mark</string>
+    <string name="editor_new_event">New event</string>
+    <string name="editor_update_mark">Update mark</string>
+    <string name="editor_update_event">Update event</string>
+    <string name="editor_hint_notes">Notes</string>
+    <string name="editor_hint_subject">Select a subject</string>
+    <string name="editor_hint_student">Student name</string>
+    <string name="editor_hint_event">Event title</string>
+    <string name="editor_save">Save</string>
+    <string name="editor_saved">Saved</string>
+    <string name="editor_cancel_title">Discard changes</string>
+    <string name="editor_cancel_message">Do you want to discard all the changes?</string>
+    <string name="editor_cancel_discard">Discard</string>
+    <string name="editor_dialog_mark_title">Select a mark</string>
+    <string name="editor_error">Can\'t save, please check the values again</string>
 
     <!-- My marks -->
     <string name="title_activity_mark_list">Marks</string>
@@ -104,6 +99,13 @@
     <string name="events_time_yesterday">Yesterday</string>
     <string name="events_time_today">Today</string>
     <string name="events_time_tomorrow">Tomorrow</string>
+    <string name="events_test">Test</string>
+    <string name="event_school">At school</string>
+    <string name="event_birthday">Birthday</string>
+    <string name="event_homework">Homework</string>
+    <string name="event_reminder">Reminder</string>
+    <string name="event_meeting">Meeting</string>
+    <string name="event_other">Other</string>
 
     <!-- News -->
     <string name="news_empty">You have received no news so far</string>

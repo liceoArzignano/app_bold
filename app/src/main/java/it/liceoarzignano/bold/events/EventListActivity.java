@@ -21,8 +21,8 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import java.util.List;
 
 import it.liceoarzignano.bold.BoldApp;
-import it.liceoarzignano.bold.ManagerActivity;
 import it.liceoarzignano.bold.R;
+import it.liceoarzignano.bold.editor.EditorActivity;
 import it.liceoarzignano.bold.firebase.BoldAnalytics;
 import it.liceoarzignano.bold.ui.ActionsDialog;
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt;
@@ -54,8 +54,8 @@ public class EventListActivity extends AppCompatActivity {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
             new BoldAnalytics(this).log(FirebaseAnalytics.Event.SELECT_CONTENT, "Add event");
-            Intent intent = new Intent(EventListActivity.this, ManagerActivity.class);
-            intent.putExtra(ManagerActivity.EXTRA_IS_MARK, false);
+            Intent intent = new Intent(EventListActivity.this, EditorActivity.class);
+            intent.putExtra(EditorActivity.EXTRA_IS_MARK, false);
             startActivity(intent);
         });
 

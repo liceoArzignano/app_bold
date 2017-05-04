@@ -127,5 +127,5 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:visibility="gone"
-        app:srcCompat="@drawable/ic_done" />
+        app:srcCompat="@drawable/ic_safe_done" />
 </android.support.design.widget.CoordinatorLayout>

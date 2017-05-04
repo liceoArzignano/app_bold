@@ -55,28 +55,23 @@
     </string>
     <string name="dialog_updated_changelog">Novit\u00E0</string>
 
-    <!-- Manager -->
-    <string name="title_activity_manager">Editor</string>
-    <string name="update_mark">Modifica voto</string>
-    <string name="update_event">Modifica evento</string>
-    <string name="new_mark">Nuovo voto</string>
-    <string name="new_event">Nuovo evento</string>
-    <string name="hint_student">Studente</string>
-    <string name="hint_event">Evento</string>
-    <string name="hint_notes">Note</string>
-    <string name="dialog_select_mark">Seleziona un voto</string>
-    <string name="manager_invalid">Ricontrolla i valori</string>
-    <string name="select_subject">Seleziona materia</string>
-    <string name="event_spinner_test">Verifica</string>
-    <string name="event_spinner_school">A scuola</string>
-    <string name="event_spinner_homework">Compito per casa</string>
-    <string name="event_spinner_reminder">Promemoria</string>
-    <string name="event_spinner_bday">Compleanno</string>
-    <string name="event_spinner_hang_out">Incontro</string>
-    <string name="event_spinner_other">Altro</string>
-    <string name="editor_text_too_long">Sta diventando troppo lungo</string>
-    <string name="editor_text_too_long_fix">Accorcia</string>
-    <string name="saved">Salvato</string>
+    <!-- Editor -->
+    <string name="title_activity_editor">Editor</string>
+    <string name="editor_new_mark">Nuovo voto</string>
+    <string name="editor_new_event">Nuovo evento</string>
+    <string name="editor_update_mark">Modifica voto</string>
+    <string name="editor_update_event">Modifica evento</string>
+    <string name="editor_hint_notes">Annotazioni</string>
+    <string name="editor_hint_subject">Seleziona una materia</string>
+    <string name="editor_hint_student">Nome dello studente</string>
+    <string name="editor_hint_event">Titolo dell\'evento</string>
+    <string name="editor_save">Salva</string>
+    <string name="editor_saved">Salvato</string>
+    <string name="editor_cancel_title">Annulla modifiche</string>
+    <string name="editor_cancel_message">Vuoi annullare tutte le modifiche?</string>
+    <string name="editor_cancel_discard">Annulla</string>
+    <string name="editor_dialog_mark_title">Seleziona un voto</string>
+    <string name="editor_error">Impossibile salvare, ricontrolla i valori</string>
 
     <!-- My marks -->
     <string name="title_activity_mark_list">Voti</string>
@@ -92,7 +87,7 @@
     <string name="marks_share_student">Ho preso %1$s in %2$s</string>
     <string name="marks_share_teacher">%1$s ha preso %2$s</string>
 
-    <!-- Viewer -->
+    <!-- Actions -->
     <string name="actions_edit">Modifica</string>
     <string name="actions_remove">Rimuovi</string>
     <string name="actions_removed">Rimosso</string>
@@ -104,6 +99,13 @@
     <string name="events_time_yesterday">Ieri</string>
     <string name="events_time_today">Oggi</string>
     <string name="events_time_tomorrow">Domani</string>
+    <string name="events_test">Verifica</string>
+    <string name="event_school">A scuola</string>
+    <string name="event_homework">Compito per casa</string>
+    <string name="event_reminder">Promemoria</string>
+    <string name="event_birthday">Compleanno</string>
+    <string name="event_meeting">Incontro</string>
+    <string name="event_other">Altro</string>
 
     <!-- News -->
     <string name="news_empty">Non hai ricevuto nessuna notizia</string>
@@ -273,6 +275,7 @@
     <string name="restore_success_message">Ripristino completato</string>
     <string name="restore_failed_message">Ripristino fallito</string>
     <string name="backup_summary">Crea un backup per salvare i voti, gli eventi e le notizie su Google Drive.\nQuesto ti torner\u00E0 utile nel caso perdessi, cambiassi o resettassi il tuo dispositivo. Puoi anche utilizzare i backup per sincronizzare i dati tra i tuoi dispositivi</string>
+    <string name="backup_auth_fail">Log in fallito</string>
     <string name="backup_dialog_list_title">Seleziona un backup</string>
     <string name="backup_dialog_pick_another">Altri\u2026</string>
     <string name="backup_button_login">Log in</string>

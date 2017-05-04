@@ -56,19 +56,19 @@ public final class ContentUtils {
     public static String eventCategoryToString(Context context, int category) {
         switch (category) {
             case 0:
-                return context.getString(R.string.event_spinner_test);
+                return context.getString(R.string.events_test);
             case 1:
-                return context.getString(R.string.event_spinner_school);
+                return context.getString(R.string.event_school);
             case 2:
-                return context.getString(R.string.event_spinner_bday);
+                return context.getString(R.string.event_birthday);
             case 3:
-                return context.getString(R.string.event_spinner_homework);
+                return context.getString(R.string.event_homework);
             case 4:
-                return context.getString(R.string.event_spinner_reminder);
+                return context.getString(R.string.event_reminder);
             case 5:
-                return context.getString(R.string.event_spinner_hang_out);
+                return context.getString(R.string.event_meeting);
             default:
-                return context.getString(R.string.event_spinner_other);
+                return context.getString(R.string.event_other);
         }
     }
 

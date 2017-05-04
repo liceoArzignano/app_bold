@@ -89,8 +89,8 @@
 
         <!-- Editor -->
         <activity
-            android:name=".ManagerActivity"
-            android:label="@string/title_activity_manager"
+            android:name=".editor.EditorActivity"
+            android:label="@string/title_activity_editor"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
 
