@@ -1,5 +1,6 @@
 package it.liceoarzignano.bold.home;
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -11,6 +12,7 @@ import it.liceoarzignano.bold.R;
 
 class HomeHolder extends RecyclerView.ViewHolder {
     private final TextView mNameView;
+    private final CardView mCardView;
     private final LinearLayout[] mLayout;
     private final TextView[] mTitleView;
     private final TextView[] mContentView;
@@ -22,6 +24,7 @@ class HomeHolder extends RecyclerView.ViewHolder {
         mContentView = new TextView[3];
 
         mNameView = (TextView) view.findViewById(R.id.home_item_name);
+        mCardView = (CardView) view.findViewById(R.id.home_item_card);
         mLayout[0] = (LinearLayout) view.findViewById(R.id.home_item_layout_0);
         mLayout[1] = (LinearLayout) view.findViewById(R.id.home_item_layout_1);
         mLayout[2] = (LinearLayout) view.findViewById(R.id.home_item_layout_2);
@@ -49,5 +52,6 @@ class HomeHolder extends RecyclerView.ViewHolder {
         }
 
         mNameView.setText(name);
+        mCardView.setOnClickListener(v -> obj.startIntent());
     }
 }

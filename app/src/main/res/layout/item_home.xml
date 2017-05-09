@@ -11,6 +11,7 @@
         style="@style/AppTheme.HomeTitle" />
 
     <android.support.v7.widget.CardView
+        android:id="@+id/home_item_card"
         style="@style/AppTheme.HomeCard"
         app:cardCornerRadius="0dp"
         app:cardElevation="4dp">

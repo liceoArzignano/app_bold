@@ -316,6 +316,8 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
+        builder.setIntent(this, new Intent(this, EventListActivity.class));
+
         if (builder.build().getSize() == 0) {
             return null;
         }
@@ -343,6 +345,8 @@ public class MainActivity extends AppCompatActivity
             builder.addEntry(news.getTitle(), DateUtils.dateToWordsString(this, news.getDate()));
         }
 
+        builder.setIntent(this, new Intent(this, NewsListActivity.class));
+
         return builder.build();
     }
 
@@ -364,6 +368,8 @@ public class MainActivity extends AppCompatActivity
             Mark mark = marks.get(counter);
             builder.addEntry(mark.getTitle(), String.valueOf((double) mark.getValue() / 100));
         }
+
+        builder.setIntent(this, new Intent(this, MarksActivity.class));
 
         return builder.build();
     }
