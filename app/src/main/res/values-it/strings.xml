@@ -35,6 +35,7 @@
     <string name="suggestion_notification">Segnando gli eventi, non potrai dimenticartene perch\u00E9 arriver\u00E0 una notifica il giorno prima</string>
     <string name="suggestion_backups">Creando un backup, potrai ripristinare i tuoi dati nel caso in cui cambiassi o perdessi il telefono</string>
     <string name="suggestion_news">Tutte le circolari e le notizie importanti saranno salvate direttamente nella sezione "Notizie"</string>
+    <string name="suggestion_feedback">Vuoi fornire feedback o riportare un problema che hai riscontrato? Puoi farlo dalle impostazioni</string>
     <string name="share_title">Condividi ad un amico</string>
 
     <!-- Search -->
@@ -198,6 +199,7 @@
     <string name="pref_secret_export_already_shared">Non puoi condividere la password fino a quando non la cambierai</string>
     <string name="pref_opensource_title">Open source</string>
     <string name="pref_opensource_message">Rilasciato sotto licenza LGPL v3</string>
+    <string name="pref_feedback_title">Feedback</string>
 
     <!-- Safe -->
     <string name="title_activity_safe">Safe</string>
@@ -285,6 +287,20 @@
     <string name="restore_dialog_title">Ripristino</string>
     <string name="restore_dialog_message">Informazioni backup:\nData: %1$s\nDimensione: %2$s\nAttenzione: i voti, eventi e notizie esistenti saranno rimpiazzati con quelli presenti nel backup.\nVuoi continuare?</string>
     <string name="date_formatting">EEEE dd MMMM yyyy</string>
+
+    <!-- Feedback -->
+    <string name="title_activity_feedback">Feedback</string>
+    <string name="feedback_title_hint">Titolo</string>
+    <string name="feedback_description_hint">Descrizione</string>
+    <string name="feedback_email_hint">Indirizzo email</string>
+    <string name="feedback_progress_title">Feedback</string>
+    <string name="feedback_progress_message">Invio del tuo feedback in corso\u2026</string>
+    <string name="feedback_progress_success">Il tuo feedback \u00E8 stato inviato. Grazie!</string>
+    <string name="feedback_progress_failure">Invio del feedback fallito, riprova pi\u00F9 tardi</string>
+    <string name="feedback_progress_view">Mostra feedback inviato</string>
+    <string name="feedback_info">Puoi inviare un feedback da qui. Potrai anche segnalare eventuali problemi riscontrati nell\'utilizzo, ma prima di farlo ti consigliamo di controllare <a href="https://github.com/liceoArzignano/bold_feedback/issues">l\'archivio dei feedback inviati</a> per verificare se qualcun\'altro ha gi\u00E0 riscontrato lo stesso problema. Ricorda che tutti i feedback inviati sono visibili pubblicamente.</string>
+    <string name="feedback_error_email">Inserisci un indirizzo email valido</string>
+    <string name="feedback_error_check">Compila tutti i campi per inviare il feedback</string>
 
     <!-- Shortcuts -->
     <string name="shortcut_marks_short">Voti</string>

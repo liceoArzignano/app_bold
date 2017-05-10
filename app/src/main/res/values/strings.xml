@@ -35,6 +35,7 @@
     <string name="suggestion_notification">You will be notified about your events the day before</string>
     <string name="suggestion_backups">Create a backup in Google Drive, you\'ll be able to restore your data in case you lose or change your phone</string>
     <string name="suggestion_news">You will find the most important news from the right in the app by opening the news section</string>
+    <string name="suggestion_feedback">Want to submit a feedback or report an issue you\'ve found? You can do it from the settings</string>
     <string name="share_title">Share with a friend</string>
 
     <!-- Search -->
@@ -198,6 +199,7 @@
     <string name="pref_secret_export_already_shared">You can\'t share the password unless you change it</string>
     <string name="pref_opensource_title">Open source</string>
     <string name="pref_opensource_message">Released under LGPL v3 license</string>
+    <string name="pref_feedback_title">Feedback</string>
 
     <!-- Safe -->
     <string name="title_activity_safe">Safe</string>
@@ -285,6 +287,20 @@
     <string name="restore_dialog_title">Restore</string>
     <string name="restore_dialog_message">Backup info:\nDate: %1$s\nSize: %2$s\nWarning: you will override all the existing marks, events and news with those in the backup.\nDo you want to continue?</string>
     <string name="date_formatting">EEEE, MMMM dd yyyy</string>
+
+    <!-- Feedback -->
+    <string name="title_activity_feedback">Feedback</string>
+    <string name="feedback_title_hint">Title</string>
+    <string name="feedback_description_hint">Description</string>
+    <string name="feedback_email_hint">Email address</string>
+    <string name="feedback_progress_title">Feedback</string>
+    <string name="feedback_progress_message">Submitting your feedback\u2026</string>
+    <string name="feedback_progress_success">Your feedback has successfully been submitted. Thank you!</string>
+    <string name="feedback_progress_failure">Feedback upload failed, try again later</string>
+    <string name="feedback_progress_view">View feedback</string>
+    <string name="feedback_info">You can submit a feedback here. You will be able to report issues you\'ve found, but before doing so, you\'d better check to see if someone else has already reported it <a href="https://github.com/liceoArzignano/bold_feedback/issues">in the public issue tracker</a>, all the submitted feedback is made public.</string>
+    <string name="feedback_error_email">Insert a valid email address</string>
+    <string name="feedback_error_check">Compile all the fields to submit the feedback</string>
 
     <!-- Shortcuts -->
     <string name="shortcut_marks_short">Marks</string>

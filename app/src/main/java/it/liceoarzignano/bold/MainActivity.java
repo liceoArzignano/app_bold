@@ -394,7 +394,7 @@ public class MainActivity extends AppCompatActivity
      */
     private String getSuggestion() {
         Random random = new SecureRandom();
-        switch (random.nextInt(11) + 1) {
+        switch (random.nextInt(12) + 1) {
             case 1:
                 return getString(PrefsUtils.hasSafe(this) ?
                         R.string.suggestion_safe_pwd : R.string.suggestion_safe);
@@ -416,6 +416,8 @@ public class MainActivity extends AppCompatActivity
                 return getString(R.string.suggestion_suggestions);
             case 10:
                 return getString(R.string.suggestion_news);
+            case 11:
+                return getString(R.string.suggestion_feedback);
             default:
                 return getString(R.string.suggestion_notification);
         }
