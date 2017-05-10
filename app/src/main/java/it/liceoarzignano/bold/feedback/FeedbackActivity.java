@@ -1,7 +1,5 @@
 package it.liceoarzignano.bold.feedback;
 
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -10,7 +8,6 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -28,9 +25,11 @@ import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.IssueService;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.safe.mod.Encryption;
+import it.liceoarzignano.bold.utils.PrefsUtils;
 
 public class FeedbackActivity extends AppCompatActivity {
 
@@ -91,7 +90,9 @@ public class FeedbackActivity extends AppCompatActivity {
             return;
         }
 
-        final String message = description + FeedbackInfo.getInfo(this);
+        final String message = String.format(Locale.getDefault(),
+                "From: %1$s (%2$s)\n\n%3$s\n\n%4$s", PrefsUtils.userNameKey(this), email,
+                description, FeedbackInfo.getInfo(this));
 
         MaterialDialog progressDialog = new MaterialDialog.Builder(this)
                 .title(R.string.feedback_progress_title)
