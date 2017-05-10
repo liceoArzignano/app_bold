@@ -160,8 +160,12 @@ public class BackupActivity extends AppCompatActivity {
      */
     private void pickBackup() {
         List<String> backupTitles = new ArrayList<>();
-        mBackupList.forEach(data -> backupTitles.add(String.format("%1$s (%2$s)",
-                DateUtils.dateToWordsString(this, data.getDate()), backupSize(data.getSize()))));
+        // Stream fails with proguard optimizations
+        //noinspection Convert2streamapi
+        for (BackupData data : mBackupList) {
+            backupTitles.add(String.format("%1$s (%2$s)", DateUtils.dateToWordsString(this,
+                    data.getDate()), backupSize(data.getSize())));
+        }
         new MaterialDialog.Builder(this)
                 .title(R.string.backup_dialog_list_title)
                 .items(backupTitles)
