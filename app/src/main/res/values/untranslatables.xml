@@ -11,7 +11,7 @@
     <string translatable="false" name="config_url_teacherzone">http://www.liceoarzignano.it/docenti/docenti.php?sed=1</string>
     <string translatable="false" name="config_url_changelog">https://liceoarzignano.github.io/changelog</string>
     <string translatable="false" name="config_url_sources">https://github.com/liceoArzignano/app_bold</string>
-    <string translatable="false" name="config_url_help">https://liceoarzignano.github.io/help</string>
+    <string translatable="false" name="config_url_help">https://liceoarzignano.github.io/guida</string>
 
     <!-- Addresses -->
     <string translatable="false" name="pref_address_1">Scientifico</string>

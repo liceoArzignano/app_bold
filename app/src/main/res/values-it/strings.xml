@@ -24,13 +24,13 @@
     <string name="lastest_marks">Ultimi voti</string>
     <string name="suggestions">Suggerimenti</string>
     <string name="suggestion_safe">Ti dimentichi le password? Prova Safe per annotarle tutte in un unico posto</string>
-    <string name="suggestion_safe_pwd">Qualcuno conosce la tua password di Safe? Nessun problema, puoi cambiarla una volta effetuato l\'accesso tramite l\'apposito pulsante</string>
+    <string name="suggestion_safe_pwd">Qualcuno conosce la tua password di Safe? Nessun problema, puoi cambiarla una volta effetuato l\'accesso tramite l\'apposito pulsante in alto a destra</string>
     <string name="suggestion_avg">Vorresti sapere qual\'\u00E8 il prossimo voto che dovresti prendere per avere la sufficienza? Seleziona la materia e dai un\'occhiata ai suggerimenti</string>
-    <string name="suggestion_quarter">\u00C8 iniziato un nuovo quadrimestre? Nessun problema, i voti verranno filtrati in base alla data e potrai scegliere quale quadrimestre visualizzare</string>
-    <string name="suggestion_edit_event">I tuoi compagni continuano a chiedere i compiti? Condividi un evento per risolvere la situazione</string>
+    <string name="suggestion_quarter">\u00C8 iniziato un nuovo quadrimestre? Nessun problema, i voti verranno filtrati in base alla data, inoltre potrai scegliere quale quadrimestre visualizzare</string>
+    <string name="suggestion_edit_event">I compagni chiedono sempre i compiti? Condividi un evento e il problema \u00E8 risolto</string>
     <string name="suggestion_notification_remote">Le circolari e le notizie più interessanti dalla scuola arriveranno in forma di notifiche appena vengono pubblicate</string>
     <string name="suggestion_get_touch">Hai bisogno di contattare l\'istituto? Dalle impostazioni potrai scrivere un\'email o telefonare alla segreteria</string>
-    <string name="suggestion_address">Non trovi una materia? Controlla l\'indirizzo selezionato</string>
+    <string name="suggestion_address">Non trovi una materia? Controlla l\'indirizzo di studi selezionato nelle impostazioni</string>
     <string name="suggestion_suggestions">I suggerimenti ti infastidiscono? Disattivali</string>
     <string name="suggestion_notification">Segnando gli eventi, non potrai dimenticartene perch\u00E9 arriver\u00E0 una notifica il giorno prima</string>
     <string name="suggestion_backups">Creando un backup, potrai ripristinare i tuoi dati nel caso in cui cambiassi o perdessi il telefono</string>
@@ -83,7 +83,7 @@
     <string name="error_noaddress">Imposta un indirizzo per utilizzare questa funzione</string>
     <string name="marks_empty">Non ci sono voti</string>
     <string name="marks_filter_description">Seleziona quali voti vuoi visualizzare. Tocca su un quadrimestre per attivarlo o disattivarlo</string>
-    <string name="marks_filter_error">Select at least one quarter</string>
+    <string name="marks_filter_error">Seleziona almeno un quadrimestre</string>
     <string name="marks_filter_action">Filtra</string>
     <string name="marks_share_student">Ho preso %1$s in %2$s</string>
     <string name="marks_share_teacher">%1$s ha preso %2$s</string>
@@ -93,6 +93,7 @@
     <string name="actions_remove">Rimuovi</string>
     <string name="actions_removed">Rimosso</string>
     <string name="actions_share">Condividi</string>
+    <string name="actions_to_event">Salva come evento</string>
 
     <!-- My events -->
     <string name="title_activity_event_list">Eventi</string>
@@ -110,21 +111,19 @@
 
     <!-- News -->
     <string name="news_empty">Non hai ricevuto nessuna notizia</string>
-    <string name="news_sheet_to_event">Salva come evento</string>
-    <string name="news_sheet_remove">Rimuovi</string>
     <string name="news_type_private">Comunicato: %1$s</string>
 
     <!-- Welcome -->
     <string name="slide0_title">Benvenuto</string>
     <string name="slide0_message_loading">Aspetta un attimo, ci stiamo preparando\u2026</string>
-    <string name="slide0_message_failed">Oops, connessione internet assente</string>
+    <string name="slide0_message_failed">Oops, connessione ad internet assente, connettiti e riprova</string>
     <string name="slide0_message_done">Tutto pronto, scorri per cominciare!</string>
     <string name="slide1_title">Indirizzo di studi</string>
     <string name="slide1_message">Prima di cominciare, seleziona il tuo indirizzo di studi</string>
     <string name="intro_btn_retry">Riprova</string>
-    <string name="intro_btn_done">Iniziamo</string>
-    <string name="intro_drawer_title">Inizia qui</string>
-    <string name="intro_drawer">Da questo menu potrai per navigare nell\'app.\nLa schermata principale si riempir\u00E0 d\'informazioni pi\u00F9 tardi</string>
+    <string name="intro_btn_done">Cominciamo</string>
+    <string name="intro_drawer_title">Inizia da qui</string>
+    <string name="intro_drawer">Da questo menu potrai navigare nell\'app.\nLa schermata principale si riempir\u00E0 d\'informazioni pi\u00F9 tardi</string>
     <string name="intro_fab_save_safe_title">Benvenuto!</string>
     <string name="intro_fab_save_safe">Annota le tue credenziali, poi tocca qui per salvare</string>
 
@@ -173,11 +172,11 @@
     <string name="pref_username_dialog_title">Il tuo nome</string>
     <string name="pref_username_dialog_msg">Scrivi qui il tuo nome</string>
     <string name="pref_notif">Notifiche</string>
-    <string name="pref_notification_news_title">Mostra notifiche per notizie</string>
+    <string name="pref_notification_news_title">Mostra notifiche per le notizie</string>
     <string name="pref_notification_news_summary">Ottieni informazioni sulle notizie appena vengono ricevute</string>
-    <string name="pref_notification_events_title">Mostra notifiche per eventi</string>
+    <string name="pref_notification_events_title">Mostra notifiche per gli eventi</string>
     <string name="pref_notification_events_summary">Ottieni informazioni sui prossimi eventi</string>
-    <string name="pref_notification_events_time_title">Orario notifiche eventi</string>
+    <string name="pref_notification_events_time_title">Orario notifiche degli eventi</string>
     <string name="pref_notification_events_time_dialog_title">Scegli quando fare comparire le notifiche per gli eventi</string>
     <string name="pref_notification_time_morning">Mattina</string>
     <string name="pref_notification_time_afternoon">Pomeriggio</string>

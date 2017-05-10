@@ -93,6 +93,7 @@
     <string name="actions_remove">Remove</string>
     <string name="actions_removed">Removed</string>
     <string name="actions_share">Share</string>
+    <string name="actions_to_event">Save as event</string>
 
     <!-- My events -->
     <string name="title_activity_event_list">Events</string>
@@ -110,8 +111,6 @@
 
     <!-- News -->
     <string name="news_empty">You have received no news so far</string>
-    <string name="news_sheet_to_event">Save as event</string>
-    <string name="news_sheet_remove">Remove</string>
     <string name="news_type_private">Communique: %1$s</string>
 
     <!-- Intro -->
@@ -251,7 +250,7 @@
     </plurals>
     <plurals name="notification_homework">
         <item quantity="one">homework</item>
-        <item quantity="other">homeworks</item>
+        <item quantity="other">homework</item>
     </plurals>
     <plurals name="notification_reminder">
         <item quantity="one">reminder</item>
