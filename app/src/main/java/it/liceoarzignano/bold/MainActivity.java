@@ -58,6 +58,7 @@ import it.liceoarzignano.bold.news.NewsListActivity;
 import it.liceoarzignano.bold.safe.SafeActivity;
 import it.liceoarzignano.bold.settings.SettingsActivity;
 import it.liceoarzignano.bold.ui.recyclerview.DividerDecoration;
+import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt;
 import it.liceoarzignano.bold.utils.ContentUtils;
 import it.liceoarzignano.bold.utils.DateUtils;
 import it.liceoarzignano.bold.utils.PrefsUtils;
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity
 
     private Toolbar mToolbar;
     private ImageView mBanner;
-    private RecyclerView mCardsList;
+    private RecyclerViewExt mCardsList;
     private TextView mUserName;
     private ImageView mAddressLogo;
 
@@ -121,10 +122,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         // Cards List
-        mCardsList = (RecyclerView) findViewById(R.id.home_list);
-        mCardsList.setLayoutManager(new LinearLayoutManager(this));
-        mCardsList.setItemAnimator(new DefaultItemAnimator());
-        mCardsList.addItemDecoration(new DividerDecoration(this));
+        mCardsList = (RecyclerViewExt) findViewById(R.id.home_list);
 
         // Welcome dialog
         showWelcomeIfNeeded(this);
@@ -456,7 +454,7 @@ public class MainActivity extends AppCompatActivity
             cards.add(createSuggestionsCard());
         }
 
-        HomeAdapter adapter = new HomeAdapter(cards);
+        HomeAdapter adapter = new HomeAdapter(this, cards);
         mCardsList.setAdapter(adapter);
 
         adapter.notifyDataSetChanged();

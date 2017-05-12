@@ -1,9 +1,12 @@
 package it.liceoarzignano.bold.home;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import java.util.List;
 
@@ -11,10 +14,14 @@ import it.liceoarzignano.bold.R;
 
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeHolder> {
+    private final Context mContext;
     private final List<HomeCard> mObjects;
 
-    public HomeAdapter(List<HomeCard> objects) {
-        this.mObjects = objects;
+    private int mLast = -1;
+
+    public HomeAdapter(Context context, List<HomeCard> objects) {
+        mContext = context;
+        mObjects = objects;
     }
 
     @Override
@@ -29,10 +36,20 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeHolder> {
     public void onBindViewHolder(HomeHolder holder, int position) {
         HomeCard obj = mObjects.get(position);
         holder.init(obj);
+        if (position > mLast) {
+            holder.itemView.startAnimation(AnimationUtils.loadAnimation(mContext, R.anim.slide_up));
+        }
+        mLast = holder.getAdapterPosition();
     }
 
     @Override
     public int getItemCount() {
         return mObjects.size();
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(HomeHolder homeHolder) {
+        super.onViewDetachedFromWindow(homeHolder);
+        homeHolder.itemView.clearAnimation();
     }
 }
