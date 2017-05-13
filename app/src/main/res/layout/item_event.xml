@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="72dp"
-    android:background="?android:attr/selectableItemBackground"
-    android:clickable="true"
+    android:layout_height="wrap_content"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:minHeight="56dp"
     android:paddingBottom="16dp"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="16dp"
-    tools:ignore="Overdraw">
+    android:paddingTop="16dp">
 
-    <ImageView
-        android:id="@+id/row_event_icon"
-        android:layout_width="40dp"
-        android:layout_height="match_parent"
-        android:contentDescription="@string/accessibility_event_icon" />
-
-    <LinearLayout
+    <TextView
+        android:id="@+id/row_event_tag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/row_event_icon"
-        android:orientation="vertical"
-        android:paddingLeft="16dp">
+        android:layout_alignParentRight="true"
+        android:background="@color/tag_background"
+        android:padding="4dp"
+        android:textColor="@color/tag_text"
+        android:textSize="12sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/row_event_tag"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/row_event_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="@color/black"
@@ -40,6 +40,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:textColor="@color/text_secondary" />
+            android:maxLines="1"
+            android:minHeight="16dp"
+            android:textColor="@color/text_secondary"
+            android:visibility="gone" />
     </LinearLayout>
 </RelativeLayout>

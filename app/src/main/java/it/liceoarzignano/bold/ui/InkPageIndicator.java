@@ -92,7 +92,6 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     private boolean pageChanging;
     // animation
     private ValueAnimator moveAnimation;
-    private PendingRetreatAnimator retreatAnimation;
     private PendingRevealAnimator[] revealAnimations;
 
     public InkPageIndicator(Context context) {
@@ -296,7 +295,9 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if (viewPager == null || pageCount == 0) return;
+        if (viewPager == null || pageCount == 0) {
+            return;
+        }
         drawUnselected(canvas);
         drawSelected(canvas);
     }
@@ -536,7 +537,9 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     }
 
     private void setSelectedPage(int now) {
-        if (now == currentPage) return;
+        if (now == currentPage) {
+            return;
+        }
 
         pageChanging = true;
         previousPage = currentPage;
@@ -570,12 +573,12 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
         ValueAnimator moveSelected = ValueAnimator.ofFloat(selectedDotX, moveTo);
 
         // also set up a pending retreat anim – this starts when the move is 75% complete
-        retreatAnimation = new InkPageIndicator.PendingRetreatAnimator(was, now, steps,
-                now > was ?
-                        new InkPageIndicator.RightwardStartPredicate(
-                                moveTo - (moveTo - selectedDotX) * 0.25f) :
-                        new InkPageIndicator.LeftwardStartPredicate(
-                                moveTo + (selectedDotX - moveTo) * 0.25f));
+        PendingRetreatAnimator retreatAnimation = new InkPageIndicator.PendingRetreatAnimator(was,
+                now, steps, now > was ?
+                new InkPageIndicator.RightwardStartPredicate(
+                        moveTo - (moveTo - selectedDotX) * 0.25f) :
+                new InkPageIndicator.LeftwardStartPredicate(
+                        moveTo + (selectedDotX - moveTo) * 0.25f));
         retreatAnimation.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -583,13 +586,10 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
                 pageChanging = false;
             }
         });
-        moveSelected.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                selectedDotX = (Float) valueAnimator.getAnimatedValue();
-                retreatAnimation.startIfNecessary(selectedDotX);
-                ViewCompat.postInvalidateOnAnimation(InkPageIndicator.this);
-            }
+        moveSelected.addUpdateListener(valueAnimator -> {
+            selectedDotX = (Float) valueAnimator.getAnimatedValue();
+            retreatAnimation.startIfNecessary(selectedDotX);
+            ViewCompat.postInvalidateOnAnimation(InkPageIndicator.this);
         });
         moveSelected.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -784,15 +784,12 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
                             new LeftwardStartPredicate(dotCenterX[was - i]));
                     dotsToHide[i] = was - i;
                 }
-                addUpdateListener(new AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                        retreatingJoinX2 = (Float) valueAnimator.getAnimatedValue();
-                        ViewCompat.postInvalidateOnAnimation(InkPageIndicator.this);
-                        // start any reveal animations if we've passed them
-                        for (PendingRevealAnimator pendingReveal : revealAnimations) {
-                            pendingReveal.startIfNecessary(retreatingJoinX2);
-                        }
+                addUpdateListener(valueAnimator -> {
+                    retreatingJoinX2 = (Float) valueAnimator.getAnimatedValue();
+                    ViewCompat.postInvalidateOnAnimation(InkPageIndicator.this);
+                    // start any reveal animations if we've passed them
+                    for (PendingRevealAnimator pendingReveal : revealAnimations) {
+                        pendingReveal.startIfNecessary(retreatingJoinX2);
                     }
                 });
             } else { // rightward retreat
@@ -803,15 +800,12 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
                             new RightwardStartPredicate(dotCenterX[was + i]));
                     dotsToHide[i] = was + i;
                 }
-                addUpdateListener(new AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                        retreatingJoinX1 = (Float) valueAnimator.getAnimatedValue();
-                        ViewCompat.postInvalidateOnAnimation(InkPageIndicator.this);
-                        // start any reveal animations if we've passed them
-                        for (PendingRevealAnimator pendingReveal : revealAnimations) {
-                            pendingReveal.startIfNecessary(retreatingJoinX1);
-                        }
+                addUpdateListener(valueAnimator -> {
+                    retreatingJoinX1 = (Float) valueAnimator.getAnimatedValue();
+                    ViewCompat.postInvalidateOnAnimation(InkPageIndicator.this);
+                    // start any reveal animations if we've passed them
+                    for (PendingRevealAnimator pendingReveal : revealAnimations) {
+                        pendingReveal.startIfNecessary(retreatingJoinX1);
                     }
                 });
             }
@@ -843,7 +837,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
      * An Animator that animates a given dot's revealFraction i.e. scales it up
      */
     @SuppressWarnings({"CloneableClassInSecureContext", "NonStaticInnerClassInSecureContext"})
-    private class PendingRevealAnimator extends PendingStartAnimator {
+    private final class PendingRevealAnimator extends PendingStartAnimator {
 
         private final int dot;
 
@@ -853,13 +847,8 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
             this.dot = dot;
             setDuration(animHalfDuration);
             setInterpolator(interpolator);
-            addUpdateListener(new AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                    setDotRevealFraction(PendingRevealAnimator.this.dot,
-                            (Float) valueAnimator.getAnimatedValue());
-                }
-            });
+            addUpdateListener(valueAnimator -> setDotRevealFraction(PendingRevealAnimator.this.dot,
+                    (Float) valueAnimator.getAnimatedValue()));
             addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {

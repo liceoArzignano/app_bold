@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="8dp"
+        app:theme="@style/AppTheme.ToolbarTheme"
+        tools:targetApi="lollipop" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="?attr/actionBarSize">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/manager_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="2dp">
+
+                <!-- Title -->
+                <RelativeLayout
+                    style="@style/AppTheme.EditorIcon"
+                    android:id="@+id/editor_title_layout"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp">
+
+                    <ImageView
+                        style="@style/AppTheme.EditorIcon"
+                        app:srcCompat="@drawable/ic_title" />
+
+                    <EditText
+                        style="@style/AppTheme.EditorEditText"
+                        android:id="@+id/editor_title_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        tools:ignore="TextFields" />
+                </RelativeLayout>
+
+                <!-- Subject picker -->
+                <RelativeLayout
+                    style="@style/AppTheme.EditorIcon"
+                    android:id="@+id/editor_subject_layout"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp">
+
+                    <ImageView
+                        style="@style/AppTheme.EditorIcon"
+                        app:srcCompat="@drawable/ic_title" />
+
+                    <TextView
+                        style="@style/AppTheme.EditorTextView"
+                        android:id="@+id/editor_subject_selector"
+                        android:text="@string/editor_hint_subject" />
+                </RelativeLayout>
+
+                <!-- Event category spinner -->
+                <RelativeLayout
+                    style="@style/AppTheme.EditorIcon"
+                    android:id="@+id/editor_category_layout"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp">
+
+                    <ImageView
+                        style="@style/AppTheme.EditorIcon"
+                        app:srcCompat="@drawable/ic_category" />
+
+                    <Spinner
+                        android:id="@+id/editor_category_spinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="56dp" />
+                </RelativeLayout>
+
+                <!-- Mark value -->
+                <RelativeLayout
+                    style="@style/AppTheme.EditorIcon"
+                    android:id="@+id/editor_value_layout"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp">
+
+                    <ImageView
+                        style="@style/AppTheme.EditorIcon"
+                        app:srcCompat="@drawable/ic_trophy" />
+
+                    <TextView
+                        style="@style/AppTheme.EditorTextView"
+                        android:id="@+id/editor_value_view"
+                        android:text="@string/default_mark" />
+                </RelativeLayout>
+
+                <!-- Notes -->
+                <RelativeLayout
+                    style="@style/AppTheme.EditorIcon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        style="@style/AppTheme.EditorIcon"
+                        app:srcCompat="@drawable/ic_notes" />
+
+                    <EditText
+                        style="@style/AppTheme.EditorEditText"
+                        android:id="@+id/editor_notes_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:hint="@string/editor_hint_notes"
+                        android:minHeight="48dp" />
+                </RelativeLayout>
+
+                <!-- Date picker -->
+                <RelativeLayout
+                    style="@style/AppTheme.EditorIcon"
+                    android:id="@+id/editor_date_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp">
+
+                    <ImageView
+                        style="@style/AppTheme.EditorIcon"
+                        app:srcCompat="@drawable/ic_calendar" />
+
+                    <TextView
+                        android:id="@+id/editor_date_view"
+                        style="@style/AppTheme.EditorTextView" />
+                </RelativeLayout>
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

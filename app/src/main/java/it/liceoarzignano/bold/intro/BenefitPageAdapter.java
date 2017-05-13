@@ -3,20 +3,35 @@ package it.liceoarzignano.bold.intro;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.SparseArray;
+import android.view.ViewGroup;
 
 class BenefitPageAdapter extends FragmentPagerAdapter {
+    private final SparseArray<BenefitFragment> mFragments;
 
-    BenefitPageAdapter(FragmentManager mFragmentManager) {
-        super(mFragmentManager);
+    BenefitPageAdapter(FragmentManager manager) {
+        super(manager);
+        mFragments = new SparseArray<>();
     }
 
     @Override
-    public Fragment getItem(int mPostion) {
-        return BenefitFragment.newInstance(mPostion + 1);
+    public Fragment getItem(int position) {
+        return new BenefitFragment().newInstance(position);
+    }
+
+    @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+        BenefitFragment fragment = (BenefitFragment) super.instantiateItem(container, position);
+        mFragments.put(position, fragment);
+        return fragment;
     }
 
     @Override
     public int getCount() {
-        return 3;
+        return 2;
+    }
+
+    BenefitFragment getFirstFragment() {
+        return mFragments.get(0);
     }
 }

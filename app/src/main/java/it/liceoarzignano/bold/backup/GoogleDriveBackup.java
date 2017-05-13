@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -15,17 +14,15 @@ import com.google.android.gms.drive.Drive;
 import java.lang.ref.WeakReference;
 
 class GoogleDriveBackup implements Backup, GoogleApiClient.OnConnectionFailedListener {
-    @Nullable
-    private GoogleApiClient mClient;
+    private static final String TAG = GoogleDriveBackup.class.getSimpleName();
 
-    @Nullable
+    private GoogleApiClient mClient;
     private WeakReference<Activity> mReference;
 
     @Override
-    public void init(@NonNull Activity mActivity) {
-        mReference = new WeakReference<>(mActivity);
-
-        mClient = new GoogleApiClient.Builder(mActivity)
+    public void init(@NonNull Activity activity) {
+        mReference = new WeakReference<>(activity);
+        mClient = new GoogleApiClient.Builder(activity)
                 .addApi(Drive.API)
                 .addScope(Drive.SCOPE_FILE)
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
@@ -39,7 +36,6 @@ class GoogleDriveBackup implements Backup, GoogleApiClient.OnConnectionFailedLis
                 })
                 .addOnConnectionFailedListener(this)
                 .build();
-
     }
 
     @Override
@@ -49,40 +45,37 @@ class GoogleDriveBackup implements Backup, GoogleApiClient.OnConnectionFailedLis
 
     @Override
     public void start() {
-        if (mClient != null) {
-            mClient.connect();
-        } else {
+        if (mClient == null) {
             throw new IllegalStateException("You should call init before start");
+        } else {
+            mClient.connect();
         }
     }
 
     @Override
     public void stop() {
-        if (mClient != null) {
-            mClient.disconnect();
-        } else {
+        if (mClient == null) {
             throw new IllegalStateException("You should call init before start");
+        } else {
+            mClient.disconnect();
         }
     }
 
     @Override
-    public void onConnectionFailed(@NonNull ConnectionResult mResult) {
-        if (mResult.hasResolution() && mReference != null && mReference.get() != null) {
-            Activity mActivity = mReference.get();
-            // show the localized error dialog.
-            try {
-                mResult.startResolutionForResult(mActivity, 1);
-            } catch (IntentSender.SendIntentException e) {
-                if (android.support.compat.BuildConfig.DEBUG) {
-                    Log.e("Backup", e.getMessage());
-                }
-                GoogleApiAvailability.getInstance()
-                        .getErrorDialog(mActivity, mResult.getErrorCode(), 0).show();
-            }
-        } else {
-            Log.e("GoogleDriveAPI", "Unable to connect!");
-            Log.e("GoogleDriveAPI", "Error code: " + mResult.getErrorCode());
-            Log.e("GoogleDriveAPI", "Error message: " +  mResult.getErrorMessage());
+    public void onConnectionFailed(@NonNull ConnectionResult result) {
+        if (result.hasResolution() && mReference == null || mReference.get() == null) {
+            Log.e(TAG, String.format("Unable to connect!\nError code: %1$s\nError message: %2$s",
+                    result.getErrorCode(), result.getErrorMessage()));
+            return;
+        }
+        Activity activity = mReference.get();
+        // show the localized error dialog.
+        try {
+            result.startResolutionForResult(activity, 1);
+        } catch (IntentSender.SendIntentException e) {
+            Log.e(TAG, e.getMessage());
+            GoogleApiAvailability.getInstance()
+                    .getErrorDialog(activity, result.getErrorCode(), 0).show();
         }
     }
 }

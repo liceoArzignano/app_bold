@@ -4,6 +4,11 @@
     <entry_points version="2.0">
       <entry_point TYPE="method" FQNAME="it.liceoarzignano.bold.realm.RealmController it.liceoarzignano.bold.realm.RealmController with(android.app.Fragment fragment)" />
       <entry_point TYPE="method" FQNAME="it.liceoarzignano.bold.realm.RealmController it.liceoarzignano.bold.realm.RealmController with(android.app.Application application)" />
+      <entry_point TYPE="method" FQNAME="it.liceoarzignano.bold.realm.RealmController io.realm.RealmResults&lt;T&gt; getAll()" />
+      <entry_point TYPE="method" FQNAME="it.liceoarzignano.bold.realm.RealmController io.realm.RealmResults&lt;T&gt; getById(long mId)" />
+      <entry_point TYPE="method" FQNAME="it.liceoarzignano.bold.realm.RealmController long add(T mObject)" />
+      <entry_point TYPE="method" FQNAME="it.liceoarzignano.bold.realm.RealmController void delete(long mId)" />
+      <entry_point TYPE="method" FQNAME="it.liceoarzignano.bold.realm.RealmController long update(T mObject)" />
     </entry_points>
   </component>
   <component name="NullableNotNullManager">
@@ -40,7 +45,7 @@
     <ConfirmationsSetting value="0" id="Add" />
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" default="true" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" assert-keyword="true" jdk-15="true" project-jdk-name="1.8 (1)" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

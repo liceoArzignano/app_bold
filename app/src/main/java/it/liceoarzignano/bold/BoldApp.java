@@ -1,52 +1,37 @@
 package it.liceoarzignano.bold;
 
 import android.app.Application;
-import android.content.Context;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.v7.app.AppCompatDelegate;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import it.liceoarzignano.bold.firebase.BoldAnalytics;
+import it.liceoarzignano.bold.utils.PrefsUtils;
 
 public class BoldApp extends Application {
 
-    private static RealmConfiguration sConfig;
-    private static Context sContext;
-    private static BoldAnalytics sBoldAnalytics;
-
-    public static RealmConfiguration getAppRealmConfiguration() {
-        return sConfig;
-    }
-
-    public static Context getBoldContext() {
-        return sContext;
-    }
-
-    public static BoldAnalytics getBoldAnalytics() {
-        return sBoldAnalytics;
-    }
+    private RealmConfiguration mConfig;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        sConfig = new RealmConfiguration.Builder(this)
+        mConfig = new RealmConfiguration.Builder(this)
                 .name(Realm.DEFAULT_REALM_NAME)
                 .schemaVersion(0)
-                .deleteRealmIfMigrationNeeded()
                 .build();
 
-        Realm.setDefaultConfiguration(sConfig);
+        Realm.setDefaultConfiguration(mConfig);
 
-        sContext = getApplicationContext();
-
-        sBoldAnalytics = new BoldAnalytics(sContext);
         FirebaseMessaging.getInstance().subscribeToTopic("global");
-        FirebaseMessaging.getInstance().subscribeToTopic(Utils.getTopic(sContext));
-        if (!Utils.isTeacher(sContext)) {
+        FirebaseMessaging.getInstance().subscribeToTopic(PrefsUtils.getTopic(this));
+        if (!PrefsUtils.isTeacher(this)) {
             FirebaseMessaging.getInstance().subscribeToTopic("students");
         }
 
@@ -59,6 +44,24 @@ public class BoldApp extends Application {
                     .penaltyDeath()
                     .build());
         }
+
+        // Turn on support library vectorDrawables supports on legacy devices
+        if (!PrefsUtils.isNotLegacy()) {
+            AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+        }
+
+        // Analytics
+        PrefsUtils.enableTrackerIfOverlayRequests(this, getResources().getBoolean(R.bool.force_tracker));
+
+        if (PrefsUtils.hasAnalytics(this)) {
+            BoldAnalytics analytics = new BoldAnalytics(this);
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.LEVEL, "App");
+            analytics.sendConfig(bundle);
+        }
     }
 
+    public RealmConfiguration getConfig() {
+        return mConfig;
+    }
 }

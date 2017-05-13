@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
     <item>
         <shape android:shape="oval">
             <solid android:color="@color/address_1" />
         </shape>
     </item>
     <item
-        android:drawable="@drawable/ic_address_src_1"
         android:bottom="16dp"
-        android:right="16dp"
         android:left="16dp"
-        android:top="16dp"/>
+        android:right="16dp"
+        android:top="16dp">
+        <vector
+            android:width="24dp"
+            android:height="24dp"
+            android:viewportHeight="24"
+            android:viewportWidth="24"
+            tools:targetApi="lollipop">
+            <path
+                android:fillColor="#a67e05"
+                android:pathData="M4,5 L4,7 L6,7 L6,19 L8,19 L8,7 L14,7 L14,16 A3,3,0,0,0,17,19 A3,3,0,0,0,20,16L18,16 A1,1,0,0,1,17,17 A1,1,0,0,1,16,16 L16,7 L18,7 L18,5" />
+        </vector>
+    </item>
 </layer-list>

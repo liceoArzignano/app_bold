@@ -1,16 +1,14 @@
 package it.liceoarzignano.bold;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.customtabs.CustomTabsClient;
 import android.support.customtabs.CustomTabsIntent;
@@ -26,82 +24,89 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
-import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import io.realm.Sort;
-import it.liceoarzignano.bold.events.AlarmService;
 import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.events.EventListActivity;
-import it.liceoarzignano.bold.firebase.BoldAnalytics;
+import it.liceoarzignano.bold.events.EventsController;
 import it.liceoarzignano.bold.home.HomeAdapter;
 import it.liceoarzignano.bold.home.HomeCard;
+import it.liceoarzignano.bold.home.HomeCardBuilder;
 import it.liceoarzignano.bold.intro.BenefitsActivity;
 import it.liceoarzignano.bold.marks.Mark;
-import it.liceoarzignano.bold.marks.MarkListActivity;
+import it.liceoarzignano.bold.marks.MarksActivity;
+import it.liceoarzignano.bold.marks.MarksController;
 import it.liceoarzignano.bold.news.News;
+import it.liceoarzignano.bold.news.NewsController;
 import it.liceoarzignano.bold.news.NewsListActivity;
-import it.liceoarzignano.bold.realm.RealmController;
 import it.liceoarzignano.bold.safe.SafeActivity;
 import it.liceoarzignano.bold.settings.SettingsActivity;
-import it.liceoarzignano.bold.ui.DividerDecoration;
+import it.liceoarzignano.bold.ui.recyclerview.DividerDecoration;
+import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt;
+import it.liceoarzignano.bold.utils.ContentUtils;
+import it.liceoarzignano.bold.utils.DateUtils;
+import it.liceoarzignano.bold.utils.PrefsUtils;
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String APP_VERSION = BuildConfig.VERSION_NAME;
-    private static final Calendar sCal = Calendar.getInstance();
-    private static Resources sRes;
-    private static Context sContext;
-    private static RealmController sController;
-    // Firebase
-    private BoldAnalytics mBoldAnalytics;
-    private boolean isAnalyticsEnabled = false;
-    // Header
+    private FirebaseRemoteConfig mRemoteConfig;
+
+    private MarksController mMarksController;
+    private EventsController mEventsController;
+    private NewsController mNewsController;
+
     private Toolbar mToolbar;
+    private ImageView mBanner;
+    private RecyclerViewExt mCardsList;
     private TextView mUserName;
     private ImageView mAddressLogo;
-    // Cards
-    private RecyclerView mCardsList;
-    // Chrome custom tabs
+
     private CustomTabsClient mClient;
     private CustomTabsSession mCustomTabsSession;
     private CustomTabsIntent mCustomTabsIntent;
-    private String mUrl;
+    private CustomTabsServiceConnection mCustomTabsServiceConnection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        sRes = getResources();
-        sContext = getApplicationContext();
-        sController = RealmController.with(this);
+        // Realm config
+        RealmConfiguration config = ((BoldApp) getApplication()).getConfig();
+        mMarksController = new MarksController(config);
+        mEventsController = new EventsController(config);
+        mNewsController = new NewsController(config);
 
-        // Analytics
-        setupAnalytics();
+        // Firebase config
+        setupRemoteConfig();
 
         // Intro
         showIntroIfNeeded();
 
+        // UI
         setContentView(R.layout.activity_main);
 
         // Toolbar and NavDrawer
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+        mBanner = (ImageView) findViewById(R.id.home_toolbar_banner);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, mToolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -109,38 +114,31 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
-        View mHeaderView = navigationView.getHeaderView(0);
-        mUserName = (TextView) mHeaderView.findViewById(R.id.header_username);
-        mAddressLogo = (ImageView) mHeaderView.findViewById(R.id.header_logo);
+        View header = navigationView.getHeaderView(0);
+        mUserName = (TextView) header.findViewById(R.id.header_username);
+        mAddressLogo = (ImageView) header.findViewById(R.id.header_logo);
+        if (PrefsUtils.isTeacher(this)) {
+            navigationView.getMenu().findItem(R.id.nav_share).setVisible(false);
+        }
 
         // Cards List
-        mCardsList = (RecyclerView) findViewById(R.id.home_list);
-        mCardsList.setLayoutManager(new LinearLayoutManager(sContext));
-        mCardsList.setItemAnimator(new DefaultItemAnimator());
-        mCardsList.addItemDecoration(new DividerDecoration(sContext));
-
-        // Chrome custom tabs
-        setupCCustomTabs();
-
-        // Firebase intent
-        Intent mCallingIntent = getIntent();
-        String mFirebaseUrl = mCallingIntent.getStringExtra("firebaseUrl");
-        if (mFirebaseUrl != null && !mFirebaseUrl.isEmpty()) {
-            mCustomTabsIntent.launchUrl(this, Uri.parse(mFirebaseUrl));
-        }
+        mCardsList = (RecyclerViewExt) findViewById(R.id.home_list);
 
         // Welcome dialog
         showWelcomeIfNeeded(this);
 
         // Notification
-        if (Utils.hasEventsNotification(sContext)) {
-            makeEventNotification();
+        if (PrefsUtils.hasEventsNotification(this)) {
+            ContentUtils.makeEventNotification(this);
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
+        // Chrome custom tabs
+        setupCCustomTabs();
 
         // Refresh Navigation Drawer header
         setupNavHeader();
@@ -150,306 +148,95 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
+        if (mCustomTabsServiceConnection != null) {
+            unbindService(mCustomTabsServiceConnection);
+            mCustomTabsServiceConnection = null;
+        }
     }
 
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem mItem) {
-        int mId = mItem.getItemId();
-        int mMenuVal = 0;
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
 
-        switch (mId) {
-            case R.id.nav_my_marks:
-                mMenuVal = 1;
-                Intent mMarksIntent = new Intent(this, MarkListActivity.class);
-                startActivity(mMarksIntent);
-                break;
-            case R.id.nav_calendar:
-                mMenuVal = 2;
-                Intent mEventsIntent = new Intent(this, EventListActivity.class);
-                startActivity(mEventsIntent);
-                break;
-            case R.id.nav_news:
-                mMenuVal = 3;
-                Intent mNewsIntent = new Intent(this, NewsListActivity.class);
-                startActivity(mNewsIntent);
-                break;
-            case R.id.nav_website:
-                mMenuVal = 4;
-                showWebViewUI(0);
-                break;
-            case R.id.nav_reg:
-                mMenuVal = 5;
-                showWebViewUI(1);
-                break;
-            case R.id.nav_moodle:
-                mMenuVal = 6;
-                showWebViewUI(2);
-                break;
-            case R.id.nav_copyboox:
-                mMenuVal = 7;
-                showWebViewUI(3);
-                break;
-            case R.id.nav_teacherzone:
-                mMenuVal = 8;
-                showWebViewUI(4);
-                break;
-            case R.id.nav_settings:
-                mMenuVal = 9;
-                Intent settingsIntent = new Intent(this, SettingsActivity.class);
-                startActivity(settingsIntent);
-                break;
-            case R.id.nav_safe:
-                mMenuVal = 10;
-                Intent safeIntent = new Intent(this, SafeActivity.class);
-                startActivity(safeIntent);
-                break;
-        }
+        // Do action with some delay to prevent lags when
+        // loading big lists of marks and events
+        new Handler().postDelayed(() -> {
+            switch (item.getItemId()) {
+                case R.id.nav_my_marks:
+                    startActivity(new Intent(this, MarksActivity.class));
+                    break;
+                case R.id.nav_calendar:
+                    startActivity(new Intent(this, EventListActivity.class));
+                    break;
+                case R.id.nav_news:
+                    startActivity(new Intent(this, NewsListActivity.class));
+                    break;
+                case R.id.nav_website:
+                    showWebViewUI(0);
+                    break;
+                case R.id.nav_reg:
+                    showWebViewUI(1);
+                    break;
+                case R.id.nav_moodle:
+                    showWebViewUI(2);
+                    break;
+                case R.id.nav_copyboox:
+                    showWebViewUI(3);
+                    break;
+                case R.id.nav_teacherzone:
+                    showWebViewUI(4);
+                    break;
+                case R.id.nav_settings:
+                    Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                    startActivity(settingsIntent);
+                    break;
+                case R.id.nav_safe:
+                    Intent safeIntent = new Intent(this, SafeActivity.class);
+                    startActivity(safeIntent);
+                    break;
+                case R.id.nav_share:
+                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                    shareIntent.setType("text/plain");
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, mRemoteConfig.getString("share_url"));
+                    startActivity(Intent.createChooser(shareIntent,
+                            getString(R.string.share_title)));
+                    break;
+                case R.id.nav_help:
+                    showWebViewUI(5);
+                    break;
+            }
+        }, 130);
 
-        if (isAnalyticsEnabled) {
-            // Track this action
-            Bundle mBundle = new Bundle();
-            mBundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Drawer Item");
-            mBundle.putString(FirebaseAnalytics.Param.ITEM_NAME, String.valueOf(mMenuVal));
-            mBoldAnalytics.sendEvent(mBundle);
-        }
-
-        DrawerLayout mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    /**
-     * @return content for notification
-     */
-    public static String getTomorrowInfo() {
-        String mContent = null;
-        boolean isFirstElement = true;
-
-        int mIcon;
-        int mTest = 0;
-        int mAtSchool = 0;
-        int mBirthday = 0;
-        int mHomework = 0;
-        int mReminder = 0;
-        int mHangout = 0;
-        int mOther = 0;
-
-        // Use realm instead of RealmController to avoid NPE when onBoot intent is broadcast'ed
-        List<Event> mEvents = Realm.getInstance(BoldApp.getAppRealmConfiguration())
-                .where(Event.class).findAllSorted("date", Sort.DESCENDING);
-
-        List<Event> mUpcomingEvents = new ArrayList<>();
-
-        // Avoid npe
-        if (sRes == null) {
-            sRes = BoldApp.getBoldContext().getResources();
-        }
-
-        // Create tomorrow events list
-        for (Event mEvent : mEvents) {
-            if (Utils.getToday().equals(mEvent.getDate())) {
-                mUpcomingEvents.add(mEvent);
-            }
-        }
-
-        if (mUpcomingEvents.isEmpty()) {
-            return null;
-        }
-
-        // Get data
-        for (Event mEvent : mUpcomingEvents) {
-            mIcon = mEvent.getIcon();
-            switch (mIcon) {
-                case 0:
-                    mTest++;
-                    break;
-                case 1:
-                    mAtSchool++;
-                    break;
-                case 2:
-                    mBirthday++;
-                    break;
-                case 3:
-                    mHomework++;
-                    break;
-                case 4:
-                    mReminder++;
-                    break;
-                case 5:
-                    mHangout++;
-                    break;
-                case 6:
-                    mOther++;
-                    break;
-            }
-        }
-
-        // Test
-        if (mTest > 0) {
-            // First element
-            mContent = sRes.getQuantityString(R.plurals.notification_message_first, mTest, mTest)
-                    + " " + sRes.getQuantityString(R.plurals.notification_test, mTest, mTest);
-            isFirstElement = false;
-        }
-
-        // School
-        if (mAtSchool > 0) {
-            if (isFirstElement) {
-                mContent = sRes.getQuantityString(R.plurals.notification_message_first,
-                        mAtSchool, mAtSchool) + " ";
-                isFirstElement = false;
-            } else {
-                mContent += mBirthday == 0 && mHangout == 0 && mOther == 0 ? " " +
-                        String.format(sRes.getString(R.string.notification_message_half), mAtSchool) :
-                        String.format(sRes.getString(R.string.notification_message_half), mAtSchool);
-            }
-            mContent += " " + sRes.getQuantityString(R.plurals.notification_school,
-                    mAtSchool, mAtSchool);
-        }
-
-        // Birthday
-        if (mBirthday > 0) {
-            if (isFirstElement) {
-                mContent = sRes.getQuantityString(R.plurals.notification_message_first,
-                        mBirthday, mBirthday) + " ";
-                isFirstElement = false;
-            } else {
-                mContent += String.format(sRes.getString(R.string.notification_message_half),
-                        mBirthday);
-            }
-            mContent += " " + sRes.getQuantityString(R.plurals.notification_birthday,
-                    mBirthday, mBirthday);
-        }
-
-        // Homework
-        if (mHomework > 0) {
-            if (isFirstElement) {
-                mContent = sRes.getQuantityString(R.plurals.notification_message_first,
-                        mHomework, mHomework) + " ";
-                isFirstElement = false;
-            } else {
-                mContent += String.format(sRes.getString(R.string.notification_message_half),
-                        mHomework);
-            }
-
-            mContent += " " + sRes.getQuantityString(R.plurals.notification_homework,
-                    mHomework, mHomework);
-        }
-
-        // Reminder
-        if (mReminder > 0) {
-            if (isFirstElement) {
-                mContent = sRes.getQuantityString(R.plurals.notification_message_first,
-                        mReminder, mReminder) + " ";
-                isFirstElement = false;
-            } else {
-                mContent += String.format(sRes.getString(R.string.notification_message_half),
-                        mReminder);
-            }
-            mContent += " " + sRes.getQuantityString(R.plurals.notification_reminder,
-                    mReminder, mReminder);
-        }
-
-        // Hangout
-        if (mHangout > 0) {
-            if (isFirstElement) {
-                mContent = sRes.getQuantityString(R.plurals.notification_message_first,
-                        mHangout, mHangout) + " ";
-                isFirstElement = false;
-            } else {
-                mContent += String.format(sRes.getString(R.string.notification_message_half),
-                        mAtSchool);
-            }
-            mContent += " " + sRes.getQuantityString(R.plurals.notification_meeting,
-                    mHangout, mHangout);
-        }
-
-        // Other
-        if (mOther > 0) {
-            if (isFirstElement) {
-                mContent = sRes.getQuantityString(R.plurals.notification_message_first,
-                        mOther, mOther);
-                mContent += " ";
-            } else {
-                mContent += String.format(sRes.getString(R.string.notification_message_half),
-                        mOther);
-            }
-            mContent += " " + sRes.getQuantityString(R.plurals.notification_other,
-                    mOther, mOther);
-        }
-
-        mContent += " " + sRes.getString(R.string.notification_message_end);
-
-        return mContent;
-    }
-
-    /**
-     * Create notification that will be fired later
-     */
-    public static void makeEventNotification() {
-        // Guard against npe when called from service
-        if (sContext == null) {
-            sContext = BoldApp.getBoldContext();
-        }
-
-        Calendar mCalendar = Calendar.getInstance();
-        mCalendar.set(Calendar.YEAR, sCal.get(Calendar.YEAR));
-        mCalendar.set(Calendar.MONTH, sCal.get(Calendar.MONTH));
-        mCalendar.set(Calendar.DAY_OF_MONTH, sCal.get(Calendar.DAY_OF_MONTH));
-
-        switch (Utils.getEventsNotificationTime(sContext)) {
-            case "0":
-                if (mCalendar.get(Calendar.HOUR_OF_DAY) >= 6) {
-                    // If it's too late for today's notification, plan one for tomorrow
-                    mCalendar.set(Calendar.DAY_OF_MONTH, sCal.get(Calendar.DAY_OF_MONTH) + 1);
-                }
-                mCalendar.set(Calendar.HOUR_OF_DAY, 6);
-                break;
-            case "1":
-                if (mCalendar.get(Calendar.HOUR_OF_DAY) >= 15) {
-                    // If it's too late for today's notification, plan one for tomorrow
-                    mCalendar.set(Calendar.DAY_OF_MONTH, sCal.get(Calendar.DAY_OF_MONTH) + 1);
-                }
-                mCalendar.set(Calendar.HOUR_OF_DAY, 15);
-                break;
-            case "2":
-                if (mCalendar.get(Calendar.HOUR_OF_DAY) >= 21) {
-                    // If it's too late for today's notification, plan one for tomorrow
-                    mCalendar.set(Calendar.DAY_OF_MONTH, sCal.get(Calendar.DAY_OF_MONTH) + 1);
-                }
-                mCalendar.set(Calendar.HOUR_OF_DAY, 21);
-                break;
-        }
-
-        Intent mNotifIntent = new Intent(sContext, AlarmService.class);
-        AlarmManager mAlarmManager = (AlarmManager) sContext.getSystemService(ALARM_SERVICE);
-        PendingIntent mPendingIntent = PendingIntent.getService(sContext, 0, mNotifIntent, 0);
-        mAlarmManager.set(AlarmManager.RTC, mCalendar.getTimeInMillis(), mPendingIntent);
     }
 
     /**
      * Init Chrome custom tabs
      */
     private void setupCCustomTabs() {
-        CustomTabsServiceConnection mCustomTabsServiceConnection =
-                new CustomTabsServiceConnection() {
-                    @Override
-                    public void onCustomTabsServiceConnected(ComponentName componentName,
-                                                             CustomTabsClient customTabsClient) {
-                        mClient = customTabsClient;
-                        mClient.warmup(0L);
-                        mCustomTabsSession = mClient.newSession(null);
-                    }
+        if (mClient != null) {
+            return;
+        }
 
-                    @Override
-                    public void onServiceDisconnected(ComponentName name) {
+        mCustomTabsServiceConnection = new CustomTabsServiceConnection() {
+            @Override
+            public void onCustomTabsServiceConnected(ComponentName componentName,
+                                                             CustomTabsClient customTabsClient) {
+                mClient = customTabsClient;
+                mClient.warmup(0L);
+                mCustomTabsSession = mClient.newSession(null);
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
                         mClient = null;
                     }
-                };
+        };
 
-        CustomTabsClient.bindCustomTabsService(sContext, "com.android.chrome",
+        CustomTabsClient.bindCustomTabsService(getBaseContext(), "com.android.chrome",
                 mCustomTabsServiceConnection);
 
         mCustomTabsIntent = new CustomTabsIntent.Builder(mCustomTabsSession)
@@ -467,36 +254,39 @@ public class MainActivity extends AppCompatActivity
     /**
      * Open a chrome custom tab with the selected url and send
      * an Analytics event.
-     * If there's no chrome / chromium 46+ it will
-     * just open the browser
+     * If there's no chrome / chromium 46+ it will just open the default browser
      *
-     * @param mIndex: the selected item from the nav drawer menu
+     * @param index: the selected item from the nav drawer menu
      */
-    private void showWebViewUI(int mIndex) {
-        switch (mIndex) {
+    private void showWebViewUI(int index) {
+        String url = null;
+        switch (index) {
             case -1:
-                mUrl = getString(R.string.config_url_changelog);
+                url = getString(R.string.config_url_changelog);
                 break;
             case 0:
-                mUrl = getString(R.string.config_url_home);
+                url = getString(R.string.config_url_home);
                 break;
             case 1:
-                mUrl = getString(Utils.isTeacher(this) ?
+                url = getString(PrefsUtils.isTeacher(this) ?
                         R.string.config_url_reg_teacher : R.string.config_url_reg_student);
                 break;
             case 2:
-                mUrl = getString(R.string.config_url_moodle);
+                url = getString(R.string.config_url_moodle);
                 break;
             case 3:
-                mUrl = getString(R.string.config_url_copybook);
+                url = getString(R.string.config_url_copybook);
                 break;
             case 4:
-                mUrl = getString(R.string.config_url_teacherzone);
+                url = getString(R.string.config_url_teacherzone);
+                break;
+            case 5:
+                url = getString(R.string.config_url_help);
                 break;
         }
 
-        if (mUrl != null) {
-            mCustomTabsIntent.launchUrl(this, Uri.parse(mUrl));
+        if (url != null) {
+            mCustomTabsIntent.launchUrl(this, Uri.parse(url));
         }
     }
 
@@ -507,49 +297,55 @@ public class MainActivity extends AppCompatActivity
      * @return events card
      */
     private HomeCard createEventsCard() {
-        HomeCard.Builder mBuilder = new HomeCard.Builder()
-                .setName(getString(R.string.upcoming_events));
+        HomeCardBuilder builder = new HomeCardBuilder().setName(getString(R.string.upcoming_events));
 
         // Show 3 closest events
-        List<Event> mEvents = sController.getAllEventsInverted();
+        List<Event> events = mEventsController.getAll();
 
-        for (int mCounter = 0; mBuilder.build().getSize() < 3 && mCounter < mEvents.size();
-             mCounter++) {
-            Event mEvent = mEvents.get(mCounter);
-            if (isThisWeek(mEvent.getDate())) {
-                mBuilder.addEntry(mEvent.getTitle(), mEvent.getDate());
+        int added = 0;
+        for (Event event : events) {
+            if (!DateUtils.dateDiff(DateUtils.getDate(7), event.getDate(), 8)) {
+                added++;
+                builder.addEntry(event.getTitle(),
+                        DateUtils.dateToWordsString(this, event.getDate()));
+            }
+            if (added == 3) {
+                break;
             }
         }
 
-        if (mBuilder.build().getSize() == 0) {
+        builder.setIntent(this, new Intent(this, EventListActivity.class));
+
+        if (builder.build().getSize() == 0) {
             return null;
         }
 
-        return mBuilder.build();
+        return builder.build();
     }
 
     /**
      * Show the last 3 news in
      * a card with their titles and dates.
      *
-     * @return events card
+     * @return news card
      */
     private HomeCard createNewsCard() {
-        HomeCard.Builder mBuilder = new HomeCard.Builder()
-                .setName(getString(R.string.nav_news));
+        HomeCardBuilder builder = new HomeCardBuilder().setName(getString(R.string.nav_news));
 
         // Show 3 lastest news
-        List<News> mNews = sController.getAllNews();
-        if (mNews.isEmpty()) {
+        List<News> newsList = mNewsController.getAll();
+        if (newsList.isEmpty()) {
             return null;
         }
 
-        for (int mCounter = 0; mCounter < 3 && mCounter < mNews.size(); mCounter++) {
-            News mNewsObj = mNews.get(mCounter);
-            mBuilder.addEntry(mNewsObj.getTitle(), mNewsObj.getDate());
+        for (int counter = 0; counter < 3 && counter < newsList.size(); counter++) {
+            News news = newsList.get(counter);
+            builder.addEntry(news.getTitle(), DateUtils.dateToWordsString(this, news.getDate()));
         }
 
-        return mBuilder.build();
+        builder.setIntent(this, new Intent(this, NewsListActivity.class));
+
+        return builder.build();
     }
 
     /**
@@ -559,20 +355,21 @@ public class MainActivity extends AppCompatActivity
      * @return marks card
      */
     private HomeCard createMarksCard() {
-        HomeCard.Builder mBuilder = new HomeCard.Builder()
-                .setName(getString(R.string.lastest_marks));
+        HomeCardBuilder builder = new HomeCardBuilder().setName(getString(R.string.lastest_marks));
 
-        List<Mark> mMarks = sController.getAllMarks().sort("date", Sort.DESCENDING);
-        if (mMarks.isEmpty()) {
+        List<Mark> marks = mMarksController.getAll().sort("date", Sort.DESCENDING);
+        if (marks.isEmpty()) {
             return null;
         }
 
-        for (int mCounter = 0; mCounter < 3 && mCounter < mMarks.size(); mCounter++) {
-            Mark mMark = mMarks.get(mCounter);
-            mBuilder.addEntry(mMark.getTitle(), String.valueOf((double) mMark.getValue() / 100));
+        for (int counter = 0; counter < 3 && counter < marks.size(); counter++) {
+            Mark mark = marks.get(counter);
+            builder.addEntry(mark.getTitle(), String.valueOf((double) mark.getValue() / 100));
         }
 
-        return mBuilder.build();
+        builder.setIntent(this, new Intent(this, MarksActivity.class));
+
+        return builder.build();
     }
 
     /**
@@ -581,25 +378,10 @@ public class MainActivity extends AppCompatActivity
      * @return suggestions card
      */
     private HomeCard createSuggestionsCard() {
-        return new HomeCard.Builder()
+        return new HomeCardBuilder()
                 .setName(getString(R.string.suggestions))
                 .addEntry("", getSuggestion())
                 .build();
-    }
-
-    /**
-     * Check if stringDate is one of the next 7 days
-     *
-     * @param stringDate: string date from event database
-     * @return true if it's within 7 days, false if not
-     */
-    private boolean isThisWeek(String stringDate) {
-        Calendar mCalendar = Calendar.getInstance();
-        mCalendar.setTimeInMillis(Utils.stringToDate(stringDate).getTime());
-
-        int mDiff = mCalendar.get(Calendar.DAY_OF_YEAR) - sCal.get(Calendar.DAY_OF_YEAR);
-
-        return sCal.get(Calendar.YEAR) == mCalendar.get(Calendar.YEAR) && mDiff >= 0 && mDiff < 8;
     }
 
     /**
@@ -609,10 +391,10 @@ public class MainActivity extends AppCompatActivity
      * @return string with text for suggestion card
      */
     private String getSuggestion() {
-        Random mRandom = new SecureRandom();
-        switch (mRandom.nextInt(11) + 1) {
+        Random random = new SecureRandom();
+        switch (random.nextInt(12) + 1) {
             case 1:
-                return getString(Utils.hasSafe(this) ?
+                return getString(PrefsUtils.hasSafe(this) ?
                         R.string.suggestion_safe_pwd : R.string.suggestion_safe);
             case 2:
                 return getString(R.string.suggestion_avg);
@@ -632,6 +414,8 @@ public class MainActivity extends AppCompatActivity
                 return getString(R.string.suggestion_suggestions);
             case 10:
                 return getString(R.string.suggestion_news);
+            case 11:
+                return getString(R.string.suggestion_feedback);
             default:
                 return getString(R.string.suggestion_notification);
         }
@@ -643,37 +427,55 @@ public class MainActivity extends AppCompatActivity
      * a nice enter effect
      */
     private void populateCards() {
-        List<HomeCard> mCards = new ArrayList<>();
+        List<HomeCard> cards = new ArrayList<>();
 
         // Events
-        HomeCard mEventsCard = createEventsCard();
-        if (mEventsCard != null) {
-            mCards.add(mEventsCard);
+        HomeCard eventsCard = createEventsCard();
+        if (eventsCard != null) {
+            cards.add(eventsCard);
         }
 
         // News
-        HomeCard mNewsCard = createNewsCard();
-        if (mNewsCard != null) {
-            mCards.add(mNewsCard);
+        HomeCard newsCard = createNewsCard();
+        if (newsCard != null) {
+            cards.add(newsCard);
         }
 
         // Marks
-        if (Utils.hasUsedForMoreThanOneWeek(sContext)) {
-            HomeCard mMarksCard = createMarksCard();
-            if (mMarksCard != null) {
-                mCards.add(mMarksCard);
+        if (DateUtils.dateDiff(DateUtils.getDate(0), PrefsUtils.getFirstUsageDate(this), 7)) {
+            HomeCard marksCard = createMarksCard();
+            if (marksCard != null) {
+                cards.add(marksCard);
             }
         }
 
         // Suggestions
-        if (Utils.hasSuggestions(sContext)) {
-            mCards.add(createSuggestionsCard());
+        if (PrefsUtils.hasSuggestions(this)) {
+            cards.add(createSuggestionsCard());
         }
 
-        HomeAdapter mAdapter = new HomeAdapter(mCards);
-        mCardsList.setAdapter(mAdapter);
+        HomeAdapter adapter = new HomeAdapter(this, cards);
+        mCardsList.setAdapter(adapter);
 
-        mAdapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
+    }
+
+    /**
+     * Load remote configs, they get applied once the app is
+     */
+    private void setupRemoteConfig() {
+        mRemoteConfig = FirebaseRemoteConfig.getInstance();
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setDeveloperModeEnabled(BuildConfig.DEBUG)
+                .build();
+        mRemoteConfig.setConfigSettings(configSettings);
+        mRemoteConfig.setDefaults(R.xml.firebase_remote_config_defaults);
+        mRemoteConfig.fetch(BuildConfig.DEBUG ? 0 : TimeUnit.HOURS.toMillis(12))
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        mRemoteConfig.activateFetched();
+                    }
+                });
     }
 
     /**
@@ -681,10 +483,10 @@ public class MainActivity extends AppCompatActivity
      * if it's the first time we fire the app
      */
     private void showIntroIfNeeded() {
-        SharedPreferences mPrefs = getSharedPreferences("HomePrefs", MODE_PRIVATE);
-        if (!mPrefs.getBoolean("introKey", false)) {
-            Intent mIntent = new Intent(this, BenefitsActivity.class);
-            startActivity(mIntent);
+        SharedPreferences prefs = getSharedPreferences(PrefsUtils.EXTRA_PREFS, MODE_PRIVATE);
+        if (!prefs.getBoolean(PrefsUtils.KEY_INTRO_SCREEN, false)) {
+            Intent intent = new Intent(this, BenefitsActivity.class);
+            startActivity(intent);
             finish();
         }
     }
@@ -693,99 +495,52 @@ public class MainActivity extends AppCompatActivity
      * Show welcome / changelog dialog
      * when the app is installed / updated
      *
-     * @param mContext: used to get SharedPreferences
+     * @param context: used to get SharedPreferences
      */
-    private void showWelcomeIfNeeded(final Context mContext) {
-        final SharedPreferences mPrefs = getSharedPreferences("HomePrefs", MODE_PRIVATE);
+    private void showWelcomeIfNeeded(final Context context) {
+        final SharedPreferences prefs = getSharedPreferences(PrefsUtils.EXTRA_PREFS, MODE_PRIVATE);
+        @SuppressLint("CommitPrefEdits")
+        final SharedPreferences.Editor editor = prefs.edit();
 
-        if (!mPrefs.getBoolean("introKey", false)) {
+        if (!prefs.getBoolean(PrefsUtils.KEY_INTRO_SCREEN, false)) {
             // If we're showing intro, don't display dialog
             return;
         }
 
-        @SuppressLint("CommitPrefEdits")
-        final SharedPreferences.Editor mEditor =
-                getSharedPreferences("HomePrefs", MODE_PRIVATE).edit();
-
-        switch (Utils.appVersionKey(this)) {
-            case APP_VERSION:
+        switch (PrefsUtils.appVersionKey(this)) {
+            case BuildConfig.VERSION_NAME:
                 break;
             case "0":
                 // Used for feature discovery
-                final String today = Utils.getToday();
-                mEditor.putString("appVersionKey", APP_VERSION).apply();
-                mEditor.putString("initialDayKey", today).apply();
+                final String today = DateUtils.getDateString(0);
+                editor.putString(PrefsUtils.KEY_VERSION, BuildConfig.VERSION_NAME).apply();
+                editor.putString(PrefsUtils.KEY_INITIAL_DAY, today).apply();
                 break;
             default:
-                new MaterialDialog.Builder(mContext)
+                new MaterialDialog.Builder(context)
                         .title(R.string.dialog_updated_title)
                         .content(R.string.dialog_updated_content)
                         .positiveText(android.R.string.ok)
                         .negativeText(R.string.dialog_updated_changelog)
                         .canceledOnTouchOutside(false)
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog,
-                                                @NonNull DialogAction which) {
-                                mEditor.putString("appVersionKey", APP_VERSION).apply();
-                            }
+                        .onPositive((dialog, which) -> editor.putString(PrefsUtils.KEY_VERSION,
+                                BuildConfig.VERSION_NAME).apply())
+                        .onNegative((dialog, which) -> {
+                            dialog.hide();
+                            showWebViewUI(-1);
                         })
-                        .onNegative(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog,
-                                                @NonNull DialogAction which) {
-                                dialog.hide();
-                                showWebViewUI(-1);
-                            }
-                        })
-
                         .show();
                 break;
         }
 
-        if (mPrefs.getBoolean("drawerIntro", true)) {
-            final Activity mActivity = this;
-            String[] mAddresses = new String[] {
-                    getString(R.string.pref_address_1),
-                    getString(R.string.pref_address_2),
-                    getString(R.string.pref_address_3),
-                    getString(R.string.pref_address_4),
-                    getString(R.string.pref_address_5),
-                    getString(R.string.pref_address_teacher)
-            };
-
-            new MaterialDialog.Builder(mContext)
-                    .title(R.string.pref_address_dialog)
-                    .items((CharSequence[]) mAddresses)
-                    .canceledOnTouchOutside(false)
-                    .positiveText(android.R.string.ok)
-                    .autoDismiss(false)
-                    .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
-                        @Override
-                        public boolean onSelection(MaterialDialog dialog, View itemView,
-                                                   int which, CharSequence text) {
-                        boolean isAddressValid = which != -1;
-                            if (which == 5) {
-                                Utils.setTeacherMode(mContext);
-                            } else if (isAddressValid){
-                                Utils.setAddress(mContext, String.valueOf(which + 1));
-                            }
-                            if (isAddressValid) {
-                                setupNavHeader();
-                                dialog.dismiss();
-                                mPrefs.edit().putBoolean("drawerIntro", false).apply();
-                                new MaterialTapTargetPrompt.Builder(mActivity)
-                                        .setTarget(mToolbar.getChildAt(1))
-                                        .setPrimaryText(getString(R.string.intro_drawer_title))
-                                        .setSecondaryText(getString(R.string.intro_drawer))
-                                        .setBackgroundColourFromRes(R.color.colorAccentDark)
-                                        .setFocalColourFromRes(R.color.colorPrimaryDark)
-                                        .show();
-                            }
-
-                            return true;
-                        }
-                    })
+        if (prefs.getBoolean(PrefsUtils.KEY_INTRO_DRAWER, true)) {
+            editor.putBoolean(PrefsUtils.KEY_INTRO_DRAWER, false).apply();
+            new MaterialTapTargetPrompt.Builder(this)
+                    .setTarget(mToolbar.getChildAt(1))
+                    .setPrimaryText(getString(R.string.intro_drawer_title))
+                    .setSecondaryText(getString(R.string.intro_drawer))
+                    .setBackgroundColourFromRes(R.color.colorAccentDark)
+                    .setFocalColourFromRes(R.color.colorPrimaryDark)
                     .show();
         }
     }
@@ -796,47 +551,36 @@ public class MainActivity extends AppCompatActivity
      * (api 21+ only)
      */
     private void setupNavHeader() {
-        mUserName.setText(Utils.userNameKey(this));
+        mUserName.setText(PrefsUtils.userNameKey(this));
 
-        if (Utils.isLegacy()) {
-            if (Utils.isTeacher(this)) {
-                mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_6));
-            } else {
-                switch (Utils.getAddress(this)) {
-                    case "1":
-                        mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_1));
-                        break;
-                    case "2":
-                        mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_2));
-                        break;
-                    case "3":
-                        mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_3));
-                        break;
-                    case "4":
-                        mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_4));
-                        break;
-                    case "5":
-                        mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_5));
-                        break;
-                }
+        byte[] imgB64 = Base64.decode(mRemoteConfig.getString("home_banner").getBytes(),
+                Base64.DEFAULT);
+        mBanner.setImageBitmap(BitmapFactory.decodeByteArray(imgB64, 0, imgB64.length));
+
+        if (!PrefsUtils.isNotLegacy()) {
+            return;
+        }
+
+        if (PrefsUtils.isTeacher(this)) {
+            mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_6));
+        } else {
+            switch (PrefsUtils.getAddress(this)) {
+                case "1":
+                    mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_1));
+                    break;
+                case "2":
+                    mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_2));
+                    break;
+                case "3":
+                    mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_3));
+                    break;
+                case "4":
+                    mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_4));
+                    break;
+                case "5":
+                    mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_5));
+                    break;
             }
         }
-    }
-
-    /**
-     * Initialize firebase analytics
-     */
-    private void setupAnalytics() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Utils.enableTrackerIfOverlayRequests(sContext,
-                        getResources().getBoolean(R.bool.force_tracker));
-                if (Utils.hasAnalytics(sContext)) {
-                    isAnalyticsEnabled = true;
-                    mBoldAnalytics = BoldApp.getBoldAnalytics();
-                }
-            }
-        }).start();
     }
 }

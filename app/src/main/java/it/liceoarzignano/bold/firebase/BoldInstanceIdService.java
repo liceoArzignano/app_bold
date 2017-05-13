@@ -6,8 +6,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import it.liceoarzignano.bold.BoldApp;
-import it.liceoarzignano.bold.Utils;
+import it.liceoarzignano.bold.utils.PrefsUtils;
 
 
 public class BoldInstanceIdService extends FirebaseInstanceIdService {
@@ -21,32 +20,33 @@ public class BoldInstanceIdService extends FirebaseInstanceIdService {
     @Override
     public void onTokenRefresh() {
         FirebaseInstanceId.getInstance().getToken();
-        Context mContext = BoldApp.getBoldContext();
-        String mTopic;
-        if (Utils.isTeacher(mContext)) {
-            mTopic = ADDR6_TOPIC;
+        Context context = getApplicationContext();
+        String topic;
+
+        if (PrefsUtils.isTeacher(context)) {
+            topic = ADDR6_TOPIC;
         } else {
-            switch (Utils.getAddress(mContext)) {
+            switch (PrefsUtils.getAddress(context)) {
                 case "1":
-                    mTopic = ADDR1_TOPIC;
+                    topic = ADDR1_TOPIC;
                     break;
                 case "2":
-                    mTopic = ADDR2_TOPIC;
+                    topic = ADDR2_TOPIC;
                     break;
                 case "3":
-                    mTopic = ADDR3_TOPIC;
+                    topic = ADDR3_TOPIC;
                     break;
                 case "4":
-                    mTopic = ADDR4_TOPIC;
+                    topic = ADDR4_TOPIC;
                     break;
                 case "5":
-                    mTopic = ADDR5_TOPIC;
+                    topic = ADDR5_TOPIC;
                     break;
                 default:
-                    mTopic = ADDR6_TOPIC;
+                    topic = ADDR6_TOPIC;
                     break;
             }
         }
-        FirebaseMessaging.getInstance().subscribeToTopic(mTopic);
+        FirebaseMessaging.getInstance().subscribeToTopic(topic);
     }
 }

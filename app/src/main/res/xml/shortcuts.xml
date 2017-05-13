@@ -3,36 +3,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:targetApi="25">
     <shortcut
-        android:shortcutId="marks"
         android:icon="@drawable/ic_shortcut_marks"
-        android:shortcutShortLabel="@string/shortcut_marks_short"
+        android:shortcutDisabledMessage="@string/shortcut_marks_disabled"
+        android:shortcutId="marks"
         android:shortcutLongLabel="@string/shortcut_marks_long"
-        android:shortcutDisabledMessage="@string/shortcut_marks_disabled">
+        android:shortcutShortLabel="@string/shortcut_marks_short">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetPackage="it.liceoarzignano.bold"
-            android:targetClass="it.liceoarzignano.bold.marks.MarkListActivity" />
-        </shortcut>
-    <shortcut
-        android:shortcutId="events"
-        android:icon="@drawable/ic_shortcut_events"
-        android:shortcutShortLabel="@string/shortcut_events_short"
-        android:shortcutLongLabel="@string/shortcut_events_long"
-        android:shortcutDisabledMessage="@string/shortcut_events_disabled">
-        <intent
-            android:action="android.intent.action.VIEW"
-            android:targetPackage="it.liceoarzignano.bold"
-            android:targetClass="it.liceoarzignano.bold.events.EventListActivity" />
+            android:targetClass="it.liceoarzignano.bold.marks.MarksActivity"
+            android:targetPackage="it.liceoarzignano.bold" />
     </shortcut>
     <shortcut
-        android:shortcutId="news"
-        android:icon="@drawable/ic_shortcut_news"
-        android:shortcutShortLabel="@string/shortcut_news_short"
-        android:shortcutLongLabel="@string/shortcut_news_long"
-        android:shortcutDisabledMessage="@string/shortcut_news_disabled">
+        android:icon="@drawable/ic_shortcut_events"
+        android:shortcutDisabledMessage="@string/shortcut_events_disabled"
+        android:shortcutId="events"
+        android:shortcutLongLabel="@string/shortcut_events_long"
+        android:shortcutShortLabel="@string/shortcut_events_short">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetPackage="it.liceoarzignano.bold"
-            android:targetClass="it.liceoarzignano.bold.news.NewsListActivity" />
+            android:targetClass="it.liceoarzignano.bold.events.EventListActivity"
+            android:targetPackage="it.liceoarzignano.bold" />
+    </shortcut>
+    <shortcut
+        android:icon="@drawable/ic_shortcut_news"
+        android:shortcutDisabledMessage="@string/shortcut_news_disabled"
+        android:shortcutId="news"
+        android:shortcutLongLabel="@string/shortcut_news_long"
+        android:shortcutShortLabel="@string/shortcut_news_short">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="it.liceoarzignano.bold.news.NewsListActivity"
+            android:targetPackage="it.liceoarzignano.bold" />
     </shortcut>
 </shortcuts>

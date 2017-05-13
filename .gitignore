@@ -7,3 +7,5 @@
 /build
 /captures
 *.apk
+safe_mod
+app/google-services.json

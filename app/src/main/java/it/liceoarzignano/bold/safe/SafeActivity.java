@@ -6,23 +6,18 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.io.UnsupportedEncodingException;
@@ -30,12 +25,12 @@ import java.security.GeneralSecurityException;
 
 import it.liceoarzignano.bold.BuildConfig;
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.Utils;
+import it.liceoarzignano.bold.utils.UiUtils;
+import it.liceoarzignano.bold.utils.PrefsUtils;
+import it.liceoarzignano.bold.safe.mod.Encryption;
 
 public class SafeActivity extends AppCompatActivity {
-
     private static final String SAFE_PREFS = "SafePrefs";
-    private static final String XPOSED_INSTALLER_PACAKGE = "de.robv.android.xposed.installer";
     private static final String accessKey = "access_pwd";
     private static final String userKey = "user_name";
     private static final String regPwdKey = "reg_pwd";
@@ -43,38 +38,26 @@ public class SafeActivity extends AppCompatActivity {
     private static final String internetPwdKey = "internet_pwd";
     private static final String hasSharedKey = "has_shared";
 
-    private static SharedPreferences sPrefs;
-    private static SharedPreferences.Editor sEditor;
-    private static String sAccessPassword;
-    private Encryption.SecretKeys mSecretKeys = null;
-    private String mCrUserName;
-    private String mCrReg;
-    private String mCrPc;
-    private String mCrInternet;
-    private boolean hasCompletedSetup;
-    private boolean isWorking = true;
-
-    private Context mContext;
+    private SharedPreferences mPrefs;
+    private SharedPreferences.Editor mEditor;
 
     private Menu mMenu;
-
+    private SafeLoginDialog mLoginDialog;
     private LinearLayout mLoadingLayout;
-    private ScrollView mContentLayout;
+    private View mContentLayout;
     private TextView mLoadingText;
     private EditText mUserEdit;
     private EditText mRegEdit;
     private EditText mPcEdit;
     private EditText mInternetEdit;
-    private ImageView mImage;
     private FloatingActionButton mFab;
 
-    // Safe jni addons
-    static {
-        System.loadLibrary("safe-addon-jni");
-    }
-    public native String getKey();
-    public native String getSalt();
-
+    private Encryption.SecretKeys mSecretKeys = null;
+    private String mCrUserName;
+    private String mCrReg;
+    private String mCrPc;
+    private String mCrInternet;
+    private boolean isWorking = true;
 
     @SuppressLint("CommitPrefEdits")
     @Override
@@ -87,51 +70,56 @@ public class SafeActivity extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_safe);
-        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onBackPressed();
-                }
-            });
-        }
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_toolbar_back);
+        toolbar.setNavigationOnClickListener(v -> finish());
 
-
-        mContext = this;
-
-        sPrefs = getSharedPreferences(SAFE_PREFS, MODE_PRIVATE);
-        sEditor = getSharedPreferences(SAFE_PREFS, MODE_PRIVATE).edit();
+        mPrefs = getSharedPreferences(SAFE_PREFS, MODE_PRIVATE);
+        mEditor = getSharedPreferences(SAFE_PREFS, MODE_PRIVATE).edit();
 
         mLoadingLayout = (LinearLayout) findViewById(R.id.safe_loading_layout);
-        mContentLayout = (ScrollView) findViewById(R.id.safe_layout_content);
+        mContentLayout = findViewById(R.id.safe_layout_content);
         mLoadingText = (TextView) findViewById(R.id.safe_loading_text);
         mUserEdit = (EditText) findViewById(R.id.safe_username);
         mRegEdit = (EditText) findViewById(R.id.safe_register);
         mPcEdit = (EditText) findViewById(R.id.safe_pc);
         mInternetEdit = (EditText) findViewById(R.id.safe_internet);
-        mImage = (ImageView) findViewById(R.id.safe_loading_image);
         mFab = (FloatingActionButton) findViewById(R.id.fab);
 
         mLoadingLayout.setVisibility(View.VISIBLE);
         isWorking = true;
 
-        // Xposed can inject code by doing shitty stuffs in the runtime.
-        // If xposed is installed, do not allow user to open this activity for security reasons
-        if (Utils.hasPackage(mContext, XPOSED_INSTALLER_PACAKGE)) {
-            mLoadingText.setText(getString(R.string.safe_security_issue_xposed));
-        } else {
-            mLoadingText.setText(R.string.safe_first_load);
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    setupEncryption();
-                    showPasswordDialog();
+        mFab.setOnClickListener(view -> {
+            mMenu.findItem(R.id.action_reset).setVisible(false);
+            mMenu.findItem(R.id.action_info).setVisible(false);
+            mFab.hide();
+            mContentLayout.setVisibility(View.GONE);
+            mLoadingText.setText(R.string.safe_encrypting);
+            mLoadingLayout.setVisibility(View.VISIBLE);
+
+            new Handler().postDelayed(() -> {
+                String text = mUserEdit.getText().toString();
+                if (!text.isEmpty()) {
+                    mEditor.putString(userKey, encrypt(text)).apply();
                 }
-            }, 100);
-        }
+                text = mRegEdit.getText().toString();
+                if (!text.isEmpty()) {
+                    mEditor.putString(regPwdKey, encrypt(text)).apply();
+                }
+                text = mPcEdit.getText().toString();
+                if (!text.isEmpty()) {
+                    mEditor.putString(pcPwdKey, encrypt(text)).apply();
+                }
+                text = mInternetEdit.getText().toString();
+                if (!text.isEmpty()) {
+                    mEditor.putString(internetPwdKey, encrypt(text)).apply();
+                }
+                finish();
+            }, 1000);
+        });
+
+        prepareDevice();
     }
 
     @Override
@@ -152,6 +140,7 @@ public class SafeActivity extends AppCompatActivity {
             mCrInternet = null;
             mCrPc = null;
             mCrReg = null;
+            mLoadingText.setText(getString(R.string.safe_onpause_locked));
             mUserEdit.setText("");
             mInternetEdit.setText("");
             mPcEdit.setText("");
@@ -167,23 +156,22 @@ public class SafeActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu mMenu) {
-        this.mMenu = mMenu;
-        getMenuInflater().inflate(R.menu.safe, mMenu);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        this.mMenu = menu;
+        getMenuInflater().inflate(R.menu.safe, menu);
         this.mMenu.findItem(R.id.action_info).setVisible(false);
         this.mMenu.findItem(R.id.action_reset).setVisible(false);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem mItem) {
-        int mId = mItem.getItemId();
-        switch (mId) {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.action_reset:
                 safeReset();
                 break;
             case R.id.action_info:
-                new MaterialDialog.Builder(mContext)
+                new MaterialDialog.Builder(this)
                         .title(getString(R.string.safe_info_title))
                         .content(getString(R.string.safe_info_content))
                         .neutralText(getString(android.R.string.ok))
@@ -191,7 +179,7 @@ public class SafeActivity extends AppCompatActivity {
                 break;
         }
 
-        return super.onOptionsItemSelected(mItem);
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -199,18 +187,12 @@ public class SafeActivity extends AppCompatActivity {
         if (isWorking) {
             super.onBackPressed();
         } else {
-            new MaterialDialog.Builder(mContext)
+            new MaterialDialog.Builder(this)
                     .title(R.string.safe_back_title)
                     .content(R.string.safe_back_message)
                     .positiveText(R.string.safe_back_title)
                     .negativeText(android.R.string.cancel)
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog,
-                                            @NonNull DialogAction which) {
-                            finish();
-                        }
-                    })
+                    .onPositive((dialog, which) -> finish())
                     .show();
         }
     }
@@ -221,55 +203,29 @@ public class SafeActivity extends AppCompatActivity {
      * normal access
      */
     private void showPasswordDialog() {
-        hasCompletedSetup = sPrefs.getBoolean("hasCompletedSetup", false);
-        String mTitle;
-        String mMessage;
-
-        if (hasCompletedSetup) {
-            mTitle = getString(R.string.safe_dialog_title);
-            mMessage = getString(R.string.safe_dialog_content);
-        } else {
-            mTitle = getString(R.string.safe_dialog_first_title);
-            mMessage = getString(R.string.safe_dialog_first_content);
-        }
-
-        new MaterialDialog.Builder(mContext)
-                .title(mTitle)
-                .content(mMessage)
+        boolean hasCompletedSetup = mPrefs.getBoolean(PrefsUtils.KEY_SAFE_SETUP, false);
+        mLoginDialog = new SafeLoginDialog(this, !hasCompletedSetup);
+        mLoginDialog.build(new MaterialDialog.Builder(this)
+                .customView(mLoginDialog.getView(), false)
                 .canceledOnTouchOutside(false)
-                .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)
-                .input(getString(R.string.safe_dialog_password_input_hint),
-                        "", new MaterialDialog.InputCallback() {
-                            @Override
-                            public void onInput(@NonNull MaterialDialog dialog,
-                                                CharSequence input) {
-                                sAccessPassword = input.toString();
-                                mLoadingText.setVisibility(View.VISIBLE);
-                                if (!sAccessPassword.isEmpty() && sAccessPassword != null) {
-                                    new Handler().postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            mLoadingText.setText(getString(hasCompletedSetup ?
-                                                    R.string.safe_decrypting :
-                                                    R.string.safe_first_load));
-                                            if (hasCompletedSetup) {
-                                                validateLogin();
-                                            } else {
-                                                String encrypted = encrypt(sAccessPassword);
-                                                sEditor.putString(accessKey, encrypted).apply();
-                                                sEditor.putBoolean("hasCompletedSetup",
-                                                        true).apply();
-                                                onCreateContinue();
-                                            }
-                                        }
-                                    }, 200);
-                                } else {
-                                    mLoadingText.setText(getString(R.string.safe_nomatch));
-                                }
-                            }
-                        })
-                .positiveText(android.R.string.ok)
-                .show();
+                .positiveText(hasCompletedSetup ?
+                        R.string.safe_dialog_positive : R.string.safe_dialog_first_positive)
+                .onPositive((dialog, which) -> {
+                    mLoginDialog.dismiss();
+                    mLoadingText.setText(getString(R.string.safe_decrypting));
+                    new Handler().postDelayed(() -> {
+                        if (hasCompletedSetup) {
+                            validateLogin();
+                        } else {
+                            mEditor.putBoolean(PrefsUtils.KEY_SAFE_SETUP, true)
+                                    .putString(accessKey, encrypt(mLoginDialog.getInput()))
+                                    .apply();
+                            onCreateContinue();
+                        }
+                    }, 240);
+                })
+                .negativeText(android.R.string.cancel)
+                .onNegative((dialog, which) -> finish()));
     }
 
     /**
@@ -277,7 +233,8 @@ public class SafeActivity extends AppCompatActivity {
      */
     private void setupEncryption() {
         try {
-            mSecretKeys = Encryption.generateKeyFromPassword(getKey(), getSalt().getBytes());
+            mSecretKeys = Encryption.generateKeyFromPassword(Encryption.getKey(),
+                    Encryption.getSalt().getBytes());
         } catch (GeneralSecurityException e) {
             Log.e("Safe", e.getMessage(), e);
         }
@@ -286,12 +243,17 @@ public class SafeActivity extends AppCompatActivity {
     /**
      * Encrypt a given string
      *
-     * @param mString: string to be encrypted
+     * @param string: string to be encrypted
      * @return encrypted string
      */
-    private String encrypt(String mString) {
+    private String encrypt(String string) {
+        // Don't waste time if there's nothing to do
+        if (string == null) {
+            return "";
+        }
+
         try {
-            return Encryption.encrypt(mString, mSecretKeys).toString();
+            return Encryption.encrypt(string, mSecretKeys).toString();
         } catch (UnsupportedEncodingException | GeneralSecurityException e) {
             Log.e("Safe", e.getMessage(), e);
             return "";
@@ -301,13 +263,18 @@ public class SafeActivity extends AppCompatActivity {
     /**
      * Decrypt a string
      *
-     * @param mString: string to be decrypted
+     * @param string: string to be decrypted
      * @return decrypted string
      */
-    private String decrypt(String mString) {
+    private String decrypt(String string) {
+        // Don't waste time if there's nothing to do
+        if (string == null) {
+            return "";
+        }
+
         try {
-            return Encryption.decryptString(
-                    new Encryption.CipherTextIvMac(mString), mSecretKeys);
+            return Encryption.decrypt(
+                    new Encryption.CipherTextIvMac(string), mSecretKeys);
         } catch (UnsupportedEncodingException | GeneralSecurityException e) {
             Log.e("Safe", e.getMessage(), e);
             return "";
@@ -318,23 +285,22 @@ public class SafeActivity extends AppCompatActivity {
      * Check if password is right and update UI
      */
     private void validateLogin() {
-        final String mDecrypted = decrypt(sPrefs.getString(accessKey, "ERROR"));
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (sAccessPassword.equals(mDecrypted)) {
-                    onCreateContinue();
-                } else {
-                    mLoadingText.setText(getString(R.string.safe_nomatch));
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            finish();
-                        }
-                    }, 3000);
-                }
+        final boolean isPasswordCorrect = mLoginDialog.getInput().equals(
+                decrypt(mPrefs.getString(accessKey, null)));
+        if (isPasswordCorrect) {
+            mLoginDialog.destroy();
+        } else {
+            mLoadingText.setText(getString(R.string.safe_nomatch));
+        }
+
+        // Do things with some delay
+        new Handler().postDelayed(() -> {
+            if (isPasswordCorrect) {
+                onCreateContinue();
+            } else {
+                finish();
             }
-        }, 1000);
+        }, isPasswordCorrect ? 800 : 3000);
     }
 
     /**
@@ -345,126 +311,95 @@ public class SafeActivity extends AppCompatActivity {
     private void onCreateContinue() {
         isWorking = false;
 
-        // Always check if there's sth to decrypt, if not, pass
-        // away to speed up this process
-        String mObj = sPrefs.getString(userKey, null);
-        if (mObj != null) {
-            mCrUserName = decrypt(mObj);
-        }
-        mObj = sPrefs.getString(regPwdKey, null);
-        if (mObj != null) {
-            mCrReg = decrypt(mObj);
-        }
-        mObj = sPrefs.getString(pcPwdKey, null);
-        if (mObj != null) {
-            mCrPc = decrypt(mObj);
-        }
-        mObj = sPrefs.getString(internetPwdKey, null);
-        if (mObj != null) {
-            mCrInternet = decrypt(mObj);
-        }
+        mCrUserName = decrypt(mPrefs.getString(userKey, null));
+        mCrReg = decrypt(mPrefs.getString(regPwdKey, null));
+        mCrPc = decrypt(mPrefs.getString(pcPwdKey, null));
+        mCrInternet = decrypt(mPrefs.getString(internetPwdKey, null));
 
         mMenu.findItem(R.id.action_reset).setVisible(true);
         mMenu.findItem(R.id.action_info).setVisible(true);
-        mLoadingLayout.setVisibility(View.GONE);
-        mContentLayout.setVisibility(View.VISIBLE);
         mUserEdit.setText(mCrUserName);
         mRegEdit.setText(mCrReg);
         mPcEdit.setText(mCrPc);
         mInternetEdit.setText(mCrInternet);
 
-        Utils.animFabIntro(this, mFab, getString(R.string.intro_fab_save_safe_title),
+        mLoadingLayout.animate().alpha(0f).setDuration(250);
+
+        // Animations timing
+        new Handler().postDelayed(() -> {
+            mLoadingLayout.setVisibility(View.GONE);
+            mContentLayout.setVisibility(View.VISIBLE);
+            mContentLayout.setAlpha(0f);
+            mContentLayout.animate().alpha(1f).setDuration(750);
+        }, 250);
+
+        UiUtils.animFabIntro(this, mFab, getString(R.string.intro_fab_save_safe_title),
                 getString(R.string.intro_fab_save_safe), "safeKey");
-
-        mFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mMenu.findItem(R.id.action_reset).setVisible(false);
-                mMenu.findItem(R.id.action_info).setVisible(false);
-                mFab.hide();
-                mContentLayout.setVisibility(View.GONE);
-                mLoadingText.setText(R.string.safe_encrypting);
-                mLoadingLayout.setVisibility(View.VISIBLE);
-                mImage.setBackgroundResource(R.drawable.safe_encrypt);
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        String text = mUserEdit.getText().toString();
-                        if (!text.isEmpty()) {
-                            sEditor.putString(userKey, encrypt(text)).apply();
-                        }
-                        text = mRegEdit.getText().toString();
-                        if (!text.isEmpty()) {
-                            sEditor.putString(regPwdKey, encrypt(text)).apply();
-                        }
-                        text = mPcEdit.getText().toString();
-                        if (!text.isEmpty()) {
-                            sEditor.putString(pcPwdKey, encrypt(text)).apply();
-                        }
-                        text = mInternetEdit.getText().toString();
-                        if (!text.isEmpty()) {
-                            sEditor.putString(internetPwdKey, encrypt(text)).apply();
-                        }
-                        finish();
-                    }
-                }, 800);
-            }
-        });
     }
 
     /**
      * Reset the safe data when user wants to change the password
      */
     private void safeReset() {
-        new MaterialDialog.Builder(mContext)
+        new MaterialDialog.Builder(this)
                 .title(getString(R.string.safe_reset_title))
                 .content(getString(R.string.safe_reset_content))
                 .negativeText(getString(android.R.string.no))
                 .positiveText(getString(android.R.string.yes))
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog,
-                                        @NonNull DialogAction which) {
-                        sEditor.remove(accessKey).apply();
-                        sEditor.remove(userKey).apply();
-                        sEditor.remove(regPwdKey).apply();
-                        sEditor.remove(pcPwdKey).apply();
-                        sEditor.remove(internetPwdKey).apply();
-                        sEditor.remove(hasSharedKey).apply();
-                        sEditor.remove("hasCompletedSetup").apply();
+                .onPositive((dialog, which) -> {
+                    mEditor.remove(accessKey).apply();
+                    mEditor.remove(userKey).apply();
+                    mEditor.remove(regPwdKey).apply();
+                    mEditor.remove(pcPwdKey).apply();
+                    mEditor.remove(internetPwdKey).apply();
+                    mEditor.remove(hasSharedKey).apply();
+                    mEditor.remove(PrefsUtils.KEY_SAFE_SETUP).apply();
 
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                Intent i = new Intent(mContext, SafeActivity.class);
-                                startActivity(i);
-                            }
-                        }, 700);
-                    }
+                    new Handler().postDelayed(() ->
+                            startActivity(new Intent(this, SafeActivity.class)), 700);
                 })
                 .show();
     }
 
     /**
+     * Check if the device is ready to use Safe,
+     * if so start it.
+     *
+     */
+    private void prepareDevice() {
+        // There's no need of doing a SafetyNet test now, just check app integrity
+        if (PrefsUtils.hasPassedSafetyNetTest(this) &&
+                Encryption.validateRespose(this, null, BuildConfig.DEBUG)) {
+            mLoadingText.setText(R.string.safe_first_load);
+            new Handler().postDelayed(() -> {
+                setupEncryption();
+                showPasswordDialog();
+            }, 100);
+        } else {
+            PrefsUtils.setSafetyNetResults(this, false);
+            mLoadingText.setText(R.string.safe_error_security);
+        }
+    }
+
+    /**
      * Encrypted password getter
      *
-     * @param mContext used to access sharedPreferences
+     * @param context used to access sharedPreferences
      * @return encrypted password from sharedPreferences
      */
-    public static String getEncryptedPassword(Context mContext) {
-        return mContext.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE).getString(accessKey, "");
+    public static String getEncryptedPassword(Context context) {
+        return context.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE).getString(accessKey, "");
     }
 
     /**
      * Public getter for hasShared password, used to prevent
      * encrypted password to be shared too many times from secret menu
      *
-     * @param mContext used to access to sharedPreferences
+     * @param context used to access to sharedPreferences
      * @return true if user has already shared the password
      */
-    public static boolean hasSharedPassword(Context mContext) {
-        return mContext.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE)
+    public static boolean hasSharedPassword(Context context) {
+        return context.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE)
                 .getBoolean(hasSharedKey, false);
     }
 
@@ -472,10 +407,10 @@ public class SafeActivity extends AppCompatActivity {
      * Public setter for hasShared password, used to prevent
      * encrypted password to be shared too many times from secret menu
      *
-     * @param mContext used to access SharedPreferences
+     * @param context used to access SharedPreferences
      */
-    public static void setSharedPassword(Context mContext) {
-        mContext.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE).edit()
+    public static void setSharedPassword(Context context) {
+        context.getSharedPreferences(SAFE_PREFS, MODE_PRIVATE).edit()
                 .putBoolean(hasSharedKey, true).apply();
     }
 }

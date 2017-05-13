@@ -15,17 +15,16 @@
     <color name="yellow">#ffc108</color>
     <color name="green">#7DB344</color>
 
-    <color name="empty_image">#9e9d9f</color>
-    <color name="empty_text">#7c7b7d</color>
-
-    <color name="viewerPrimary">#ffffff</color>
-    <color name="viewerPrimaryDark">#e0e0e0</color>
-    <color name="viewer_title">#42000000</color>
-    <color name="viewer_background">@color/viewerPrimaryDark</color>
+    <color name="empty_image">#b1b1b1</color>
+    <color name="empty_background">#efefef</color>
+    <color name="empty_text">@color/empty_image</color>
 
     <color name="home_bg">#fafafa</color>
     <color name="text_secondary">#8a000000</color>
-    <color name="list_divider">@color/grey</color>
+    <color name="list_divider">#dadada</color>
+    <color name="list_header">#8b000000</color>
+    <color name="tag_background">#eeeeee</color>
+    <color name="tag_text">#757575</color>
 
     <color name="slide_color">@color/colorPrimary</color>
 

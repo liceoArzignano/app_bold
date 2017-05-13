@@ -19,8 +19,10 @@
 -mergeinterfacesaggressively
 -dontwarn android.support.**
 -dontwarn com.google.**
+-dontwarn java.lang.invoke.*
 -forceprocessing
 -optimizations 25
 -dontskipnonpubliclibraryclasses
-
--assumenosideeffects class android.util.Log { *; }
+-keep class android.support.v7.widget.SearchView { *; }
+-keep class org.eclipse.egit.github.core.service.IssueService { *; }
+-keep class org.eclipse.egit.github.core.Issue { *; }

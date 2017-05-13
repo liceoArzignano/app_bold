@@ -1,9 +1,12 @@
 package it.liceoarzignano.bold.home;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import java.util.List;
 
@@ -11,24 +14,32 @@ import it.liceoarzignano.bold.R;
 
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeHolder> {
+    private final Context mContext;
     private final List<HomeCard> mObjects;
 
-    public HomeAdapter(List<HomeCard> mObjects) {
-        this.mObjects = mObjects;
+    private int mLast = -1;
+
+    public HomeAdapter(Context context, List<HomeCard> objects) {
+        mContext = context;
+        mObjects = objects;
     }
 
     @Override
-    public HomeHolder onCreateViewHolder(ViewGroup mParent, int mType) {
-        View mItem = LayoutInflater.from(mParent.getContext())
-                .inflate(R.layout.item_home, mParent, false);
+    public HomeHolder onCreateViewHolder(ViewGroup parent, int type) {
+        View item = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_home, parent, false);
 
-        return new HomeHolder(mItem);
+        return new HomeHolder(item);
     }
 
     @Override
-    public void onBindViewHolder(HomeHolder mHolder, int mPosition) {
-        HomeCard mObj = mObjects.get(mPosition);
-        mHolder.init(mObj);
+    public void onBindViewHolder(HomeHolder holder, int position) {
+        HomeCard obj = mObjects.get(position);
+        holder.init(obj);
+        if (position > mLast) {
+            holder.itemView.startAnimation(AnimationUtils.loadAnimation(mContext, R.anim.slide_up));
+        }
+        mLast = holder.getAdapterPosition();
     }
 
     @Override
@@ -36,5 +47,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeHolder> {
         return mObjects.size();
     }
 
-
+    @Override
+    public void onViewDetachedFromWindow(HomeHolder homeHolder) {
+        super.onViewDetachedFromWindow(homeHolder);
+        homeHolder.itemView.clearAnimation();
+    }
 }

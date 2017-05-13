@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
+<android.support.v7.preference.PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="@string/pref_general">
+    <android.support.v7.preference.PreferenceCategory android:title="@string/pref_general">
 
-        <SwitchPreference
+        <android.support.v7.preference.SwitchPreferenceCompat
             android:defaultValue="false"
             android:disableDependentsState="true"
             android:key="isTeacher_key"
@@ -11,7 +11,7 @@
             android:summaryOn="@string/pref_teacher_summary"
             android:title="@string/pref_isTeacher_title" />
 
-        <ListPreference
+        <android.support.v7.preference.ListPreference
             android:defaultValue="1"
             android:dependency="isTeacher_key"
             android:dialogTitle="@string/pref_address_dialog"
@@ -21,45 +21,45 @@
             android:summary="%s"
             android:title="@string/pref_address_title" />
 
-        <EditTextPreference
+        <android.support.v7.preference.EditTextPreference
             android:dialogMessage="@string/pref_username_dialog_msg"
             android:dialogTitle="@string/pref_username_dialog_title"
             android:key="username_key"
             android:title="@string/pref_username" />
 
-        <SwitchPreference
+        <android.support.v7.preference.SwitchPreferenceCompat
             android:defaultValue="true"
             android:key="showSuggestions_key"
             android:summary="@string/pref_suggestion_summary"
             android:title="@string/pref_suggestion_title" />
 
-        <Preference
+        <android.support.v7.preference.Preference
             android:key="backup_key"
             android:summary="@string/pref_backup_title"
-            android:title="@string/pref_backup_summary"/>
+            android:title="@string/pref_backup_summary" />
 
-        <SwitchPreference
+        <android.support.v7.preference.SwitchPreferenceCompat
             android:defaultValue="true"
             android:key="analytics_key"
             android:summary="@string/pref_metrics_summary"
             android:title="@string/pref_metrics_title" />
 
-    </PreferenceCategory>
+    </android.support.v7.preference.PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/pref_notif">
-        <SwitchPreference
+    <android.support.v7.preference.PreferenceCategory android:title="@string/pref_notif">
+        <android.support.v7.preference.SwitchPreferenceCompat
             android:defaultValue="true"
             android:key="notification_news_key"
             android:summary="@string/pref_notification_news_summary"
             android:title="@string/pref_notification_news_title" />
 
-        <SwitchPreference
+        <android.support.v7.preference.SwitchPreferenceCompat
             android:defaultValue="true"
             android:key="notification_events_key"
             android:summary="@string/pref_notification_events_summary"
             android:title="@string/pref_notification_events_title" />
 
-        <ListPreference
+        <android.support.v7.preference.ListPreference
             android:defaultValue="2"
             android:dependency="notification_events_key"
             android:dialogTitle="@string/pref_notification_events_time_dialog_title"
@@ -68,44 +68,56 @@
             android:key="notification_events_time_key"
             android:summary="%s"
             android:title="@string/pref_notification_events_time_title" />
-    </PreferenceCategory>
+    </android.support.v7.preference.PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/pref_getintouch">
+    <android.support.v7.preference.PreferenceCategory android:title="@string/pref_getintouch">
 
-        <PreferenceScreen android:title="@string/pref_mail_title">
+        <android.support.v7.preference.PreferenceScreen android:title="@string/pref_mail_title">
             <intent
                 android:action="android.intent.action.SENDTO"
                 android:data="mailto:viis00200v@istruzione.it" />
-        </PreferenceScreen>
+        </android.support.v7.preference.PreferenceScreen>
 
-        <PreferenceScreen android:title="@string/pref_phone_title">
+        <android.support.v7.preference.PreferenceScreen android:title="@string/pref_phone_title">
             <intent
                 android:action="android.intent.action.DIAL"
                 android:data="tel:0444676125" />
-        </PreferenceScreen>
+        </android.support.v7.preference.PreferenceScreen>
 
-        <PreferenceScreen android:title="@string/pref_facebook_title">
+        <android.support.v7.preference.PreferenceScreen android:title="@string/pref_facebook_title">
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="https://www.facebook.com/liceoarzignano" />
-        </PreferenceScreen>
+        </android.support.v7.preference.PreferenceScreen>
 
-        <PreferenceScreen android:title="@string/pref_instagram_title">
+        <android.support.v7.preference.PreferenceScreen android:title="@string/pref_instagram_title">
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="https://www.instagram.com/liceoarzignano" />
-        </PreferenceScreen>
-    </PreferenceCategory>
+        </android.support.v7.preference.PreferenceScreen>
+    </android.support.v7.preference.PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/pref_info">
+    <android.support.v7.preference.PreferenceCategory android:title="@string/pref_info">
 
-        <Preference
+        <android.support.v7.preference.Preference
+            android:key="feedback_key"
+            android:title="@string/pref_feedback_title" />
+
+        <android.support.v7.preference.Preference
             android:key="changelog_key"
             android:summary="@string/pref_app_version_summary"
             android:title="@string/pref_app_version_title" />
 
-        <Preference
-            android:key="secret_key"
-            android:title="@string/pref_dev_info" />
-    </PreferenceCategory>
-</PreferenceScreen>
+        <android.support.v7.preference.Preference
+            android:key="safe_key"
+            android:title="@string/pref_safe_status_title" />
+
+        <android.support.v7.preference.PreferenceScreen
+            android:title="@string/pref_opensource_title"
+            android:summary="@string/pref_opensource_message">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/config_url_sources" />
+        </android.support.v7.preference.PreferenceScreen>
+    </android.support.v7.preference.PreferenceCategory>
+</android.support.v7.preference.PreferenceScreen>

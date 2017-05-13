@@ -1,138 +1,109 @@
 package it.liceoarzignano.bold.news;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Intent;
-import android.support.design.widget.BottomSheetDialog;
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.zhukic.sectionedrecyclerview.SectionedRecyclerViewAdapter;
+
+import java.util.Date;
 import java.util.List;
 
-import it.liceoarzignano.bold.ManagerActivity;
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.realm.RealmController;
+import it.liceoarzignano.bold.ui.recyclerview.HeaderViewHolder;
+import it.liceoarzignano.bold.utils.DateUtils;
 
-class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
-    private final List<News> mNewsList;
-    private final Activity mActivity;
+class NewsAdapter extends SectionedRecyclerViewAdapter<HeaderViewHolder, NewsAdapter.NewsHolder> {
+    private List<News> mNewsList;
+    private final Context mContext;
 
-    NewsAdapter(List<News> mNewsList, Activity mActivity) {
-        this.mNewsList = mNewsList;
-        this.mActivity = mActivity;
+    NewsAdapter(List<News> list, Context context) {
+        this.mNewsList = list;
+        this.mContext = context;
     }
 
     @Override
-    public NewsHolder onCreateViewHolder(ViewGroup mParent, int mType) {
-        View mItem = LayoutInflater.from(mParent.getContext())
-                .inflate(R.layout.item_news, mParent, false);
-
-        return new NewsHolder(mItem);
-    }
-
-
-    @Override
-    public void onBindViewHolder(NewsHolder mHolder, int mPostition) {
-        News mNews = mNewsList.get(mPostition);
-        mHolder.setData(mActivity, mNews);
+    public NewsHolder onCreateItemViewHolder(ViewGroup parent, int type) {
+        return new NewsHolder(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_news, parent, false));
     }
 
     @Override
-    public int getItemCount() {
+    public void onBindItemViewHolder(NewsHolder holder, int position) {
+        holder.setData(mContext, mNewsList.get(position));
+    }
+
+    @Override
+    public HeaderViewHolder onCreateSubheaderViewHolder(ViewGroup parent, int type) {
+        return new HeaderViewHolder(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_subheader, parent, false));
+    }
+
+    @Override
+    public void onBindSubheaderViewHolder(HeaderViewHolder holder, int position) {
+        String title;
+        Date eventDate = DateUtils.stringToDate(mNewsList.get(position).getDate());
+        Date yesterday = DateUtils.getDate(-1);
+        Date today = DateUtils.getDate(0);
+        Date tomorrow = DateUtils.getDate(1);
+
+        if (DateUtils.dateDiff(eventDate, yesterday) == 0) {
+            title = mContext.getString(R.string.events_time_yesterday);
+        } else if (DateUtils.dateDiff(eventDate, today) == 0) {
+            title = mContext.getString(R.string.events_time_today);
+        } else if (DateUtils.dateDiff(eventDate, tomorrow) == 0) {
+            title = mContext.getString(R.string.events_time_tomorrow);
+        } else {
+            title = DateUtils.dateToWordsString(mContext, eventDate);
+        }
+
+        holder.setTitle(title);
+    }
+
+    @Override
+    public int getItemSize() {
         return mNewsList.size();
     }
 
+    @Override
+    public boolean onPlaceSubheaderBetweenItems(int itemPosition) {
+        Date a = DateUtils.stringToDate(mNewsList.get(itemPosition).getDate());
+        Date b = DateUtils.stringToDate(mNewsList.get(itemPosition + 1).getDate());
+
+        return DateUtils.dateDiff(a, b) >= 1;
+    }
+
+
+    void updateList(List<News> list) {
+        mNewsList = list;
+        notifyDataChanged();
+    }
 
     class NewsHolder extends RecyclerView.ViewHolder {
-        private final RelativeLayout mLayout;
+        private final View mView;
         private final TextView mTitle;
         private final TextView mMessage;
-        private final ImageButton mUrlButton;
 
-        NewsHolder(View mView) {
-            super(mView);
-            mLayout = (RelativeLayout) mView.findViewById(R.id.row_news_layout);
-            mTitle = (TextView) mView.findViewById(R.id.row_news_title);
-            mMessage = (TextView) mView.findViewById(R.id.row_news_message);
-            mUrlButton = (ImageButton) mView.findViewById(R.id.row_news_url);
+        NewsHolder(View view) {
+            super(view);
+            mView = view;
+            mTitle = (TextView) view.findViewById(R.id.row_news_title);
+            mMessage = (TextView) view.findViewById(R.id.row_news_message);
         }
 
-        void setData(final Activity mActivity, final News mNews) {
-            mTitle.setText(mNews.getTitle());
-            mMessage.setText(String.format("%1$s\n%2$s", mNews.getMessage(), mNews.getDate()));
+        void setData(final Context context, final News news) {
+            mTitle.setText(news.getTitle());
+            mMessage.setText(news.getMessage());
 
-            final String mUrl = mNews.getUrl();
-            if (mUrl != null && !mUrl.isEmpty()) {
-                mUrlButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        NewsListActivity.showUrl(mUrl);
-                    }
-                });
-            } else {
-                mUrlButton.setVisibility(View.GONE);
+            final String url = news.getUrl();
+            if (url != null && !url.isEmpty()) {
+                mView.setOnClickListener(view -> ((NewsListActivity) context).showUrl(url));
             }
 
-            // Bottom sheet dialog
-            final BottomSheetDialog mSheet = new BottomSheetDialog(mActivity);
-
-            @SuppressLint("InflateParams")
-            View mSheetView = mActivity.getLayoutInflater()
-                    .inflate(R.layout.dialog_sheet_news, null);
-            LinearLayout mShareLayout =
-                    (LinearLayout) mSheetView.findViewById(R.id.news_sheet_share);
-            LinearLayout mToEventLayout =
-                    (LinearLayout) mSheetView.findViewById(R.id.news_sheet_to_event);
-            LinearLayout mDeleteLayout =
-                    (LinearLayout) mSheetView.findViewById(R.id.news_sheet_delete);
-
-            mShareLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mSheet.hide();
-                    Intent mShareIntent = new Intent(Intent.ACTION_SEND);
-                    mShareIntent.setType("text/plain")
-                            .putExtra(Intent.EXTRA_TEXT, String.format("%1$s (%2$s)\n%3$s\n%4$s",
-                                    mNews.getTitle(), mNews.getDate(), mNews.getMessage(),
-                                    mNews.getUrl()));
-                    mActivity.startActivity(Intent.createChooser(mShareIntent,
-                            mActivity.getString(R.string.news_sheet_share)));
-
-                }
-            });
-            mDeleteLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mSheet.hide();
-                    RealmController.with(mActivity).deleteNews(mNews.getId());
-                    NewsListActivity.refreshList(mActivity, null);
-                }
-            });
-            mToEventLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mSheet.hide();
-                    Intent mToEventIntent = new Intent(mActivity, ManagerActivity.class);
-                    mToEventIntent.putExtra("newsToEvent", mNews.getId());
-                    mToEventIntent.putExtra("isMark", false);
-                    mActivity.startActivity(mToEventIntent);
-                }
-            });
-
-            mSheet.setContentView(mSheetView);
-
-            mLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mSheet.show();
-                }
-            });
+            mView.setOnLongClickListener(v -> ((NewsListActivity) mContext).newsActions(news));
         }
     }
 }

@@ -7,60 +7,58 @@ import android.provider.Settings.Secure;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-import it.liceoarzignano.bold.Utils;
+import it.liceoarzignano.bold.utils.PrefsUtils;
+import it.liceoarzignano.bold.safe.mod.Encryption;
 
-import static it.liceoarzignano.bold.safe.Encryption.strToSHA;
 
 public class BoldAnalytics {
     private final FirebaseAnalytics mFirebaseAnalytics;
     private final Context mContext;
 
     @SuppressLint("HardwareIds")
-    public BoldAnalytics(Context mContext) {
-        this.mContext = mContext;
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(mContext);
-        mFirebaseAnalytics.setUserId(strToSHA(
-                Secure.getString(mContext.getContentResolver(), Secure.ANDROID_ID)));
+    public BoldAnalytics(Context context) {
+        mContext = context;
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
+        mFirebaseAnalytics.setUserId(Encryption.strToSHA(
+                Secure.getString(context.getContentResolver(), Secure.ANDROID_ID)));
         configUser();
-    }
-
-    /**
-     * Send firebase analytics event
-     *
-     * @param mBundle event data
-     */
-    public void sendEvent(Bundle mBundle) {
-        mBundle.putString(FirebaseAnalytics.Param.GROUP_ID, Utils.isTeacher(mContext) ?
-                "0" : Utils.getAddress(mContext));
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, mBundle);
     }
 
     /**
      * Send firebase analytics when settings are opened
      *
-     * @param mBundle event data
+     * @param bundle event data
      */
-    public void sendConfig(Bundle mBundle) {
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, mBundle);
+    public void sendConfig(Bundle bundle) {
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
     }
 
     /**
      * Setup user props basing on sharedPreferences
      */
     private void configUser() {
-        mFirebaseAnalytics.setUserProperty(Utils.ISTEACHER,
-                String.valueOf(Utils.isTeacher(mContext)));
-        mFirebaseAnalytics.setUserProperty(Utils.SUGGESTIONS,
-                String.valueOf(Utils.hasSuggestions(mContext)));
-        mFirebaseAnalytics.setUserProperty(Utils.NOTIF_EVENT,
-                String.valueOf(Utils.hasEventsNotification(mContext)));
-        mFirebaseAnalytics.setUserProperty(Utils.NOTIF_NEWS,
-                String.valueOf(Utils.hasNewsNotification(mContext)));
-        mFirebaseAnalytics.setUserProperty(Utils.SAFE_DONE,
-                String.valueOf(Utils.hasSafe(mContext)));
-        if (!Utils.isTeacher(mContext)) {
-            mFirebaseAnalytics.setUserProperty(Utils.ADDRESS,
-                    Utils.getAddress(mContext));
+        mFirebaseAnalytics.setUserProperty(PrefsUtils.IS_TEACHER,
+                String.valueOf(PrefsUtils.isTeacher(mContext)));
+        mFirebaseAnalytics.setUserProperty(PrefsUtils.SUGGESTIONS,
+                String.valueOf(PrefsUtils.hasSuggestions(mContext)));
+        mFirebaseAnalytics.setUserProperty(PrefsUtils.NOTIF_EVENT,
+                String.valueOf(PrefsUtils.hasEventsNotification(mContext)));
+        mFirebaseAnalytics.setUserProperty(PrefsUtils.NOTIF_NEWS,
+                String.valueOf(PrefsUtils.hasNewsNotification(mContext)));
+        mFirebaseAnalytics.setUserProperty(PrefsUtils.SAFE_DONE,
+                String.valueOf(PrefsUtils.hasSafe(mContext)));
+        if (!PrefsUtils.isTeacher(mContext)) {
+            mFirebaseAnalytics.setUserProperty(PrefsUtils.ADDRESS, PrefsUtils.getAddress(mContext));
         }
+    }
+
+    public void log(String tag, String message) {
+        if (!PrefsUtils.hasAnalytics(mContext)) {
+            return;
+        }
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, message);
+        mFirebaseAnalytics.logEvent(tag, bundle);
     }
 }

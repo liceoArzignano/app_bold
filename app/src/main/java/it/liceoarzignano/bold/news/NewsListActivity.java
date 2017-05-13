@@ -1,9 +1,7 @@
 package it.liceoarzignano.bold.news;
 
-import android.app.Activity;
 import android.app.SearchManager;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,12 +9,11 @@ import android.support.customtabs.CustomTabsClient;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.customtabs.CustomTabsServiceConnection;
 import android.support.customtabs.CustomTabsSession;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -25,141 +22,202 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
+import java.util.List;
+
 import io.realm.Realm;
-import io.realm.RealmResults;
-import io.realm.Sort;
 import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.ui.DividerDecoration;
+import it.liceoarzignano.bold.firebase.BoldAnalytics;
+import it.liceoarzignano.bold.ui.ActionsDialog;
+import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt;
 
 public class NewsListActivity extends AppCompatActivity {
-    private static Activity sActivity;
-    private static RecyclerView sNewsList;
-    private static LinearLayout sEmptyLayout;
-    private static TextView sEmptyText;
-    private static CustomTabsClient sClient;
-    private static CustomTabsSession sCustomTabsSession;
-    private static CustomTabsIntent sCustomTabIntent = null;
+    private CoordinatorLayout mCoordinator;
+    private LinearLayout mEmptyLayout;
+    private TextView mEmptyText;
+
+    private NewsController mController;
+    private NewsAdapter mAdapter;
+    private CustomTabsClient mClient;
+    private CustomTabsSession mCustomTabsSession;
+    private CustomTabsServiceConnection mCustomTabsServiceConnection;
+    private CustomTabsIntent mCustomTabIntent = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_list);
 
-        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_toolbar_back);
+        toolbar.setNavigationOnClickListener(v -> finish());
 
-        sActivity = this;
+        mCoordinator = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
+        RecyclerViewExt newsList = (RecyclerViewExt) findViewById(R.id.news_list);
+        mEmptyLayout = (LinearLayout) findViewById(R.id.news_empty_layout);
+        mEmptyText = (TextView) findViewById(R.id.news_empty_text);
 
-        sNewsList = (RecyclerView) findViewById(R.id.news_list);
-        sEmptyLayout = (LinearLayout) findViewById(R.id.news_empty_layout);
-        sEmptyText = (TextView) findViewById(R.id.news_empty_text);
+        Intent callingIntent = getIntent();
+        long id = callingIntent.getLongExtra("newsId", -1);
 
-        Intent mCallingIntent = getIntent();
-        long mId = mCallingIntent.getLongExtra("newsId", -1);
-
-        if (mId > 0) {
-            News mCalledNews = Realm.getInstance(BoldApp.getAppRealmConfiguration())
-                    .where(News.class).equalTo("id", mId).findFirst();
+        if (id > 0) {
+            News mCalledNews = Realm.getInstance(((BoldApp) getApplication()).getConfig())
+                    .where(News.class).equalTo("id", id).findFirst();
             showUrl(mCalledNews.getUrl());
         }
 
-        String mQuery = null;
-        if (Intent.ACTION_SEARCH.equals(getIntent().getAction())) {
-            mQuery = getIntent().getStringExtra(SearchManager.QUERY);
-        }
+        mController = new NewsController(((BoldApp) getApplication()).getConfig());
 
-        sNewsList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        sNewsList.setItemAnimator(new DefaultItemAnimator());
-        sNewsList.addItemDecoration(new DividerDecoration(getApplicationContext()));
-
-        refreshList(getApplicationContext(), mQuery);
+        mAdapter = new NewsAdapter(mController.getAll(), this);
+        newsList.setAdapter(mAdapter);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu mMenu) {
-        getMenuInflater().inflate(R.menu.search, mMenu);
-        setupSearchView(this, mMenu.findItem(R.id.menu_search));
+    protected void onResume() {
+        super.onResume();
+
+        // Chrome custom tabs
+        setupCCustomTabs();
+
+        String query = null;
+        Intent callingIntent = getIntent();
+        if (Intent.ACTION_SEARCH.equals(callingIntent.getAction())) {
+            query = callingIntent.getStringExtra(SearchManager.QUERY);
+        }
+
+        refresh(query);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mCustomTabsServiceConnection != null) {
+            unbindService(mCustomTabsServiceConnection);
+            mCustomTabsServiceConnection = null;
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search, menu);
+        setupSearchView(menu.findItem(R.id.menu_search));
         return true;
     }
 
-    static void refreshList(Context mContext, String mQuery) {
-        boolean hasQuery =  mQuery != null && !mQuery.isEmpty();
+    /**
+     * Initialize search view
+     *
+     * @param item menu item
+     */
+    private void setupSearchView(MenuItem item) {
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
 
-        Realm mRealm = Realm.getInstance(BoldApp.getAppRealmConfiguration());
-        final RealmResults<News> mNews = hasQuery ?
-                mRealm.where(News.class).contains("title", mQuery).or().contains("message", mQuery)
-                        .findAllSorted("date", Sort.DESCENDING) :
-                mRealm.where(News.class).findAllSorted("date", Sort.DESCENDING);
-
-        sEmptyLayout.setVisibility(mNews.isEmpty() ? View.VISIBLE : View.GONE);
-        sEmptyText.setText(mContext.getString(hasQuery ?
-                R.string.search_no_result : R.string.news_empty));
-
-        NewsAdapter mAdapter = new NewsAdapter(mNews, sActivity);
-
-        sNewsList.setAdapter(mAdapter);
-
-        mAdapter.notifyDataSetChanged();
-    }
-
-    private static void setupCCustomTabs() {
-        if (sCustomTabIntent != null) {
+        if (searchView == null) {
             return;
         }
 
-        Context mContext = BoldApp.getBoldContext();
-        CustomTabsServiceConnection mCustomTabsServiceConnection =
-                new CustomTabsServiceConnection() {
-                    @Override
-                    public void onCustomTabsServiceConnected(ComponentName componentName,
-                                                             CustomTabsClient customTabsClient) {
-                        sClient = customTabsClient;
-                        sClient.warmup(0L);
-                        sCustomTabsSession = sClient.newSession(null);
-                    }
-
-                    @Override
-                    public void onServiceDisconnected(ComponentName name) {
-                        sClient = null;
-                    }
-                };
-
-        CustomTabsClient.bindCustomTabsService(mContext, "com.android.chrome",
-                mCustomTabsServiceConnection);
-
-        sCustomTabIntent = new CustomTabsIntent.Builder(sCustomTabsSession)
-                .setToolbarColor(ContextCompat.getColor(mContext, R.color.colorPrimary))
-                .setShowTitle(true)
-                .setStartAnimations(mContext, R.anim.slide_in_right, R.anim.slide_out_left)
-                .setExitAnimations(mContext, android.R.anim.slide_in_left,
-                        android.R.anim.slide_out_right)
-                .build();
-    }
-
-    static void showUrl(String mUrl) {
-        setupCCustomTabs();
-        sCustomTabIntent.launchUrl(sActivity, Uri.parse(mUrl));
-    }
-
-    private void setupSearchView(final Context mContext, MenuItem mItem) {
-        SearchView mSearchView = (SearchView) MenuItemCompat.getActionView(mItem);
-
-        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String mQuery) {
-                refreshList(mContext, mQuery);
+                refresh(mQuery);
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String mNewText) {
-                refreshList(mContext, mNewText);
+                refresh(mNewText);
                 return true;
             }
         });
+    }
+
+    /**
+     * Refresh list
+     *
+     * @param query search query
+     */
+    private void refresh(String query) {
+        final List<News> news = mController.getByQuery(query);
+        mAdapter.updateList(news);
+        mEmptyLayout.setVisibility(news.isEmpty() ? View.VISIBLE : View.GONE);
+        mEmptyText.setText(getString(query != null && !query.isEmpty() ?
+                R.string.search_no_result : R.string.news_empty));
+
+    }
+
+    /**
+     * Initialize chrome custom tabs
+     */
+    private void setupCCustomTabs() {
+        if (mCustomTabIntent != null) {
+            return;
+        }
+
+        mCustomTabsServiceConnection = new CustomTabsServiceConnection() {
+            @Override
+            public void onCustomTabsServiceConnected(ComponentName componentName,
+                                                     CustomTabsClient customTabsClient) {
+                mClient = customTabsClient;
+                mClient.warmup(0L);
+                mCustomTabsSession = mClient.newSession(null);
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                        mClient = null;
+                    }
+        };
+
+        CustomTabsClient.bindCustomTabsService(this, "com.android.chrome",
+                mCustomTabsServiceConnection);
+
+        mCustomTabIntent = new CustomTabsIntent.Builder(mCustomTabsSession)
+                .setToolbarColor(ContextCompat.getColor(this, R.color.colorPrimary))
+                .setShowTitle(true)
+                .setStartAnimations(this, R.anim.slide_in_right, R.anim.slide_out_left)
+                .setExitAnimations(this, android.R.anim.slide_in_left,
+                        android.R.anim.slide_out_right)
+                .build();
+    }
+
+    /**
+     * Open the url associated with a news
+     *
+     * @param url website url
+     */
+    void showUrl(String url) {
+        new BoldAnalytics(this).log(FirebaseAnalytics.Event.VIEW_ITEM, "News url");
+        setupCCustomTabs();
+        mCustomTabIntent.launchUrl(this, Uri.parse(url));
+    }
+
+    @SuppressWarnings("SameReturnValue")
+    boolean newsActions(News news) {
+        ActionsDialog dialog = new ActionsDialog(this, false, news.getId());
+        dialog.setOnActionsListener(new ActionsDialog.OnActionsDialogListener() {
+            @Override
+            public void onShare() {
+                String message = String.format("%1$s (%2$s)\n%3$s", news.getTitle(),
+                        news.getDate(), news.getMessage());
+                startActivity(Intent.createChooser(new Intent(Intent.ACTION_SEND)
+                                .setType("text/plain")
+                                .putExtra(Intent.EXTRA_TEXT, message),
+                        getString(R.string.share_title)));
+            }
+
+            @Override
+            public void onDelete() {
+                mController.delete(news.getId());
+                Snackbar.make(mCoordinator, getString(R.string.actions_removed), Snackbar.LENGTH_LONG)
+                        .show();
+                refresh(null);
+            }
+        });
+        dialog.show();
+
+        return true;
     }
 }

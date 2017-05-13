@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress ALL, XmlHighlighting -->
+<animated-vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt">
+    <aapt:attr name="android:drawable">
+        <vector
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:width="24dp"
+            android:height="24dp"
+            android:viewportWidth="24"
+            android:viewportHeight="24"
+            android:alpha="1">
+            <group
+                android:name="mask_1"
+                android:pivotX="12"
+                android:pivotY="11">
+                <clip-path
+                    android:name="mask"
+                    android:pathData="M 7.9 6.9 L 7.9 15.1 L 16.1 15.1  L 16.1 6.9 L 7.9 6.9"/>
+                <group
+                    android:name="intro"
+                    android:pivotX="12"
+                    android:pivotY="12"
+                    android:translateY="-1">
+                    <path
+                        android:name="dot"
+                        android:pathData="M 12 10 C 10.9 10 10 10.9 10 12 C 10 13.1 10.9 14 12 14 C 13.1 14 14 13.1 14 12 C 14 10.9 13.1 10 12 10 Z"
+                        android:fillColor="@color/white"
+                        android:fillAlpha="0"/>
+                </group>
+            </group>
+            <group
+                android:name="hat"
+                android:pivotX="12"
+                android:pivotY="12"
+                android:translateY="-1"
+                android:rotation="45">
+                <path
+                    android:name="square"
+                    android:pathData="M 6 12 L 12 18 L 18 12 L 12 6 L 6 12"
+                    android:fillColor="@color/white"
+                    android:fillAlpha="0"/>
+            </group>
+            <group
+                android:name="end"
+                android:pivotX="22"
+                android:pivotY="9"
+                android:scaleY="0">
+                <path
+                    android:name="path_2"
+                    android:pathData="M 21 9 L 21 17 L 23 17 L 23 9 L 21 9"
+                    android:fillColor="@color/white"/>
+            </group>
+            <group
+                android:name="bottom"
+                android:translateY="-4">
+                <path
+                    android:name="path"
+                    android:pathData="M 5 13.18 L 5 17.18 L 12 21 L 19 17.18 L 19 13.18 L 12 17 L 5 13.18 Z"
+                    android:fillColor="@color/white"
+                    android:fillAlpha="0"/>
+            </group>
+            <group android:name="load_1">
+                <path
+                    android:name="load_dot_1"
+                    android:pathData="M 6 10 C 4.9 10 4 10.9 4 12 C 4 13.1 4.9 14 6 14 C 7.1 14 8 13.1 8 12 C 8 10.9 7.1 10 6 10 Z"
+                    android:fillColor="@color/white"/>
+            </group>
+            <group
+                android:name="load_2"
+                android:translateY="-1">
+                <path
+                    android:name="load_dot_2"
+                    android:pathData="M 12 10 C 10.9 10 10 10.9 10 12 C 10 13.1 10.9 14 12 14 C 13.1 14 14 13.1 14 12 C 14 10.9 13.1 10 12 10 Z"
+                    android:fillColor="@color/white"/>
+            </group>
+            <group
+                android:name="load_3"
+                android:translateY="-1">
+                <path
+                    android:name="load_dot_3"
+                    android:pathData="M 18 10 C 16.9 10 16 10.9 16 12 C 16 13.1 16.9 14 18 14 C 19.1 14 20 13.1 20 12 C 20 10.9 19.1 10 18 10 Z"
+                    android:fillColor="@color/white"/>
+            </group>
+        </vector>
+    </aapt:attr>
+    <target android:name="hat">
+        <aapt:attr name="android:animation">
+            <set xmlns:android="http://schemas.android.com/apk/res/android">
+                <objectAnimator
+                    android:name="hat"
+                    android:propertyName="rotation"
+                    android:startOffset="1650"
+                    android:duration="351"
+                    android:valueFrom="45"
+                    android:valueTo="0"
+                    android:valueType="floatType"/>
+                <objectAnimator
+                    android:name="hat"
+                    android:propertyName="scaleX"
+                    android:startOffset="2100"
+                    android:duration="200"
+                    android:valueFrom="1"
+                    android:valueTo="1.83"
+                    android:valueType="floatType"
+                    android:interpolator="@android:anim/decelerate_interpolator"/>
+                <objectAnimator
+                    android:name="hat"
+                    android:propertyName="translateY"
+                    android:startOffset="2360"
+                    android:duration="190"
+                    android:valueFrom="-1"
+                    android:valueTo="-3"
+                    android:valueType="floatType"
+                    android:interpolator="@android:anim/accelerate_decelerate_interpolator"/>
+            </set>
+        </aapt:attr>
+    </target>
+    <target android:name="path">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:name="path"
+                android:propertyName="fillAlpha"
+                android:startOffset="2299"
+                android:duration="1"
+                android:valueFrom="0"
+                android:valueTo="1"
+                android:valueType="floatType"
+                android:interpolator="@android:anim/linear_interpolator"/>
+        </aapt:attr>
+    </target>
+    <target android:name="end">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:name="end"
+                android:propertyName="scaleY"
+                android:startOffset="2700"
+                android:duration="100"
+                android:valueFrom="0"
+                android:valueTo="1"
+                android:valueType="floatType"
+                android:interpolator="@android:anim/decelerate_interpolator"/>
+        </aapt:attr>
+    </target>
+    <target android:name="bottom">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:name="bottom"
+                android:propertyName="translateY"
+                android:startOffset="2360"
+                android:duration="250"
+                android:valueFrom="-4"
+                android:valueTo="0"
+                android:valueType="floatType"
+                android:interpolator="@android:anim/decelerate_interpolator"/>
+        </aapt:attr>
+    </target>
+    <target android:name="square">
+        <aapt:attr name="android:animation">
+            <set xmlns:android="http://schemas.android.com/apk/res/android">
+                <objectAnimator
+                    android:name="square"
+                    android:propertyName="fillAlpha"
+                    android:startOffset="1649"
+                    android:duration="1"
+                    android:valueFrom="1"
+                    android:valueTo="1"
+                    android:valueType="floatType"
+                    android:interpolator="@android:anim/accelerate_decelerate_interpolator"/>
+                <objectAnimator
+                    android:name="square"
+                    android:propertyName="fillAlpha"
+                    android:duration="1"
+                    android:valueFrom="0"
+                    android:valueTo="0"
+                    android:valueType="floatType"
+                    android:interpolator="@android:anim/accelerate_decelerate_interpolator"/>
+            </set>
+        </aapt:attr>
+    </target>
+    <target android:name="intro">
+        <aapt:attr name="android:animation">
+            <set xmlns:android="http://schemas.android.com/apk/res/android">
+                <objectAnimator
+                    android:name="intro"
+                    android:propertyName="scaleX"
+                    android:startOffset="1300"
+                    android:duration="350"
+                    android:valueFrom="1"
+                    android:valueTo="3"
+                    android:valueType="floatType"
+                    android:interpolator="@android:anim/decelerate_interpolator"/>
+                <objectAnimator
+                    android:name="intro"
+                    android:propertyName="scaleY"
+                    android:startOffset="1300"
+                    android:duration="350"
+                    android:valueFrom="1"
+                    android:valueTo="3"
+                    android:valueType="floatType"
+                    android:interpolator="@android:anim/decelerate_interpolator"/>
+            </set>
+        </aapt:attr>
+    </target>
+    <target android:name="dot">
+        <aapt:attr name="android:animation">
+            <set xmlns:android="http://schemas.android.com/apk/res/android">
+                <objectAnimator
+                    android:name="dot"
+                    android:propertyName="fillAlpha"
+                    android:startOffset="1649"
+                    android:duration="1"
+                    android:valueFrom="1"
+                    android:valueTo="0"
+                    android:valueType="floatType"
+                    android:interpolator="@android:anim/accelerate_decelerate_interpolator"/>
+                <objectAnimator
+                    android:name="dot"
+                    android:propertyName="fillAlpha"
+                    android:startOffset="1299"
+                    android:duration="1"
+                    android:valueFrom="0"
+                    android:valueTo="1"
+                    android:valueType="floatType"
+                    android:interpolator="@android:anim/accelerate_decelerate_interpolator"/>
+            </set>
+        </aapt:attr>
+    </target>
+    <target android:name="load_1">
+        <aapt:attr name="android:animation">
+            <set xmlns:android="http://schemas.android.com/apk/res/android">
+                <objectAnimator
+                    android:name="load_1"
+                    android:propertyName="translateX"
+                    android:duration="600"
+                    android:valueFrom="-2"
+                    android:valueTo="6"
+                    android:valueType="floatType"
+                    android:interpolator="@android:anim/accelerate_decelerate_interpolator"/>
+                <objectAnimator
+                    android:name="load_1"
+                    android:propertyName="translateY"
+                    android:duration="300"
+                    android:valueFrom="-1"
+                    android:valueTo="-4"
+                    android:valueType="floatType"
+                    android:interpolator="@android:anim/accelerate_interpolator"/>
+                <objectAnimator
+                    android:name="load_1"
+                    android:propertyName="translateY"
+                    android:startOffset="300"
+                    android:duration="300"
+                    android:valueFrom="-4"
+                    android:valueTo="-1"
+                    android:valueType="floatType"
+                    android:interpolator="@android:anim/decelerate_interpolator"/>
+            </set>
+        </aapt:attr>
+    </target>
+    <target android:name="load_3">
+        <aapt:attr name="android:animation">
+            <set xmlns:android="http://schemas.android.com/apk/res/android">
+                <objectAnimator
+                    android:name="load_3"
+                    android:propertyName="translateY"
+                    android:duration="300"
+                    android:valueFrom="-1"
+                    android:valueTo="3"
+                    android:valueType="floatType"
+                    android:interpolator="@android:anim/accelerate_decelerate_interpolator"/>
+                <objectAnimator
+                    android:name="load_3"
+                    android:propertyName="translateY"
+                    android:startOffset="300"
+                    android:duration="300"
+                    android:valueFrom="3"
+                    android:valueTo="-1"
+                    android:valueType="floatType"
+                    android:interpolator="@android:anim/decelerate_interpolator"/>
+                <objectAnimator
+                    android:name="load_3"
+                    android:propertyName="translateX"
+                    android:duration="600"
+                    android:valueFrom="2"
+                    android:valueTo="-6"
+                    android:valueType="floatType"
+                    android:interpolator="@android:anim/accelerate_decelerate_interpolator"/>
+            </set>
+        </aapt:attr>
+    </target>
+</animated-vector>

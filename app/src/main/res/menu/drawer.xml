@@ -6,7 +6,6 @@
             android:icon="@drawable/ic_home"
             android:title="@string/nav_home" />
         <item
-
             android:id="@+id/nav_my_marks"
             android:icon="@drawable/ic_my_marks"
             android:title="@string/nav_mymarks" />
@@ -51,6 +50,14 @@
             android:id="@+id/nav_safe"
             android:icon="@drawable/ic_safe"
             android:title="@string/nav_safe" />
+        <item
+            android:id="@+id/nav_share"
+            android:icon="@drawable/avd_share"
+            android:title="@string/nav_share" />
+        <item
+            android:id="@+id/nav_help"
+            android:icon="@drawable/ic_help"
+            android:title="@string/nav_help" />
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings"

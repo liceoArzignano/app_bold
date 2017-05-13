@@ -9,15 +9,19 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
+    <uses-sdk tools:overrideLibrary="android.support.v14.preference" />
+
     <application
         android:name=".BoldApp"
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:largeHeap="true"
         android:supportsRtl="false"
-        android:theme="@style/AppTheme" >
+        android:extractNativeLibs="false"
+        android:theme="@style/AppTheme"
+        tools:targetApi="23"
+        tools:replace="android:supportsRtl">
 
         <!-- Main -->
         <activity
@@ -33,21 +37,25 @@
             <meta-data
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
+            <meta-data
+                android:name="com.google.android.safetynet.ATTEST_API_KEY"
+                android:value="AIzaSyDCokY0jUhOkEbVIn6O0kxm3cYqd1thrRg" />
         </activity>
 
         <!-- Mark -->
         <activity
-            android:name=".marks.MarkListActivity"
+            android:name=".marks.MarksActivity"
             android:label="@string/title_activity_mark_list"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.MarksTheme" />
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".marks.SubjectActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- Events -->
         <activity
             android:name=".events.EventListActivity"
             android:label="@string/title_activity_event_list"
-            android:launchMode="singleTop"
-            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -62,10 +70,16 @@
         <activity
             android:name=".news.NewsListActivity"
             android:label="@string/nav_news"
-            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="http"
+                    android:host="www.liceoarzignano.it"
+                    android:pathPrefix="/app" />
             </intent-filter>
 
             <meta-data
@@ -75,53 +89,50 @@
 
         <!-- Editor -->
         <activity
-            android:name=".ManagerActivity"
-            android:label="@string/title_activity_manager"
-            android:parentActivityName=".marks.MarkListActivity"
+            android:name=".editor.EditorActivity"
+            android:label="@string/title_activity_editor"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
-
-        <!-- Viewer -->
-        <activity
-            android:name=".ViewerActivity"
-            android:label="@string/title_activity_mark_view"
-            android:parentActivityName=".marks.MarkListActivity"
-            android:theme="@style/ViewerTheme.NoActionBar" />
 
         <!-- Settings -->
         <activity
             android:name=".settings.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.SettingsTheme" />
+            android:theme="@style/AppTheme.SettingsTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.APPLICATION_PREFERENCES"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
 
         <!-- Safe -->
         <activity
             android:name=".safe.SafeActivity"
             android:label="@string/title_activity_safe"
-            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- Backup -->
         <activity
             android:name=".backup.BackupActivity"
             android:label="@string/title_activity_backup"
-            android:parentActivityName=".settings.SettingsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- Benefits -->
         <activity
             android:name=".intro.BenefitsActivity"
-            android:label="@string/slide_button"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <!-- Feedback -->
+        <activity
+            android:name=".feedback.FeedbackActivity"
+            android:label="@string/title_activity_feedback"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
 
         <!-- Services -->
         <service
             android:name=".events.AlarmService"
-            android:enabled="true" />
-        <service
-            android:name=".events.BootReceiverService"
             android:enabled="true" />
         <service
             android:name=".firebase.BoldMessagingService"
@@ -147,6 +158,9 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-    </application>
 
+        <!-- 2.25:1 aspect ratio -->
+        <meta-data android:name="android.max_aspect" android:value="2.1" />
+
+    </application>
 </manifest>

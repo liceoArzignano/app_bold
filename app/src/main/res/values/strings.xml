@@ -16,23 +16,27 @@
     <string name="nav_teacherzone">Teacher area</string>
     <string name="nav_settings">Settings</string>
     <string name="nav_safe">Safe</string>
+    <string name="nav_share">Share</string>
+    <string name="nav_help">Help</string>
 
     <!-- Home -->
     <string name="upcoming_events">Upcoming events</string>
     <string name="lastest_marks">Lastest marks</string>
     <string name="suggestions">Suggestions</string>
-    <string name="suggestion_safe">Use Safe to store your school credentials in one secure place</string>
+    <string name="suggestion_safe">You forgot your password? Check Safe out and store all of them in a single place</string>
     <string name="suggestion_safe_pwd">Someone knows your Safe password? Log in and change it</string>
-    <string name="suggestion_avg">Would you like to know what mark you should get to have the sufficiency in a subject? Pick a subject from the average and look at the suggestions</string>
-    <string name="suggestion_quarter">A new quarter has begun? You can filter your marks in the marks section</string>
-    <string name="suggestion_edit_event">Postponed an event? Edit it and update the date</string>
-    <string name="suggestion_notification_remote">You can receive the most important news from the school as notifications</string>
+    <string name="suggestion_avg">Would you like to know what mark you should get to have the sufficiency in a subject? Pick a subject and look at the suggestions</string>
+    <string name="suggestion_quarter">A new quarter has begun? No problem, marks will be automatically filtered</string>
+    <string name="suggestion_edit_event">Your classmates keep asking for homework? If you save them in an event, you\'ll be able to answer in a couple of seconds</string>
+    <string name="suggestion_notification_remote">Most important news from the school will be delivered as notifications</string>
     <string name="suggestion_get_touch">Need to get in touch with the school? You can call or send an email from the settings</string>
     <string name="suggestion_address">You can\'t find a subject int the list? Check the address</string>
     <string name="suggestion_suggestions">Suggestions annoy you? Turn them off</string>
     <string name="suggestion_notification">You will be notified about your events the day before</string>
     <string name="suggestion_backups">Create a backup in Google Drive, you\'ll be able to restore your data in case you lose or change your phone</string>
     <string name="suggestion_news">You will find the most important news from the right in the app by opening the news section</string>
+    <string name="suggestion_feedback">Want to submit a feedback or report an issue you\'ve found? You can do it from the settings</string>
+    <string name="share_title">Share with a friend</string>
 
     <!-- Search -->
     <string name="search_action">Search\u2026</string>
@@ -41,87 +45,80 @@
     <!-- Updated Dialog -->
     <string name="dialog_updated_title">App has been updated</string>
     <string name="dialog_updated_content">
-        \u2022 New: News sent from the school are now stored and shown as notifications.\n
-        \u2022 New: events search.\n
-        \u2022 New: Android 7.1 support (shortcuts included).\n
-        \u2022 Updated: new average graph.\n
-        \u2022 Updated: optimized Backup &amp; restore user interface.\n
-        \u2022 Updated: new home cards management.\n
-        \u2022 Updated: increased performances in Marks, Events and News lists.\n
+        \u2022 New: send feedback.\n
+        \u2022 New: teachers can now receive communiques.\n
+        \u2022 Updated: improved Safe security checks.\n
+        \u2022 Increased performances.\n
         \u2022 Bug fixes.
     </string>
     <string name="dialog_updated_changelog">Changelog</string>
 
-    <!-- Manager -->
-    <string name="title_activity_manager">Editor</string>
-    <string name="update_mark">Edit mark</string>
-    <string name="update_event">Edit event</string>
-    <string name="new_mark">New mark</string>
-    <string name="new_event">New event</string>
-    <string name="hint_student">Student</string>
-    <string name="hint_event">Event</string>
-    <string name="hint_notes">Notes</string>
-    <string name="dialog_select_mark">Pick a mark</string>
-    <string name="manager_invalid">Couldn\'t save. Check the values</string>
-    <string name="select_subject">Select subject</string>
-    <string name="event_spinner_test">Test</string>
-    <string name="event_spinner_school">At school</string>
-    <string name="event_spinner_bday">Birthday</string>
-    <string name="event_spinner_homework">Homework</string>
-    <string name="event_spinner_reminder">Reminder</string>
-    <string name="event_spinner_hang_out">Meeting</string>
-    <string name="event_spinner_other">Other</string>
-    <string name="editor_text_too_long">It\'s getting really long</string>
-    <string name="editor_text_too_long_fix">Fix</string>
-    <string name="saved">Saved</string>
+    <!-- Editor -->
+    <string name="title_activity_editor">Editor</string>
+    <string name="editor_new_mark">New mark</string>
+    <string name="editor_new_event">New event</string>
+    <string name="editor_update_mark">Update mark</string>
+    <string name="editor_update_event">Update event</string>
+    <string name="editor_hint_notes">Notes</string>
+    <string name="editor_hint_subject">Select a subject</string>
+    <string name="editor_hint_student">Student name</string>
+    <string name="editor_hint_event">Event title</string>
+    <string name="editor_save">Save</string>
+    <string name="editor_saved">Saved</string>
+    <string name="editor_cancel_title">Discard changes</string>
+    <string name="editor_cancel_message">Do you want to discard all the changes?</string>
+    <string name="editor_cancel_discard">Discard</string>
+    <string name="editor_dialog_mark_title">Select a mark</string>
+    <string name="editor_error">Can\'t save, please check the values again</string>
 
     <!-- My marks -->
-    <string name="title_activity_mark_list">My marks</string>
-    <string name="title_filter">%1$s marks</string>
-    <string name="title_fragment_marks">Marks</string>
-    <string name="title_fragments_avg">Average</string>
-    <string name="title_fragments_avgs">Averages</string>
+    <string name="title_activity_mark_list">Marks</string>
     <string name="marks_menu_filter">Filter marks</string>
-    <string name="marks_all">All</string>
     <string name="hint_content_common">To have sufficiency, the next mark</string>
     <string name="hint_content_under">might be %1$s or higher</string>
     <string name="hint_content_above">must be %1$s or higher</string>
     <string name="error_noaddress">Set a valid address to use this feature</string>
     <string name="marks_empty">There\'s no mark</string>
+    <string name="marks_filter_description">Select what marks you want to see. Click on the quarter to toggle it</string>
+    <string name="marks_filter_error">Select at least one quarter</string>
+    <string name="marks_filter_action">Filter</string>
+    <string name="marks_share_student">I got %1$s in %2$s</string>
+    <string name="marks_share_teacher">%1$s has got %2$s</string>
 
-    <!-- View -->
-    <string name="title_activity_mark_view">Viewer</string>
-    <string name="viewer_remove">Remove</string>
-    <string name="removed">Removed</string>
-    <string name="viewer_more_marks">More %1$s marks</string>
-    <string name="viewer_date">Date</string>
-    <string name="viewer_notes">Notes</string>
-    <string name="viewer_category">Category</string>
-    <string name="viewer_values">Value</string>
-    <string name="viewer_share">Share</string>
-    <string name="viewer_share_student">I got %1$s in %2$s</string>
-    <string name="viewer_share_teacher">%1$s has got %2$s</string>
-    <string name="viewer_first_quarter">First quarter</string>
-    <string name="viewer_second_quarter">Second quarter</string>
+    <!-- Actions -->
+    <string name="actions_edit">Edit</string>
+    <string name="actions_remove">Remove</string>
+    <string name="actions_removed">Removed</string>
+    <string name="actions_share">Share</string>
+    <string name="actions_to_event">Save as event</string>
 
     <!-- My events -->
     <string name="title_activity_event_list">Events</string>
     <string name="events_empty">There\'s no event</string>
+    <string name="events_time_yesterday">Yesterday</string>
+    <string name="events_time_today">Today</string>
+    <string name="events_time_tomorrow">Tomorrow</string>
+    <string name="events_test">Test</string>
+    <string name="event_school">At school</string>
+    <string name="event_birthday">Birthday</string>
+    <string name="event_homework">Homework</string>
+    <string name="event_reminder">Reminder</string>
+    <string name="event_meeting">Meeting</string>
+    <string name="event_other">Other</string>
 
     <!-- News -->
     <string name="news_empty">You have received no news so far</string>
-    <string name="news_sheet_share">Share</string>
-    <string name="news_sheet_to_event">Save as event</string>
-    <string name="news_sheet_remove">Remove</string>
+    <string name="news_type_private">Communique: %1$s</string>
 
     <!-- Intro -->
-    <string name="slide_button">Get started</string>
-    <string name="slide0_title">School done easy</string>
-    <string name="slide0_message">Manage and archive marks, averages and events easily on your device</string>
-    <string name="slide1_title">Always up to date</string>
-    <string name="slide1_message">Never miss a news, be notified as soon as they\'re pubblished</string>
-    <string name="slide2_title">Keep\'em Safe</string>
-    <string name="slide2_message">With Safe, you can store all your school passwords in one secure place</string>
+    <string name="slide0_title">Welcome</string>
+    <string name="slide0_message_loading">Wait a second, we\'re getting ready\u2026</string>
+    <string name="slide0_message_failed">Oops, there\'s no internet connection</string>
+    <string name="slide0_message_done">Good to go, slide to start</string>
+    <string name="slide1_title">Address</string>
+    <string name="slide1_message">To begin, you need to pick your address</string>
+    <string name="intro_btn_retry">Retry</string>
+    <string name="intro_btn_done">Start</string>
     <string name="intro_drawer_title">Start here</string>
     <string name="intro_drawer">Tap this to navigate through the app sections.\nThe home screen will be populated later</string>
     <string name="intro_fab_save_safe_title">Welcome!</string>
@@ -162,7 +159,6 @@
     <string name="pref_metrics_summary_forced">You\'re using a beta build. You\'re not allowed to turn off metrics reports</string>
     <string name="pref_info">Info</string>
     <string name="pref_app_version_title">App version</string>
-    <string name="pref_dev_info">Developed by Joey</string>
     <string name="pref_getintouch">Get in touch</string>
     <string name="pref_mail_title">Email</string>
     <string name="pref_phone_title">Phone</string>
@@ -184,37 +180,51 @@
     <string name="pref_notification_time_evening">In the evening</string>
     <string name="pref_backup_title">Backup &amp; restore</string>
     <string name="pref_backup_summary">Save your data on Google Drive</string>
+    <string name="pref_safe_status_title">Safe status</string>
+    <string name="pref_safe_status_message_enabled">Enabled (device is secure)</string>
+    <string name="pref_safe_status_message_disabled">Disabled (device is unsecured)</string>
+    <string name="pref_secret_safe_test_title">Device security test</string>
+    <string name="pref_secret_safe_test_running">Checking device security status\u2026</string>
+    <string name="pref_secret_safe_test_connection">Internet connection is required to check device security</string>
+    <string name="pref_secret_safe_test_fail">Test failed. Your device is running unsecured software, Safe won\'t be enabled</string>
+    <string name="pref_secret_safe_test_success">Test succeeded. Your device is secure, Safe will be enabled</string>
     <string name="pref_secret_export_safe_title">Password sharing tool</string>
     <string name="pref_secret_export_safe_message">You can share your encrypted password.\nYou can do this only once.\nSharing the password could be dangerous because someone else might be able to log in Safe. Be careful</string>
     <string name="pref_secret_export_message">My encrypted password: %1$s</string>
     <string name="pref_secret_export_title">Share password</string>
     <string name="pref_secret_export_already_shared">You can\'t share the password unless you change it</string>
+    <string name="pref_opensource_title">Open source</string>
+    <string name="pref_opensource_message">Released under LGPL v3 license</string>
+    <string name="pref_feedback_title">Feedback</string>
 
     <!-- Safe -->
     <string name="title_activity_safe">Safe</string>
-    <string name="safe_dialog_first_title">Welcome!</string>
-    <string name="safe_dialog_first_content">You need to set a Safe password to log into Safe and view your school credentials</string>
-    <string name="safe_dialog_password_input_hint">Alphanumeric password</string>
-    <string name="safe_dialog_title">Log in</string>
-    <string name="safe_dialog_content">Write your Safe password to view your school credentials</string>
-    <string name="safe_security_issue_xposed">Setup failed.\nYou can not use this feature when Xposed is installed. Please uninstall it.</string>
+    <string name="safe_dialog_title">Safe login</string>
+    <string name="safe_dialog_hint">Input your password to access your private data</string>
+    <string name="safe_dialog_first_hint">Choose a password to access your private data</string>
+    <string name="safe_dialog_first_hint_low">Weak password. An 8 characters long password would be better</string>
+    <string name="safe_dialog_first_hint_medium">Decent password. Password with both numbers and letters are even better</string>
+    <string name="safe_dialog_first_hint_good">Secure password. Well done</string>
+    <string name="safe_dialog_password_input_hint">Password</string>
+    <string name="safe_error_security">This device is not secure. Safe won\'t start</string>
+    <string name="safe_dialog_first_positive">Set</string>
+    <string name="safe_dialog_positive">Unlock</string>
     <string name="safe_username">User ID</string>
     <string name="safe_reg_pwd">Register password</string>
     <string name="safe_pc_pwd">PC-account password</string>
     <string name="safe_internet_pwd">Internet password</string>
     <string name="safe_info_title">Info</string>
-    <string name="safe_info_content">The credentials are encrypted and decrypted using the AES algorythm with a 128-bit key. This means they are unreadable for eveyone but this app</string>
+    <string name="safe_info_content">The credentials are encrypted and decrypted using the AES algorythm with a 256-bit key. This means they are unreadable for everyone but this app</string>
     <string name="safe_reset_title">Reset password</string>
     <string name="safe_reset_content">If you rest your password you\'ll loose the other stored credentials as well.\nDo you want to continue?</string>
-    <string name="safe_encrypting">Saving data\u2026</string>
-    <string name="safe_decrypting">Loading data\u2026</string>
-    <string name="safe_first_load">Initializing data\u2026</string>
-    <string name="safe_setup_checking_password">Checking password\u2026</string>
-    <string name="safe_nomatch">Password does not match</string>
+    <string name="safe_encrypting">Saving\u2026</string>
+    <string name="safe_decrypting">Loading\u2026</string>
+    <string name="safe_onpause_locked">Locked</string>
+    <string name="safe_first_load">Loading\u2026</string>
+    <string name="safe_nomatch">Password is incorrect</string>
     <string name="safe_back_title">Exit</string>
-    <string name="safe_back_message">Are you sure you want to exit? Your changes will not be saved.\nClick the V button at the bottom to save</string>
-    <string name="safe_data_usage"><b>Register and Copybook</b>\n\u2022 Username: User ID\n\u2022 Password: Register password\n\n<b>PC account</b>\n\u2022 Username: surname + User ID (rossi123456)\n\u2022 Password: PC Password\n\n<b>Internet access</b>\n\u2022 Username: surname + User ID (rossi123456)\n\u2022 Password: Internet Password</string>
-
+    <string name="safe_back_message">Are you sure you want to exit? Your changes will be discarded.\nClick the button at the bottom to save</string>
+    <string name="safe_data_usage"><b>Register and Copybook</b>\n\u2022 Username: User ID\n\u2022 Password: Register password\n\n<b>PC account</b>\n\u2022 Username: surname + User ID (<i>rossi123456</i>)\n\u2022 Password: PC Password\n\n<b>Internet access</b>\n\u2022 Username: surname + User ID (<i>rossi123456</i>)\n\u2022 Password: Internet Password</string>
 
     <!-- Notification -->
     <string name="notification_title">Upcoming events</string>
@@ -222,8 +232,11 @@
         <item quantity="one">There is one</item>
         <item quantity="other">There are %d</item>
     </plurals>
-    <string name="notification_message_half">, %1$d</string>
-    <string name="notification_message_end">tomorrow</string>
+    <plurals name="notification_message_half">
+        <item quantity="one">, one</item>
+        <item quantity="other">, %1$d</item>
+    </plurals>
+    <string name="notification_message_end">tomorrow.</string>
     <plurals name="notification_test">
         <item quantity="one">test</item>
         <item quantity="other">tests</item>
@@ -234,7 +247,7 @@
     </plurals>
     <plurals name="notification_homework">
         <item quantity="one">homework</item>
-        <item quantity="other">homeworks</item>
+        <item quantity="other">homework</item>
     </plurals>
     <plurals name="notification_reminder">
         <item quantity="one">reminder</item>
@@ -269,7 +282,21 @@
     <string name="backup_button_restore">Restore\u2026</string>
     <string name="restore_dialog_title">Restore</string>
     <string name="restore_dialog_message">Backup info:\nDate: %1$s\nSize: %2$s\nWarning: you will override all the existing marks, events and news with those in the backup.\nDo you want to continue?</string>
-    <string name="date_formatting">MMMM dd, yyyy</string>
+    <string name="date_formatting">EEEE, MMMM dd yyyy</string>
+
+    <!-- Feedback -->
+    <string name="title_activity_feedback">Feedback</string>
+    <string name="feedback_title_hint">Title</string>
+    <string name="feedback_description_hint">Description</string>
+    <string name="feedback_email_hint">Email address</string>
+    <string name="feedback_progress_title">Feedback</string>
+    <string name="feedback_progress_message">Submitting your feedback\u2026</string>
+    <string name="feedback_progress_success">Your feedback has successfully been submitted. Thank you!</string>
+    <string name="feedback_progress_failure">Feedback upload failed, try again later</string>
+    <string name="feedback_progress_view">View feedback</string>
+    <string name="feedback_info">You can submit a feedback here. You will be able to report issues you\'ve found, but before doing so, you\'d better check to see if someone else has already reported it <a href="https://github.com/liceoArzignano/bold_feedback/issues">in the public issue tracker</a>, all the submitted feedback is made public.</string>
+    <string name="feedback_error_email">Insert a valid email address</string>
+    <string name="feedback_error_check">Compile all the fields to submit the feedback</string>
 
     <!-- Shortcuts -->
     <string name="shortcut_marks_short">Marks</string>
@@ -284,8 +311,6 @@
 
     <!-- Accessibility -->
     <string name="accessibility_drawer">Header</string>
-    <string name="accessibility_welcome">Welcome picture</string>
-    <string name="accessibility_event_icon">Event icon</string>
     <string name="accessibility_safe_icon">Safe status icon</string>
     <string name="accessibility_generic_icon">Icon</string>
 </resources>
