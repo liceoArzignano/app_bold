@@ -45,13 +45,10 @@
     <!-- Updated Dialog -->
     <string name="dialog_updated_title">App has been updated</string>
     <string name="dialog_updated_content">
-        \u2022 New: News sent from the school are now stored and shown as notifications.\n
-        \u2022 New: events search.\n
-        \u2022 New: Android 7.1 support (shortcuts included).\n
-        \u2022 Updated: new average graph.\n
-        \u2022 Updated: optimized Backup &amp; restore user interface.\n
-        \u2022 Updated: new home cards management.\n
-        \u2022 Updated: increased performances in Marks, Events and News lists.\n
+        \u2022 New: send feedback.\n
+        \u2022 New: teachers can now receive communiques.\n
+        \u2022 Updated: improved Safe security checks.\n
+        \u2022 Increased performances.\n
         \u2022 Bug fixes.
     </string>
     <string name="dialog_updated_changelog">Changelog</string>
