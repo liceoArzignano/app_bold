@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
@@ -313,9 +314,18 @@ public class BackupActivity extends AppCompatActivity {
                                    final DriveFolder folder) {
         final DriveContents content = result.getDriveContents();
 
-        new Thread() {
+        MaterialDialog progress = new MaterialDialog.Builder(this)
+                .title(R.string.backup_progress_title)
+                .content(R.string.backup_progress_message)
+                .progress(true, 100)
+                .progressIndeterminateStyle(false)
+                .cancelable(false)
+                .canceledOnTouchOutside(false)
+                .show();
+
+        new AsyncTask<Void, Boolean, Boolean>() {
             @Override
-            public void run() {
+            public Boolean doInBackground(Void... params) {
                 OutputStream oStream = content.getOutputStream();
                 FileInputStream iStream;
 
@@ -338,10 +348,28 @@ public class BackupActivity extends AppCompatActivity {
 
                 folder.createFile(mGoogleApiClient, changeSet, content)
                         .setResultCallback(driveFileResult ->
-                                showResult(result.getStatus().isSuccess()));
+                                onBackupCompleted(result.getStatus().isSuccess()));
                 mStatus = 2;
+                return true;
             }
-        }.start();
+
+            @Override
+            public void onPostExecute(Boolean values) {
+                // Handle exceptions
+                if (!values) {
+                    progress.dismiss();
+                    showResult(false);
+                }
+            }
+
+            void onBackupCompleted(boolean isSuccess) {
+                // Dismiss the dialog (add some delay to make sure the user had time to read it
+                new Handler().postDelayed(() -> {
+                    progress.dismiss();
+                    showResult(isSuccess);
+                }, 1000);
+            }
+        }.execute();
     }
 
     /**
@@ -441,7 +469,7 @@ public class BackupActivity extends AppCompatActivity {
                 message = isSuccess ?
                         R.string.restore_success_message : R.string.restore_failed_message;
                 break;
-            default: 
+            default:
                 return;
         }
 

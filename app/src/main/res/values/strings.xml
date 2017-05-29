@@ -283,6 +283,8 @@
     <string name="restore_dialog_title">Restore</string>
     <string name="restore_dialog_message">Backup info:\nDate: %1$s\nSize: %2$s\nWarning: you will override all the existing marks, events and news with those in the backup.\nDo you want to continue?</string>
     <string name="date_formatting">EEEE, MMMM dd yyyy</string>
+    <string name="backup_progress_title">Backup</string>
+    <string name="backup_progress_message">Saving data to Google Drive\u2026</string>
 
     <!-- Feedback -->
     <string name="title_activity_feedback">Feedback</string>

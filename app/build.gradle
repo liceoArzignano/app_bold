@@ -13,7 +13,7 @@ android {
         applicationId 'it.liceoarzignano.bold'
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 11700
+        versionCode 11701
         versionName "1.0.17"
         vectorDrawables.useSupportLibrary true
         resConfigs "en", "it"
