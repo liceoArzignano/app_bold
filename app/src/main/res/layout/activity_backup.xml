@@ -23,25 +23,37 @@
         android:paddingRight="16dp"
         android:paddingTop="?actionBarSize">
 
-        <TextView
-            android:id="@+id/backup_summary"
+        <RelativeLayout
+            android:id="@+id/backup_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="24dp"
-            android:textColor="@color/text_secondary"
-            android:textSize="16sp" />
+            android:paddingBottom="16dp"
+            android:paddingTop="16dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                app:srcCompat="@drawable/ic_info_tutorial" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="32dp"
+                android:text="@string/backup_summary"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp" />
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/backup_info"
             android:layout_alignParentRight="true"
-            android:layout_below="@id/backup_summary"
-            android:orientation="horizontal"
-            android:paddingTop="24dp">
+            android:orientation="horizontal">
 
             <android.support.v7.widget.AppCompatButton
-                android:id="@+id/restore_button"
                 style="?borderlessButtonStyle"
+                android:id="@+id/restore_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingRight="16dp"
@@ -49,8 +61,8 @@
                 android:textColor="@color/colorAccent" />
 
             <android.support.v7.widget.AppCompatButton
-                android:id="@+id/backup_button"
                 style="@style/Widget.AppCompat.Button.Colored"
+                android:id="@+id/backup_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"

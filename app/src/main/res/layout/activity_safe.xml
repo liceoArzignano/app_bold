@@ -107,14 +107,25 @@
                             android:hint="@string/safe_internet_pwd" />
                     </android.support.design.widget.TextInputLayout>
 
-                    <TextView
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="24dp"
-                        android:paddingTop="24dp"
-                        android:text="@string/safe_data_usage"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="14sp" />
+                        android:paddingBottom="16dp"
+                        android:paddingTop="16dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            app:srcCompat="@drawable/ic_info_tutorial" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="32dp"
+                            android:text="@string/safe_data_usage"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="14sp" />
+                    </RelativeLayout>
                 </LinearLayout>
             </ScrollView>
         </LinearLayout>

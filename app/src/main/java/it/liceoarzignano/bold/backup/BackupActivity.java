@@ -15,7 +15,6 @@ import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -59,7 +58,6 @@ public class BackupActivity extends AppCompatActivity {
     private static final String BACKUP_FILE_NAME = "Liceo.realm";
 
     private CoordinatorLayout mCoordinatorLayout;
-    private TextView mSummary;
     private AppCompatButton mBackupButton;
     private AppCompatButton mRestoreButton;
 
@@ -84,7 +82,6 @@ public class BackupActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(v -> finish());
 
         mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
-        mSummary = (TextView) findViewById(R.id.backup_summary);
         mBackupButton = (AppCompatButton) findViewById(R.id.backup_button);
         mRestoreButton = (AppCompatButton) findViewById(R.id.restore_button);
 
@@ -124,12 +121,6 @@ public class BackupActivity extends AppCompatActivity {
      * Set up User Interface
      */
     private void setUI() {
-        if (hasValidFolder) {
-            getBackupsFromDrive(DriveId.decodeFromString(mBackupFolder).asDriveFolder());
-        }
-
-        mSummary.setText(getString(R.string.backup_summary));
-
         mRestoreButton.setOnClickListener(view -> {
             new BoldAnalytics(this).log(FirebaseAnalytics.Event.SELECT_CONTENT, "Restore");
             pickBackup();
@@ -139,6 +130,7 @@ public class BackupActivity extends AppCompatActivity {
 
         int backButtonText;
         if (hasValidFolder) {
+            getBackupsFromDrive(DriveId.decodeFromString(mBackupFolder).asDriveFolder());
             backButtonText = R.string.backup_button_backup;
         } else {
             backButtonText = mBackup == null ?
