@@ -124,6 +124,8 @@
     <string name="intro_drawer">Tap this to navigate through the app sections.\nThe home screen will be populated later</string>
     <string name="intro_fab_save_safe_title">Welcome!</string>
     <string name="intro_fab_save_safe">Store your credentials here, then tap this to save</string>
+    <string name="intro_toast_event_long_press">Long press to display other options</string>
+    <string name="intro_toast_news_long_press">Long press to display other options</string>
 
     <!-- Subjects -->
     <string name="subject_english">English</string>

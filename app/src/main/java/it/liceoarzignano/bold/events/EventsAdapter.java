@@ -16,6 +16,7 @@ import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.ui.recyclerview.HeaderViewHolder;
 import it.liceoarzignano.bold.utils.ContentUtils;
 import it.liceoarzignano.bold.utils.DateUtils;
+import it.liceoarzignano.bold.utils.HelpToast;
 
 class EventsAdapter extends SectionedRecyclerViewAdapter<HeaderViewHolder,
         EventsAdapter.EventHolder> {
@@ -106,8 +107,12 @@ class EventsAdapter extends SectionedRecyclerViewAdapter<HeaderViewHolder,
             }
 
             mTag.setText(ContentUtils.eventCategoryToString(mContext, event.getIcon()));
-            mView.setOnClickListener(v -> mValue.setMaxLines(mValue.getMaxLines() == 1
-                    ? Integer.MAX_VALUE : 1));
+            mView.setOnClickListener(v -> {
+                mValue.setMaxLines(mValue.getMaxLines() == 1
+                        ? Integer.MAX_VALUE : 1);
+                new HelpToast(mContext, R.string.intro_toast_event_long_press,
+                        HelpToast.KEY_EVENT_LONG_PRESS);
+            });
             mView.setOnLongClickListener(v -> ((EventListActivity) mContext).eventActions(event));
         }
     }

@@ -15,6 +15,7 @@ import java.util.List;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.ui.recyclerview.HeaderViewHolder;
 import it.liceoarzignano.bold.utils.DateUtils;
+import it.liceoarzignano.bold.utils.HelpToast;
 
 class NewsAdapter extends SectionedRecyclerViewAdapter<HeaderViewHolder, NewsAdapter.NewsHolder> {
     private List<News> mNewsList;
@@ -99,9 +100,13 @@ class NewsAdapter extends SectionedRecyclerViewAdapter<HeaderViewHolder, NewsAda
             mMessage.setText(news.getMessage());
 
             final String url = news.getUrl();
-            if (url != null && !url.isEmpty()) {
-                mView.setOnClickListener(view -> ((NewsListActivity) context).showUrl(url));
-            }
+            mView.setOnClickListener(view -> {
+                if (url != null && !url.isEmpty()) {
+                    ((NewsListActivity) context).showUrl(url);
+                }
+                new HelpToast(mContext, R.string.intro_toast_news_long_press,
+                        HelpToast.KEY_NEWS_LONG_PRESS);
+            });
 
             mView.setOnLongClickListener(v -> ((NewsListActivity) mContext).newsActions(news));
         }
