@@ -147,7 +147,7 @@ public class SettingsActivity extends AppCompatActivity {
 
             // Don't run SafetyNet test on devices without GMS
             if (PrefsUtils.hasNoGMS(mContext)) {
-                PrefsUtils.setSafetyNetResults(mContext, Encryption.validateRespose(mContext,
+                PrefsUtils.setSafetyNetResults(mContext, Encryption.validateResponse(mContext,
                         null, BuildConfig.DEBUG));
                 return;
             }
@@ -172,7 +172,7 @@ public class SettingsActivity extends AppCompatActivity {
             SafetyNet.SafetyNetApi.attest(client, oStream.toByteArray())
                     .setResultCallback((result) -> {
                         dialog.dismiss();
-                        boolean hasPassed = Encryption.validateRespose(mContext,
+                        boolean hasPassed = Encryption.validateResponse(mContext,
                                 result.getJwsResult(), BuildConfig.DEBUG);
                         PrefsUtils.setSafetyNetResults(mContext, hasPassed);
                         new MaterialDialog.Builder(mContext)

@@ -158,7 +158,7 @@ public class BenefitFragment extends Fragment {
 
         // Don't run SafetyNet test on devices without GMS
         if (PrefsUtils.hasNoGMS(context)) {
-            postDeviceCheck(context, Encryption.validateRespose(context, null, BuildConfig.DEBUG));
+            postDeviceCheck(context, Encryption.validateResponse(context, null, BuildConfig.DEBUG));
             return;
         }
 
@@ -182,7 +182,7 @@ public class BenefitFragment extends Fragment {
 
         SafetyNet.SafetyNetApi.attest(client, oStream.toByteArray())
                 .setResultCallback((mResult) ->
-                        postDeviceCheck(context, Encryption.validateRespose(context,
+                        postDeviceCheck(context, Encryption.validateResponse(context,
                                 mResult.getJwsResult(), BuildConfig.DEBUG)));
     }
 

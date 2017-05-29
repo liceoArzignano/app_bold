@@ -55,7 +55,6 @@ import it.liceoarzignano.bold.news.NewsController;
 import it.liceoarzignano.bold.news.NewsListActivity;
 import it.liceoarzignano.bold.safe.SafeActivity;
 import it.liceoarzignano.bold.settings.SettingsActivity;
-import it.liceoarzignano.bold.ui.recyclerview.DividerDecoration;
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt;
 import it.liceoarzignano.bold.utils.ContentUtils;
 import it.liceoarzignano.bold.utils.DateUtils;
@@ -64,6 +63,7 @@ import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private static final String BUNDLE_SHOULD_ANIM = "extra_has_animaed";
 
     private FirebaseRemoteConfig mRemoteConfig;
 
@@ -81,6 +81,8 @@ public class MainActivity extends AppCompatActivity
     private CustomTabsSession mCustomTabsSession;
     private CustomTabsIntent mCustomTabsIntent;
     private CustomTabsServiceConnection mCustomTabsServiceConnection;
+
+    private boolean mShouldAnimate = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +124,10 @@ public class MainActivity extends AppCompatActivity
         // Cards List
         mCardsList = (RecyclerViewExt) findViewById(R.id.home_list);
 
+        if (savedInstanceState != null) {
+            mShouldAnimate = savedInstanceState.getBoolean(BUNDLE_SHOULD_ANIM, true);
+        }
+
         // Welcome dialog
         showWelcomeIfNeeded(this);
 
@@ -152,6 +158,12 @@ public class MainActivity extends AppCompatActivity
             unbindService(mCustomTabsServiceConnection);
             mCustomTabsServiceConnection = null;
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(BUNDLE_SHOULD_ANIM, false);
     }
 
     @Override
@@ -453,7 +465,12 @@ public class MainActivity extends AppCompatActivity
             cards.add(createSuggestionsCard());
         }
 
-        HomeAdapter adapter = new HomeAdapter(this, cards);
+        HomeAdapter adapter = new HomeAdapter(this, cards, mShouldAnimate);
+
+        if (mShouldAnimate) {
+            mShouldAnimate = false;
+        }
+
         mCardsList.setAdapter(adapter);
 
         adapter.notifyDataSetChanged();

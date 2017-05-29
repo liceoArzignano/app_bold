@@ -17,11 +17,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeHolder> {
     private final Context mContext;
     private final List<HomeCard> mObjects;
 
+    private final boolean mShouldAnimate;
     private int mLast = -1;
 
-    public HomeAdapter(Context context, List<HomeCard> objects) {
+    public HomeAdapter(Context context, List<HomeCard> objects, boolean shouldAnimate) {
         mContext = context;
         mObjects = objects;
+        mShouldAnimate = shouldAnimate;
     }
 
     @Override
@@ -36,7 +38,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeHolder> {
     public void onBindViewHolder(HomeHolder holder, int position) {
         HomeCard obj = mObjects.get(position);
         holder.init(obj);
-        if (position > mLast) {
+        if (mShouldAnimate && position > mLast) {
             holder.itemView.startAnimation(AnimationUtils.loadAnimation(mContext, R.anim.slide_up));
         }
         mLast = holder.getAdapterPosition();

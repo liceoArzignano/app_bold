@@ -233,8 +233,7 @@ public class SafeActivity extends AppCompatActivity {
      */
     private void setupEncryption() {
         try {
-            mSecretKeys = Encryption.generateKeyFromPassword(Encryption.getKey(),
-                    Encryption.getSalt().getBytes());
+            mSecretKeys = Encryption.generateKey();
         } catch (GeneralSecurityException e) {
             Log.e("Safe", e.getMessage(), e);
         }
@@ -369,7 +368,7 @@ public class SafeActivity extends AppCompatActivity {
     private void prepareDevice() {
         // There's no need of doing a SafetyNet test now, just check app integrity
         if (PrefsUtils.hasPassedSafetyNetTest(this) &&
-                Encryption.validateRespose(this, null, BuildConfig.DEBUG)) {
+                Encryption.validateResponse(this, null, BuildConfig.DEBUG)) {
             mLoadingText.setText(R.string.safe_first_load);
             new Handler().postDelayed(() -> {
                 setupEncryption();
