@@ -23,7 +23,6 @@ import java.security.SecureRandom;
 
 import it.liceoarzignano.bold.BuildConfig;
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.feedback.FeedbackActivity;
 import it.liceoarzignano.bold.utils.PrefsUtils;
 import it.liceoarzignano.bold.backup.BackupActivity;
 import it.liceoarzignano.bold.safe.SafeActivity;
@@ -55,7 +54,6 @@ public class SettingsActivity extends AppCompatActivity {
             Preference changeLog = findPreference("changelog_key");
             final Preference analytics = findPreference("analytics_key");
             Preference backup = findPreference("backup_key");
-            Preference feedback = findPreference("feedback_key");
             final Preference name = findPreference("username_key");
             final Preference safe = findPreference("safe_key");
 
@@ -86,11 +84,6 @@ public class SettingsActivity extends AppCompatActivity {
                     PrefsUtils.hasGDrive(mContext));
             backup.setOnPreferenceClickListener(preference -> {
                 startActivity(new Intent(mContext, BackupActivity.class));
-                return true;
-            });
-
-            feedback.setOnPreferenceClickListener(preference -> {
-                startActivity(new Intent(mContext, FeedbackActivity.class));
                 return true;
             });
 

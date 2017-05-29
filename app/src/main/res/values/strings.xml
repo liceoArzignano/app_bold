@@ -18,6 +18,7 @@
     <string name="nav_safe">Safe</string>
     <string name="nav_share">Share</string>
     <string name="nav_help">Help</string>
+    <string name="nav_feedback">Feedback</string>
 
     <!-- Home -->
     <string name="upcoming_events">Upcoming events</string>
@@ -195,7 +196,6 @@
     <string name="pref_secret_export_already_shared">You can\'t share the password unless you change it</string>
     <string name="pref_opensource_title">Open source</string>
     <string name="pref_opensource_message">Released under LGPL v3 license</string>
-    <string name="pref_feedback_title">Feedback</string>
 
     <!-- Safe -->
     <string name="title_activity_safe">Safe</string>

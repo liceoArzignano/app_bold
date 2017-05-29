@@ -20,9 +20,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.view.MenuItem;
@@ -45,6 +42,7 @@ import io.realm.Sort;
 import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.events.EventListActivity;
 import it.liceoarzignano.bold.events.EventsController;
+import it.liceoarzignano.bold.feedback.FeedbackActivity;
 import it.liceoarzignano.bold.home.HomeAdapter;
 import it.liceoarzignano.bold.home.HomeCard;
 import it.liceoarzignano.bold.home.HomeCardBuilder;
@@ -190,12 +188,10 @@ public class MainActivity extends AppCompatActivity
                     showWebViewUI(4);
                     break;
                 case R.id.nav_settings:
-                    Intent settingsIntent = new Intent(this, SettingsActivity.class);
-                    startActivity(settingsIntent);
+                    startActivity(new Intent(this, SettingsActivity.class));
                     break;
                 case R.id.nav_safe:
-                    Intent safeIntent = new Intent(this, SafeActivity.class);
-                    startActivity(safeIntent);
+                    startActivity(new Intent(this, SafeActivity.class));
                     break;
                 case R.id.nav_share:
                     Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -206,6 +202,9 @@ public class MainActivity extends AppCompatActivity
                     break;
                 case R.id.nav_help:
                     showWebViewUI(5);
+                    break;
+                case R.id.nav_feedback:
+                    startActivity(new Intent(this, FeedbackActivity.class));
                     break;
             }
         }, 130);

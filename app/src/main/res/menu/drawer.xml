@@ -17,6 +17,10 @@
             android:id="@+id/nav_news"
             android:icon="@drawable/ic_news"
             android:title="@string/nav_news" />
+        <item
+            android:id="@+id/nav_safe"
+            android:icon="@drawable/ic_safe"
+            android:title="@string/nav_safe" />
         <item android:title="@string/nav_links">
             <menu>
                 <item
@@ -47,20 +51,20 @@
         android:checkableBehavior="none"
         tools:ignore="UnusedIds">
         <item
-            android:id="@+id/nav_safe"
-            android:icon="@drawable/ic_safe"
-            android:title="@string/nav_safe" />
-        <item
             android:id="@+id/nav_share"
             android:icon="@drawable/avd_share"
             android:title="@string/nav_share" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/nav_settings" />
         <item
             android:id="@+id/nav_help"
             android:icon="@drawable/ic_help"
             android:title="@string/nav_help" />
         <item
-            android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_settings"
-            android:title="@string/nav_settings" />
+            android:id="@+id/nav_feedback"
+            android:icon="@drawable/ic_feedback"
+            android:title="@string/nav_feedback" />
     </group>
 </menu>
