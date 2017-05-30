@@ -4,6 +4,8 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
@@ -70,14 +72,16 @@ public class CircularProgressBar extends View {
 
     private void drawOutlineArc(Canvas canvas) {
         final int diameter = Math.min(mViewWidth, mViewHeight) - 48;
-
         final RectF outerOval = new RectF(24, 24, diameter, diameter);
 
-        mPaint.setColor(mProgressColor);
-        mPaint.setStrokeWidth(24);
+        mPaint.setColor(ContextCompat.getColor(getContext(), R.color.circular_progress_bar_bg));
+        mPaint.setStrokeWidth(32);
         mPaint.setAntiAlias(true);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
         mPaint.setStyle(Paint.Style.STROKE);
+        canvas.drawArc(outerOval, 0, 360, false, mPaint);
+
+        mPaint.setColor(mProgressColor);
         canvas.drawArc(outerOval, -90, mSweepAngle, false, mPaint);
     }
 
