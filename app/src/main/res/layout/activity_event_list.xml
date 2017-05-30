@@ -7,16 +7,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:titleTextColor="@color/icon"
-        android:elevation="8dp"
-        app:theme="@style/AppTheme.ToolbarTheme"
-        tools:targetApi="m" />
-
+    <include layout="@layout/toolbar" />
 
     <RelativeLayout
         android:layout_width="match_parent"
