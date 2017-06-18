@@ -123,13 +123,6 @@
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!-- Feedback -->
-        <activity
-            android:name=".feedback.FeedbackActivity"
-            android:label="@string/title_activity_feedback"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden" />
-
         <!-- Services -->
         <service
             android:name=".events.AlarmService"

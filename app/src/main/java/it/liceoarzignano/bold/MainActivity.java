@@ -42,7 +42,6 @@ import io.realm.Sort;
 import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.events.EventListActivity;
 import it.liceoarzignano.bold.events.EventsController;
-import it.liceoarzignano.bold.feedback.FeedbackActivity;
 import it.liceoarzignano.bold.home.HomeAdapter;
 import it.liceoarzignano.bold.home.HomeCard;
 import it.liceoarzignano.bold.home.HomeCardBuilder;
@@ -214,9 +213,6 @@ public class MainActivity extends AppCompatActivity
                     break;
                 case R.id.nav_help:
                     showWebViewUI(5);
-                    break;
-                case R.id.nav_feedback:
-                    startActivity(new Intent(this, FeedbackActivity.class));
                     break;
             }
         }, 130);

@@ -79,7 +79,6 @@ dependencies {
     compile 'uk.co.samuelwall:material-tap-target-prompt:1.10.0'
     compile 'com.github.zhukic:sectioned-recyclerview:1.0.0'
     compile('com.afollestad.material-dialogs:core:0.9.4.5') { transitive = true }
-    compile 'org.eclipse.mylyn.github:org.eclipse.egit.github.core:2.1.5'
 }
 
 import com.android.build.OutputFile

@@ -18,7 +18,6 @@
     <string name="nav_safe">Safe</string>
     <string name="nav_share">Condividi</string>
     <string name="nav_help">Guida</string>
-    <string name="nav_feedback">Feedback</string>
 
     <!-- Home -->
     <string name="upcoming_events">Prossimi eventi</string>
@@ -287,18 +286,6 @@
     <string name="date_formatting">EEEE dd MMMM yyyy</string>
 
     <!-- Feedback -->
-    <string name="title_activity_feedback">Feedback</string>
-    <string name="feedback_title_hint">Titolo</string>
-    <string name="feedback_description_hint">Descrizione</string>
-    <string name="feedback_email_hint">Indirizzo email</string>
-    <string name="feedback_progress_title">Feedback</string>
-    <string name="feedback_progress_message">Invio del tuo feedback in corso\u2026</string>
-    <string name="feedback_progress_success">Il tuo feedback \u00E8 stato inviato. Grazie!</string>
-    <string name="feedback_progress_failure">Invio del feedback fallito, riprova pi\u00F9 tardi</string>
-    <string name="feedback_progress_view">Mostra feedback inviato</string>
-    <string name="feedback_info">Puoi inviare un feedback da qui. Potrai anche segnalare eventuali problemi riscontrati nell\'utilizzo, ma prima di farlo ti consigliamo di controllare <a href="https://github.com/liceoArzignano/bold_feedback/issues">l\'archivio dei feedback inviati</a> per verificare se qualcun\'altro ha gi\u00E0 riscontrato lo stesso problema. Ricorda che tutti i feedback inviati sono visibili pubblicamente.</string>
-    <string name="feedback_error_email">Inserisci un indirizzo email valido</string>
-    <string name="feedback_error_check">Compila tutti i campi per inviare il feedback</string>
 
     <!-- Shortcuts -->
     <string name="shortcut_marks_short">Voti</string>
