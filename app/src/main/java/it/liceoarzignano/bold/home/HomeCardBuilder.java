@@ -1,8 +1,5 @@
 package it.liceoarzignano.bold.home;
 
-import android.content.Context;
-import android.content.Intent;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,8 +8,7 @@ public class HomeCardBuilder {
     private final List<String> mContentList = new ArrayList<>();
     private int mCounter;
     private String mName;
-    private Context mContext;
-    private Intent mIntent;
+    private HomeCard.HomeCardClickListener mClickListener;
 
     public HomeCardBuilder setName(String name) {
         this.mName = name;
@@ -30,13 +26,12 @@ public class HomeCardBuilder {
         return this;
     }
 
-    public HomeCardBuilder setIntent(Context context, Intent intent) {
-        mContext = context;
-        mIntent = intent;
+    public HomeCardBuilder setOnClick(HomeCard.HomeCardClickListener listener) {
+        mClickListener = listener;
         return this;
     }
 
     public HomeCard build() {
-        return new HomeCard(mCounter, mName, mTitleList, mContentList, mContext, mIntent);
+        return new HomeCard(mCounter, mName, mTitleList, mContentList, mClickListener);
     }
 }

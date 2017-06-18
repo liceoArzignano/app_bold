@@ -1,27 +1,23 @@
 package it.liceoarzignano.bold.home;
 
-import android.content.Context;
-import android.content.Intent;
+import android.view.View;
 
 import java.util.List;
 
 public class HomeCard {
-    private final Context mContext;
-
     private final int mSize;
     private final String mName;
     private final List<String> mTitle;
     private final List<String> mContent;
-    private final Intent mIntent;
+    private final HomeCardClickListener mClickListner;
 
     HomeCard(int size, String name, List<String> title, List<String> content,
-             Context context, Intent intent) {
+             HomeCardClickListener clickListener) {
         this.mSize = size;
         this.mName = name;
         this.mTitle = title;
         this.mContent = content;
-        this.mContext = context;
-        this.mIntent = intent;
+        this.mClickListner = clickListener;
     }
 
     public int getSize() {
@@ -40,11 +36,15 @@ public class HomeCard {
         return mContent;
     }
 
-    void startIntent() {
-        if (mContext == null) {
+    void doClickAction(View view) {
+        if (mClickListner == null) {
             return;
         }
 
-        mContext.startActivity(mIntent);
+        mClickListner.onClick(view);
+    }
+
+    public interface HomeCardClickListener {
+        void onClick(View view);
     }
 }

@@ -15,6 +15,8 @@ import android.support.customtabs.CustomTabsIntent;
 import android.support.customtabs.CustomTabsServiceConnection;
 import android.support.customtabs.CustomTabsSession;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -321,7 +323,7 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
-        builder.setIntent(this, new Intent(this, EventListActivity.class));
+        builder.setOnClick(view -> onCardClick(view, new Intent(this, EventListActivity.class)));
 
         if (builder.build().getSize() == 0) {
             return null;
@@ -350,7 +352,7 @@ public class MainActivity extends AppCompatActivity
             builder.addEntry(news.getTitle(), DateUtils.dateToWordsString(this, news.getDate()));
         }
 
-        builder.setIntent(this, new Intent(this, NewsListActivity.class));
+        builder.setOnClick(view -> onCardClick(view, new Intent(this, NewsListActivity.class)));
 
         return builder.build();
     }
@@ -374,7 +376,7 @@ public class MainActivity extends AppCompatActivity
             builder.addEntry(mark.getTitle(), String.valueOf((double) mark.getValue() / 100));
         }
 
-        builder.setIntent(this, new Intent(this, MarksActivity.class));
+        builder.setOnClick(view -> onCardClick(view, new Intent(this, MarksActivity.class)));
 
         return builder.build();
     }
@@ -470,6 +472,12 @@ public class MainActivity extends AppCompatActivity
         mCardsList.setAdapter(adapter);
 
         adapter.notifyDataSetChanged();
+    }
+
+    private void onCardClick(View view, Intent intent) {
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
+                view, "card_activity");
+        ActivityCompat.startActivity(this, intent, options.toBundle());
     }
 
     /**

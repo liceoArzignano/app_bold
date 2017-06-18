@@ -12,7 +12,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="?actionBarSize">
+        android:paddingTop="?actionBarSize"
+        android:transitionName="card_activity"
+        tools:targetApi="lollipop">
 
         <it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt
             android:id="@+id/news_list"
@@ -21,8 +23,8 @@
             android:scrollbars="vertical" />
 
         <LinearLayout
-            style="@style/AppTheme.EmptyLayout"
             android:id="@+id/news_empty_layout"
+            style="@style/AppTheme.EmptyLayout"
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
@@ -30,8 +32,8 @@
                 app:srcCompat="@drawable/ic_empty_news" />
 
             <TextView
-                style="@style/AppTheme.EmptyText"
                 android:id="@+id/news_empty_text"
+                style="@style/AppTheme.EmptyText"
                 android:text="@string/news_empty" />
         </LinearLayout>
     </RelativeLayout>

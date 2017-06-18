@@ -12,7 +12,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="?attr/actionBarSize">
+        android:paddingTop="?attr/actionBarSize"
+        android:transitionName="card_activity"
+        tools:targetApi="lollipop">
 
         <it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt
             android:id="@+id/marks_list"

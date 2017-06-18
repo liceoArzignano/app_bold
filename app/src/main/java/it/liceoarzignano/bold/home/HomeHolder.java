@@ -52,6 +52,6 @@ class HomeHolder extends RecyclerView.ViewHolder {
         }
 
         mNameView.setText(name);
-        mCardView.setOnClickListener(v -> obj.startIntent());
+        mCardView.setOnClickListener(obj::doClickAction);
     }
 }
