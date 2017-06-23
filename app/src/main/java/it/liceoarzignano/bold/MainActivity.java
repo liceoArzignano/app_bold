@@ -490,7 +490,7 @@ public class MainActivity extends AppCompatActivity
                 .build();
         mRemoteConfig.setConfigSettings(configSettings);
         mRemoteConfig.setDefaults(R.xml.firebase_remote_config_defaults);
-        mRemoteConfig.fetch(BuildConfig.DEBUG ? 0 : TimeUnit.HOURS.toMillis(12))
+        mRemoteConfig.fetch(BuildConfig.DEBUG ? 0 : TimeUnit.HOURS.toSeconds(12))
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         mRemoteConfig.activateFetched();
