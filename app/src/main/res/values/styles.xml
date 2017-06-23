@@ -32,6 +32,8 @@
         <item name="android:background">@color/colorPrimary</item>
     </style>
 
+    <style name="AppTheme.Home" parent="AppTheme.NoActionBar" />
+
     <style name="AppTheme.HomeCard">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
