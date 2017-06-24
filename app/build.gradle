@@ -77,7 +77,7 @@ dependencies {
     compile "com.google.firebase:firebase-config:${googlePlayServicesVersion}"
     // others
     compile 'uk.co.samuelwall:material-tap-target-prompt:1.10.0'
-    compile 'com.github.zhukic:sectioned-recyclerview:1.0.0'
+    compile 'com.github.zhukic:sectioned-recyclerview:1.0.1'
     compile('com.afollestad.material-dialogs:core:0.9.4.5') { transitive = true }
 }
 
