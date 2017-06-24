@@ -581,6 +581,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         PrefsUtils.setCurrentSchoolYear(this);
+        PrefsUtils.setCurrentQuarter(this, 0);
 
         new MaterialDialog.Builder(this)
                 .title(R.string.backup_end_of_year_prompt_title)

@@ -22,8 +22,8 @@
 
     <string translatable="false" name="default_mark">0.0</string>
 
-    <!-- First quarter end date. Format: yyyy-MM-dd -->
-    <string translatable="false" name="config_quarter_change">2017-01-10</string>
+    <!-- First quarter end date (year is ignored). Format: yyyy-MM-dd -->
+    <string translatable="false" name="config_quarter_change">2016-02-01</string>
 
     <!-- Prompt backup and erase date (year is ignored). Format: yyyy-MM-dd -->
     <string translatable="false" name="config_end_of_year">2016-09-01</string>

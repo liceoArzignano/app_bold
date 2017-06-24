@@ -1,7 +1,6 @@
 package it.liceoarzignano.bold.marks;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -22,6 +21,8 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import java.util.Date;
+
 import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.editor.EditorActivity;
@@ -35,13 +36,9 @@ import it.liceoarzignano.bold.utils.DateUtils;
 import it.liceoarzignano.bold.utils.PrefsUtils;
 
 public class MarksActivity extends AppCompatActivity {
-    private static final String PREF_QUARTER_SELECTOR = "quarterSelector";
-
     private RecyclerViewExt mList;
     private LinearLayout mEmptyLayout;
     private AverageAdapter mAdapter;
-
-    private SharedPreferences mPrefs;
 
     private int mFilter;
     private boolean isFirstEnabled;
@@ -54,7 +51,6 @@ public class MarksActivity extends AppCompatActivity {
         setContentView(R.layout.activity_marks);
 
         MarksController mController = new MarksController(((BoldApp) getApplication()).getConfig());
-        mPrefs = getSharedPreferences(PrefsUtils.EXTRA_PREFS, MODE_PRIVATE);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -85,7 +81,9 @@ public class MarksActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!PrefsUtils.isFirstQuarter(this, DateUtils.getDate(0))) {
+        Date today = DateUtils.getDate(0);
+        Date change = DateUtils.stringToDate(getString(R.string.config_quarter_change));
+        if (DateUtils.matchDayOfYear(today, change)) {
             getMenuInflater().inflate(R.menu.marks, menu);
         }
         return true;
@@ -138,7 +136,7 @@ public class MarksActivity extends AppCompatActivity {
                     }
 
                     mFilter = isFirstEnabled ? isSecondEnabled ? 0 : 1 : 2;
-                    mPrefs.edit().putInt(PREF_QUARTER_SELECTOR, mFilter).apply();
+                    PrefsUtils.setCurrentQuarter(this, mFilter);
                     dialog.dismiss();
                     refresh();
                 })
@@ -146,7 +144,7 @@ public class MarksActivity extends AppCompatActivity {
     }
 
     private View getFilterView() {
-        int val = mPrefs.getInt(PREF_QUARTER_SELECTOR, 0);
+        int val = PrefsUtils.getCurrentQuarter(this);
         isFirstEnabled = val < 2;
         isSecondEnabled = val != 1;
 

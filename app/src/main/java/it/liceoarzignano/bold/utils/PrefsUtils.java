@@ -30,7 +30,8 @@ public class PrefsUtils {
     public static final String KEY_INTRO_DRAWER = "introDrawer";
     public static final String KEY_INITIAL_DAY = "introDay";
     public static final String KEY_VERSION = "introVersion";
-    public static final String KEY_CURRENT_SCHOOL_YEAR = "currentSchoolYear";
+    private static final String KEY_CURRENT_SCHOOL_YEAR = "currentSchoolYear";
+    public static final String KEY_QUARTER_SELECTOR = "quarterSelector";
     private static final String SAFE_PREFS = "SafePrefs";
     private static final String KEY_SAFE_PASSED = "safetyNetPassed";
     private static final String ANALYTICS = "analytics_key";
@@ -225,6 +226,16 @@ public class PrefsUtils {
         Calendar cal = Calendar.getInstance();
         prefs.edit().putString(KEY_CURRENT_SCHOOL_YEAR, String.valueOf(cal.get(Calendar.YEAR)))
                 .apply();
+    }
+
+    public static int getCurrentQuarter(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(EXTRA_PREFS, Context.MODE_PRIVATE);
+        return prefs.getInt(KEY_QUARTER_SELECTOR, 0);
+    }
+
+    public static void setCurrentQuarter(Context context, int value) {
+        SharedPreferences prefs = context.getSharedPreferences(EXTRA_PREFS, Context.MODE_PRIVATE);
+        prefs.edit().putInt(KEY_QUARTER_SELECTOR, value).apply();
     }
 
     public static String appVersionKey(Context mContext) {
