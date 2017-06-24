@@ -66,7 +66,6 @@ public final class DateUtils {
         return calA.get(Calendar.DAY_OF_YEAR) - calB.get(Calendar.DAY_OF_YEAR);
     }
 
-
     public static boolean dateDiff(Date a, Date b, int minDiff) {
         Calendar calA = Calendar.getInstance();
         Calendar calB = Calendar.getInstance();
@@ -75,5 +74,14 @@ public final class DateUtils {
 
         return calA.get(Calendar.YEAR) == calB.get(Calendar.YEAR) &&
                 calA.get(Calendar.DAY_OF_YEAR) - calB.get(Calendar.DAY_OF_YEAR) >= minDiff;
+    }
+
+    public static boolean matchDayOfYear(Date a, Date b) {
+        Calendar calA = Calendar.getInstance();
+        Calendar calB = Calendar.getInstance();
+        calA.setTime(a);
+        calB.setTime(b);
+
+        return calA.get(Calendar.DAY_OF_YEAR) >= calB.get(Calendar.DAY_OF_YEAR);
     }
 }

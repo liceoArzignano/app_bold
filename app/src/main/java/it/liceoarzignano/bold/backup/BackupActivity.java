@@ -2,6 +2,7 @@ package it.liceoarzignano.bold.backup;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
@@ -46,14 +47,22 @@ import java.util.List;
 import java.util.Locale;
 
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.R;
+import it.liceoarzignano.bold.events.Event;
+import it.liceoarzignano.bold.events.EventsController;
 import it.liceoarzignano.bold.firebase.BoldAnalytics;
+import it.liceoarzignano.bold.marks.Mark;
+import it.liceoarzignano.bold.marks.MarksController;
+import it.liceoarzignano.bold.news.News;
+import it.liceoarzignano.bold.news.NewsController;
 import it.liceoarzignano.bold.utils.DateUtils;
 import it.liceoarzignano.bold.utils.PrefsUtils;
 
 public class BackupActivity extends AppCompatActivity {
     private static final String TAG = BackupActivity.class.getSimpleName();
+    public static final String EXTRA_EOY_BACKUP = "extraEndOfYearBackup";
     private static final String BACKUP_FOLDER = "BACKUP_FOLDER";
     private static final String BACKUP_FILE_NAME = "Liceo.realm";
 
@@ -70,6 +79,7 @@ public class BackupActivity extends AppCompatActivity {
     private String mBackupFolder;
     private int mStatus = 0;
     private boolean hasValidFolder;
+    private boolean mIsEOYSession;
 
     @Override
     public void onCreate(Bundle savedInstance) {
@@ -96,6 +106,16 @@ public class BackupActivity extends AppCompatActivity {
 
         setUI();
         mStatus = 4;
+
+        mIsEOYSession = "OK".equals(getIntent().getStringExtra(EXTRA_EOY_BACKUP));
+
+        if (mIsEOYSession) {
+            if (mBackup == null) {
+                initBackup();
+            }
+            openFolderPicker();
+            setUI();
+        }
     }
 
     @Override
@@ -359,6 +379,10 @@ public class BackupActivity extends AppCompatActivity {
                 new Handler().postDelayed(() -> {
                     progress.dismiss();
                     showResult(isSuccess);
+
+                    if (mIsEOYSession) {
+                        endOfYearCleanup();
+                    }
                 }, 1000);
             }
         }.execute();
@@ -468,4 +492,63 @@ public class BackupActivity extends AppCompatActivity {
         Snackbar.make(mCoordinatorLayout, getString(message),
                 Snackbar.LENGTH_LONG).show();
     }
+
+    private void endOfYearCleanup() {
+        new MaterialDialog.Builder(this)
+                .title(R.string.backup_end_of_year_delete_title)
+                .content(R.string.backup_end_of_year_delete_message)
+                .positiveText(android.R.string.yes)
+                .negativeText(android.R.string.no)
+                .onPositive(((dialog, which) -> removeAllData()))
+                .show();
+    }
+
+    private void removeAllData() {
+        MaterialDialog progress = new MaterialDialog.Builder(this)
+                .title(R.string.backup_progress_title)
+                .content(R.string.backup_progress_message)
+                .progress(true, 100)
+                .progressIndeterminateStyle(false)
+                .cancelable(false)
+                .canceledOnTouchOutside(false)
+                .show();
+
+        Context context = this;
+
+        new AsyncTask<Void, Void, Boolean>() {
+            @Override
+            public Boolean doInBackground(Void... params) {
+                RealmConfiguration configuration = ((BoldApp) getApplication()).getConfig();
+                MarksController marksController = new MarksController(configuration);
+                for (Mark mark : marksController.getAll()) {
+                    marksController.delete(mark.getId());
+                }
+
+                EventsController eventsController = new EventsController(configuration);
+                for (Event event : eventsController.getAll()) {
+                    eventsController.delete(event.getId());
+                }
+
+                NewsController newsController = new NewsController(configuration);
+                for (News news : newsController.getAll()) {
+                    newsController.delete(news.getId());
+                }
+
+                return true;
+            }
+
+            @Override
+            public void onPostExecute(Boolean result) {
+                new Handler().postDelayed(() -> {
+                    progress.dismiss();
+                    new MaterialDialog.Builder(context)
+                            .title(R.string.backup_end_of_year_done_title)
+                            .content(R.string.backup_end_of_year_done_message)
+                            .neutralText(android.R.string.ok)
+                            .show();
+                }, 1000);
+            }
+        }.execute();
+    }
+
 }

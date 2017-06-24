@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import it.liceoarzignano.bold.R;
@@ -29,6 +30,7 @@ public class PrefsUtils {
     public static final String KEY_INTRO_DRAWER = "introDrawer";
     public static final String KEY_INITIAL_DAY = "introDay";
     public static final String KEY_VERSION = "introVersion";
+    public static final String KEY_CURRENT_SCHOOL_YEAR = "currentSchoolYear";
     private static final String SAFE_PREFS = "SafePrefs";
     private static final String KEY_SAFE_PASSED = "safetyNetPassed";
     private static final String ANALYTICS = "analytics_key";
@@ -211,6 +213,18 @@ public class PrefsUtils {
     public static String getAddress(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getString(ADDRESS, "0");
+    }
+
+    public static String getCurrentSchoolYear(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(EXTRA_PREFS, Context.MODE_PRIVATE);
+        return prefs.getString(KEY_CURRENT_SCHOOL_YEAR, "2016");
+    }
+
+    public static void setCurrentSchoolYear(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(EXTRA_PREFS, Context.MODE_PRIVATE);
+        Calendar cal = Calendar.getInstance();
+        prefs.edit().putString(KEY_CURRENT_SCHOOL_YEAR, String.valueOf(cal.get(Calendar.YEAR)))
+                .apply();
     }
 
     public static String appVersionKey(Context mContext) {

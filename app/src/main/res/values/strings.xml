@@ -286,8 +286,15 @@
     <string name="date_formatting">EEEE, MMMM dd yyyy</string>
     <string name="backup_progress_title">Backup</string>
     <string name="backup_progress_message">Saving data to Google Drive\u2026</string>
-
-    <!-- Feedback -->
+    <string name="backup_end_of_year_prompt_title">New year</string>
+    <string name="backup_end_of_year_prompt_message">A new school year is about to begin, what about doing some housekeeping?\nWe can move all the old marks, events and news on your Google Drive and then start fresh a new year</string>
+    <string name="backup_end_of_year_prompt_positive">Let\'s do it</string>
+    <string name="backup_end_of_year_prompt_negative">No, thanks</string>
+    <string name="backup_end_of_year_delete_title">New year</string>
+    <string name="backup_end_of_year_delete_message">Data has been backed up on your Google Drive, would you like to delete all your old marks, events and news?</string>
+    <string name="backup_end_of_year_deleting_message">Cleaning up old data\u2026</string>
+    <string name="backup_end_of_year_done_title">New year</string>
+    <string name="backup_end_of_year_done_message">Nice, you\'re now good to start a new awesome school year</string>
 
     <!-- Shortcuts -->
     <string name="shortcut_marks_short">Marks</string>

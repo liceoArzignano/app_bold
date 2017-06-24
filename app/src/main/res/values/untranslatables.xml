@@ -22,8 +22,11 @@
 
     <string translatable="false" name="default_mark">0.0</string>
 
-    <!-- First quarter end date. Format: yyyy-mm-dd -->
+    <!-- First quarter end date. Format: yyyy-MM-dd -->
     <string translatable="false" name="config_quarter_change">2017-01-10</string>
+
+    <!-- Prompt backup and erase date (year is ignored). Format: yyyy-MM-dd -->
+    <string translatable="false" name="config_end_of_year">2016-09-01</string>
 
     <!-- Update APP_VERSION the build.gradle file and strings.xml too when this is changed -->
     <string translatable="false" name="pref_app_version_summary">Liceo 1.0.17</string>

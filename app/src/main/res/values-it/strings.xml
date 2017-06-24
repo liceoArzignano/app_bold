@@ -284,8 +284,15 @@
     <string name="restore_dialog_title">Ripristino</string>
     <string name="restore_dialog_message">Informazioni backup:\nData: %1$s\nDimensione: %2$s\nAttenzione: i voti, eventi e notizie esistenti saranno rimpiazzati con quelli presenti nel backup.\nVuoi continuare?</string>
     <string name="date_formatting">EEEE dd MMMM yyyy</string>
-
-    <!-- Feedback -->
+    <string name="backup_end_of_year_prompt_title">Anno nuovo</string>
+    <string name="backup_end_of_year_prompt_message">Un nuovo anno scolastico sta per cominciare, facciamo un po di pulizia?\nPossiamo spostare tutti i voti, gli eventi e le notizie vecchie sul tuo Google Drive e per iniziare un nuovo anno</string>
+    <string name="backup_end_of_year_prompt_positive">Facciamolo</string>
+    <string name="backup_end_of_year_prompt_negative">No, grazie</string>
+    <string name="backup_end_of_year_delete_title">Anno nuovo</string>
+    <string name="backup_end_of_year_delete_message">I dati sono stati salvati su Google Drive, vuoi rimuovere i vecchi voti, eventi e notizie dall\'app?</string>
+    <string name="backup_end_of_year_deleting_message">Rimozione vecchi dati in corso\u2026</string>
+    <string name="backup_end_of_year_done_title">Anno nuovo</string>
+    <string name="backup_end_of_year_done_message">Ottimo, ora sei pronto a cominiciare un nuovo anno scolastico nel migliore dei modi</string>
 
     <!-- Shortcuts -->
     <string name="shortcut_marks_short">Voti</string>

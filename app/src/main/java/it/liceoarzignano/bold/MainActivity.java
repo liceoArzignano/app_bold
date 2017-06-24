@@ -35,12 +35,15 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import io.realm.RealmConfiguration;
 import io.realm.Sort;
+import it.liceoarzignano.bold.backup.BackupActivity;
 import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.events.EventListActivity;
 import it.liceoarzignano.bold.events.EventsController;
@@ -131,6 +134,7 @@ public class MainActivity extends AppCompatActivity
 
         // Welcome dialog
         showWelcomeIfNeeded(this);
+        showNewYearWelcomeIfNeeded();
 
         // Notification
         if (PrefsUtils.hasEventsNotification(this)) {
@@ -563,6 +567,32 @@ public class MainActivity extends AppCompatActivity
                     .setFocalColourFromRes(R.color.colorPrimaryDark)
                     .show();
         }
+    }
+
+    private void showNewYearWelcomeIfNeeded() {
+        Date today = DateUtils.getDate(0);
+        Date change = DateUtils.stringToDate(getString(R.string.config_end_of_year));
+        Calendar cal = Calendar.getInstance();
+        String latestSavedYear = PrefsUtils.getCurrentSchoolYear(this);
+        String thisYear = String.valueOf(cal.get(Calendar.YEAR));
+
+        if (latestSavedYear.equals(thisYear) || !DateUtils.matchDayOfYear(today, change)) {
+            return;
+        }
+
+        PrefsUtils.setCurrentSchoolYear(this);
+
+        new MaterialDialog.Builder(this)
+                .title(R.string.backup_end_of_year_prompt_title)
+                .content(R.string.backup_end_of_year_prompt_message)
+                .positiveText(R.string.backup_end_of_year_prompt_positive)
+                .negativeText(R.string.backup_end_of_year_prompt_negative)
+                .onPositive((dialog, which) -> {
+                    Intent intent = new Intent(this, BackupActivity.class);
+                    intent.putExtra(BackupActivity.EXTRA_EOY_BACKUP, "OK");
+                    startActivity(intent);
+                })
+                .show();
     }
 
     /**
