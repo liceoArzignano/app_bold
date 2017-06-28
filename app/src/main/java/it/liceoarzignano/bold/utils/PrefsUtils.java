@@ -14,6 +14,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import java.util.Calendar;
 import java.util.Date;
 
+import it.liceoarzignano.bold.BuildConfig;
 import it.liceoarzignano.bold.R;
 
 public class PrefsUtils {
@@ -31,7 +32,7 @@ public class PrefsUtils {
     public static final String KEY_INITIAL_DAY = "introDay";
     public static final String KEY_VERSION = "introVersion";
     private static final String KEY_CURRENT_SCHOOL_YEAR = "currentSchoolYear";
-    public static final String KEY_QUARTER_SELECTOR = "quarterSelector";
+    private static final String KEY_QUARTER_SELECTOR = "quarterSelector";
     private static final String SAFE_PREFS = "SafePrefs";
     private static final String KEY_SAFE_PASSED = "safetyNetPassed";
     private static final String ANALYTICS = "analytics_key";
@@ -216,6 +217,26 @@ public class PrefsUtils {
         return prefs.getString(ADDRESS, "0");
     }
 
+    public static boolean hasDoneIntro(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(EXTRA_PREFS, Context.MODE_PRIVATE);
+        return prefs.getBoolean(KEY_INTRO_SCREEN, false);
+    }
+
+    public static void setDoneIntro(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(EXTRA_PREFS, Context.MODE_PRIVATE);
+        prefs.edit().putBoolean(KEY_INTRO_SCREEN, true).apply();
+    }
+
+    public static boolean hasDoneDrawerIntro(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(EXTRA_PREFS, Context.MODE_PRIVATE);
+        return prefs.getBoolean(KEY_INTRO_DRAWER, false);
+    }
+
+    public static void setDoneDrawerIntro(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(EXTRA_PREFS, Context.MODE_PRIVATE);
+        prefs.edit().putBoolean(KEY_INTRO_DRAWER, true).apply();
+    }
+
     public static String getCurrentSchoolYear(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(EXTRA_PREFS, Context.MODE_PRIVATE);
         return prefs.getString(KEY_CURRENT_SCHOOL_YEAR, "2016");
@@ -238,13 +259,28 @@ public class PrefsUtils {
         prefs.edit().putInt(KEY_QUARTER_SELECTOR, value).apply();
     }
 
-    public static String appVersionKey(Context mContext) {
-        SharedPreferences prefs = mContext.getSharedPreferences(EXTRA_PREFS, Context.MODE_PRIVATE);
+    public static String getAppVersion(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(EXTRA_PREFS, Context.MODE_PRIVATE);
         return prefs.getString(KEY_VERSION, "0");
     }
 
-    public static String userNameKey(Context mContext) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+    public static void updateAppVersion(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(EXTRA_PREFS, Context.MODE_PRIVATE);
+        prefs.edit().putString(KEY_VERSION, BuildConfig.VERSION_NAME).apply();
+    }
+
+    public static String getInitialDay(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(EXTRA_PREFS, Context.MODE_PRIVATE);
+        return prefs.getString(KEY_INITIAL_DAY, DateUtils.getDateString(0));
+    }
+
+    public static void setInitialDay(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(EXTRA_PREFS, Context.MODE_PRIVATE);
+        prefs.edit().putString(KEY_INITIAL_DAY, DateUtils.getDateString(0)).apply();
+    }
+
+    public static String userNameKey(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getString(USERNAME, "");
     }
 

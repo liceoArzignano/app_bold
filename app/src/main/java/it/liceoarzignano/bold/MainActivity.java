@@ -1,15 +1,13 @@
 package it.liceoarzignano.bold;
 
-import android.annotation.SuppressLint;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsClient;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.customtabs.CustomTabsServiceConnection;
@@ -17,7 +15,6 @@ import android.support.customtabs.CustomTabsSession;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -38,7 +35,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import io.realm.RealmConfiguration;
@@ -60,54 +56,43 @@ import it.liceoarzignano.bold.news.NewsListActivity;
 import it.liceoarzignano.bold.safe.SafeActivity;
 import it.liceoarzignano.bold.settings.SettingsActivity;
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt;
-import it.liceoarzignano.bold.utils.ContentUtils;
 import it.liceoarzignano.bold.utils.DateUtils;
 import it.liceoarzignano.bold.utils.PrefsUtils;
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private static final String BUNDLE_SHOULD_ANIM = "extra_has_animaed";
+    private static final String BUNDLE_SHOULD_ANIMATE = "homeShouldAnimate";
 
     private FirebaseRemoteConfig mRemoteConfig;
-
     private MarksController mMarksController;
     private EventsController mEventsController;
     private NewsController mNewsController;
 
     private Toolbar mToolbar;
     private ImageView mBanner;
-    private RecyclerViewExt mCardsList;
-    private TextView mUserName;
-    private ImageView mAddressLogo;
+    private RecyclerViewExt mCardList;
+    private TextView mUsername;
+    private ImageView mLogo;
 
-    private CustomTabsClient mClient;
-    private CustomTabsSession mCustomTabsSession;
-    private CustomTabsIntent mCustomTabsIntent;
-    private CustomTabsServiceConnection mCustomTabsServiceConnection;
+    private CustomTabsClient mTabsClient;
+    private CustomTabsSession mTabsSession;
+    private CustomTabsIntent mTabsIntent;
+    private CustomTabsServiceConnection mTabsServiceConnection;
 
     private boolean mShouldAnimate = true;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle savedInstance) {
+        super.onCreate(savedInstance);
 
-        // Realm config
-        RealmConfiguration config = ((BoldApp) getApplication()).getConfig();
-        mMarksController = new MarksController(config);
-        mEventsController = new EventsController(config);
-        mNewsController = new NewsController(config);
-
-        // Firebase config
+        setupRealm();
         setupRemoteConfig();
 
-        // Intro
         showIntroIfNeeded();
 
-        // UI
         setContentView(R.layout.activity_main);
 
-        // Toolbar and NavDrawer
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         mBanner = (ImageView) findViewById(R.id.home_toolbar_banner);
@@ -116,59 +101,44 @@ public class MainActivity extends AppCompatActivity
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        View header = navigationView.getHeaderView(0);
-        mUserName = (TextView) header.findViewById(R.id.header_username);
-        mAddressLogo = (ImageView) header.findViewById(R.id.header_logo);
-        if (PrefsUtils.isTeacher(this)) {
-            navigationView.getMenu().findItem(R.id.nav_share).setVisible(false);
+        NavigationView navView = (NavigationView) findViewById(R.id.navigation_view);
+        navView.setNavigationItemSelectedListener(this);
+        View header = navView.getHeaderView(0);
+        mUsername = (TextView) header.findViewById(R.id.header_username);
+        mLogo = (ImageView) header.findViewById(R.id.header_logo);
+        mCardList = (RecyclerViewExt) findViewById(R.id.home_list);
+
+        if (savedInstance != null) {
+            mShouldAnimate = savedInstance.getBoolean(BUNDLE_SHOULD_ANIMATE, true);
         }
 
-        // Cards List
-        mCardsList = (RecyclerViewExt) findViewById(R.id.home_list);
-
-        if (savedInstanceState != null) {
-            mShouldAnimate = savedInstanceState.getBoolean(BUNDLE_SHOULD_ANIM, true);
-        }
-
-        // Welcome dialog
-        showWelcomeIfNeeded(this);
-        showNewYearWelcomeIfNeeded();
-
-        // Notification
-        if (PrefsUtils.hasEventsNotification(this)) {
-            ContentUtils.makeEventNotification(this);
-        }
+        showWelcome();
+        showNewYearHelper();
     }
 
     @Override
-    public void onResume() {
+    protected void onResume() {
         super.onResume();
 
-        // Chrome custom tabs
-        setupCCustomTabs();
-
-        // Refresh Navigation Drawer header
+        setupTabs();
         setupNavHeader();
-
-        // Show cards
-        populateCards();
+        setupCards();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (mCustomTabsServiceConnection != null) {
-            unbindService(mCustomTabsServiceConnection);
-            mCustomTabsServiceConnection = null;
+
+        if (mTabsServiceConnection != null) {
+            unbindService(mTabsServiceConnection);
+            mTabsServiceConnection = null;
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean(BUNDLE_SHOULD_ANIM, false);
+        outState.putBoolean(BUNDLE_SHOULD_ANIMATE, false);
     }
 
     @Override
@@ -189,26 +159,26 @@ public class MainActivity extends AppCompatActivity
                 case R.id.nav_news:
                     startActivity(new Intent(this, NewsListActivity.class));
                     break;
+                case R.id.nav_safe:
+                    startActivity(new Intent(this, SafeActivity.class));
+                    break;
                 case R.id.nav_website:
-                    showWebViewUI(0);
+                    showUrl(0);
                     break;
                 case R.id.nav_reg:
-                    showWebViewUI(1);
+                    showUrl(1);
                     break;
                 case R.id.nav_moodle:
-                    showWebViewUI(2);
+                    showUrl(2);
                     break;
                 case R.id.nav_copyboox:
-                    showWebViewUI(3);
+                    showUrl(3);
                     break;
                 case R.id.nav_teacherzone:
-                    showWebViewUI(4);
+                    showUrl(4);
                     break;
                 case R.id.nav_settings:
                     startActivity(new Intent(this, SettingsActivity.class));
-                    break;
-                case R.id.nav_safe:
-                    startActivity(new Intent(this, SafeActivity.class));
                     break;
                 case R.id.nav_share:
                     Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -218,7 +188,7 @@ public class MainActivity extends AppCompatActivity
                             getString(R.string.share_title)));
                     break;
                 case R.id.nav_help:
-                    showWebViewUI(5);
+                    showUrl(5);
                     break;
             }
         }, 130);
@@ -226,35 +196,83 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    /**
-     * Init Chrome custom tabs
-     */
-    private void setupCCustomTabs() {
-        if (mClient != null) {
+    private void setupRealm() {
+        RealmConfiguration configuration = ((BoldApp) getApplication()).getConfig();
+        mMarksController = new MarksController(configuration);
+        mEventsController = new EventsController(configuration);
+        mNewsController = new NewsController(configuration);
+    }
+
+    private void setupRemoteConfig() {
+        FirebaseRemoteConfigSettings settings = new FirebaseRemoteConfigSettings.Builder()
+                .setDeveloperModeEnabled(BuildConfig.DEBUG)
+                .build();
+        mRemoteConfig = FirebaseRemoteConfig.getInstance();
+        mRemoteConfig.setConfigSettings(settings);
+        mRemoteConfig.setDefaults(R.xml.firebase_remote_config_defaults);
+        mRemoteConfig.fetch(BuildConfig.DEBUG ? 0 : TimeUnit.HOURS.toSeconds(12))
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        mRemoteConfig.activateFetched();
+                    }
+                });
+    }
+
+    private void setupNavHeader() {
+        mUsername.setText(PrefsUtils.userNameKey(this));
+
+        byte[] imgB64 = Base64.decode(mRemoteConfig.getString("home_banner").getBytes(),
+                Base64.DEFAULT);
+        mBanner.setImageBitmap(BitmapFactory.decodeByteArray(imgB64, 0, imgB64.length));
+
+        if (!PrefsUtils.isNotLegacy()) {
             return;
         }
 
-        mCustomTabsServiceConnection = new CustomTabsServiceConnection() {
+        if (PrefsUtils.isTeacher(this)) {
+            mLogo.setBackground(getDrawable(R.drawable.ic_address_6));
+        } else {
+            switch (PrefsUtils.getAddress(this)) {
+                case "1":
+                    mLogo.setBackground(getDrawable(R.drawable.ic_address_1));
+                    break;
+                case "2":
+                    mLogo.setBackground(getDrawable(R.drawable.ic_address_2));
+                    break;
+                case "3":
+                    mLogo.setBackground(getDrawable(R.drawable.ic_address_3));
+                    break;
+                case "4":
+                    mLogo.setBackground(getDrawable(R.drawable.ic_address_4));
+                    break;
+                case "5":
+                    mLogo.setBackground(getDrawable(R.drawable.ic_address_5));
+                    break;
+            }
+        }
+    }
+
+    private void setupTabs() {
+        if (mTabsClient != null) {
+            return;
+        }
+
+        mTabsServiceConnection = new CustomTabsServiceConnection() {
             @Override
-            public void onCustomTabsServiceConnected(ComponentName componentName,
-                                                             CustomTabsClient customTabsClient) {
-                mClient = customTabsClient;
-                mClient.warmup(0L);
-                mCustomTabsSession = mClient.newSession(null);
+            public void onCustomTabsServiceConnected(ComponentName name, CustomTabsClient client) {
+                mTabsClient = client;
+                mTabsClient.warmup(0L);
+                mTabsSession = mTabsClient.newSession(null);
             }
 
             @Override
             public void onServiceDisconnected(ComponentName name) {
-                        mClient = null;
-                    }
+                mTabsClient = null;
+            }
         };
 
-        CustomTabsClient.bindCustomTabsService(getBaseContext(), "com.android.chrome",
-                mCustomTabsServiceConnection);
-
-        mCustomTabsIntent = new CustomTabsIntent.Builder(mCustomTabsSession)
-                .setToolbarColor(ContextCompat.getColor(this, R.color.colorPrimary))
-                .setShowTitle(true)
+        CustomTabsClient.bindCustomTabsService(this, "com.android.chrome", mTabsServiceConnection);
+        mTabsIntent = new CustomTabsIntent.Builder(mTabsSession)
                 .setStartAnimations(this,
                         R.anim.slide_in_right,
                         R.anim.slide_out_left)
@@ -264,14 +282,85 @@ public class MainActivity extends AppCompatActivity
                 .build();
     }
 
-    /**
-     * Open a chrome custom tab with the selected url and send
-     * an Analytics event.
-     * If there's no chrome / chromium 46+ it will just open the default browser
-     *
-     * @param index: the selected item from the nav drawer menu
-     */
-    private void showWebViewUI(int index) {
+    private void showIntroIfNeeded() {
+        if (PrefsUtils.hasDoneIntro(this)) {
+            return;
+        }
+
+        startActivity(new Intent(this, BenefitsActivity.class));
+        finish();
+    }
+
+    private void showWelcome() {
+        if (!PrefsUtils.hasDoneIntro(this)) {
+            return;
+        }
+
+        switch (PrefsUtils.getAppVersion(this)) {
+            case BuildConfig.VERSION_NAME:
+                break;
+            case "0":
+                PrefsUtils.updateAppVersion(this);
+                PrefsUtils.setInitialDay(this);
+                break;
+            default:
+                new MaterialDialog.Builder(this)
+                        .title(R.string.dialog_updated_title)
+                        .content(R.string.dialog_updated_content)
+                        .positiveText(android.R.string.ok)
+                        .negativeText(R.string.dialog_updated_changelog)
+                        .canceledOnTouchOutside(false)
+                        .onPositive(((dialog, which) -> PrefsUtils.updateAppVersion(this)))
+                        .onNegative(((dialog, which) -> {
+                            dialog.dismiss();
+                            // TODO
+                        }))
+                        .show();
+                return;
+        }
+
+        if (PrefsUtils.hasDoneDrawerIntro(this)) {
+            return;
+        }
+
+        PrefsUtils.setDoneDrawerIntro(this);
+        new MaterialTapTargetPrompt.Builder(this)
+                .setTarget(mToolbar.getChildAt(1))
+                .setPrimaryText(getString(R.string.intro_drawer_title))
+                .setSecondaryText(getString(R.string.intro_drawer))
+                .setBackgroundColourFromRes(R.color.colorAccentDark)
+                .setFocalColourFromRes(R.color.colorPrimaryDark)
+                .show();
+    }
+
+    private void showNewYearHelper() {
+        Date today = DateUtils.getDate(0);
+        Date change = DateUtils.stringToDate(getString(R.string.config_end_of_year));
+        Calendar cal = Calendar.getInstance();
+        String latestSavedYear = PrefsUtils.getCurrentSchoolYear(this);
+        String thisYear = String.valueOf(cal.get(Calendar.YEAR));
+
+        if (latestSavedYear.equals(thisYear) || !DateUtils.matchDayOfYear(today, change)) {
+            return;
+        }
+
+        PrefsUtils.setCurrentSchoolYear(this);
+        PrefsUtils.setCurrentQuarter(this, 0);
+
+        new MaterialDialog.Builder(this)
+                .title(R.string.backup_end_of_year_prompt_title)
+                .content(R.string.backup_end_of_year_prompt_message)
+                .positiveText(R.string.backup_end_of_year_prompt_positive)
+                .negativeText(R.string.backup_end_of_year_prompt_negative)
+                .onPositive((dialog, which) -> {
+                    Intent intent = new Intent(this, BackupActivity.class);
+                    intent.putExtra(BackupActivity.EXTRA_EOY_BACKUP, "OK");
+                    startActivity(intent);
+                })
+                .show();
+    }
+
+    private void showUrl(int index) {
         String url = null;
         switch (index) {
             case -1:
@@ -299,113 +388,115 @@ public class MainActivity extends AppCompatActivity
         }
 
         if (url != null) {
-            mCustomTabsIntent.launchUrl(this, Uri.parse(url));
+            mTabsIntent.launchUrl(this, Uri.parse(url));
         }
     }
 
-    /**
-     * Show the first 3 events in the following 7 days in
-     * a card with their titles and dates.
-     *
-     * @return events card
-     */
-    private HomeCard createEventsCard() {
-        HomeCardBuilder builder = new HomeCardBuilder().setName(getString(R.string.upcoming_events));
+    private void setupCards() {
+        List<HomeCard> cards = new ArrayList<>();
 
-        // Show 3 closest events
+        HomeCard events = getEventsCard();
+        if (events != null) {
+            cards.add(events);
+        }
+
+        HomeCard news = getNewsCard();
+        if (news != null) {
+            cards.add(news);
+        }
+
+        HomeCard marks = getMarksCard();
+        if (DateUtils.dateDiff(DateUtils.getDate(0), PrefsUtils.getFirstUsageDate(this), 7) &&
+                marks != null) {
+            cards.add(marks);
+        }
+
+        if (PrefsUtils.hasSuggestions(this)) {
+            cards.add(getSuggestionsCard());
+        }
+
+        HomeAdapter adapter = new HomeAdapter(this, cards, mShouldAnimate);
+        mCardList.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+
+        if (mShouldAnimate) {
+            mShouldAnimate = false;
+        }
+    }
+
+    private void onCardClick(@NonNull View view, @NonNull Intent intent) {
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
+                view, "card_activity");
+        ActivityCompat.startActivity(this, intent, options.toBundle());
+
+    }
+
+    @Nullable
+    private HomeCard getEventsCard() {
+        HomeCardBuilder builder = new HomeCardBuilder()
+                .setName(getString(R.string.upcoming_events))
+                .setOnClick(view -> onCardClick(view, new Intent(this, EventListActivity.class)));
+
         List<Event> events = mEventsController.getAll();
-
         int added = 0;
-        for (Event event : events) {
-            if (!DateUtils.dateDiff(DateUtils.getDate(7), event.getDate(), 8)) {
+        Date nextWeek = DateUtils.getDate(7);
+        for (Event e : events) {
+            if (!DateUtils.dateDiff(nextWeek, e.getDate(), 8)) {
                 added++;
-                builder.addEntry(event.getTitle(),
-                        DateUtils.dateToWordsString(this, event.getDate()));
+                builder.addEntry(e.getTitle(), DateUtils.dateToWordsString(this, e.getDate()));
             }
             if (added == 3) {
                 break;
             }
         }
 
-        builder.setOnClick(view -> onCardClick(view, new Intent(this, EventListActivity.class)));
-
-        if (builder.build().getSize() == 0) {
-            return null;
-        }
-
-        return builder.build();
+        HomeCard card = builder.build();
+        return card.getSize() == 0 ? null : card;
     }
 
-    /**
-     * Show the last 3 news in
-     * a card with their titles and dates.
-     *
-     * @return news card
-     */
-    private HomeCard createNewsCard() {
-        HomeCardBuilder builder = new HomeCardBuilder().setName(getString(R.string.nav_news));
+    @Nullable
+    private HomeCard getNewsCard() {
+        HomeCardBuilder builder = new HomeCardBuilder()
+                .setName(getString(R.string.nav_news))
+                .setOnClick(view -> onCardClick(view, new Intent(this, NewsListActivity.class)));
 
-        // Show 3 lastest news
-        List<News> newsList = mNewsController.getAll();
-        if (newsList.isEmpty()) {
-            return null;
+        List<News> news = mNewsController.getAll();
+        for (int i = 0; i < 3 && i < news.size(); i++) {
+            News n = news.get(i);
+            builder.addEntry(n.getTitle(), DateUtils.dateToWordsString(this, n.getDate()));
         }
 
-        for (int counter = 0; counter < 3 && counter < newsList.size(); counter++) {
-            News news = newsList.get(counter);
-            builder.addEntry(news.getTitle(), DateUtils.dateToWordsString(this, news.getDate()));
-        }
-
-        builder.setOnClick(view -> onCardClick(view, new Intent(this, NewsListActivity.class)));
-
-        return builder.build();
+        HomeCard card = builder.build();
+        return card.getSize() == 0 ? null : card;
     }
 
-    /**
-     * Show the last 3 marks in
-     * a card with their titles and dates.
-     *
-     * @return marks card
-     */
-    private HomeCard createMarksCard() {
-        HomeCardBuilder builder = new HomeCardBuilder().setName(getString(R.string.lastest_marks));
+    @Nullable
+    private HomeCard getMarksCard() {
+        HomeCardBuilder builder = new HomeCardBuilder()
+                .setName(getString(R.string.lastest_marks))
+                .setOnClick(view -> onCardClick(view, new Intent(this, MarksActivity.class)));
 
         List<Mark> marks = mMarksController.getAll().sort("date", Sort.DESCENDING);
-        if (marks.isEmpty()) {
-            return null;
+        for (int i = 0; i < 3 && i < marks.size(); i++) {
+            Mark m = marks.get(i);
+            builder.addEntry(m.getTitle(), String.valueOf(m.getValue() / 100d));
         }
 
-        for (int counter = 0; counter < 3 && counter < marks.size(); counter++) {
-            Mark mark = marks.get(counter);
-            builder.addEntry(mark.getTitle(), String.valueOf((double) mark.getValue() / 100));
-        }
-
-        builder.setOnClick(view -> onCardClick(view, new Intent(this, MarksActivity.class)));
-
-        return builder.build();
+        HomeCard card = builder.build();
+        return card.getSize() == 0 ? null : card;
     }
 
-    /**
-     * Show a random suggestion in a card
-     *
-     * @return suggestions card
-     */
-    private HomeCard createSuggestionsCard() {
+    @Nullable
+    private HomeCard getSuggestionsCard() {
         return new HomeCardBuilder()
                 .setName(getString(R.string.suggestions))
                 .addEntry("", getSuggestion())
                 .build();
     }
 
-    /**
-     * Get random suggestion text to be shown in
-     * the suggestions card
-     *
-     * @return string with text for suggestion card
-     */
+    @NonNull
     private String getSuggestion() {
-        Random random = new SecureRandom();
-        switch (random.nextInt(12) + 1) {
+        switch (new SecureRandom().nextInt(12) + 1) {
             case 1:
                 return getString(PrefsUtils.hasSafe(this) ?
                         R.string.suggestion_safe_pwd : R.string.suggestion_safe);
@@ -431,207 +522,6 @@ public class MainActivity extends AppCompatActivity
                 return getString(R.string.suggestion_feedback);
             default:
                 return getString(R.string.suggestion_notification);
-        }
-    }
-
-    /**
-     * Show cards with delay so
-     * animated LinearLayout will make
-     * a nice enter effect
-     */
-    private void populateCards() {
-        List<HomeCard> cards = new ArrayList<>();
-
-        // Events
-        HomeCard eventsCard = createEventsCard();
-        if (eventsCard != null) {
-            cards.add(eventsCard);
-        }
-
-        // News
-        HomeCard newsCard = createNewsCard();
-        if (newsCard != null) {
-            cards.add(newsCard);
-        }
-
-        // Marks
-        if (DateUtils.dateDiff(DateUtils.getDate(0), PrefsUtils.getFirstUsageDate(this), 7)) {
-            HomeCard marksCard = createMarksCard();
-            if (marksCard != null) {
-                cards.add(marksCard);
-            }
-        }
-
-        // Suggestions
-        if (PrefsUtils.hasSuggestions(this)) {
-            cards.add(createSuggestionsCard());
-        }
-
-        HomeAdapter adapter = new HomeAdapter(this, cards, mShouldAnimate);
-
-        if (mShouldAnimate) {
-            mShouldAnimate = false;
-        }
-
-        mCardsList.setAdapter(adapter);
-
-        adapter.notifyDataSetChanged();
-    }
-
-    private void onCardClick(View view, Intent intent) {
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
-                view, "card_activity");
-        ActivityCompat.startActivity(this, intent, options.toBundle());
-    }
-
-    /**
-     * Load remote configs, they get applied once the app is
-     */
-    private void setupRemoteConfig() {
-        mRemoteConfig = FirebaseRemoteConfig.getInstance();
-        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-                .setDeveloperModeEnabled(BuildConfig.DEBUG)
-                .build();
-        mRemoteConfig.setConfigSettings(configSettings);
-        mRemoteConfig.setDefaults(R.xml.firebase_remote_config_defaults);
-        mRemoteConfig.fetch(BuildConfig.DEBUG ? 0 : TimeUnit.HOURS.toSeconds(12))
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        mRemoteConfig.activateFetched();
-                    }
-                });
-    }
-
-    /**
-     * Show the intro / tutorial activity
-     * if it's the first time we fire the app
-     */
-    private void showIntroIfNeeded() {
-        SharedPreferences prefs = getSharedPreferences(PrefsUtils.EXTRA_PREFS, MODE_PRIVATE);
-        if (!prefs.getBoolean(PrefsUtils.KEY_INTRO_SCREEN, false)) {
-            Intent intent = new Intent(this, BenefitsActivity.class);
-            startActivity(intent);
-            finish();
-        }
-    }
-
-    /**
-     * Show welcome / changelog dialog
-     * when the app is installed / updated
-     *
-     * @param context: used to get SharedPreferences
-     */
-    private void showWelcomeIfNeeded(final Context context) {
-        final SharedPreferences prefs = getSharedPreferences(PrefsUtils.EXTRA_PREFS, MODE_PRIVATE);
-        @SuppressLint("CommitPrefEdits")
-        final SharedPreferences.Editor editor = prefs.edit();
-
-        if (!prefs.getBoolean(PrefsUtils.KEY_INTRO_SCREEN, false)) {
-            // If we're showing intro, don't display dialog
-            return;
-        }
-
-        switch (PrefsUtils.appVersionKey(this)) {
-            case BuildConfig.VERSION_NAME:
-                break;
-            case "0":
-                // Used for feature discovery
-                final String today = DateUtils.getDateString(0);
-                editor.putString(PrefsUtils.KEY_VERSION, BuildConfig.VERSION_NAME).apply();
-                editor.putString(PrefsUtils.KEY_INITIAL_DAY, today).apply();
-                break;
-            default:
-                new MaterialDialog.Builder(context)
-                        .title(R.string.dialog_updated_title)
-                        .content(R.string.dialog_updated_content)
-                        .positiveText(android.R.string.ok)
-                        .negativeText(R.string.dialog_updated_changelog)
-                        .canceledOnTouchOutside(false)
-                        .onPositive((dialog, which) -> editor.putString(PrefsUtils.KEY_VERSION,
-                                BuildConfig.VERSION_NAME).apply())
-                        .onNegative((dialog, which) -> {
-                            dialog.hide();
-                            showWebViewUI(-1);
-                        })
-                        .show();
-                break;
-        }
-
-        if (prefs.getBoolean(PrefsUtils.KEY_INTRO_DRAWER, true)) {
-            editor.putBoolean(PrefsUtils.KEY_INTRO_DRAWER, false).apply();
-            new MaterialTapTargetPrompt.Builder(this)
-                    .setTarget(mToolbar.getChildAt(1))
-                    .setPrimaryText(getString(R.string.intro_drawer_title))
-                    .setSecondaryText(getString(R.string.intro_drawer))
-                    .setBackgroundColourFromRes(R.color.colorAccentDark)
-                    .setFocalColourFromRes(R.color.colorPrimaryDark)
-                    .show();
-        }
-    }
-
-    private void showNewYearWelcomeIfNeeded() {
-        Date today = DateUtils.getDate(0);
-        Date change = DateUtils.stringToDate(getString(R.string.config_end_of_year));
-        Calendar cal = Calendar.getInstance();
-        String latestSavedYear = PrefsUtils.getCurrentSchoolYear(this);
-        String thisYear = String.valueOf(cal.get(Calendar.YEAR));
-
-        if (latestSavedYear.equals(thisYear) || !DateUtils.matchDayOfYear(today, change)) {
-            return;
-        }
-
-        PrefsUtils.setCurrentSchoolYear(this);
-        PrefsUtils.setCurrentQuarter(this, 0);
-
-        new MaterialDialog.Builder(this)
-                .title(R.string.backup_end_of_year_prompt_title)
-                .content(R.string.backup_end_of_year_prompt_message)
-                .positiveText(R.string.backup_end_of_year_prompt_positive)
-                .negativeText(R.string.backup_end_of_year_prompt_negative)
-                .onPositive((dialog, which) -> {
-                    Intent intent = new Intent(this, BackupActivity.class);
-                    intent.putExtra(BackupActivity.EXTRA_EOY_BACKUP, "OK");
-                    startActivity(intent);
-                })
-                .show();
-    }
-
-    /**
-     * Update navigation header
-     * according to user settings
-     * (api 21+ only)
-     */
-    private void setupNavHeader() {
-        mUserName.setText(PrefsUtils.userNameKey(this));
-
-        byte[] imgB64 = Base64.decode(mRemoteConfig.getString("home_banner").getBytes(),
-                Base64.DEFAULT);
-        mBanner.setImageBitmap(BitmapFactory.decodeByteArray(imgB64, 0, imgB64.length));
-
-        if (!PrefsUtils.isNotLegacy()) {
-            return;
-        }
-
-        if (PrefsUtils.isTeacher(this)) {
-            mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_6));
-        } else {
-            switch (PrefsUtils.getAddress(this)) {
-                case "1":
-                    mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_1));
-                    break;
-                case "2":
-                    mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_2));
-                    break;
-                case "3":
-                    mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_3));
-                    break;
-                case "4":
-                    mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_4));
-                    break;
-                case "5":
-                    mAddressLogo.setBackground(getDrawable(R.drawable.ic_address_5));
-                    break;
-            }
         }
     }
 }

@@ -9,8 +9,8 @@ import android.support.v7.widget.AppCompatButton;
 
 import it.liceoarzignano.bold.MainActivity;
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.utils.PrefsUtils;
 import it.liceoarzignano.bold.ui.InkPageIndicator;
+import it.liceoarzignano.bold.utils.PrefsUtils;
 
 public class BenefitsActivity extends AppCompatActivity {
     private BenefitViewPager mViewPager;
@@ -49,11 +49,12 @@ public class BenefitsActivity extends AppCompatActivity {
     }
 
     void onPageChanged(int position) {
+        if (position != setupLevel) {
+            return;
+        }
+
         switch (position) {
             case 0:
-                if (setupLevel != 0) {
-                    break;
-                }
                 mViewPager.setScrollAllowed(false);
                 BenefitFragment fragment = mAdapter.getFirstFragment();
                 fragment.animateIntro();
@@ -61,18 +62,11 @@ public class BenefitsActivity extends AppCompatActivity {
                 setupLevel++;
                 break;
             case 1:
-                if (setupLevel != 1) {
-                    break;
-                }
                 mViewPager.setScrollAllowed(false);
                 setupLevel++;
                 break;
             case 2:
-                if (setupLevel != 2) {
-                    break;
-                }
-                getSharedPreferences(PrefsUtils.EXTRA_PREFS, MODE_PRIVATE).edit()
-                        .putBoolean(PrefsUtils.KEY_INTRO_SCREEN, true).apply();
+                PrefsUtils.setDoneIntro(this);
                 startActivity(new Intent(BenefitsActivity.this, MainActivity.class));
                 finish();
                 break;
