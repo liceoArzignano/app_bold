@@ -18,10 +18,10 @@ import it.liceoarzignano.bold.utils.DateUtils;
 import it.liceoarzignano.bold.utils.HelpToast;
 
 class NewsAdapter extends SectionedRecyclerViewAdapter<HeaderViewHolder, NewsAdapter.NewsHolder> {
-    private List<News> mNewsList;
+    private List<News2> mNewsList;
     private final Context mContext;
 
-    NewsAdapter(List<News> list, Context context) {
+    NewsAdapter(List<News2> list, Context context) {
         this.mNewsList = list;
         this.mContext = context;
     }
@@ -46,7 +46,7 @@ class NewsAdapter extends SectionedRecyclerViewAdapter<HeaderViewHolder, NewsAda
     @Override
     public void onBindSubheaderViewHolder(HeaderViewHolder holder, int position) {
         String title;
-        Date eventDate = DateUtils.stringToDate(mNewsList.get(position).getDate());
+        Date eventDate = new Date(mNewsList.get(position).getDate());
         Date yesterday = DateUtils.getDate(-1);
         Date today = DateUtils.getDate(0);
         Date tomorrow = DateUtils.getDate(1);
@@ -71,14 +71,14 @@ class NewsAdapter extends SectionedRecyclerViewAdapter<HeaderViewHolder, NewsAda
 
     @Override
     public boolean onPlaceSubheaderBetweenItems(int itemPosition) {
-        Date a = DateUtils.stringToDate(mNewsList.get(itemPosition).getDate());
-        Date b = DateUtils.stringToDate(mNewsList.get(itemPosition + 1).getDate());
+        Date a = new Date(mNewsList.get(itemPosition).getDate());
+        Date b = new Date(mNewsList.get(itemPosition + 1).getDate());
 
         return DateUtils.dateDiff(a, b) >= 1;
     }
 
 
-    void updateList(List<News> list) {
+    void updateList(List<News2> list) {
         mNewsList = list;
         notifyDataChanged();
     }
@@ -95,9 +95,9 @@ class NewsAdapter extends SectionedRecyclerViewAdapter<HeaderViewHolder, NewsAda
             mMessage = (TextView) view.findViewById(R.id.row_news_message);
         }
 
-        void setData(final Context context, final News news) {
+        void setData(final Context context, final News2 news) {
             mTitle.setText(news.getTitle());
-            mMessage.setText(news.getMessage());
+            mMessage.setText(news.getDescription());
 
             final String url = news.getUrl();
             mView.setOnClickListener(view -> {

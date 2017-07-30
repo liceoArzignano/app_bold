@@ -23,7 +23,6 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.Date;
 
-import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.editor.EditorActivity;
 import it.liceoarzignano.bold.firebase.BoldAnalytics;
@@ -50,8 +49,6 @@ public class MarksActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_marks);
 
-        MarksController mController = new MarksController(((BoldApp) getApplication()).getConfig());
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_toolbar_back);
@@ -67,8 +64,7 @@ public class MarksActivity extends AppCompatActivity {
         });
 
         mList.addItemDecoration(new DividerDecoration(this));
-        mAdapter = new AverageAdapter(mController,
-                ContentUtils.getAverageElements(this, mFilter));
+        mAdapter = new AverageAdapter(this, ContentUtils.getAverageElements(this, mFilter));
         mList.setAdapter(mAdapter);
     }
 

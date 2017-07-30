@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -25,10 +26,10 @@ import it.liceoarzignano.bold.utils.DateUtils;
 import it.liceoarzignano.bold.utils.UiUtils;
 
 class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectHolder> {
-    private List<Mark> mMarks;
+    private List<Mark2> mMarks;
     private final Context mContext;
 
-    SubjectAdapter(List<Mark> marks, Context context) {
+    SubjectAdapter(List<Mark2> marks, Context context) {
         mMarks = marks;
         mContext = context;
     }
@@ -49,7 +50,7 @@ class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectHolder> 
         return mMarks.size();
     }
 
-    void updateList(List<Mark> marks) {
+    void updateList(List<Mark2> marks) {
         mMarks = marks;
         notifyDataSetChanged();
     }
@@ -78,9 +79,9 @@ class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectHolder> 
             mDelete = (ImageButton) view.findViewById(R.id.row_mark_delete);
         }
 
-        void setData(Mark mark) {
+        void setData(Mark2 mark) {
             // Title
-            mDate.setText(DateUtils.dateToWordsString(mContext, mark.getDate()));
+            mDate.setText(DateUtils.dateToWordsString(mContext, new Date(mark.getDate())));
 
             // Value
             Double val = (double) mark.getValue() / 100;
@@ -90,7 +91,7 @@ class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectHolder> 
             mValue.setText(String.format(Locale.ENGLISH, "%.2f", val));
 
             // Summary
-            String summary = mark.getNote();
+            String summary = mark.getDescription();
             boolean hasSummary = summary != null && !summary.isEmpty();
             if (hasSummary) {
                 mSummary.setText(summary);

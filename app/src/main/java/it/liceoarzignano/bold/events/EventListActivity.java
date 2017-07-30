@@ -18,9 +18,9 @@ import android.widget.TextView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import java.util.Date;
 import java.util.List;
 
-import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.editor.EditorActivity;
 import it.liceoarzignano.bold.firebase.BoldAnalytics;
@@ -33,7 +33,7 @@ public class EventListActivity extends AppCompatActivity {
     private LinearLayout mEmptyLayout;
     private TextView mEmptyText;
 
-    private EventsController mController;
+    private EventsHandler mEventsHandler;
     private EventsAdapter mAdapter;
 
     @Override
@@ -59,10 +59,10 @@ public class EventListActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        mController = new EventsController(((BoldApp) getApplication()).getConfig());
+        mEventsHandler = EventsHandler.getInstance(this);
 
         // Load by query for reverse order
-        mAdapter = new EventsAdapter(mController.getByQuery(null), this);
+        mAdapter = new EventsAdapter(mEventsHandler.getByQuery(null), this);
         eventList.setAdapter(mAdapter);
     }
 
@@ -135,20 +135,20 @@ public class EventListActivity extends AppCompatActivity {
     private void refreshList(String query) {
         boolean hasQuery = query != null && !query.isEmpty();
 
-        List<Event> events = mController.getByQuery(query);
+        List<Event2> events = mEventsHandler.getByQuery(query);
         mAdapter.updateList(events);
         mEmptyLayout.setVisibility(events.isEmpty() ? View.VISIBLE : View.GONE);
         mEmptyText.setText(getString(hasQuery ? R.string.search_no_result : R.string.events_empty));
     }
 
     @SuppressWarnings("SameReturnValue")
-    boolean eventActions(Event event) {
+    boolean eventActions(Event2 event) {
         ActionsDialog dialog = new ActionsDialog(this, true, event.getId());
         dialog.setOnActionsListener(new ActionsDialog.OnActionsDialogListener() {
             @Override
             public void onShare() {
                 String message = String.format("%1$s (%2$s)\n%3$s", event.getTitle(),
-                        DateUtils.dateToString(event.getDate()), event.getNote());
+                        DateUtils.dateToString(new Date(event.getDate())), event.getDescription());
                 startActivity(Intent.createChooser(new Intent(Intent.ACTION_SEND)
                                 .setType("text/plain")
                                 .putExtra(Intent.EXTRA_TEXT, message),
@@ -157,7 +157,7 @@ public class EventListActivity extends AppCompatActivity {
 
             @Override
             public void onDelete() {
-                mController.delete(event.getId());
+                mEventsHandler.delete(event.getId());
                 Snackbar.make(mCoordinator, getString(R.string.actions_removed), Snackbar.LENGTH_LONG)
                         .show();
                 refreshList(null);

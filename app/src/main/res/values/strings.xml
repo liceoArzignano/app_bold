@@ -52,6 +52,7 @@
         \u2022 Bug fixes.
     </string>
     <string name="dialog_updated_changelog">Changelog</string>
+    <string name="dialog_updated_database_upgrade">Getting ready\u2026</string>
 
     <!-- Editor -->
     <string name="title_activity_editor">Editor</string>
@@ -284,8 +285,8 @@
     <string name="restore_dialog_title">Restore</string>
     <string name="restore_dialog_message">Backup info:\nDate: %1$s\nSize: %2$s\nWarning: you will override all the existing marks, events and news with those in the backup.\nDo you want to continue?</string>
     <string name="date_formatting">EEEE, MMMM dd yyyy</string>
-    <string name="backup_progress_title">Backup</string>
-    <string name="backup_progress_message">Saving data to Google Drive\u2026</string>
+    <string name="backup_progress_message">Backing up\u2026</string>
+    <string name="restore_progress_message">Restoring\u2026</string>
     <string name="backup_end_of_year_prompt_title">New year</string>
     <string name="backup_end_of_year_prompt_message">A new school year is about to begin, what about doing some housekeeping?\nWe can move all the old marks, events and news on your Google Drive and then start fresh a new year</string>
     <string name="backup_end_of_year_prompt_positive">Let\'s do it</string>

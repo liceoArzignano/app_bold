@@ -2,6 +2,7 @@ package it.liceoarzignano.bold.events;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +21,10 @@ import it.liceoarzignano.bold.utils.HelpToast;
 
 class EventsAdapter extends SectionedRecyclerViewAdapter<HeaderViewHolder,
         EventsAdapter.EventHolder> {
-    private List<Event> mEvents;
+    private List<Event2> mEvents;
     private final Context mContext;
 
-    EventsAdapter(List<Event> events, Context context) {
+    EventsAdapter(List<Event2> events, Context context) {
         mEvents = events;
         mContext = context;
     }
@@ -48,7 +49,7 @@ class EventsAdapter extends SectionedRecyclerViewAdapter<HeaderViewHolder,
     @Override
     public void onBindSubheaderViewHolder(HeaderViewHolder holder, int position) {
         String title;
-        Date eventDate = mEvents.get(position).getDate();
+        Date eventDate = new Date(mEvents.get(position).getDate());
         Date yesterday = DateUtils.getDate(-1);
         Date today = DateUtils.getDate(0);
         Date tomorrow = DateUtils.getDate(1);
@@ -73,13 +74,13 @@ class EventsAdapter extends SectionedRecyclerViewAdapter<HeaderViewHolder,
 
     @Override
     public boolean onPlaceSubheaderBetweenItems(int itemPosition) {
-        Date a = mEvents.get(itemPosition).getDate();
-        Date b = mEvents.get(itemPosition + 1).getDate();
+        Date a = new Date(mEvents.get(itemPosition).getDate());
+        Date b = new Date(mEvents.get(itemPosition + 1).getDate());
 
         return DateUtils.dateDiff(a, b) >= 1;
     }
 
-    void updateList(List<Event> newList) {
+    void updateList(List<Event2> newList) {
         mEvents = newList;
         notifyDataChanged();
     }
@@ -98,15 +99,15 @@ class EventsAdapter extends SectionedRecyclerViewAdapter<HeaderViewHolder,
             mTag = (TextView) view.findViewById(R.id.row_event_tag);
         }
 
-        void setData(Event event) {
+        void setData(Event2 event) {
             mTitle.setText(event.getTitle());
-            mValue.setText(event.getNote());
 
-            if (event.getNote() != null && !event.getNote().isEmpty()) {
+            if (!TextUtils.isEmpty(event.getDescription())) {
+                mValue.setText(event.getDescription());
                 mValue.setVisibility(View.VISIBLE);
             }
 
-            mTag.setText(ContentUtils.eventCategoryToString(mContext, event.getIcon()));
+            mTag.setText(ContentUtils.eventCategoryToString(mContext, event.getCategory()));
             mView.setOnClickListener(v -> {
                 mValue.setMaxLines(mValue.getMaxLines() == 1
                         ? Integer.MAX_VALUE : 1);

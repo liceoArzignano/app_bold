@@ -17,20 +17,19 @@ import org.json.JSONObject;
 
 import java.util.Calendar;
 
-import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.BuildConfig;
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.utils.PrefsUtils;
-import it.liceoarzignano.bold.news.News;
-import it.liceoarzignano.bold.news.NewsController;
+import it.liceoarzignano.bold.news.News2;
+import it.liceoarzignano.bold.news.NewsHandler;
 import it.liceoarzignano.bold.news.NewsListActivity;
 import it.liceoarzignano.bold.utils.DateUtils;
+import it.liceoarzignano.bold.utils.PrefsUtils;
 
 public class BoldMessagingService extends FirebaseMessagingService {
     private static final String TAG = "BoldFireBase";
 
     private Context mContext;
-    private News mNews;
+    private News2 mNews;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -59,12 +58,10 @@ public class BoldMessagingService extends FirebaseMessagingService {
                 return;
             }
 
-            mNews = new News();
-            mNews.setTitle(title);
-            mNews.setMessage(isPrivate ?
-                    mContext.getString(R.string.news_type_private, message) : message);
-            mNews.setDate(DateUtils.getDateString(0));
-            mNews.setUrl(url);
+            if (isPrivate) {
+                message = mContext.getString(R.string.news_type_private, message);
+            }
+            mNews = new News2(title, DateUtils.getDate(0).getTime(), message, url);
 
             saveNews();
             if (PrefsUtils.hasNewsNotification(mContext)) {
@@ -90,9 +87,9 @@ public class BoldMessagingService extends FirebaseMessagingService {
                 .setSmallIcon(R.drawable.ic_notification)
                 .setAutoCancel(true)
                 .setContentTitle(mNews.getTitle())
-                .setContentText(mNews.getMessage() + '\u2026')
+                .setContentText(mNews.getDescription() + '\u2026')
                 .setContentIntent(pIntent)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(mNews.getMessage()));
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(mNews.getDescription()));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             builder.setColor(ContextCompat.getColor(mContext, R.color.colorAccent));
@@ -106,7 +103,6 @@ public class BoldMessagingService extends FirebaseMessagingService {
 
     private void saveNews() {
         mNews.setId(Calendar.getInstance().getTimeInMillis());
-        NewsController mController = new NewsController(((BoldApp) mContext).getConfig());
-        mController.add(mNews);
+        NewsHandler.getInstance(this).add(mNews);
     }
 }

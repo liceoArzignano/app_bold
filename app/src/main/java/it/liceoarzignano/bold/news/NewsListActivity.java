@@ -38,7 +38,7 @@ public class NewsListActivity extends AppCompatActivity {
     private LinearLayout mEmptyLayout;
     private TextView mEmptyText;
 
-    private NewsController mController;
+    private NewsHandler mNewsHandler;
     private NewsAdapter mAdapter;
     private CustomTabsClient mClient;
     private CustomTabsSession mCustomTabsSession;
@@ -69,9 +69,9 @@ public class NewsListActivity extends AppCompatActivity {
             showUrl(mCalledNews.getUrl());
         }
 
-        mController = new NewsController(((BoldApp) getApplication()).getConfig());
+        mNewsHandler = NewsHandler.getInstance(this);
 
-        mAdapter = new NewsAdapter(mController.getAll(), this);
+        mAdapter = new NewsAdapter(mNewsHandler.getAll(), this);
         newsList.setAdapter(mAdapter);
     }
 
@@ -140,7 +140,7 @@ public class NewsListActivity extends AppCompatActivity {
      * @param query search query
      */
     private void refresh(String query) {
-        final List<News> news = mController.getByQuery(query);
+        final List<News2> news = mNewsHandler.getByQuery(query);
         mAdapter.updateList(news);
         mEmptyLayout.setVisibility(news.isEmpty() ? View.VISIBLE : View.GONE);
         mEmptyText.setText(getString(query != null && !query.isEmpty() ?
@@ -195,13 +195,13 @@ public class NewsListActivity extends AppCompatActivity {
     }
 
     @SuppressWarnings("SameReturnValue")
-    boolean newsActions(News news) {
+    boolean newsActions(News2 news) {
         ActionsDialog dialog = new ActionsDialog(this, false, news.getId());
         dialog.setOnActionsListener(new ActionsDialog.OnActionsDialogListener() {
             @Override
             public void onShare() {
                 String message = String.format("%1$s (%2$s)\n%3$s", news.getTitle(),
-                        news.getDate(), news.getMessage());
+                        news.getDate(), news.getDescription());
                 startActivity(Intent.createChooser(new Intent(Intent.ACTION_SEND)
                                 .setType("text/plain")
                                 .putExtra(Intent.EXTRA_TEXT, message),
@@ -210,7 +210,7 @@ public class NewsListActivity extends AppCompatActivity {
 
             @Override
             public void onDelete() {
-                mController.delete(news.getId());
+                mNewsHandler.delete(news.getId());
                 Snackbar.make(mCoordinator, getString(R.string.actions_removed), Snackbar.LENGTH_LONG)
                         .show();
                 refresh(null);

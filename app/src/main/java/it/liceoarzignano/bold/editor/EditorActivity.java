@@ -25,14 +25,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.events.Event;
-import it.liceoarzignano.bold.events.EventsController;
-import it.liceoarzignano.bold.marks.Mark;
-import it.liceoarzignano.bold.marks.MarksController;
-import it.liceoarzignano.bold.news.News;
-import it.liceoarzignano.bold.news.NewsController;
+import it.liceoarzignano.bold.events.Event2;
+import it.liceoarzignano.bold.events.EventsHandler;
+import it.liceoarzignano.bold.marks.Mark2;
+import it.liceoarzignano.bold.marks.MarksHandler;
+import it.liceoarzignano.bold.news.News2;
+import it.liceoarzignano.bold.news.NewsHandler;
 import it.liceoarzignano.bold.utils.DateUtils;
 import it.liceoarzignano.bold.utils.PrefsUtils;
 
@@ -55,8 +54,8 @@ public class EditorActivity extends AppCompatActivity {
 
     private Date mDate;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
-    private MarksController mMarksController;
-    private EventsController mEventsController;
+    private MarksHandler mMarksHandler;
+    private EventsHandler mEventsHandler;
 
     private long mId;
     private boolean mIsEdit;
@@ -94,8 +93,8 @@ public class EditorActivity extends AppCompatActivity {
         mValueView = (TextView) findViewById(R.id.editor_value_view);
         mDateView = (TextView) findViewById(R.id.editor_date_view);
 
-        mMarksController = new MarksController((((BoldApp) getApplication()).getConfig()));
-        mEventsController = new EventsController((((BoldApp) getApplication()).getConfig()));
+        mMarksHandler = MarksHandler.getInstance(this);
+        mEventsHandler = EventsHandler.getInstance(this);
 
         if (mIsEdit) {
             if (getIntent().getBooleanExtra(EXTRA_IS_NEWS, false)) {
@@ -205,47 +204,47 @@ public class EditorActivity extends AppCompatActivity {
 
     private void loadUi() {
         if (mIsMark) {
-            Mark mark = mMarksController.getById(mId).first();
+            Mark2 mark = mMarksHandler.get(mId);
             if (mark == null) {
                 mIsEdit = false;
                 return;
             }
             if (PrefsUtils.isTeacher(this)) {
-                mTitleText.setText(mark.getTitle());
+                mTitleText.setText(mark.getSubject());
             } else {
-                mSubjectView.setText(mark.getTitle());
+                mSubjectView.setText(mark.getSubject());
             }
-            mNotesText.setText(mark.getNote());
-            mDate = mark.getDate();
+            mNotesText.setText(mark.getDescription());
+            mDate = new Date(mark.getDate());
             mValue = mark.getValue();
         } else {
-            Event event = mEventsController.getById(mId).first();
+            Event2 event = mEventsHandler.get(mId);
             if (event == null) {
                 mIsEdit = false;
                 return;
             }
             mTitleText.setText(event.getTitle());
-            mNotesText.setText(event.getNote());
-            mValue = event.getIcon();
-            mDate = event.getDate();
+            mNotesText.setText(event.getDescription());
+            mValue = event.getCategory();
+            mDate = new Date(event.getDate());
         }
 
         mDateView.setText(DateUtils.dateToString(mDate));
     }
 
     private void loadNews() {
-        NewsController controller = new NewsController(((BoldApp) getApplication()).getConfig());
-        News news = controller.getById(mId).first();
+        NewsHandler handler = NewsHandler.getInstance(this);
+        News2 news = handler.get(mId);
         if (news == null) {
             return;
         }
 
         mIsMark = false;
         mIsEdit = false;
+        mDate = new Date(news.getDate());
         mTitleText.setText(news.getTitle());
-        mDateView.setText(news.getDate());
-        mNotesText.setText(String.format("%1$s\n%2$s", news.getMessage(), news.getUrl()));
-        mDate = DateUtils.stringToDate(news.getDate());
+        mDateView.setText(DateUtils.dateToString(mDate));
+        mNotesText.setText(String.format("%1$s\n%2$s", news.getDescription(), news.getUrl()));
         mValue = 6;
     }
 
@@ -317,18 +316,19 @@ public class EditorActivity extends AppCompatActivity {
     }
 
     private void saveMark() {
-        Mark mark = new Mark();
-        mark.setTitle((PrefsUtils.isTeacher(this) ?
+        Mark2 mark = new Mark2();
+        mark.setSubject((PrefsUtils.isTeacher(this) ?
                 mTitleText.getText() : mSubjectView.getText()).toString());
         mark.setValue(mValue);
-        mark.setDate(mDate, PrefsUtils.isFirstQuarter(this, mDate));
-        mark.setNote(mNotesText.getText().toString());
+        mark.setDate(mDate.getTime());
+        mark.setFirstQuarter(PrefsUtils.isFirstQuarter(this, mDate));
+        mark.setDescription(mNotesText.getText().toString());
 
         if (mIsEdit) {
             mark.setId(mId);
-            mMarksController.update(mark);
+            mMarksHandler.update(mark);
         } else {
-            mMarksController.add(mark);
+            mMarksHandler.add(mark);
         }
 
         Snackbar.make(mCoordinator, getString(R.string.editor_saved), Snackbar.LENGTH_LONG).show();
@@ -336,17 +336,17 @@ public class EditorActivity extends AppCompatActivity {
     }
 
     private void saveEvent() {
-        Event event = new Event();
+        Event2 event = new Event2();
         event.setTitle(mTitleText.getText().toString());
-        event.setIcon(mCategorySpinner.getSelectedItemPosition());
-        event.setDate(mDate);
-        event.setNote(mNotesText.getText().toString());
+        event.setCategory(mCategorySpinner.getSelectedItemPosition());
+        event.setDate(mDate.getTime());
+        event.setDescription(mNotesText.getText().toString());
 
         if (mIsEdit) {
             event.setId(mId);
-            mEventsController.update(event);
+            mEventsHandler.update(event);
         } else {
-            mEventsController.add(event);
+            mEventsHandler.add(event);
         }
 
         Snackbar.make(mCoordinator, getString(R.string.editor_saved), Snackbar.LENGTH_LONG).show();

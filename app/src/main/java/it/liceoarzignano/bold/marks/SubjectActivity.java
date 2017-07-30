@@ -16,7 +16,6 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.List;
 
-import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.editor.EditorActivity;
 import it.liceoarzignano.bold.firebase.BoldAnalytics;
@@ -35,7 +34,7 @@ public class SubjectActivity extends AppCompatActivity {
     private TextView mTextHint;
     private NestedScrollView mNestedView;
 
-    private MarksController mController;
+    private MarksHandler mMarksHandler;
     private SubjectAdapter mAdapter;
 
     private String mTitle;
@@ -47,7 +46,7 @@ public class SubjectActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_subject);
 
-        mController = new MarksController(((BoldApp) getApplication()).getConfig());
+        mMarksHandler = MarksHandler.getInstance(this);
 
         Intent callingIntent = getIntent();
         mTitle = callingIntent.getStringExtra(EXTRA_TITLE);
@@ -65,7 +64,7 @@ public class SubjectActivity extends AppCompatActivity {
         mTextHint = (TextView) findViewById(R.id.subject_hint_text);
         RecyclerViewExt marksList = (RecyclerViewExt) findViewById(R.id.subject_list);
 
-        mAdapter = new SubjectAdapter(mController.getFilteredMarks(mTitle, mFilter), this);
+        mAdapter = new SubjectAdapter(mMarksHandler.getFilteredMarks(mTitle, mFilter), this);
         marksList.setAdapter(mAdapter);
     }
 
@@ -77,13 +76,13 @@ public class SubjectActivity extends AppCompatActivity {
     }
 
     private void refresh() {
-        List<Mark> marks = mController.getFilteredMarks(mTitle, mFilter);
+        List<Mark2> marks = mMarksHandler.getFilteredMarks(mTitle, mFilter);
         mAdapter.updateList(marks);
         // Scroll to top
         new Handler().post(() -> mNestedView.scrollTo(0,0));
 
-        setHint(mController.getAverage(mTitle, mFilter),
-                mController.whatShouldIGet(mTitle, mFilter));
+        setHint(mMarksHandler.getAverage(mTitle, mFilter),
+                mMarksHandler.whatShouldIGet(mTitle, mFilter));
     }
 
     private void setHint(double average, double expected) {
@@ -103,7 +102,7 @@ public class SubjectActivity extends AppCompatActivity {
         mProgressBar.setProgress(average);
     }
 
-    void editItem(ImageView icon, Mark item) {
+    void editItem(ImageView icon, Mark2 item) {
         new BoldAnalytics(this).log(FirebaseAnalytics.Event.VIEW_ITEM, "Edit mark");
         Intent intent = new Intent(this, EditorActivity.class);
         intent.putExtra(EditorActivity.EXTRA_ID, item.getId());
@@ -116,20 +115,20 @@ public class SubjectActivity extends AppCompatActivity {
         }
     }
 
-    void deleteItem(ImageView icon, Mark item, int position) {
+    void deleteItem(ImageView icon, Mark2 item, int position) {
         new BoldAnalytics(this).log(FirebaseAnalytics.Event.VIEW_ITEM, "Delete mark");
         UiUtils.animateAVD(icon.getDrawable());
 
-        mController.delete(item.getId());
+        mMarksHandler.delete(item.getId());
         Snackbar.make(mCoordinator, getString(R.string.actions_remove), Snackbar.LENGTH_LONG).show();
         new Handler().postDelayed(() -> mAdapter.notifyItemRemoved(position), 1000);
     }
 
-    void shareItem(ImageView icon, Mark item) {
+    void shareItem(ImageView icon, Mark2 item) {
         new BoldAnalytics(this).log(FirebaseAnalytics.Event.SHARE, "Share mark");
         String message = getString(PrefsUtils.isTeacher(this) ?
                         R.string.marks_share_teacher : R.string.marks_share_student,
-                item.getValue() / 100, item.getTitle());
+                item.getValue() / 100, item.getSubject());
 
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");

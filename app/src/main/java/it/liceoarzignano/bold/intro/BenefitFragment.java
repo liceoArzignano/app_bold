@@ -116,6 +116,11 @@ public class BenefitFragment extends Fragment {
 
         // Check for internet connection
         if (PrefsUtils.hasNoInternetConnection(context)) {
+            if (BuildConfig.DEBUG) {
+                ((BenefitsActivity) getActivity()).getViewPager().setScrollAllowed(true);
+                return;
+            }
+
             mButton.setVisibility(View.VISIBLE);
             mButton.setOnClickListener(view -> doDeviceCheck(context));
             mMessage.setText(getString(R.string.slide0_message_failed));

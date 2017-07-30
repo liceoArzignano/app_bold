@@ -77,7 +77,7 @@ public class Mark extends RealmObject {
         this.isFirstQuarter = isFirstQuarter;
     }
 
-    boolean getIsFirstQuarter() {
+    public boolean getIsFirstQuarter() {
         return isFirstQuarter;
     }
 }

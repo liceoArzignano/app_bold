@@ -1,5 +1,6 @@
 package it.liceoarzignano.bold.marks;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,11 +14,11 @@ import it.liceoarzignano.bold.R;
 
 
 class AverageAdapter extends RecyclerView.Adapter<AverageAdapter.AverageHolder> {
-    private final MarksController mController;
+    private final MarksHandler mHandler;
     private String[] mResults;
 
-    AverageAdapter(MarksController controller, String[] results) {
-        mController = controller;
+    AverageAdapter(Context context, String[] results) {
+        mHandler = MarksHandler.getInstance(context);
         mResults = results;
     }
 
@@ -55,7 +56,7 @@ class AverageAdapter extends RecyclerView.Adapter<AverageAdapter.AverageHolder> 
         void setData(String result) {
             mTitle.setText(result);
 
-            Double val = mController.getAverage(result, 0);
+            Double val = mHandler.getAverage(result, 0);
             if (val < 6) {
                 mValue.setTextColor(Color.RED);
             }

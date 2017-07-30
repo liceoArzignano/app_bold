@@ -1,9 +1,12 @@
 package it.liceoarzignano.bold;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -33,26 +36,26 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import io.realm.RealmConfiguration;
-import io.realm.Sort;
 import it.liceoarzignano.bold.backup.BackupActivity;
-import it.liceoarzignano.bold.events.Event;
+import it.liceoarzignano.bold.events.Event2;
 import it.liceoarzignano.bold.events.EventListActivity;
-import it.liceoarzignano.bold.events.EventsController;
+import it.liceoarzignano.bold.events.EventsHandler;
 import it.liceoarzignano.bold.home.HomeAdapter;
 import it.liceoarzignano.bold.home.HomeCard;
 import it.liceoarzignano.bold.home.HomeCardBuilder;
 import it.liceoarzignano.bold.intro.BenefitsActivity;
-import it.liceoarzignano.bold.marks.Mark;
+import it.liceoarzignano.bold.marks.Mark2;
 import it.liceoarzignano.bold.marks.MarksActivity;
-import it.liceoarzignano.bold.marks.MarksController;
-import it.liceoarzignano.bold.news.News;
-import it.liceoarzignano.bold.news.NewsController;
+import it.liceoarzignano.bold.marks.MarksHandler;
+import it.liceoarzignano.bold.news.News2;
+import it.liceoarzignano.bold.news.NewsHandler;
 import it.liceoarzignano.bold.news.NewsListActivity;
+import it.liceoarzignano.bold.realm.MigrationTool;
 import it.liceoarzignano.bold.safe.SafeActivity;
 import it.liceoarzignano.bold.settings.SettingsActivity;
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt;
@@ -65,9 +68,9 @@ public class MainActivity extends AppCompatActivity
     private static final String BUNDLE_SHOULD_ANIMATE = "homeShouldAnimate";
 
     private FirebaseRemoteConfig mRemoteConfig;
-    private MarksController mMarksController;
-    private EventsController mEventsController;
-    private NewsController mNewsController;
+    private MarksHandler mMarksHandler;
+    private EventsHandler mEventsHandler;
+    private NewsHandler mNewsHandler;
 
     private Toolbar mToolbar;
     private ImageView mBanner;
@@ -86,7 +89,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
 
-        setupRealm();
+        setupDBHandler();
         setupRemoteConfig();
 
         showIntroIfNeeded();
@@ -196,11 +199,10 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void setupRealm() {
-        RealmConfiguration configuration = ((BoldApp) getApplication()).getConfig();
-        mMarksController = new MarksController(configuration);
-        mEventsController = new EventsController(configuration);
-        mNewsController = new NewsController(configuration);
+    private void setupDBHandler() {
+        mMarksHandler = MarksHandler.getInstance(this);
+        mEventsHandler = EventsHandler.getInstance(this);
+        mNewsHandler = NewsHandler.getInstance(this);
     }
 
     private void setupRemoteConfig() {
@@ -296,6 +298,13 @@ public class MainActivity extends AppCompatActivity
             return;
         }
 
+        // Data migration Realm -> SQL
+        MigrationTool migrationTool = new MigrationTool();
+        if (!migrationTool.hasMigrated(this)) {
+            migrateDatabase(migrationTool);
+            return;
+        }
+
         switch (PrefsUtils.getAppVersion(this)) {
             case BuildConfig.VERSION_NAME:
                 break;
@@ -313,7 +322,7 @@ public class MainActivity extends AppCompatActivity
                         .onPositive(((dialog, which) -> PrefsUtils.updateAppVersion(this)))
                         .onNegative(((dialog, which) -> {
                             dialog.dismiss();
-                            // TODO
+                            showUrl(-1);
                         }))
                         .show();
                 return;
@@ -437,13 +446,14 @@ public class MainActivity extends AppCompatActivity
                 .setName(getString(R.string.upcoming_events))
                 .setOnClick(view -> onCardClick(view, new Intent(this, EventListActivity.class)));
 
-        List<Event> events = mEventsController.getAll();
+        List<Event2> events = mEventsHandler.getAll();
         int added = 0;
         Date nextWeek = DateUtils.getDate(7);
-        for (Event e : events) {
-            if (!DateUtils.dateDiff(nextWeek, e.getDate(), 8)) {
+        for (Event2 e : events) {
+            Date date = new Date(e.getDate());
+            if (!DateUtils.dateDiff(nextWeek, date, 8)) {
                 added++;
-                builder.addEntry(e.getTitle(), DateUtils.dateToWordsString(this, e.getDate()));
+                builder.addEntry(e.getTitle(), DateUtils.dateToWordsString(this, date));
             }
             if (added == 3) {
                 break;
@@ -460,10 +470,11 @@ public class MainActivity extends AppCompatActivity
                 .setName(getString(R.string.nav_news))
                 .setOnClick(view -> onCardClick(view, new Intent(this, NewsListActivity.class)));
 
-        List<News> news = mNewsController.getAll();
+        List<News2> news = mNewsHandler.getAll();
         for (int i = 0; i < 3 && i < news.size(); i++) {
-            News n = news.get(i);
-            builder.addEntry(n.getTitle(), DateUtils.dateToWordsString(this, n.getDate()));
+            News2 n = news.get(i);
+            builder.addEntry(n.getTitle(), DateUtils.dateToWordsString(this,
+                    new Date(n.getDate())));
         }
 
         HomeCard card = builder.build();
@@ -476,10 +487,12 @@ public class MainActivity extends AppCompatActivity
                 .setName(getString(R.string.lastest_marks))
                 .setOnClick(view -> onCardClick(view, new Intent(this, MarksActivity.class)));
 
-        List<Mark> marks = mMarksController.getAll().sort("date", Sort.DESCENDING);
+
+        List<Mark2> marks = mMarksHandler.getAll();
+        Collections.reverse(marks);
         for (int i = 0; i < 3 && i < marks.size(); i++) {
-            Mark m = marks.get(i);
-            builder.addEntry(m.getTitle(), String.valueOf(m.getValue() / 100d));
+            Mark2 m = marks.get(i);
+            builder.addEntry(m.getSubject(), String.valueOf(m.getValue() / 100d));
         }
 
         HomeCard card = builder.build();
@@ -523,5 +536,37 @@ public class MainActivity extends AppCompatActivity
             default:
                 return getString(R.string.suggestion_notification);
         }
+    }
+
+    private void migrateDatabase(MigrationTool migrationTool) {
+        MaterialDialog progressDialog = new MaterialDialog.Builder(this)
+                .content(R.string.dialog_updated_database_upgrade)
+                .canceledOnTouchOutside(false)
+                .progressIndeterminateStyle(true)
+                .progress(true, 10)
+                .show();
+
+        new AsyncTask<Void, Boolean, Boolean>() {
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                migrationTool.migrate((BoldApp) getApplication());
+                return true;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+                super.onPostExecute(aBoolean);
+                PendingIntent pendingIntent = PendingIntent.getActivity(getApplication(),
+                        13092, new Intent(getApplication(), MainActivity.class),
+                        PendingIntent.FLAG_CANCEL_CURRENT);
+                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                alarmManager.set(AlarmManager.RTC,
+                        System.currentTimeMillis() + 1705, pendingIntent);
+                new Handler().postDelayed(() -> {
+                    progressDialog.dismiss();
+                    finish();
+                }, 1700);
+            }
+        }.execute();
     }
 }

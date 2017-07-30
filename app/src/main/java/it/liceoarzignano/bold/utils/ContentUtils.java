@@ -10,13 +10,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.events.AlarmService;
-import it.liceoarzignano.bold.events.Event;
-import it.liceoarzignano.bold.events.EventsController;
-import it.liceoarzignano.bold.marks.Mark;
-import it.liceoarzignano.bold.marks.MarksController;
+import it.liceoarzignano.bold.events.Event2;
+import it.liceoarzignano.bold.events.EventsHandler;
+import it.liceoarzignano.bold.marks.Mark2;
+import it.liceoarzignano.bold.marks.MarksHandler;
 
 
 public final class ContentUtils {
@@ -31,15 +30,14 @@ public final class ContentUtils {
      */
     public static String[] getAverageElements(Context context, int filter) {
         int size = 0;
-        MarksController controller = new MarksController(
-                ((BoldApp) context.getApplicationContext()).getConfig());
+        MarksHandler handler = MarksHandler.getInstance(context);
 
-        List<Mark> marks = controller.getFilteredMarks(null, filter);
+        List<Mark2> list = handler.getFilteredMarks(null, filter);
         ArrayList<String> elements = new ArrayList<>();
 
-        for (Mark mark : marks) {
-            if (!elements.contains(mark.getTitle())) {
-                elements.add(mark.getTitle());
+        for (Mark2 mark : list) {
+            if (!elements.contains(mark.getSubject())) {
+                elements.add(mark.getSubject());
                 size++;
             }
         }
@@ -94,17 +92,16 @@ public final class ContentUtils {
                 R.plurals.notification_other
         };
 
-        EventsController controller = new EventsController(
-                ((BoldApp) context.getApplicationContext()).getConfig());
-        List<Event> events = controller.getTomorrow();
+        EventsHandler handler = EventsHandler.getInstance(context);
+        List<Event2> events = handler.getTomorrow();
 
         if (events.isEmpty()) {
             return null;
         }
 
         // Get data
-        for (Event event : events) {
-            categories[event.getIcon()]++;
+        for (Event2 event : events) {
+            categories[event.getCategory()]++;
         }
 
         // Build message

@@ -1,7 +1,5 @@
 package it.liceoarzignano.bold.backup;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -36,27 +34,18 @@ import com.google.android.gms.drive.query.SortOrder;
 import com.google.android.gms.drive.query.SortableField;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
-import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.events.Event;
-import it.liceoarzignano.bold.events.EventsController;
+import it.liceoarzignano.bold.events.EventsHandler;
 import it.liceoarzignano.bold.firebase.BoldAnalytics;
-import it.liceoarzignano.bold.marks.Mark;
-import it.liceoarzignano.bold.marks.MarksController;
-import it.liceoarzignano.bold.news.News;
-import it.liceoarzignano.bold.news.NewsController;
+import it.liceoarzignano.bold.marks.MarksHandler;
+import it.liceoarzignano.bold.news.NewsHandler;
 import it.liceoarzignano.bold.utils.DateUtils;
 import it.liceoarzignano.bold.utils.PrefsUtils;
 
@@ -64,7 +53,6 @@ public class BackupActivity extends AppCompatActivity {
     private static final String TAG = BackupActivity.class.getSimpleName();
     public static final String EXTRA_EOY_BACKUP = "extraEndOfYearBackup";
     private static final String BACKUP_FOLDER = "BACKUP_FOLDER";
-    private static final String BACKUP_FILE_NAME = "Liceo.realm";
 
     private CoordinatorLayout mCoordinatorLayout;
     private AppCompatButton mBackupButton;
@@ -73,7 +61,6 @@ public class BackupActivity extends AppCompatActivity {
     private Backup mBackup = null;
     private GoogleApiClient mGoogleApiClient;
     private IntentSender mIntentPicker;
-    private Realm mRealm;
     private SharedPreferences mPrefs;
     private List<BackupData> mBackupList;
     private String mBackupFolder;
@@ -126,20 +113,13 @@ public class BackupActivity extends AppCompatActivity {
         super.onStop();
     }
 
-    /**
-     * Initialize backup
-     */
     private void initBackup() {
         mBackup = new GoogleDriveBackup();
         mBackup.init(this);
         mBackup.start();
         mGoogleApiClient = mBackup.getClient();
-        mRealm = Realm.getInstance(((BoldApp) getApplication()).getConfig());
     }
 
-    /**
-     * Set up User Interface
-     */
     private void setUI() {
         mRestoreButton.setOnClickListener(view -> {
             new BoldAnalytics(this).log(FirebaseAnalytics.Event.SELECT_CONTENT, "Restore");
@@ -168,9 +148,6 @@ public class BackupActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * Show a dialog with backups list and let user pick one
-     */
     private void pickBackup() {
         List<String> backupTitles = new ArrayList<>();
         // Stream fails with proguard optimizations
@@ -192,13 +169,6 @@ public class BackupActivity extends AppCompatActivity {
                 .show();
     }
 
-    /**
-     * Ask for confirmation when restoring a dialog
-     *
-     * @param id      backup id
-     * @param date    backup date
-     * @param size    backup size
-     */
     private void restoreBackupDialog(final DriveId id, String date, String size) {
         new MaterialDialog.Builder(this)
                 .title(R.string.restore_dialog_title)
@@ -214,123 +184,104 @@ public class BackupActivity extends AppCompatActivity {
                 .show();
     }
 
-    /**
-     * Open GDrive folder picker to select the folder
-     * where the mBackup file will be exported
-     */
     private void openFolderPicker() {
-        if (mBackupFolder.isEmpty()) {
-            try {
-                if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
-                    if (mIntentPicker == null) {
-                        mIntentPicker = Drive.DriveApi
-                                .newOpenFileActivityBuilder()
-                                .setMimeType(new String[]{DriveFolder.MIME_TYPE})
-                                .build(mGoogleApiClient);
-                    }
-                    startIntentSenderForResult(mIntentPicker, 2, null, 0, 0, 0);
-                }
-            } catch (IntentSender.SendIntentException e) {
-                Snackbar.make(mCoordinatorLayout, getString(R.string.backup_auth_fail),
-                        Snackbar.LENGTH_LONG);
-                Log.e(TAG, e.getMessage());
-            }
-        } else {
+        if (!mBackupFolder.isEmpty()) {
             uploadToDrive(DriveId.decodeFromString(mBackupFolder));
+            return;
         }
-    }
-
-    /**
-     * Download the backup file from GDrive
-     *
-     * @param file selected file
-     */
-    private void downloadFromDrive(DriveFile file) {
-        file.open(mGoogleApiClient, DriveFile.MODE_READ_ONLY, null).setResultCallback(result -> {
-            mStatus = 8;
-            if (!result.getStatus().isSuccess()) {
-                showResult(false);
-                mStatus = 0;
-                return;
-            }
-            restoreRealmBackup(result);
-        });
-    }
-
-    /**
-     * Restore realm backup from a
-     * file downloaded from GDrive.
-     * Once it's done, restart the app
-     *
-     * @param result GDrive content result
-     */
-    private void restoreRealmBackup(DriveApi.DriveContentsResult result) {
-        DriveContents content = result.getDriveContents();
-        InputStream iStream = content.getInputStream();
 
         try {
-            File file = new File(mRealm.getPath());
-            OutputStream oStream = new FileOutputStream(file);
-
-            byte[] buffer = new byte[4 * 1024];
-            int read;
-            while ((read = iStream.read(buffer)) != -1) {
-                oStream.write(buffer, 0, read);
+            if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+                if (mIntentPicker == null) {
+                    mIntentPicker = Drive.DriveApi
+                            .newOpenFileActivityBuilder()
+                            .setMimeType(new String[]{ DriveFolder.MIME_TYPE })
+                            .build(mGoogleApiClient);
+                }
+                startIntentSenderForResult(mIntentPicker, 2, null, 0, 0, 0);
             }
-            oStream.flush();
-            oStream.close();
-        } catch (IOException e) {
+        } catch (IntentSender.SendIntentException e) {
+            Snackbar.make(mCoordinatorLayout, getString(R.string.backup_auth_fail),
+                    Snackbar.LENGTH_LONG);
             Log.e(TAG, e.getMessage());
         }
-
-        mStatus = 3;
-        showResult(true);
-        mStatus = 0;
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 13092,
-                new Intent(this, BackupActivity.class),
-                PendingIntent.FLAG_CANCEL_CURRENT);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + 10, pendingIntent);
-        new Handler().postDelayed(() -> System.exit(0), 650);
     }
 
-    /**
-     * Upload mBackup file to GDrive
-     *
-     * @param folderId picked GDrive folder id
-     */
+    private void downloadFromDrive(DriveFile file) {
+        file.open(mGoogleApiClient, DriveFile.MODE_READ_ONLY, null)
+                .setResultCallback(result -> {
+                    mStatus = 8;
+                    if (!result.getStatus().isSuccess()) {
+                        showResult(false);
+                        mStatus = 0;
+                        return;
+                    }
+                    restoreBackup(result);
+                });
+    }
+
+    private void restoreBackup(DriveApi.DriveContentsResult result) {
+        DriveContents content = result.getDriveContents();
+        BackupFile backupFile = new BackupFile(this);
+        backupFile.fetch(content.getInputStream());
+
+        MaterialDialog progress = new MaterialDialog.Builder(this)
+                .content(R.string.restore_progress_message)
+                .progress(true, 10)
+                .progressIndeterminateStyle(true)
+                .cancelable(false)
+                .canceledOnTouchOutside(false)
+                .show();
+
+        Context context = this;
+
+        new AsyncTask<Void, Void, Boolean>() {
+            @Override
+            public Boolean doInBackground(Void... params) {
+                MarksHandler.getInstance(context).refillTable(backupFile.getMarks());
+                EventsHandler.getInstance(context).refillTable(backupFile.getEvents());
+                NewsHandler.getInstance(context).refillTable(backupFile.getNews());
+                return true;
+            }
+
+            @Override
+            public void onPostExecute(Boolean result) {
+                new Handler().postDelayed(() -> {
+                    progress.dismiss();
+                    mStatus = 3;
+                    showResult(true);
+                    mStatus = 0;
+                }, 1000);
+            }
+        }.execute();
+    }
+
     private void uploadToDrive(DriveId folderId) {
         if (folderId == null) {
             return;
         }
-        final DriveFolder mFolder = folderId.asDriveFolder();
+
+        DriveFolder mFolder = folderId.asDriveFolder();
         Drive.DriveApi.newDriveContents(mGoogleApiClient)
                 .setResultCallback(result -> {
                     if (!result.getStatus().isSuccess()) {
                         showResult(false);
                         return;
                     }
-                    uploadRealmBackup(result, mFolder);
+                    uploadBackup(result, mFolder);
                 });
     }
 
-    /**
-     * Upload mRealm database to the folder
-     * selected from the user
-     *
-     * @param result GDrive content result
-     * @param folder GDrive destination folder
-     */
-    private void uploadRealmBackup(final DriveApi.DriveContentsResult result,
-                                   final DriveFolder folder) {
-        final DriveContents content = result.getDriveContents();
+    private void uploadBackup(DriveApi.DriveContentsResult result,
+                              DriveFolder folder) {
+        DriveContents content = result.getDriveContents();
+        BackupFile backupFile = new BackupFile(this);
+        backupFile.createBackup(this);
 
         MaterialDialog progress = new MaterialDialog.Builder(this)
-                .title(R.string.backup_progress_title)
                 .content(R.string.backup_progress_message)
                 .progress(true, 100)
-                .progressIndeterminateStyle(false)
+                .progressIndeterminateStyle(true)
                 .cancelable(false)
                 .canceledOnTouchOutside(false)
                 .show();
@@ -342,7 +293,7 @@ public class BackupActivity extends AppCompatActivity {
                 FileInputStream iStream;
 
                 try {
-                    iStream = new FileInputStream(new File(mRealm.getPath()));
+                    iStream = new FileInputStream(backupFile.getOutput());
                     byte[] buffer = new byte[1024];
                     int read;
 
@@ -354,7 +305,7 @@ public class BackupActivity extends AppCompatActivity {
                 }
 
                 MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
-                        .setTitle(BACKUP_FILE_NAME)
+                        .setTitle(BackupFile.FILE_NAME)
                         .setMimeType("text/plain")
                         .build();
 
@@ -388,13 +339,6 @@ public class BackupActivity extends AppCompatActivity {
         }.execute();
     }
 
-    /**
-     * Parse results for GDrive api
-     *
-     * @param request api request code
-     * @param result  api result code
-     * @param data    data
-     */
     protected void onActivityResult(int request, int result, Intent data) {
         if (result == RESULT_OK) {
             switch (request) {
@@ -424,17 +368,12 @@ public class BackupActivity extends AppCompatActivity {
         showResult(result == RESULT_OK);
     }
 
-    /**
-     * Fetch list of backups from Google Drive
-     *
-     * @param folder backups location
-     */
     private void getBackupsFromDrive(DriveFolder folder) {
         mBackupList = new ArrayList<>();
         SortOrder order = new SortOrder.Builder()
                 .addSortDescending(SortableField.MODIFIED_DATE).build();
         Query query = new Query.Builder()
-                .addFilter(Filters.eq(SearchableField.TITLE, BACKUP_FILE_NAME))
+                .addFilter(Filters.eq(SearchableField.TITLE, BackupFile.FILE_NAME))
                 .addFilter(Filters.eq(SearchableField.TRASHED, false))
                 .setSortOrder(order)
                 .build();
@@ -453,12 +392,6 @@ public class BackupActivity extends AppCompatActivity {
                 });
     }
 
-    /**
-     * Convert long bytes format to a human-friendly format (eg: 12kb)
-     *
-     * @param bytes bytes size
-     * @return file size: sth{kMGTPE}b
-     */
     private static String backupSize(long bytes) {
         int unit = 1000;
         if (bytes < unit) {
@@ -469,12 +402,7 @@ public class BackupActivity extends AppCompatActivity {
         return String.format(Locale.getDefault(), "%.1f %sB", bytes / Math.pow(unit, exp), prefix);
     }
 
-    /**
-     * Inform the user with a SnackBar that the action has successfully been completed
-     *
-     * @param isSuccess success or failure
-     */
-    private void showResult(final boolean isSuccess) {
+    private void showResult(boolean isSuccess) {
         int message;
         switch (mStatus) {
             case 2:
@@ -489,8 +417,7 @@ public class BackupActivity extends AppCompatActivity {
                 return;
         }
 
-        Snackbar.make(mCoordinatorLayout, getString(message),
-                Snackbar.LENGTH_LONG).show();
+        Snackbar.make(mCoordinatorLayout, getString(message), Snackbar.LENGTH_LONG).show();
     }
 
     private void endOfYearCleanup() {
@@ -505,10 +432,9 @@ public class BackupActivity extends AppCompatActivity {
 
     private void removeAllData() {
         MaterialDialog progress = new MaterialDialog.Builder(this)
-                .title(R.string.backup_progress_title)
-                .content(R.string.backup_progress_message)
-                .progress(true, 100)
-                .progressIndeterminateStyle(false)
+                .content(R.string.backup_end_of_year_deleting_message)
+                .progress(true, 10)
+                .progressIndeterminateStyle(true)
                 .cancelable(false)
                 .canceledOnTouchOutside(false)
                 .show();
@@ -518,22 +444,9 @@ public class BackupActivity extends AppCompatActivity {
         new AsyncTask<Void, Void, Boolean>() {
             @Override
             public Boolean doInBackground(Void... params) {
-                RealmConfiguration configuration = ((BoldApp) getApplication()).getConfig();
-                MarksController marksController = new MarksController(configuration);
-                for (Mark mark : marksController.getAll()) {
-                    marksController.delete(mark.getId());
-                }
-
-                EventsController eventsController = new EventsController(configuration);
-                for (Event event : eventsController.getAll()) {
-                    eventsController.delete(event.getId());
-                }
-
-                NewsController newsController = new NewsController(configuration);
-                for (News news : newsController.getAll()) {
-                    newsController.delete(news.getId());
-                }
-
+                MarksHandler.getInstance(context).clearTable();
+                EventsHandler.getInstance(context).clearTable();
+                NewsHandler.getInstance(context).clearTable();
                 return true;
             }
 
@@ -550,5 +463,4 @@ public class BackupActivity extends AppCompatActivity {
             }
         }.execute();
     }
-
 }
