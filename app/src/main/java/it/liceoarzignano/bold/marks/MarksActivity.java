@@ -78,8 +78,7 @@ public class MarksActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Date today = DateUtils.getDate(0);
-        Date change = DateUtils.stringToDate(getString(R.string.config_quarter_change));
-        if (DateUtils.matchDayOfYear(today, change)) {
+        if (!DateUtils.isFirstQuarter(this, today)) {
             getMenuInflater().inflate(R.menu.marks, menu);
         }
         return true;

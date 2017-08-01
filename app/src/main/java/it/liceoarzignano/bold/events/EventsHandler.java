@@ -167,5 +167,4 @@ public class EventsHandler extends DBHandler<Event2> {
 
         return list;
     }
-
 }

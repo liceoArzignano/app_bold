@@ -321,7 +321,7 @@ public class EditorActivity extends AppCompatActivity {
                 mTitleText.getText() : mSubjectView.getText()).toString());
         mark.setValue(mValue);
         mark.setDate(mDate.getTime());
-        mark.setFirstQuarter(PrefsUtils.isFirstQuarter(this, mDate));
+        mark.setFirstQuarter(DateUtils.isFirstQuarter(this, mDate));
         mark.setDescription(mNotesText.getText().toString());
 
         if (mIsEdit) {

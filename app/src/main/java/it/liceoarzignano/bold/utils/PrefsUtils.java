@@ -15,7 +15,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 import it.liceoarzignano.bold.BuildConfig;
-import it.liceoarzignano.bold.R;
 
 public class PrefsUtils {
     private static final String DEFAULT_DATE = "2000-01-01";
@@ -72,17 +71,6 @@ public class PrefsUtils {
      */
     public static boolean isNotLegacy() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
-    }
-
-    /**
-     * Determine if a mark has been assigned during the first or second quarter
-     *
-     * @param date given mark's date
-     * @return true if first quarter, else false
-     */
-    public static boolean isFirstQuarter(Context context, Date date) {
-        return DateUtils.stringToDate(context.getString(R.string.config_quarter_change))
-                .after(date);
     }
 
     /**

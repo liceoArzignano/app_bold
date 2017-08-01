@@ -23,7 +23,7 @@ public final class DateUtils {
         return calendar.getTime();
     }
 
-    public static String getDateString(int dayDiff) {
+    static String getDateString(int dayDiff) {
         return dateToString(getDate(dayDiff));
     }
 
@@ -53,10 +53,6 @@ public final class DateUtils {
         return val.substring(0, 1).toUpperCase() + val.substring(1, val.length());
     }
 
-    public static String dateToWordsString(Context context, String date) {
-        return dateToWordsString(context, stringToDate(date));
-    }
-
     public static int dateDiff(Date a, Date b) {
         Calendar calA = Calendar.getInstance();
         Calendar calB = Calendar.getInstance();
@@ -83,5 +79,20 @@ public final class DateUtils {
         calB.setTime(b);
 
         return calA.get(Calendar.DAY_OF_YEAR) >= calB.get(Calendar.DAY_OF_YEAR);
+    }
+
+    public static boolean isFirstQuarter(Context context, Date date) {
+        Date start = stringToDate(context.getString(R.string.config_end_of_year));
+        Date end = stringToDate(context.getString(R.string.config_quarter_change));
+
+        Calendar calDate = Calendar.getInstance();
+        Calendar calStart = Calendar.getInstance();
+        Calendar calEnd = Calendar.getInstance();
+        calDate.setTime(date);
+        calStart.setTime(start);
+        calEnd.setTime(end);
+
+        return calDate.get(Calendar.DAY_OF_YEAR) > calStart.get(Calendar.DAY_OF_YEAR) ||
+                calDate.get(Calendar.DAY_OF_YEAR) < calEnd.get(Calendar.DAY_OF_YEAR);
     }
 }
