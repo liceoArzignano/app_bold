@@ -23,20 +23,19 @@
     <string name="upcoming_events">Prossimi eventi</string>
     <string name="lastest_marks">Ultimi voti</string>
     <string name="suggestions">Suggerimenti</string>
-    <string name="suggestion_safe">Ti dimentichi le password? Prova Safe per annotarle tutte in un unico posto</string>
-    <string name="suggestion_safe_pwd">Qualcuno conosce la tua password di Safe? Nessun problema, puoi cambiarla una volta effetuato l\'accesso tramite l\'apposito pulsante in alto a destra</string>
-    <string name="suggestion_avg">Vorresti sapere qual\'\u00E8 il prossimo voto che dovresti prendere per avere la sufficienza? Seleziona la materia e dai un\'occhiata ai suggerimenti</string>
-    <string name="suggestion_quarter">\u00C8 iniziato un nuovo quadrimestre? Nessun problema, i voti verranno filtrati in base alla data, inoltre potrai scegliere quale quadrimestre visualizzare</string>
+    <string name="suggestion_safe">Dimentichi le password? Prova Safe per tenerle tutte in un unico posto</string>
+    <string name="suggestion_safe_pwd">Qualcuno conosce la password di Safe? Cambiala tramite l\'apposito pulsante in Safe</string>
+    <string name="suggestion_avg">Qual\'\u00E8 il prossimo voto da prendere per avere la sufficienza? Seleziona la materia e guarda i suggerimenti</string>
+    <string name="suggestion_quarter">\u00C8 iniziato un nuovo quadrimestre? Nessun problema, i voti verranno filtrati automaticamente</string>
     <string name="suggestion_edit_event">I compagni chiedono sempre i compiti? Condividi un evento e il problema \u00E8 risolto</string>
-    <string name="suggestion_notification_remote">Le circolari e le notizie più interessanti dalla scuola arriveranno in forma di notifiche appena vengono pubblicate</string>
+    <string name="suggestion_notification_remote">Le circolari e le notizie più interessanti dalla scuola arriveranno in forma di notifiche</string>
     <string name="suggestion_get_touch">Hai bisogno di contattare l\'istituto? Dalle impostazioni potrai scrivere un\'email o telefonare alla segreteria</string>
-    <string name="suggestion_address">Non trovi una materia? Controlla l\'indirizzo di studi selezionato nelle impostazioni</string>
+    <string name="suggestion_address">Non trovi una materia? Controlla l\'indirizzo di studi nelle impostazioni</string>
     <string name="suggestion_suggestions">I suggerimenti ti infastidiscono? Disattivali</string>
-    <string name="suggestion_notification">Segnando gli eventi, non potrai dimenticartene perch\u00E9 arriver\u00E0 una notifica il giorno prima</string>
+    <string name="suggestion_notification">Gli eventi ti verranno ricordati il giorno prima che accadano</string>
     <string name="suggestion_backups">Creando un backup, potrai ripristinare i tuoi dati nel caso in cui cambiassi o perdessi il telefono</string>
     <string name="suggestion_news">Tutte le circolari e le notizie importanti saranno salvate direttamente nella sezione "Notizie"</string>
-    <string name="suggestion_feedback">Vuoi fornire feedback o riportare un problema che hai riscontrato? Puoi farlo dalle impostazioni</string>
-    <string name="share_title">Condividi ad un amico</string>
+    <string name="share_title">Condividi con qualcuno</string>
 
     <!-- Search -->
     <string name="search_action">Cerca\u2026</string>
@@ -62,26 +61,25 @@
     <string name="editor_update_event">Modifica evento</string>
     <string name="editor_hint_notes">Annotazioni</string>
     <string name="editor_hint_subject">Seleziona una materia</string>
-    <string name="editor_hint_student">Nome dello studente</string>
-    <string name="editor_hint_event">Titolo dell\'evento</string>
+    <string name="editor_hint_student">Nome studente</string>
+    <string name="editor_hint_event">Titolo evento</string>
     <string name="editor_save">Salva</string>
     <string name="editor_saved">Salvato</string>
-    <string name="editor_cancel_title">Annulla modifiche</string>
-    <string name="editor_cancel_message">Vuoi annullare tutte le modifiche?</string>
-    <string name="editor_cancel_discard">Annulla</string>
+    <string name="editor_cancel_title">Esci</string>
+    <string name="editor_cancel_message">Annullare tutte le modifiche?</string>
     <string name="editor_dialog_mark_title">Seleziona un voto</string>
-    <string name="editor_error">Impossibile salvare, ricontrolla i valori</string>
+    <string name="editor_error">Qualcosa non va, controlla i valori</string>
 
     <!-- My marks -->
     <string name="title_activity_mark_list">Voti</string>
     <string name="marks_menu_filter">Filtra voti</string>
-    <string name="hint_content_common">Per avere la sufficienza, il prossimo voto</string>
+    <string name="hint_content_common">Per avere la sufficienza il prossimo voto</string>
     <string name="hint_content_under">deve essere %1$s o superiore</string>
     <string name="hint_content_above">pu\u00F2 essere %1$s o superiore</string>
     <string name="error_noaddress">Imposta un indirizzo per utilizzare questa funzione</string>
-    <string name="marks_empty">Non ci sono voti</string>
-    <string name="marks_filter_description">Seleziona quali voti vuoi visualizzare. Tocca su un quadrimestre per attivarlo o disattivarlo</string>
-    <string name="marks_filter_error">Seleziona almeno un quadrimestre</string>
+    <string name="marks_empty">Tocca l\'icona + per aggiungere un voto</string>
+    <string name="marks_filter_description">Tocca su un quadrimestre per mostrarne o nasconderne i voti</string>
+    <string name="marks_filter_error">Selezionane almeno uno</string>
     <string name="marks_filter_action">Filtra</string>
     <string name="marks_share_student">Ho preso %1$s in %2$s</string>
     <string name="marks_share_teacher">%1$s ha preso %2$s</string>
@@ -95,7 +93,7 @@
 
     <!-- My events -->
     <string name="title_activity_event_list">Eventi</string>
-    <string name="events_empty">Non ci sono eventi</string>
+    <string name="events_empty">Tocca l\'icona + per aggiungere un evento</string>
     <string name="events_time_yesterday">Ieri</string>
     <string name="events_time_today">Oggi</string>
     <string name="events_time_tomorrow">Domani</string>
@@ -108,21 +106,21 @@
     <string name="event_other">Altro</string>
 
     <!-- News -->
-    <string name="news_empty">Non hai ricevuto nessuna notizia</string>
+    <string name="news_empty">Nulla di nuovo per ora</string>
     <string name="news_type_private">Comunicato: %1$s</string>
 
     <!-- Welcome -->
-    <string name="slide0_title">Benvenuto</string>
-    <string name="slide0_message_loading">Aspetta un attimo, ci stiamo preparando\u2026</string>
+    <string name="slide0_title">Ciao</string>
+    <string name="slide0_message_loading">Sto preparando lo zaino\u2026</string>
     <string name="slide0_message_failed">Oops, connessione ad internet assente, connettiti e riprova</string>
     <string name="slide0_message_done">Tutto pronto, scorri per cominciare!</string>
     <string name="slide1_title">Indirizzo di studi</string>
-    <string name="slide1_message">Prima di cominciare, seleziona il tuo indirizzo di studi</string>
+    <string name="slide1_message">Per iniziare, seleziona il tuo indirizzo di studi</string>
     <string name="intro_btn_retry">Riprova</string>
-    <string name="intro_btn_done">Cominciamo</string>
+    <string name="intro_btn_done">Tutto pronto</string>
     <string name="intro_drawer_title">Inizia da qui</string>
-    <string name="intro_drawer">Da questo menu potrai navigare nell\'app.\nLa schermata principale si riempir\u00E0 d\'informazioni pi\u00F9 tardi</string>
-    <string name="intro_fab_save_safe_title">Benvenuto!</string>
+    <string name="intro_drawer">Da questo menu potrai navigare all\' interno dell\'app.\nLa schermata iniziale mostrer\u00E0 le informazioni al momento giusto</string>
+    <string name="intro_fab_save_safe_title">Benvenuto</string>
     <string name="intro_fab_save_safe">Annota le tue credenziali, poi tocca qui per salvare</string>
     <string name="intro_toast_event_long_press">Premi a lungo per mostrare altre opzioni</string>
     <string name="intro_toast_news_long_press">Premi a lungo per mostrare altre opzioni</string>
@@ -156,7 +154,7 @@
     <string name="pref_address_title">Indirizzo</string>
     <string name="pref_address_dialog">Seleziona un indirizzo</string>
     <string name="pref_suggestion_title">Suggerimenti</string>
-    <string name="pref_suggestion_summary">Visualizza informazioni sull\'app nella schermata Home</string>
+    <string name="pref_suggestion_summary">Visualizza informazioni utili sull\'app nella schermata Home</string>
     <string name="pref_metrics_title">Invia metriche</string>
     <string name="pref_metrics_summary">Contribuisci a migliorare lo sviluppo dell\'app consentento l\'invio di dati anonimi</string>
     <string name="pref_metrics_summary_forced">Stai utilizzando una versione beta. Non puoi disattivare l\'invio delle metriche</string>
@@ -169,13 +167,13 @@
     <string name="pref_instagram_title">Instagram</string>
     <string name="pref_changelog">Ultimi cambiamenti</string>
     <string name="pref_username">Nome utente</string>
-    <string name="pref_username_dialog_title">Il tuo nome</string>
-    <string name="pref_username_dialog_msg">Scrivi qui il tuo nome</string>
+    <string name="pref_username_dialog_title">Nome</string>
+    <string name="pref_username_dialog_msg">Come ti chiami?</string>
     <string name="pref_notif">Notifiche</string>
-    <string name="pref_notification_news_title">Mostra notifiche per le notizie</string>
-    <string name="pref_notification_news_summary">Ottieni informazioni sulle notizie appena vengono ricevute</string>
-    <string name="pref_notification_events_title">Mostra notifiche per gli eventi</string>
-    <string name="pref_notification_events_summary">Ottieni informazioni sui prossimi eventi</string>
+    <string name="pref_notification_news_title">Notifiche per le notizie</string>
+    <string name="pref_notification_news_summary">Ricevi informazioni sulle notizie appena vengono ricevute</string>
+    <string name="pref_notification_events_title">Notifiche per gli eventi</string>
+    <string name="pref_notification_events_summary">Ricevi informazioni sui prossimi eventi</string>
     <string name="pref_notification_events_time_title">Orario notifiche degli eventi</string>
     <string name="pref_notification_events_time_dialog_title">Scegli quando fare comparire le notifiche per gli eventi</string>
     <string name="pref_notification_time_morning">Mattina</string>
@@ -189,7 +187,7 @@
     <string name="pref_secret_safe_test_title">Test sicurezza dispositivo</string>
     <string name="pref_secret_safe_test_running">Controllo sicurezza dispositivo\u2026</string>
     <string name="pref_secret_safe_test_connection">\u00C8 necessaria una connessione ad internet per effetuare il test</string>
-    <string name="pref_secret_safe_test_fail">Test fallito. Il dispositivo non \u00E8 sicuro. Safe non sar\u00E0 attivato</string>
+    <string name="pref_secret_safe_test_fail">Test fallito. Il dispositivo non \u00E8 sicuro. Safe sar\u00E0 disattivato</string>
     <string name="pref_secret_safe_test_success">Test passato. Il dispositivo \u00E8 sicuro. Safe sar\u00E0 attivato</string>
     <string name="pref_secret_export_safe_title">Condivisione password di Safe</string>
     <string name="pref_secret_export_safe_message">Puoi condividere la tua password criptata.\nPuoi compiere quest\'operazione una sola volta.\nLa condivisione della password \u00E8 pericolosa in quanto qualcun\'altro potrebbe accedere a Safe.</string>
@@ -204,9 +202,9 @@
     <string name="safe_dialog_title">Accesso a Safe</string>
     <string name="safe_dialog_hint">Inserisci la password per accedere</string>
     <string name="safe_dialog_first_hint">Scegli una password per accedere</string>
-    <string name="safe_dialog_first_hint_low">Password debole. Una password con almeno 8 caratteri sarebbe meglio</string>
-    <string name="safe_dialog_first_hint_medium">Password buona. Le password con sia numeri e lettere sono pi\u00F9 sicure</string>
-    <string name="safe_dialog_first_hint_good">Password sicura. Ottima scelta</string>
+    <string name="safe_dialog_first_hint_low">Hmm\u2026 Una password con almeno 8 caratteri sarebbe meglio</string>
+    <string name="safe_dialog_first_hint_medium">Buona password, che ne dici di usare sia numeri e che lettere?</string>
+    <string name="safe_dialog_first_hint_good">Ottima scelta, questa password \u00E8 sicura</string>
     <string name="safe_dialog_password_input_hint">Password</string>
     <string name="safe_error_security">Dispositivo non sicuro. Safe non pu\u00F2 eseguito</string>
     <string name="safe_dialog_first_positive">Imposta</string>
@@ -256,7 +254,7 @@
         <item quantity="other">compiti per casa</item>
     </plurals>
     <plurals name="notification_reminder">
-        <item quantity="one">propemoria</item>
+        <item quantity="one">promemoria</item>
         <item quantity="other">promemoria</item>
     </plurals>
     <plurals name="notification_meeting">
@@ -265,7 +263,7 @@
     </plurals>
     <plurals name="notification_other">
         <item quantity="one">evento generico</item>
-        <item quantity="other">evento generico</item>
+        <item quantity="other">eventi generici</item>
     </plurals>
 
     <!-- Backup -->
@@ -274,7 +272,7 @@
     <string name="backup_failed_message">Backup fallito</string>
     <string name="restore_success_message">Ripristino completato</string>
     <string name="restore_failed_message">Ripristino fallito</string>
-    <string name="backup_summary">Crea un backup per salvare i voti, gli eventi e le notizie su Google Drive.\nQuesto ti torner\u00E0 utile nel caso perdessi, cambiassi o resettassi il tuo dispositivo. Puoi anche utilizzare i backup per sincronizzare i dati tra i tuoi dispositivi</string>
+    <string name="backup_summary">Crea un backup per salvare i voti, gli eventi e le notizie su Google Drive.\nQuesto ti torner\u00E0 utile nel caso perdessi, cambiassi o resettassi il dispositivo. Puoi anche utilizzare i backup per sincronizzare i dati tra dispositivi</string>
     <string name="backup_auth_fail">Log in fallito</string>
     <string name="backup_dialog_list_title">Seleziona un backup</string>
     <string name="backup_dialog_pick_another">Altri\u2026</string>
@@ -295,7 +293,7 @@
     <string name="backup_end_of_year_delete_message">I dati sono stati salvati su Google Drive, vuoi rimuovere i vecchi voti, eventi e notizie dall\'app?</string>
     <string name="backup_end_of_year_deleting_message">Rimozione vecchi dati in corso\u2026</string>
     <string name="backup_end_of_year_done_title">Anno nuovo</string>
-    <string name="backup_end_of_year_done_message">Ottimo, ora sei pronto a cominiciare un nuovo anno scolastico nel migliore dei modi</string>
+    <string name="backup_end_of_year_done_message">Ottimo, ora puoi cominiciare un nuovo anno scolastico</string>
 
     <!-- Shortcuts -->
     <string name="shortcut_marks_short">Voti</string>
@@ -307,9 +305,4 @@
     <string name="shortcut_news_short">Notizie</string>
     <string name="shortcut_news_long">Notizie</string>
     <string name="shortcut_news_disabled">Notizie - Disattivato</string>
-
-    <!-- Accessibility -->
-    <string name="accessibility_drawer">Intestazione</string>
-    <string name="accessibility_safe_icon">Immagine stato di Safe</string>
-    <string name="accessibility_generic_icon">Icona</string>
 </resources>

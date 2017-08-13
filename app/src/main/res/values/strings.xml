@@ -36,7 +36,7 @@
     <string name="suggestion_backups">Create a backup in Google Drive, you\'ll be able to restore your data in case you lose or change your phone</string>
     <string name="suggestion_news">You will find the most important news from the right in the app by opening the news section</string>
     <string name="suggestion_feedback">Want to submit a feedback or report an issue you\'ve found? You can do it from the settings</string>
-    <string name="share_title">Share with a friend</string>
+    <string name="share_title">Share with someone</string>
 
     <!-- Search -->
     <string name="search_action">Search\u2026</string>
@@ -68,20 +68,19 @@
     <string name="editor_saved">Saved</string>
     <string name="editor_cancel_title">Discard changes</string>
     <string name="editor_cancel_message">Do you want to discard all the changes?</string>
-    <string name="editor_cancel_discard">Discard</string>
     <string name="editor_dialog_mark_title">Select a mark</string>
-    <string name="editor_error">Can\'t save, please check the values again</string>
+    <string name="editor_error">Something is wrong, check the values</string>
 
     <!-- My marks -->
     <string name="title_activity_mark_list">Marks</string>
     <string name="marks_menu_filter">Filter marks</string>
-    <string name="hint_content_common">To have sufficiency, the next mark</string>
+    <string name="hint_content_common">To have sufficiency the next mark</string>
     <string name="hint_content_under">might be %1$s or higher</string>
     <string name="hint_content_above">must be %1$s or higher</string>
     <string name="error_noaddress">Set a valid address to use this feature</string>
-    <string name="marks_empty">There\'s no mark</string>
-    <string name="marks_filter_description">Select what marks you want to see. Click on the quarter to toggle it</string>
-    <string name="marks_filter_error">Select at least one quarter</string>
+    <string name="marks_empty">Touch + icon to add a mark</string>
+    <string name="marks_filter_description">Click on a quarter to show or hide its marks</string>
+    <string name="marks_filter_error">Select at least one</string>
     <string name="marks_filter_action">Filter</string>
     <string name="marks_share_student">I got %1$s in %2$s</string>
     <string name="marks_share_teacher">%1$s has got %2$s</string>
@@ -95,7 +94,7 @@
 
     <!-- My events -->
     <string name="title_activity_event_list">Events</string>
-    <string name="events_empty">There\'s no event</string>
+    <string name="events_empty">Touch + icon to add a mark</string>
     <string name="events_time_yesterday">Yesterday</string>
     <string name="events_time_today">Today</string>
     <string name="events_time_tomorrow">Tomorrow</string>
@@ -108,21 +107,21 @@
     <string name="event_other">Other</string>
 
     <!-- News -->
-    <string name="news_empty">You have received no news so far</string>
+    <string name="news_empty">There\'s nothing new so far</string>
     <string name="news_type_private">Communique: %1$s</string>
 
     <!-- Intro -->
-    <string name="slide0_title">Welcome</string>
-    <string name="slide0_message_loading">Wait a second, we\'re getting ready\u2026</string>
+    <string name="slide0_title">Hello</string>
+    <string name="slide0_message_loading">Getting ready\u2026</string>
     <string name="slide0_message_failed">Oops, there\'s no internet connection</string>
     <string name="slide0_message_done">Good to go, slide to start</string>
     <string name="slide1_title">Address</string>
-    <string name="slide1_message">To begin, you need to pick your address</string>
+    <string name="slide1_message">To begin, please pick your address</string>
     <string name="intro_btn_retry">Retry</string>
     <string name="intro_btn_done">Start</string>
     <string name="intro_drawer_title">Start here</string>
-    <string name="intro_drawer">Tap this to navigate through the app sections.\nThe home screen will be populated later</string>
-    <string name="intro_fab_save_safe_title">Welcome!</string>
+    <string name="intro_drawer">Tap this to navigate through the app sections.\nThe home screen will show you information at the right time</string>
+    <string name="intro_fab_save_safe_title">Welcome</string>
     <string name="intro_fab_save_safe">Store your credentials here, then tap this to save</string>
     <string name="intro_toast_event_long_press">Long press to display other options</string>
     <string name="intro_toast_news_long_press">Long press to display other options</string>
@@ -185,7 +184,7 @@
     <string name="pref_backup_summary">Save your data on Google Drive</string>
     <string name="pref_safe_status_title">Safe status</string>
     <string name="pref_safe_status_message_enabled">Enabled (device is secure)</string>
-    <string name="pref_safe_status_message_disabled">Disabled (device is unsecured)</string>
+    <string name="pref_safe_status_message_disabled">Disabled (device is unsecure)</string>
     <string name="pref_secret_safe_test_title">Device security test</string>
     <string name="pref_secret_safe_test_running">Checking device security status\u2026</string>
     <string name="pref_secret_safe_test_connection">Internet connection is required to check device security</string>
@@ -204,11 +203,11 @@
     <string name="safe_dialog_title">Safe login</string>
     <string name="safe_dialog_hint">Input your password to access your private data</string>
     <string name="safe_dialog_first_hint">Choose a password to access your private data</string>
-    <string name="safe_dialog_first_hint_low">Weak password. An 8 characters long password would be better</string>
-    <string name="safe_dialog_first_hint_medium">Decent password. Password with both numbers and letters are even better</string>
-    <string name="safe_dialog_first_hint_good">Secure password. Well done</string>
+    <string name="safe_dialog_first_hint_low">Not so good\u2026 An 8 characters long password would be better</string>
+    <string name="safe_dialog_first_hint_medium">Fine, what about using both numbers and letters?</string>
+    <string name="safe_dialog_first_hint_good">Well done, this password is really good</string>
     <string name="safe_dialog_password_input_hint">Password</string>
-    <string name="safe_error_security">This device is not secure. Safe won\'t start</string>
+    <string name="safe_error_security">This device is not secure. Safe can\'t be executed</string>
     <string name="safe_dialog_first_positive">Set</string>
     <string name="safe_dialog_positive">Unlock</string>
     <string name="safe_username">User ID</string>
@@ -307,9 +306,4 @@
     <string name="shortcut_news_short">News</string>
     <string name="shortcut_news_long">News</string>
     <string name="shortcut_news_disabled">News - Disabled</string>
-
-    <!-- Accessibility -->
-    <string name="accessibility_drawer">Header</string>
-    <string name="accessibility_safe_icon">Safe status icon</string>
-    <string name="accessibility_generic_icon">Icon</string>
 </resources>

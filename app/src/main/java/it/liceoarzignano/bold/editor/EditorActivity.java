@@ -261,7 +261,7 @@ public class EditorActivity extends AppCompatActivity {
                 .title(R.string.editor_cancel_title)
                 .content(R.string.editor_cancel_message)
                 .positiveText(android.R.string.yes)
-                .negativeText(R.string.editor_cancel_discard)
+                .negativeText(android.R.string.no)
                 .onPositive((dialog, which) -> finish())
                 .show();
     }
