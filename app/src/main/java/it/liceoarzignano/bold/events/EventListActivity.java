@@ -41,17 +41,17 @@ public class EventListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_list);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_toolbar_back);
         toolbar.setNavigationOnClickListener(v -> finish());
 
-        mCoordinator = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
-        RecyclerViewExt eventList = (RecyclerViewExt) findViewById(R.id.event_list);
-        mEmptyLayout = (LinearLayout) findViewById(R.id.event_empty_layout);
-        mEmptyText = (TextView) findViewById(R.id.events_empty_text);
+        mCoordinator = findViewById(R.id.coordinator_layout);
+        RecyclerViewExt eventList = findViewById(R.id.event_list);
+        mEmptyLayout = findViewById(R.id.event_empty_layout);
+        mEmptyText = findViewById(R.id.events_empty_text);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
             new BoldAnalytics(this).log(FirebaseAnalytics.Event.SELECT_CONTENT, "Add event");
             Intent intent = new Intent(EventListActivity.this, EditorActivity.class);

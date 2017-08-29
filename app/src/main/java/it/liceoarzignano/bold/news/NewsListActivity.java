@@ -12,7 +12,6 @@ import android.support.customtabs.CustomTabsSession;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -50,15 +49,15 @@ public class NewsListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_list);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_toolbar_back);
         toolbar.setNavigationOnClickListener(v -> finish());
 
-        mCoordinator = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
-        RecyclerViewExt newsList = (RecyclerViewExt) findViewById(R.id.news_list);
-        mEmptyLayout = (LinearLayout) findViewById(R.id.news_empty_layout);
-        mEmptyText = (TextView) findViewById(R.id.news_empty_text);
+        mCoordinator = findViewById(R.id.coordinator_layout);
+        RecyclerViewExt newsList = findViewById(R.id.news_list);
+        mEmptyLayout = findViewById(R.id.news_empty_layout);
+        mEmptyText = findViewById(R.id.news_empty_text);
 
         Intent callingIntent = getIntent();
         long id = callingIntent.getLongExtra("newsId", -1);
@@ -113,7 +112,7 @@ public class NewsListActivity extends AppCompatActivity {
      * @param item menu item
      */
     private void setupSearchView(MenuItem item) {
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+        SearchView searchView = (SearchView) item.getActionView();
 
         if (searchView == null) {
             return;

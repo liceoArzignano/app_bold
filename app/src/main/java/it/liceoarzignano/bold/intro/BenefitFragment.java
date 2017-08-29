@@ -54,22 +54,22 @@ public class BenefitFragment extends Fragment {
                              Bundle savedInstance) {
         int position = getArguments().getInt(POSITION);
         View view = inflater.inflate(R.layout.fragment_benefits_contents, container, false);
-        mTitle = (TextView) view.findViewById(R.id.intro_title);
-        mMessage = (TextView) view.findViewById(R.id.intro_message);
+        mTitle = view.findViewById(R.id.intro_title);
+        mMessage = view.findViewById(R.id.intro_message);
         mViewPager = ((BenefitsActivity) getActivity()).getViewPager();
 
         // Step 1
-        LinearLayout step1 = (LinearLayout) view.findViewById(R.id.step_1);
-        mIntroImage = (ImageView) view.findViewById(R.id.intro_animation);
+        LinearLayout step1 = view.findViewById(R.id.step_1);
+        mIntroImage = view.findViewById(R.id.intro_animation);
 
         // Step 2
-        RadioGroup step2 = (RadioGroup) view.findViewById(R.id.step_2);
-        RadioButton radio1 = (RadioButton) view.findViewById(R.id.intro_address_1);
-        RadioButton radio2 = (RadioButton) view.findViewById(R.id.intro_address_2);
-        RadioButton radio3 = (RadioButton) view.findViewById(R.id.intro_address_3);
-        RadioButton radio4 = (RadioButton) view.findViewById(R.id.intro_address_4);
-        RadioButton radio5 = (RadioButton) view.findViewById(R.id.intro_address_5);
-        RadioButton radio6 = (RadioButton) view.findViewById(R.id.intro_address_6);
+        RadioGroup step2 = view.findViewById(R.id.step_2);
+        RadioButton radio1 = view.findViewById(R.id.intro_address_1);
+        RadioButton radio2 = view.findViewById(R.id.intro_address_2);
+        RadioButton radio3 = view.findViewById(R.id.intro_address_3);
+        RadioButton radio4 = view.findViewById(R.id.intro_address_4);
+        RadioButton radio5 = view.findViewById(R.id.intro_address_5);
+        RadioButton radio6 = view.findViewById(R.id.intro_address_6);
         mButton = ((BenefitsActivity) getActivity()).getButton();
 
         switch (position) {
@@ -185,10 +185,12 @@ public class BenefitFragment extends Fragment {
             Log.e(TAG, e.getMessage());
         }
 
-        SafetyNet.SafetyNetApi.attest(client, oStream.toByteArray())
-                .setResultCallback((mResult) ->
+
+        SafetyNet.getClient(getActivity()).attest(oStream.toByteArray(),
+                PrefsUtils.getSafetyNetApiKey(getContext()))
+                .addOnCompleteListener(task ->
                         postDeviceCheck(context, Encryption.validateResponse(context,
-                                mResult.getJwsResult(), BuildConfig.DEBUG)));
+                                task.getResult().getJwsResult(), BuildConfig.DEBUG)));
     }
 
     private void postDeviceCheck(Context context, boolean hasPassed) {

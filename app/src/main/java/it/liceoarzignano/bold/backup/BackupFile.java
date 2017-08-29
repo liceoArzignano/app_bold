@@ -25,10 +25,10 @@ import it.liceoarzignano.bold.news.NewsHandler;
 class BackupFile {
     private static final String TAG = BackupFile.class.getSimpleName();
     static final String FILE_NAME = "Liceo.backup";
-    static final String MARK_HEADER = "_ID, subject, value, date, description, firstQuarter";
-    static final String EVENT_HEADER = "_ID, title, date, description, category";
-    static final String NEWS_HEADER = "_ID, title, date, description, url";
-    static final String COMMA_REPLACER = "\u2016";
+    private static final String MARK_HEADER = "_ID, subject, value, date, description, firstQuarter";
+    private static final String EVENT_HEADER = "_ID, title, date, description, category";
+    private static final String NEWS_HEADER = "_ID, title, date, description, url";
+    private static final String COMMA_REPLACER = "\u2016";
     private static final String SEPARATOR = ", ";
 
     private final StringBuilder mBuilder;

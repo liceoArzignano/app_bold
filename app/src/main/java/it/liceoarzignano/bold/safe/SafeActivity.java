@@ -70,7 +70,7 @@ public class SafeActivity extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_safe);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_toolbar_back);
         toolbar.setNavigationOnClickListener(v -> finish());
@@ -78,14 +78,14 @@ public class SafeActivity extends AppCompatActivity {
         mPrefs = getSharedPreferences(SAFE_PREFS, MODE_PRIVATE);
         mEditor = getSharedPreferences(SAFE_PREFS, MODE_PRIVATE).edit();
 
-        mLoadingLayout = (LinearLayout) findViewById(R.id.safe_loading_layout);
+        mLoadingLayout = findViewById(R.id.safe_loading_layout);
         mContentLayout = findViewById(R.id.safe_layout_content);
-        mLoadingText = (TextView) findViewById(R.id.safe_loading_text);
-        mUserEdit = (EditText) findViewById(R.id.safe_username);
-        mRegEdit = (EditText) findViewById(R.id.safe_register);
-        mPcEdit = (EditText) findViewById(R.id.safe_pc);
-        mInternetEdit = (EditText) findViewById(R.id.safe_internet);
-        mFab = (FloatingActionButton) findViewById(R.id.fab);
+        mLoadingText = findViewById(R.id.safe_loading_text);
+        mUserEdit = findViewById(R.id.safe_username);
+        mRegEdit = findViewById(R.id.safe_register);
+        mPcEdit = findViewById(R.id.safe_pc);
+        mInternetEdit = findViewById(R.id.safe_internet);
+        mFab = findViewById(R.id.fab);
 
         mLoadingLayout.setVisibility(View.VISIBLE);
         isWorking = true;

@@ -37,8 +37,8 @@ class SafeLoginDialog {
                 context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mDialogView = inflater.inflate(R.layout.dialog_safe_unlock, null);
 
-        mPasswordEditText = (EditText) mDialogView.findViewById(R.id.safe_dialog_input);
-        mHintTextView = (TextView) mDialogView.findViewById(R.id.safe_dialog_hint_text);
+        mPasswordEditText = mDialogView.findViewById(R.id.safe_dialog_input);
+        mHintTextView = mDialogView.findViewById(R.id.safe_dialog_hint_text);
 
         mHintTextView.setText(mRes.getString(isFirstTime ?
                 R.string.safe_dialog_first_hint : R.string.safe_dialog_hint));

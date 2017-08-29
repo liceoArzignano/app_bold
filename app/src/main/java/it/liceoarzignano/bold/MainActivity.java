@@ -59,6 +59,7 @@ import it.liceoarzignano.bold.realm.MigrationTool;
 import it.liceoarzignano.bold.safe.SafeActivity;
 import it.liceoarzignano.bold.settings.SettingsActivity;
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt;
+import it.liceoarzignano.bold.utils.ContentUtils;
 import it.liceoarzignano.bold.utils.DateUtils;
 import it.liceoarzignano.bold.utils.PrefsUtils;
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
@@ -96,20 +97,20 @@ public class MainActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_main);
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        mBanner = (ImageView) findViewById(R.id.home_toolbar_banner);
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mBanner = findViewById(R.id.home_toolbar_banner);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, mToolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        NavigationView navView = (NavigationView) findViewById(R.id.navigation_view);
+        NavigationView navView = findViewById(R.id.navigation_view);
         navView.setNavigationItemSelectedListener(this);
         View header = navView.getHeaderView(0);
-        mUsername = (TextView) header.findViewById(R.id.header_username);
-        mLogo = (ImageView) header.findViewById(R.id.header_logo);
-        mCardList = (RecyclerViewExt) findViewById(R.id.home_list);
+        mUsername = header.findViewById(R.id.header_username);
+        mLogo = header.findViewById(R.id.header_logo);
+        mCardList = findViewById(R.id.home_list);
 
         if (savedInstance != null) {
             mShouldAnimate = savedInstance.getBoolean(BUNDLE_SHOULD_ANIMATE, true);
@@ -117,6 +118,7 @@ public class MainActivity extends AppCompatActivity
 
         showWelcome();
         showNewYearHelper();
+        ContentUtils.makeEventNotification(this);
     }
 
     @Override
@@ -146,7 +148,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 
         // Do action with some delay to prevent lags when
@@ -333,12 +335,10 @@ public class MainActivity extends AppCompatActivity
         }
 
         PrefsUtils.setDoneDrawerIntro(this);
-        new MaterialTapTargetPrompt.Builder(this)
+        new MaterialTapTargetPrompt.Builder(this, R.style.AppTheme_TapTargetHome)
                 .setTarget(mToolbar.getChildAt(1))
                 .setPrimaryText(getString(R.string.intro_drawer_title))
                 .setSecondaryText(getString(R.string.intro_drawer))
-                .setBackgroundColourFromRes(R.color.colorAccentDark)
-                .setFocalColourFromRes(R.color.colorPrimaryDark)
                 .show();
     }
 

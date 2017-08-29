@@ -52,17 +52,17 @@ public class SubjectActivity extends AppCompatActivity {
         mTitle = callingIntent.getStringExtra(EXTRA_TITLE);
         mFilter = callingIntent.getIntExtra(EXTRA_FILTER, 0);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(mTitle);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_toolbar_back);
         toolbar.setNavigationOnClickListener(v -> finish());
 
-        mCoordinator = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
-        mNestedView = (NestedScrollView) findViewById(R.id.subject_nested_view);
-        mProgressBar = (CircularProgressBar) findViewById(R.id.subject_hint_bar);
-        mTextHint = (TextView) findViewById(R.id.subject_hint_text);
-        RecyclerViewExt marksList = (RecyclerViewExt) findViewById(R.id.subject_list);
+        mCoordinator = findViewById(R.id.coordinator_layout);
+        mNestedView = findViewById(R.id.subject_nested_view);
+        mProgressBar = findViewById(R.id.subject_hint_bar);
+        mTextHint = findViewById(R.id.subject_hint_text);
+        RecyclerViewExt marksList = findViewById(R.id.subject_list);
 
         mAdapter = new SubjectAdapter(mMarksHandler.getFilteredMarks(mTitle, mFilter), this);
         marksList.setAdapter(mAdapter);

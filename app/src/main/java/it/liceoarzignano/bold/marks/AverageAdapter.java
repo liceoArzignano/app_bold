@@ -49,8 +49,8 @@ class AverageAdapter extends RecyclerView.Adapter<AverageAdapter.AverageHolder> 
 
         AverageHolder(View view) {
             super(view);
-            mTitle = (TextView) view.findViewById(R.id.row_avg_title);
-            mValue = (TextView) view.findViewById(R.id.row_avg_value);
+            mTitle = view.findViewById(R.id.row_avg_title);
+            mValue = view.findViewById(R.id.row_avg_value);
         }
 
         void setData(String result) {

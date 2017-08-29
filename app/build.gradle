@@ -3,8 +3,8 @@ apply plugin: 'realm-android'
 apply plugin: 'me.tatarka.retrolambda'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    compileSdkVersion 26
+    buildToolsVersion '26.0.1'
 
     //noinspection GroovyMissingReturnStatement
     defaultConfig {
@@ -12,7 +12,7 @@ android {
         generatedDensities = []
         applicationId 'it.liceoarzignano.bold'
         minSdkVersion 16
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 11703
         versionName "1.0.17"
         vectorDrawables.useSupportLibrary true
@@ -75,8 +75,9 @@ dependencies {
     compile "com.google.firebase:firebase-messaging:${googlePlayServicesVersion}"
     releaseCompile "com.google.firebase:firebase-crash:${googlePlayServicesVersion}"
     compile "com.google.firebase:firebase-config:${googlePlayServicesVersion}"
+    compile 'com.firebase:firebase-jobdispatcher:0.8.0'
     // others
-    compile 'uk.co.samuelwall:material-tap-target-prompt:1.11.0'
+    compile 'uk.co.samuelwall:material-tap-target-prompt:2.0.1'
     compile 'com.github.zhukic:sectioned-recyclerview:1.1.0'
     compile('com.afollestad.material-dialogs:core:0.9.4.5') { transitive = true }
 }

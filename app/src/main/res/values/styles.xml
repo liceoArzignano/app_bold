@@ -180,4 +180,13 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">20sp</item>
     </style>
+
+    <style name="AppTheme.TapTarget">
+        <item name="mttp_backgroundColour">@color/colorAccentDark</item>
+    </style>
+
+    <style name="AppTheme.TapTargetHome" parent="AppTheme.TapTarget">
+        <item name="mttp_focalColour">@color/colorPrimaryDark</item>
+    </style>
+
 </resources>

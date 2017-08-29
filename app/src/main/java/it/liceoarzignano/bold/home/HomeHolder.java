@@ -23,17 +23,17 @@ class HomeHolder extends RecyclerView.ViewHolder {
         mTitleView = new TextView[3];
         mContentView = new TextView[3];
 
-        mNameView = (TextView) view.findViewById(R.id.home_item_name);
-        mCardView = (CardView) view.findViewById(R.id.home_item_card);
-        mLayout[0] = (LinearLayout) view.findViewById(R.id.home_item_layout_0);
-        mLayout[1] = (LinearLayout) view.findViewById(R.id.home_item_layout_1);
-        mLayout[2] = (LinearLayout) view.findViewById(R.id.home_item_layout_2);
-        mTitleView[0] = (TextView) view.findViewById(R.id.home_item_title_0);
-        mTitleView[1] = (TextView) view.findViewById(R.id.home_item_title_1);
-        mTitleView[2] = (TextView) view.findViewById(R.id.home_item_title_2);
-        mContentView[0] = (TextView) view.findViewById(R.id.home_item_sec_0);
-        mContentView[1] = (TextView) view.findViewById(R.id.home_item_sec_1);
-        mContentView[2] = (TextView) view.findViewById(R.id.home_item_sec_2);
+        mNameView = view.findViewById(R.id.home_item_name);
+        mCardView = view.findViewById(R.id.home_item_card);
+        mLayout[0] = view.findViewById(R.id.home_item_layout_0);
+        mLayout[1] = view.findViewById(R.id.home_item_layout_1);
+        mLayout[2] = view.findViewById(R.id.home_item_layout_2);
+        mTitleView[0] = view.findViewById(R.id.home_item_title_0);
+        mTitleView[1] = view.findViewById(R.id.home_item_title_1);
+        mTitleView[2] = view.findViewById(R.id.home_item_title_2);
+        mContentView[0] = view.findViewById(R.id.home_item_sec_0);
+        mContentView[1] = view.findViewById(R.id.home_item_sec_1);
+        mContentView[2] = view.findViewById(R.id.home_item_sec_2);
     }
 
     void init(HomeCard obj) {

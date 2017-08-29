@@ -22,8 +22,8 @@ allprojects {
         maven { url "https://maven.google.com" }
     }
 
-    ext.androidSupportVersion = '25.4.0'
-    ext.googlePlayServicesVersion = '11.0.1'
+    ext.androidSupportVersion = '26.0.1'
+    ext.googlePlayServicesVersion = '11.2.0'
 }
 
 task clean(type: Delete) {

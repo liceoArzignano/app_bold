@@ -1,5 +1,6 @@
 package it.liceoarzignano.bold.firebase;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -27,6 +28,7 @@ import it.liceoarzignano.bold.utils.PrefsUtils;
 
 public class BoldMessagingService extends FirebaseMessagingService {
     private static final String TAG = "BoldFireBase";
+    private static final String CHANNEL = "channel_news";
 
     private Context mContext;
     private News2 mNews;
@@ -83,22 +85,32 @@ public class BoldMessagingService extends FirebaseMessagingService {
         PendingIntent pIntent = PendingIntent.getActivity(mContext, 0,
                 intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext)
+        NotificationManager manager = (NotificationManager)
+                mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext, CHANNEL)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setAutoCancel(true)
                 .setContentTitle(mNews.getTitle())
                 .setContentText(mNews.getDescription() + '\u2026')
                 .setContentIntent(pIntent)
+                .setGroup(CHANNEL)
+                .setColor(ContextCompat.getColor(mContext, R.color.colorAccent))
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(mNews.getDescription()));
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            builder.setColor(ContextCompat.getColor(mContext, R.color.colorAccent));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = manager.getNotificationChannel(CHANNEL);
+            if (channel == null) {
+                channel = new NotificationChannel(CHANNEL,
+                        mContext.getString(R.string.channel_title_news),
+                        NotificationManager.IMPORTANCE_DEFAULT);
+                channel.setDescription(mContext.getString(R.string.channel_description_news));
+                channel.enableLights(true);
+                manager.createNotificationChannel(channel);
+            }
         }
 
-        NotificationManager manager = (NotificationManager)
-                mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        manager.notify((int) Calendar.getInstance().getTimeInMillis() * 100000, builder.build());
+        manager.notify((int) Calendar.getInstance().getTimeInMillis() * 1000, builder.build());
     }
 
     private void saveNews() {

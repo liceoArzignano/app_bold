@@ -69,14 +69,14 @@ class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectHolder> 
         SubjectHolder(View view) {
             super(view);
             mView = view.findViewById(R.id.row_mark_root);
-            mValue = (TextView) view.findViewById(R.id.row_mark_value);
-            mDate = (TextView) view.findViewById(R.id.row_mark_date);
-            mSummary = (TextView) view.findViewById(R.id.row_mark_summary);
-            mExpand = (ImageView) view.findViewById(R.id.row_mark_expand);
+            mValue = view.findViewById(R.id.row_mark_value);
+            mDate = view.findViewById(R.id.row_mark_date);
+            mSummary = view.findViewById(R.id.row_mark_summary);
+            mExpand = view.findViewById(R.id.row_mark_expand);
             mActions = view.findViewById(R.id.row_mark_actions);
-            mShare = (ImageButton) view.findViewById(R.id.row_mark_share);
-            mEdit = (ImageButton) view.findViewById(R.id.row_mark_edit);
-            mDelete = (ImageButton) view.findViewById(R.id.row_mark_delete);
+            mShare = view.findViewById(R.id.row_mark_share);
+            mEdit = view.findViewById(R.id.row_mark_edit);
+            mDelete = view.findViewById(R.id.row_mark_delete);
         }
 
         void setData(Mark2 mark) {

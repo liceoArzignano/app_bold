@@ -73,14 +73,14 @@ public class BackupActivity extends AppCompatActivity {
         super.onCreate(savedInstance);
         setContentView(R.layout.activity_backup);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_toolbar_back);
         toolbar.setNavigationOnClickListener(v -> finish());
 
-        mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
-        mBackupButton = (AppCompatButton) findViewById(R.id.backup_button);
-        mRestoreButton = (AppCompatButton) findViewById(R.id.restore_button);
+        mCoordinatorLayout = findViewById(R.id.coordinator_layout);
+        mBackupButton = findViewById(R.id.backup_button);
+        mRestoreButton = findViewById(R.id.restore_button);
 
         mPrefs = getSharedPreferences(PrefsUtils.EXTRA_PREFS, MODE_PRIVATE);
         mBackupFolder = mPrefs.getString(BACKUP_FOLDER, "");

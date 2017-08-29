@@ -94,9 +94,9 @@ class EventsAdapter extends SectionedRecyclerViewAdapter<HeaderViewHolder,
         EventHolder(View view) {
             super(view);
             mView = view;
-            mTitle = (TextView) view.findViewById(R.id.row_event_title);
-            mValue = (TextView) view.findViewById(R.id.row_event_value);
-            mTag = (TextView) view.findViewById(R.id.row_event_tag);
+            mTitle = view.findViewById(R.id.row_event_title);
+            mValue = view.findViewById(R.id.row_event_value);
+            mTag = view.findViewById(R.id.row_event_tag);
         }
 
         void setData(Event2 event) {

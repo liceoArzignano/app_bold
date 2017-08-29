@@ -2,11 +2,15 @@ package it.liceoarzignano.bold.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -17,6 +21,7 @@ import java.util.Date;
 import it.liceoarzignano.bold.BuildConfig;
 
 public class PrefsUtils {
+    private static final String TAG = PrefsUtils.class.getSimpleName();
     private static final String DEFAULT_DATE = "2000-01-01";
     public static final String IS_TEACHER = "isTeacher_key";
     public static final String SUGGESTIONS = "showSuggestions_key";
@@ -25,11 +30,11 @@ public class PrefsUtils {
     public static final String ADDRESS = "address_key";
     public static final String SAFE_DONE = "doneSetup";
     public static final String EXTRA_PREFS = "extraPrefs";
-    public static final String KEY_INTRO_SCREEN = "introScreen";
+    private static final String KEY_INTRO_SCREEN = "introScreen";
     public static final String KEY_SAFE_SETUP = "hasCompletedSetup";
-    public static final String KEY_INTRO_DRAWER = "introDrawer";
-    public static final String KEY_INITIAL_DAY = "introDay";
-    public static final String KEY_VERSION = "introVersion";
+    private static final String KEY_INTRO_DRAWER = "introDrawer";
+    private static final String KEY_INITIAL_DAY = "introDay";
+    private static final String KEY_VERSION = "introVersion";
     private static final String KEY_CURRENT_SCHOOL_YEAR = "currentSchoolYear";
     private static final String KEY_QUARTER_SELECTOR = "quarterSelector";
     private static final String SAFE_PREFS = "SafePrefs";
@@ -161,6 +166,21 @@ public class PrefsUtils {
     public static void setSafetyNetResults(Context context, boolean hasPassed) {
         SharedPreferences prefs = context.getSharedPreferences(SAFE_PREFS, Context.MODE_PRIVATE);
         prefs.edit().putBoolean(KEY_SAFE_PASSED, hasPassed).apply();
+    }
+
+    @NonNull
+    public static String getSafetyNetApiKey(Context context) {
+        try {
+            ApplicationInfo info = context.getPackageManager()
+                    .getApplicationInfo(BuildConfig.APPLICATION_ID, PackageManager.GET_META_DATA);
+            Bundle metadata = info.metaData;
+            String apiKey = metadata.getString("com.google.android.safetynet.ATTEST_API_KEY");
+
+            return apiKey == null ? "" : apiKey;
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e(TAG, e.getMessage());
+            return "";
+        }
     }
 
     /*

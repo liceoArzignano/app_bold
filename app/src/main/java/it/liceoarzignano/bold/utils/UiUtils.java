@@ -43,11 +43,10 @@ public final class UiUtils {
             fab.setVisibility(View.VISIBLE);
             if (isFirstTime) {
                 prefs.edit().putBoolean(key, false).apply();
-                new MaterialTapTargetPrompt.Builder(context)
+                new MaterialTapTargetPrompt.Builder(context, R.style.AppTheme_TapTarget)
                         .setTarget(fab)
                         .setPrimaryText(title)
                         .setSecondaryText(message)
-                        .setBackgroundColourFromRes(R.color.colorAccentDark)
                         .show();
             }
         }, 500);
@@ -73,6 +72,7 @@ public final class UiUtils {
         return context.getResources().getBoolean(R.bool.is_phone);
     }
 
+    @SuppressWarnings("SameParameterValue")
     public static float dpToPx(Resources res, float dp) {
         return dp * ((float) res.getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }

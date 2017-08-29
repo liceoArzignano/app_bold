@@ -73,7 +73,7 @@ public class EditorActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_editor);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(getString(mIsMark ?
                 mIsEdit ? R.string.editor_update_mark : R.string.editor_new_mark :
                 mIsEdit ? R.string.editor_update_event : R.string.editor_new_event));
@@ -81,17 +81,17 @@ public class EditorActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(R.drawable.ic_clear);
         toolbar.setNavigationOnClickListener(v -> askQuit());
 
-        mCoordinator = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
-        mTitleLayout = (RelativeLayout) findViewById(R.id.editor_title_layout);
-        mTitleText = (EditText) findViewById(R.id.editor_title_text);
-        mSubjectView = (TextView) findViewById(R.id.editor_subject_selector);
-        mSubjectLayout = (RelativeLayout) findViewById(R.id.editor_subject_layout);
-        mNotesText = (EditText) findViewById(R.id.editor_notes_text);
-        mCategoryLayout = (RelativeLayout) findViewById(R.id.editor_category_layout);
-        mCategorySpinner = (Spinner) findViewById(R.id.editor_category_spinner);
-        mValueLayout = (RelativeLayout) findViewById(R.id.editor_value_layout);
-        mValueView = (TextView) findViewById(R.id.editor_value_view);
-        mDateView = (TextView) findViewById(R.id.editor_date_view);
+        mCoordinator = findViewById(R.id.coordinator_layout);
+        mTitleLayout = findViewById(R.id.editor_title_layout);
+        mTitleText = findViewById(R.id.editor_title_text);
+        mSubjectView = findViewById(R.id.editor_subject_selector);
+        mSubjectLayout = findViewById(R.id.editor_subject_layout);
+        mNotesText = findViewById(R.id.editor_notes_text);
+        mCategoryLayout = findViewById(R.id.editor_category_layout);
+        mCategorySpinner = findViewById(R.id.editor_category_spinner);
+        mValueLayout = findViewById(R.id.editor_value_layout);
+        mValueView = findViewById(R.id.editor_value_view);
+        mDateView = findViewById(R.id.editor_date_view);
 
         mMarksHandler = MarksHandler.getInstance(this);
         mEventsHandler = EventsHandler.getInstance(this);
@@ -267,13 +267,13 @@ public class EditorActivity extends AppCompatActivity {
     }
 
     private View getValuePickerView() {
-        ViewGroup viewGroup = (ViewGroup) findViewById(R.id.dialog_root);
+        ViewGroup viewGroup = findViewById(R.id.dialog_root);
         View dialog = LayoutInflater.from(this).inflate(R.layout.dialog_seekbar, viewGroup);
-        TextView preview = (TextView) dialog.findViewById(R.id.dialog_value);
+        TextView preview = dialog.findViewById(R.id.dialog_value);
         preview.setText(String.format(Locale.ENGLISH, "%.2f", (double) mValue / 100));
 
         mDialogVal = mValue / 25;
-        SeekBar seekBar = (SeekBar) dialog.findViewById(R.id.dialog_seek_bar);
+        SeekBar seekBar = dialog.findViewById(R.id.dialog_seek_bar);
         seekBar.setProgress(mValue / 40);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override

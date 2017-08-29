@@ -14,7 +14,6 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.safetynet.SafetyNet;
 
 import java.io.ByteArrayOutputStream;
@@ -23,10 +22,10 @@ import java.security.SecureRandom;
 
 import it.liceoarzignano.bold.BuildConfig;
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.utils.PrefsUtils;
 import it.liceoarzignano.bold.backup.BackupActivity;
 import it.liceoarzignano.bold.safe.SafeActivity;
 import it.liceoarzignano.bold.safe.mod.Encryption;
+import it.liceoarzignano.bold.utils.PrefsUtils;
 
 public class SettingsActivity extends AppCompatActivity {
     private static int mCounter = 0;
@@ -36,7 +35,7 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstance);
         setContentView(R.layout.activity_settings);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_include);
+        Toolbar toolbar = findViewById(R.id.toolbar_include);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_toolbar_back);
         toolbar.setNavigationOnClickListener(v -> finish());
@@ -152,11 +151,6 @@ public class SettingsActivity extends AppCompatActivity {
                 return;
             }
 
-            GoogleApiClient client = new GoogleApiClient.Builder(mContext)
-                    .addApi(SafetyNet.API)
-                    .build();
-            client.connect();
-
             String nonce = String.valueOf(System.currentTimeMillis());
             ByteArrayOutputStream oStream = new ByteArrayOutputStream();
             byte[] randBytes = new byte[24];
@@ -169,11 +163,12 @@ public class SettingsActivity extends AppCompatActivity {
                 Log.e("SafetyNetTest", e.getMessage());
             }
 
-            SafetyNet.SafetyNetApi.attest(client, oStream.toByteArray())
-                    .setResultCallback((result) -> {
+            SafetyNet.getClient(getActivity()).attest(oStream.toByteArray(),
+                    PrefsUtils.getSafetyNetApiKey(getContext()))
+                    .addOnCompleteListener(task -> {
                         dialog.dismiss();
                         boolean hasPassed = Encryption.validateResponse(mContext,
-                                result.getJwsResult(), BuildConfig.DEBUG);
+                                task.getResult().getJwsResult(), BuildConfig.DEBUG);
                         PrefsUtils.setSafetyNetResults(mContext, hasPassed);
                         new MaterialDialog.Builder(mContext)
                                 .title(R.string.pref_secret_safe_test_title)

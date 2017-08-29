@@ -11,7 +11,7 @@ public class HeaderViewHolder extends RecyclerView.ViewHolder {
 
     public HeaderViewHolder(View view) {
         super(view);
-        mTitle = (TextView) view.findViewById(R.id.subheader_title);
+        mTitle = view.findViewById(R.id.subheader_title);
     }
 
     public void setTitle(String title) {

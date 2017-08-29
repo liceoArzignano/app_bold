@@ -305,4 +305,10 @@
     <string name="shortcut_news_short">Notizie</string>
     <string name="shortcut_news_long">Notizie</string>
     <string name="shortcut_news_disabled">Notizie - Disattivato</string>
+
+    <!-- Notification channels -->
+    <string name="channel_title_events">Eventi</string>
+    <string name="channel_description_events">Promemoria degli eventi imminenti</string>
+    <string name="channel_title_news">Notizie</string>
+    <string name="channel_description_news">Le nuove notizie pubblicate dalla scuola</string>
 </resources>

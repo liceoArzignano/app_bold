@@ -306,4 +306,10 @@
     <string name="shortcut_news_short">News</string>
     <string name="shortcut_news_long">News</string>
     <string name="shortcut_news_disabled">News - Disabled</string>
+
+    <!-- Notification channels -->
+    <string name="channel_title_events">Events</string>
+    <string name="channel_description_events">Reminders of upcoming events</string>
+    <string name="channel_title_news">News</string>
+    <string name="channel_description_news">Latest news sent from the school</string>
 </resources>

@@ -24,8 +24,8 @@ public class BenefitsActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_benefits);
 
-        InkPageIndicator indicator = (InkPageIndicator) findViewById(R.id.indicator);
-        mViewPager = (BenefitViewPager) findViewById(R.id.container);
+        InkPageIndicator indicator = findViewById(R.id.indicator);
+        mViewPager = findViewById(R.id.container);
 
         mAdapter = new BenefitPageAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mAdapter);

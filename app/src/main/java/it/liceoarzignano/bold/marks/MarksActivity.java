@@ -49,15 +49,15 @@ public class MarksActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_marks);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_toolbar_back);
         toolbar.setNavigationOnClickListener(v -> finish());
 
-        mList = (RecyclerViewExt) findViewById(R.id.marks_list);
-        mEmptyLayout = (LinearLayout) findViewById(R.id.marks_empty_layout);
+        mList = findViewById(R.id.marks_list);
+        mEmptyLayout = findViewById(R.id.marks_empty_layout);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(v -> {
             new BoldAnalytics(this).log(FirebaseAnalytics.Event.SELECT_CONTENT, "Add mark");
             startActivity(new Intent(this, EditorActivity.class));
@@ -145,10 +145,10 @@ public class MarksActivity extends AppCompatActivity {
 
         Drawable noBg = new ColorDrawable(Color.TRANSPARENT);
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        ViewGroup group = (ViewGroup) findViewById(R.id.dialog_root);
+        ViewGroup group = findViewById(R.id.dialog_root);
         View view = inflater.inflate(R.layout.dialog_filter, group);
-        ImageView firstSel = (ImageView) view.findViewById(R.id.filter_first);
-        ImageView secondSel = (ImageView) view.findViewById(R.id.filter_second);
+        ImageView firstSel = view.findViewById(R.id.filter_first);
+        ImageView secondSel = view.findViewById(R.id.filter_second);
 
         firstSel.setBackground(isFirstEnabled ?
                 ContextCompat.getDrawable(this, R.drawable.ic_filter_bg_enabled) : noBg);

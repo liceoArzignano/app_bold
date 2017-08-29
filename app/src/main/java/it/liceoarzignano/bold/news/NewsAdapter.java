@@ -91,8 +91,8 @@ class NewsAdapter extends SectionedRecyclerViewAdapter<HeaderViewHolder, NewsAda
         NewsHolder(View view) {
             super(view);
             mView = view;
-            mTitle = (TextView) view.findViewById(R.id.row_news_title);
-            mMessage = (TextView) view.findViewById(R.id.row_news_message);
+            mTitle = view.findViewById(R.id.row_news_title);
+            mMessage = view.findViewById(R.id.row_news_message);
         }
 
         void setData(final Context context, final News2 news) {
