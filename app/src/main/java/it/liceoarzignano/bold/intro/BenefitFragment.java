@@ -15,7 +15,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.safetynet.SafetyNet;
 
 import java.io.ByteArrayOutputStream;
@@ -168,11 +167,6 @@ public class BenefitFragment extends Fragment {
         }
 
         // Safety net + integrity check
-        GoogleApiClient client = new GoogleApiClient.Builder(context)
-                .addApi(SafetyNet.API)
-                .build();
-        client.connect();
-
         String nonce = String.valueOf(System.currentTimeMillis());
         ByteArrayOutputStream oStream = new ByteArrayOutputStream();
         byte[] randBytes = new byte[24];

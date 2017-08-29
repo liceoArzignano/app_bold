@@ -51,7 +51,6 @@
         \u2022 Bug fix.
     </string>
     <string name="dialog_updated_changelog">Novit\u00E0</string>
-    <string name="dialog_updated_database_upgrade">Preparazione in corso\u2026</string>
 
     <!-- Editor -->
     <string name="title_activity_editor">Editor</string>

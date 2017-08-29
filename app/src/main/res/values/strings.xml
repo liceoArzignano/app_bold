@@ -52,7 +52,6 @@
         \u2022 Bug fixes.
     </string>
     <string name="dialog_updated_changelog">Changelog</string>
-    <string name="dialog_updated_database_upgrade">Getting ready\u2026</string>
 
     <!-- Editor -->
     <string name="title_activity_editor">Editor</string>
