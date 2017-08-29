@@ -25,8 +25,6 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.List;
 
-import io.realm.Realm;
-import it.liceoarzignano.bold.BoldApp;
 import it.liceoarzignano.bold.R;
 import it.liceoarzignano.bold.firebase.BoldAnalytics;
 import it.liceoarzignano.bold.ui.ActionsDialog;
@@ -63,9 +61,10 @@ public class NewsListActivity extends AppCompatActivity {
         long id = callingIntent.getLongExtra("newsId", -1);
 
         if (id > 0) {
-            News mCalledNews = Realm.getInstance(((BoldApp) getApplication()).getConfig())
-                    .where(News.class).equalTo("id", id).findFirst();
-            showUrl(mCalledNews.getUrl());
+            News2 called = NewsHandler.getInstance(this).get(id);
+            if (called != null) {
+                showUrl(called.getUrl());
+            }
         }
 
         mNewsHandler = NewsHandler.getInstance(this);

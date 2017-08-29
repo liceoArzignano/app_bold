@@ -1,12 +1,9 @@
 package it.liceoarzignano.bold;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -55,7 +52,6 @@ import it.liceoarzignano.bold.marks.MarksHandler;
 import it.liceoarzignano.bold.news.News2;
 import it.liceoarzignano.bold.news.NewsHandler;
 import it.liceoarzignano.bold.news.NewsListActivity;
-import it.liceoarzignano.bold.realm.MigrationTool;
 import it.liceoarzignano.bold.safe.SafeActivity;
 import it.liceoarzignano.bold.settings.SettingsActivity;
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt;
@@ -300,13 +296,6 @@ public class MainActivity extends AppCompatActivity
             return;
         }
 
-        // Data migration Realm -> SQL
-        MigrationTool migrationTool = new MigrationTool();
-        if (!migrationTool.hasMigrated(this)) {
-            migrateDatabase(migrationTool);
-            return;
-        }
-
         switch (PrefsUtils.getAppVersion(this)) {
             case BuildConfig.VERSION_NAME:
                 break;
@@ -536,37 +525,5 @@ public class MainActivity extends AppCompatActivity
             default:
                 return getString(R.string.suggestion_notification);
         }
-    }
-
-    private void migrateDatabase(MigrationTool migrationTool) {
-        MaterialDialog progressDialog = new MaterialDialog.Builder(this)
-                .content(R.string.dialog_updated_database_upgrade)
-                .canceledOnTouchOutside(false)
-                .progressIndeterminateStyle(true)
-                .progress(true, 10)
-                .show();
-
-        new AsyncTask<Void, Boolean, Boolean>() {
-            @Override
-            protected Boolean doInBackground(Void... params) {
-                migrationTool.migrate((BoldApp) getApplication());
-                return true;
-            }
-
-            @Override
-            protected void onPostExecute(Boolean aBoolean) {
-                super.onPostExecute(aBoolean);
-                PendingIntent pendingIntent = PendingIntent.getActivity(getApplication(),
-                        13092, new Intent(getApplication(), MainActivity.class),
-                        PendingIntent.FLAG_CANCEL_CURRENT);
-                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-                alarmManager.set(AlarmManager.RTC,
-                        System.currentTimeMillis() + 1705, pendingIntent);
-                new Handler().postDelayed(() -> {
-                    progressDialog.dismiss();
-                    finish();
-                }, 1700);
-            }
-        }.execute();
     }
 }

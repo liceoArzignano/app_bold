@@ -9,25 +9,14 @@ import android.support.v7.app.AppCompatDelegate;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import it.liceoarzignano.bold.firebase.BoldAnalytics;
 import it.liceoarzignano.bold.utils.PrefsUtils;
 
 public class BoldApp extends Application {
 
-    private RealmConfiguration mConfig;
-
     @Override
     public void onCreate() {
         super.onCreate();
-
-        mConfig = new RealmConfiguration.Builder(this)
-                .name(Realm.DEFAULT_REALM_NAME)
-                .schemaVersion(0)
-                .build();
-
-        Realm.setDefaultConfiguration(mConfig);
 
         FirebaseMessaging.getInstance().subscribeToTopic("global");
         FirebaseMessaging.getInstance().subscribeToTopic(PrefsUtils.getTopic(this));
@@ -59,9 +48,5 @@ public class BoldApp extends Application {
             bundle.putString(FirebaseAnalytics.Param.LEVEL, "App");
             analytics.sendConfig(bundle);
         }
-    }
-
-    public RealmConfiguration getConfig() {
-        return mConfig;
     }
 }
