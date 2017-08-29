@@ -2,36 +2,36 @@ package it.liceoarzignano.bold.marks;
 
 import it.liceoarzignano.bold.database.DBItem;
 
-public class Mark2 extends DBItem {
+public class Mark extends DBItem {
     private String subject;
     private int value;
     private long date;
     private String description;
     private boolean firstQuarter;
 
-    public Mark2() {
+    public Mark() {
     }
 
-    public Mark2(String subject, int value) {
+    public Mark(String subject, int value) {
         this.subject = subject;
         this.value = value;
     }
 
-    public Mark2(String subject, int value, long date) {
+    public Mark(String subject, int value, long date) {
         this.subject = subject;
         this.value = value;
         this.date = date;
     }
 
-    public Mark2(String subject, int value, long date, String description) {
+    public Mark(String subject, int value, long date, String description) {
         this.subject = subject;
         this.value = value;
         this.date = date;
         this.description = description;
     }
 
-    public Mark2(String subject, int value, long date,
-                 String description, boolean firstQuarter) {
+    public Mark(String subject, int value, long date,
+                String description, boolean firstQuarter) {
         this.subject = subject;
         this.value = value;
         this.date = date;
@@ -40,8 +40,8 @@ public class Mark2 extends DBItem {
     }
 
 
-    public Mark2(long id, String subject, int value, long date,
-                 String description, boolean firstQuarter) {
+    public Mark(long id, String subject, int value, long date,
+                String description, boolean firstQuarter) {
         this.id = id;
         this.subject = subject;
         this.value = value;

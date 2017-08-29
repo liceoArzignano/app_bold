@@ -14,7 +14,7 @@ import java.util.List;
 import it.liceoarzignano.bold.database.DBHandler;
 import it.liceoarzignano.bold.utils.DateUtils;
 
-public class NewsHandler extends DBHandler<News2> {
+public class NewsHandler extends DBHandler<News> {
     private static final String DB_NAME = "NewsDatabase.db";
     private static final int DB_VERSION = 1;
     private static final String KEY_TITLE = "title";
@@ -51,15 +51,15 @@ public class NewsHandler extends DBHandler<News2> {
     }
 
     @Override
-    public List<News2> getAll() {
-        List<News2> list = new ArrayList<>();
+    public List<News> getAll() {
+        List<News> list = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + getTableName() +
                 " ORDER BY " + KEY_DATE + " DESC", null);
 
         if (cursor.moveToFirst()) {
             do {
-                list.add(new News2(
+                list.add(new News(
                         Long.parseLong(cursor.getString(0)),
                         cursor.getString(1),
                         Long.parseLong(cursor.getString(2)),
@@ -75,14 +75,14 @@ public class NewsHandler extends DBHandler<News2> {
 
     @Override
     @Nullable
-    public News2 get(long id) {
+    public News get(long id) {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + getTableName() +
                 " WHERE " + KEY_ID + "=?", new String[] { String.valueOf(id) });
 
-        News2 news = null;
+        News news = null;
         if (cursor.moveToFirst()) {
-            news = new News2(
+            news = new News(
                     Long.parseLong(cursor.getString(0)),
                     cursor.getString(1),
                     Long.parseLong(cursor.getString(2)),
@@ -95,7 +95,7 @@ public class NewsHandler extends DBHandler<News2> {
     }
 
     @Override
-    protected ContentValues getValues(@NonNull News2 item, boolean withId) {
+    protected ContentValues getValues(@NonNull News item, boolean withId) {
         ContentValues values = new ContentValues();
         values.put(KEY_TITLE, item.getTitle());
         values.put(KEY_DATE, item.getDate());
@@ -114,8 +114,8 @@ public class NewsHandler extends DBHandler<News2> {
         return "news";
     }
 
-    List<News2> getByQuery(@Nullable String query) {
-        List<News2> list = getAll();
+    List<News> getByQuery(@Nullable String query) {
+        List<News> list = getAll();
 
         if (query != null) {
             list.removeIf(it -> {

@@ -21,10 +21,10 @@ import it.liceoarzignano.bold.utils.HelpToast;
 
 class EventsAdapter extends SectionedRecyclerViewAdapter<HeaderViewHolder,
         EventsAdapter.EventHolder> {
-    private List<Event2> mEvents;
+    private List<Event> mEvents;
     private final Context mContext;
 
-    EventsAdapter(List<Event2> events, Context context) {
+    EventsAdapter(List<Event> events, Context context) {
         mEvents = events;
         mContext = context;
     }
@@ -80,7 +80,7 @@ class EventsAdapter extends SectionedRecyclerViewAdapter<HeaderViewHolder,
         return DateUtils.dateDiff(a, b) >= 1;
     }
 
-    void updateList(List<Event2> newList) {
+    void updateList(List<Event> newList) {
         mEvents = newList;
         notifyDataChanged();
     }
@@ -99,7 +99,7 @@ class EventsAdapter extends SectionedRecyclerViewAdapter<HeaderViewHolder,
             mTag = view.findViewById(R.id.row_event_tag);
         }
 
-        void setData(Event2 event) {
+        void setData(Event event) {
             mTitle.setText(event.getTitle());
 
             if (!TextUtils.isEmpty(event.getDescription())) {

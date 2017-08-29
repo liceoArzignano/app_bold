@@ -13,7 +13,7 @@ import java.util.List;
 
 import it.liceoarzignano.bold.database.DBHandler;
 
-public class MarksHandler extends DBHandler<Mark2> {
+public class MarksHandler extends DBHandler<Mark> {
     private static final String DB_NAME = "MarksDatabase.db";
     private static final int DB_VERSION = 1;
     private static final String KEY_SUBJECT = "subject";
@@ -53,20 +53,20 @@ public class MarksHandler extends DBHandler<Mark2> {
     }
 
     @Override
-    public List<Mark2> getAll() {
+    public List<Mark> getAll() {
         return getFilteredMarks(null, 0);
     }
 
     @Override
     @Nullable
-    public Mark2 get(long id) {
+    public Mark get(long id) {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + getTableName() +
                 " WHERE " + KEY_ID + "=?", new String[]{String.valueOf(id)});
 
-        Mark2 mark = null;
+        Mark mark = null;
         if (cursor.moveToFirst()) {
-            mark = new Mark2(
+            mark = new Mark(
                     Long.parseLong(cursor.getString(0)),
                     cursor.getString(1),
                     Integer.parseInt(cursor.getString(2)),
@@ -80,7 +80,7 @@ public class MarksHandler extends DBHandler<Mark2> {
     }
 
     @Override
-    protected ContentValues getValues(@NonNull Mark2 item, boolean withId) {
+    protected ContentValues getValues(@NonNull Mark item, boolean withId) {
         ContentValues values = new ContentValues();
         if (withId) {
             values.put(KEY_ID, item.getId());
@@ -99,7 +99,7 @@ public class MarksHandler extends DBHandler<Mark2> {
         return "marks";
     }
 
-    public List<Mark2> getFilteredMarks(@Nullable String filter, int quarter) {
+    public List<Mark> getFilteredMarks(@Nullable String filter, int quarter) {
         String query;
         String[] args;
 
@@ -136,13 +136,13 @@ public class MarksHandler extends DBHandler<Mark2> {
             }
         }
 
-        List<Mark2> list = new ArrayList<>();
+        List<Mark> list = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(query, args);
 
         if (cursor.moveToFirst()) {
             do {
-                list.add(new Mark2(
+                list.add(new Mark(
                         Long.parseLong(cursor.getString(0)),
                         cursor.getString(1),
                         Integer.parseInt(cursor.getString(2)),
@@ -158,13 +158,13 @@ public class MarksHandler extends DBHandler<Mark2> {
     }
 
     double getAverage(@Nullable String filter, int quarter) {
-        List<Mark2> list = getFilteredMarks(filter, quarter);
+        List<Mark> list = getFilteredMarks(filter, quarter);
         double sum = 0;
         if (list.isEmpty()) {
             return 0;
         }
 
-        for (Mark2 item : list) {
+        for (Mark item : list) {
             sum += item.getValue();
         }
         return sum / (100 * list.size());
@@ -172,12 +172,12 @@ public class MarksHandler extends DBHandler<Mark2> {
 
     double whatShouldIGet(@Nullable String filter, int quarter) {
         double sum = 0;
-        List<Mark2> list = getFilteredMarks(filter, quarter);
+        List<Mark> list = getFilteredMarks(filter, quarter);
         if (list.isEmpty()) {
             return 0;
         }
 
-        for (Mark2 item : list) {
+        for (Mark item : list) {
             sum += item.getValue();
         }
 

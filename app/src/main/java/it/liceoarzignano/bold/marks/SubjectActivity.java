@@ -76,7 +76,7 @@ public class SubjectActivity extends AppCompatActivity {
     }
 
     private void refresh() {
-        List<Mark2> marks = mMarksHandler.getFilteredMarks(mTitle, mFilter);
+        List<Mark> marks = mMarksHandler.getFilteredMarks(mTitle, mFilter);
         mAdapter.updateList(marks);
         // Scroll to top
         new Handler().post(() -> mNestedView.scrollTo(0,0));
@@ -102,7 +102,7 @@ public class SubjectActivity extends AppCompatActivity {
         mProgressBar.setProgress(average);
     }
 
-    void editItem(ImageView icon, Mark2 item) {
+    void editItem(ImageView icon, Mark item) {
         new BoldAnalytics(this).log(FirebaseAnalytics.Event.VIEW_ITEM, "Edit mark");
         Intent intent = new Intent(this, EditorActivity.class);
         intent.putExtra(EditorActivity.EXTRA_ID, item.getId());
@@ -115,7 +115,7 @@ public class SubjectActivity extends AppCompatActivity {
         }
     }
 
-    void deleteItem(ImageView icon, Mark2 item, int position) {
+    void deleteItem(ImageView icon, Mark item, int position) {
         new BoldAnalytics(this).log(FirebaseAnalytics.Event.VIEW_ITEM, "Delete mark");
         UiUtils.animateAVD(icon.getDrawable());
 
@@ -124,7 +124,7 @@ public class SubjectActivity extends AppCompatActivity {
         new Handler().postDelayed(() -> mAdapter.notifyItemRemoved(position), 1000);
     }
 
-    void shareItem(ImageView icon, Mark2 item) {
+    void shareItem(ImageView icon, Mark item) {
         new BoldAnalytics(this).log(FirebaseAnalytics.Event.SHARE, "Share mark");
         String message = getString(PrefsUtils.isTeacher(this) ?
                         R.string.marks_share_teacher : R.string.marks_share_student,

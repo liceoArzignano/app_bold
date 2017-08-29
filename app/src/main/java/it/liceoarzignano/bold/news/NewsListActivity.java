@@ -61,7 +61,7 @@ public class NewsListActivity extends AppCompatActivity {
         long id = callingIntent.getLongExtra("newsId", -1);
 
         if (id > 0) {
-            News2 called = NewsHandler.getInstance(this).get(id);
+            News called = NewsHandler.getInstance(this).get(id);
             if (called != null) {
                 showUrl(called.getUrl());
             }
@@ -138,7 +138,7 @@ public class NewsListActivity extends AppCompatActivity {
      * @param query search query
      */
     private void refresh(String query) {
-        final List<News2> news = mNewsHandler.getByQuery(query);
+        final List<News> news = mNewsHandler.getByQuery(query);
         mAdapter.updateList(news);
         mEmptyLayout.setVisibility(news.isEmpty() ? View.VISIBLE : View.GONE);
         mEmptyText.setText(getString(query != null && !query.isEmpty() ?
@@ -193,7 +193,7 @@ public class NewsListActivity extends AppCompatActivity {
     }
 
     @SuppressWarnings("SameReturnValue")
-    boolean newsActions(News2 news) {
+    boolean newsActions(News news) {
         ActionsDialog dialog = new ActionsDialog(this, false, news.getId());
         dialog.setOnActionsListener(new ActionsDialog.OnActionsDialogListener() {
             @Override

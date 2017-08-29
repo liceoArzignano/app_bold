@@ -1,40 +1,26 @@
-package it.liceoarzignano.bold.events;
+package it.liceoarzignano.bold.news;
 
 import it.liceoarzignano.bold.database.DBItem;
 
-public class Event2 extends DBItem {
+public class News extends DBItem {
     private String title;
     private long date;
     private String description;
-    private int category;
+    private String url;
 
-    /*
-     * Category values
-     * 0 = test
-     * 1 = school
-     * 2 = bday
-     * 3 = homework
-     * 4 = reminder
-     * 5 = hangout
-     * 6 = other
-     */
-
-    public Event2() {
-    }
-
-    public Event2(String title, long date, String description, int category) {
+    public News(String title, long date, String description, String url) {
         this.title = title;
         this.date = date;
         this.description = description;
-        this.category = category;
+        this.url = url;
     }
 
-    public Event2(long id, String title, long date, String description, int category) {
+    public News(long id, String title, long date, String description, String url) {
         this.id = id;
         this.title = title;
         this.date = date;
         this.description = description;
-        this.category = category;
+        this.url = url;
     }
 
     public String getTitle() {
@@ -61,11 +47,11 @@ public class Event2 extends DBItem {
         this.description = description;
     }
 
-    public int getCategory() {
-        return category;
+    public String getUrl() {
+        return url;
     }
 
-    public void setCategory(int category) {
-        this.category = category;
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

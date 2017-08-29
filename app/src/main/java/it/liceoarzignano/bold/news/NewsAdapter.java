@@ -18,10 +18,10 @@ import it.liceoarzignano.bold.utils.DateUtils;
 import it.liceoarzignano.bold.utils.HelpToast;
 
 class NewsAdapter extends SectionedRecyclerViewAdapter<HeaderViewHolder, NewsAdapter.NewsHolder> {
-    private List<News2> mNewsList;
+    private List<News> mNewsList;
     private final Context mContext;
 
-    NewsAdapter(List<News2> list, Context context) {
+    NewsAdapter(List<News> list, Context context) {
         this.mNewsList = list;
         this.mContext = context;
     }
@@ -78,7 +78,7 @@ class NewsAdapter extends SectionedRecyclerViewAdapter<HeaderViewHolder, NewsAda
     }
 
 
-    void updateList(List<News2> list) {
+    void updateList(List<News> list) {
         mNewsList = list;
         notifyDataChanged();
     }
@@ -95,7 +95,7 @@ class NewsAdapter extends SectionedRecyclerViewAdapter<HeaderViewHolder, NewsAda
             mMessage = view.findViewById(R.id.row_news_message);
         }
 
-        void setData(final Context context, final News2 news) {
+        void setData(final Context context, final News news) {
             mTitle.setText(news.getTitle());
             mMessage.setText(news.getDescription());
 

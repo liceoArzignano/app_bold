@@ -135,14 +135,14 @@ public class EventListActivity extends AppCompatActivity {
     private void refreshList(String query) {
         boolean hasQuery = query != null && !query.isEmpty();
 
-        List<Event2> events = mEventsHandler.getByQuery(query);
+        List<Event> events = mEventsHandler.getByQuery(query);
         mAdapter.updateList(events);
         mEmptyLayout.setVisibility(events.isEmpty() ? View.VISIBLE : View.GONE);
         mEmptyText.setText(getString(hasQuery ? R.string.search_no_result : R.string.events_empty));
     }
 
     @SuppressWarnings("SameReturnValue")
-    boolean eventActions(Event2 event) {
+    boolean eventActions(Event event) {
         ActionsDialog dialog = new ActionsDialog(this, true, event.getId());
         dialog.setOnActionsListener(new ActionsDialog.OnActionsDialogListener() {
             @Override

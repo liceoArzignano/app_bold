@@ -20,7 +20,7 @@ import java.util.Calendar;
 
 import it.liceoarzignano.bold.BuildConfig;
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.news.News2;
+import it.liceoarzignano.bold.news.News;
 import it.liceoarzignano.bold.news.NewsHandler;
 import it.liceoarzignano.bold.news.NewsListActivity;
 import it.liceoarzignano.bold.utils.DateUtils;
@@ -31,7 +31,7 @@ public class BoldMessagingService extends FirebaseMessagingService {
     private static final String CHANNEL = "channel_news";
 
     private Context mContext;
-    private News2 mNews;
+    private News mNews;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -63,7 +63,7 @@ public class BoldMessagingService extends FirebaseMessagingService {
             if (isPrivate) {
                 message = mContext.getString(R.string.news_type_private, message);
             }
-            mNews = new News2(title, DateUtils.getDate(0).getTime(), message, url);
+            mNews = new News(title, DateUtils.getDate(0).getTime(), message, url);
 
             saveNews();
             if (PrefsUtils.hasNewsNotification(mContext)) {

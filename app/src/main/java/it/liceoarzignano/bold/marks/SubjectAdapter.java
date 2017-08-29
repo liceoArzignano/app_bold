@@ -26,10 +26,10 @@ import it.liceoarzignano.bold.utils.DateUtils;
 import it.liceoarzignano.bold.utils.UiUtils;
 
 class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectHolder> {
-    private List<Mark2> mMarks;
+    private List<Mark> mMarks;
     private final Context mContext;
 
-    SubjectAdapter(List<Mark2> marks, Context context) {
+    SubjectAdapter(List<Mark> marks, Context context) {
         mMarks = marks;
         mContext = context;
     }
@@ -50,7 +50,7 @@ class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectHolder> 
         return mMarks.size();
     }
 
-    void updateList(List<Mark2> marks) {
+    void updateList(List<Mark> marks) {
         mMarks = marks;
         notifyDataSetChanged();
     }
@@ -79,7 +79,7 @@ class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectHolder> 
             mDelete = view.findViewById(R.id.row_mark_delete);
         }
 
-        void setData(Mark2 mark) {
+        void setData(Mark mark) {
             // Title
             mDate.setText(DateUtils.dateToWordsString(mContext, new Date(mark.getDate())));
 

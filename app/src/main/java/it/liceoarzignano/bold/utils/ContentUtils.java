@@ -15,10 +15,10 @@ import java.util.Calendar;
 import java.util.List;
 
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.events.Event2;
+import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.events.EventsHandler;
 import it.liceoarzignano.bold.events.EventsJobUtils;
-import it.liceoarzignano.bold.marks.Mark2;
+import it.liceoarzignano.bold.marks.Mark;
 import it.liceoarzignano.bold.marks.MarksHandler;
 
 
@@ -36,10 +36,10 @@ public final class ContentUtils {
         int size = 0;
         MarksHandler handler = MarksHandler.getInstance(context);
 
-        List<Mark2> list = handler.getFilteredMarks(null, filter);
+        List<Mark> list = handler.getFilteredMarks(null, filter);
         ArrayList<String> elements = new ArrayList<>();
 
-        for (Mark2 mark : list) {
+        for (Mark mark : list) {
             if (!elements.contains(mark.getSubject())) {
                 elements.add(mark.getSubject());
                 size++;
@@ -97,14 +97,14 @@ public final class ContentUtils {
         };
 
         EventsHandler handler = EventsHandler.getInstance(context);
-        List<Event2> events = handler.getTomorrow();
+        List<Event> events = handler.getTomorrow();
 
         if (events.isEmpty()) {
             return null;
         }
 
         // Get data
-        for (Event2 event : events) {
+        for (Event event : events) {
             categories[event.getCategory()]++;
         }
 

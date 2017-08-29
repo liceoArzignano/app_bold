@@ -15,7 +15,7 @@ import java.util.List;
 import it.liceoarzignano.bold.database.DBHandler;
 import it.liceoarzignano.bold.utils.DateUtils;
 
-public class EventsHandler extends DBHandler<Event2> {
+public class EventsHandler extends DBHandler<Event> {
     private static final String DB_NAME = "EventDatabase.db";
     private static final int DB_VERSION = 1;
     private static final String KEY_TITLE = "title";
@@ -52,15 +52,15 @@ public class EventsHandler extends DBHandler<Event2> {
     }
 
     @Override
-    public List<Event2> getAll() {
-        List<Event2> list = new ArrayList<>();
+    public List<Event> getAll() {
+        List<Event> list = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + getTableName() +
                 " ORDER BY " + KEY_DATE + " DESC", null);
 
         if (cursor.moveToFirst()) {
             do {
-                list.add(new Event2(
+                list.add(new Event(
                         Long.parseLong(cursor.getString(0)),
                         cursor.getString(1),
                         Long.parseLong(cursor.getString(2)),
@@ -76,14 +76,14 @@ public class EventsHandler extends DBHandler<Event2> {
 
     @Override
     @Nullable
-    public Event2 get(long id) {
+    public Event get(long id) {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + getTableName() +
                 " WHERE " + KEY_ID + "=?", new String[] { String.valueOf(id) });
 
-        Event2 event = null;
+        Event event = null;
         if (cursor.moveToFirst()) {
-            event = new Event2(
+            event = new Event(
                     Long.parseLong(cursor.getString(0)),
                     cursor.getString(1),
                     Long.parseLong(cursor.getString(2)),
@@ -96,7 +96,7 @@ public class EventsHandler extends DBHandler<Event2> {
     }
 
     @Override
-    protected ContentValues getValues(@NonNull Event2 item, boolean withId) {
+    protected ContentValues getValues(@NonNull Event item, boolean withId) {
         ContentValues values = new ContentValues();
         values.put(KEY_TITLE, item.getTitle());
         values.put(KEY_DATE, item.getDate());
@@ -115,7 +115,7 @@ public class EventsHandler extends DBHandler<Event2> {
         return "events";
     }
 
-    public List<Event2> getTomorrow() {
+    public List<Event> getTomorrow() {
         Calendar tomorrow = Calendar.getInstance();
         Calendar today = Calendar.getInstance();
         tomorrow.add(Calendar.DAY_OF_YEAR, 1);
@@ -129,7 +129,7 @@ public class EventsHandler extends DBHandler<Event2> {
         long timestampTomorrow = tomorrow.getTimeInMillis();
         long timestampToday = today.getTimeInMillis();
 
-        List<Event2> list = new ArrayList<>();
+        List<Event> list = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + getTableName() +
                 " WHERE " + KEY_DATE + " > " + String.valueOf(timestampToday) +
@@ -138,7 +138,7 @@ public class EventsHandler extends DBHandler<Event2> {
 
         if (cursor.moveToFirst()) {
             do {
-                list.add(new Event2(
+                list.add(new Event(
                         Long.parseLong(cursor.getString(0)),
                         cursor.getString(1),
                         Long.parseLong(cursor.getString(2)),
@@ -153,8 +153,8 @@ public class EventsHandler extends DBHandler<Event2> {
 
     }
 
-    List<Event2> getByQuery(@Nullable String query) {
-        List<Event2> list = getAll();
+    List<Event> getByQuery(@Nullable String query) {
+        List<Event> list = getAll();
 
         if (query != null) {
             list.removeIf(it -> {

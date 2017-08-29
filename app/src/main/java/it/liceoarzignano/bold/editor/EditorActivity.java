@@ -26,11 +26,11 @@ import java.util.Date;
 import java.util.Locale;
 
 import it.liceoarzignano.bold.R;
-import it.liceoarzignano.bold.events.Event2;
+import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.events.EventsHandler;
-import it.liceoarzignano.bold.marks.Mark2;
+import it.liceoarzignano.bold.marks.Mark;
 import it.liceoarzignano.bold.marks.MarksHandler;
-import it.liceoarzignano.bold.news.News2;
+import it.liceoarzignano.bold.news.News;
 import it.liceoarzignano.bold.news.NewsHandler;
 import it.liceoarzignano.bold.utils.DateUtils;
 import it.liceoarzignano.bold.utils.PrefsUtils;
@@ -204,7 +204,7 @@ public class EditorActivity extends AppCompatActivity {
 
     private void loadUi() {
         if (mIsMark) {
-            Mark2 mark = mMarksHandler.get(mId);
+            Mark mark = mMarksHandler.get(mId);
             if (mark == null) {
                 mIsEdit = false;
                 return;
@@ -218,7 +218,7 @@ public class EditorActivity extends AppCompatActivity {
             mDate = new Date(mark.getDate());
             mValue = mark.getValue();
         } else {
-            Event2 event = mEventsHandler.get(mId);
+            Event event = mEventsHandler.get(mId);
             if (event == null) {
                 mIsEdit = false;
                 return;
@@ -234,7 +234,7 @@ public class EditorActivity extends AppCompatActivity {
 
     private void loadNews() {
         NewsHandler handler = NewsHandler.getInstance(this);
-        News2 news = handler.get(mId);
+        News news = handler.get(mId);
         if (news == null) {
             return;
         }
@@ -316,7 +316,7 @@ public class EditorActivity extends AppCompatActivity {
     }
 
     private void saveMark() {
-        Mark2 mark = new Mark2();
+        Mark mark = new Mark();
         mark.setSubject((PrefsUtils.isTeacher(this) ?
                 mTitleText.getText() : mSubjectView.getText()).toString());
         mark.setValue(mValue);
@@ -336,7 +336,7 @@ public class EditorActivity extends AppCompatActivity {
     }
 
     private void saveEvent() {
-        Event2 event = new Event2();
+        Event event = new Event();
         event.setTitle(mTitleText.getText().toString());
         event.setCategory(mCategorySpinner.getSelectedItemPosition());
         event.setDate(mDate.getTime());

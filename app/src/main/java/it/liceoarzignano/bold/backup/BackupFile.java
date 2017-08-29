@@ -15,11 +15,11 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.liceoarzignano.bold.events.Event2;
+import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.events.EventsHandler;
-import it.liceoarzignano.bold.marks.Mark2;
+import it.liceoarzignano.bold.marks.Mark;
 import it.liceoarzignano.bold.marks.MarksHandler;
-import it.liceoarzignano.bold.news.News2;
+import it.liceoarzignano.bold.news.News;
 import it.liceoarzignano.bold.news.NewsHandler;
 
 class BackupFile {
@@ -47,9 +47,9 @@ class BackupFile {
         addNews(NewsHandler.getInstance(context).getAll());
     }
 
-    private void addMarks(List<Mark2> list) {
+    private void addMarks(List<Mark> list) {
         mBuilder.append(MARK_HEADER).append('\n');
-        for (Mark2 item : list) {
+        for (Mark item : list) {
             mBuilder.append(item.getId())
                     .append(SEPARATOR)
                     .append(item.getSubject().replace(",", COMMA_REPLACER))
@@ -66,9 +66,9 @@ class BackupFile {
         }
     }
 
-    private void addEvents(List<Event2> list) {
+    private void addEvents(List<Event> list) {
         mBuilder.append(EVENT_HEADER).append('\n');
-        for (Event2 item : list) {
+        for (Event item : list) {
             mBuilder.append(item.getId())
                     .append(SEPARATOR)
                     .append(item.getTitle().replace(",", COMMA_REPLACER))
@@ -82,9 +82,9 @@ class BackupFile {
         }
     }
 
-    private void addNews(List<News2> list) {
+    private void addNews(List<News> list) {
         mBuilder.append(NEWS_HEADER).append('\n');
-        for (News2 item : list) {
+        for (News item : list) {
             mBuilder.append(item.getId())
                     .append(SEPARATOR)
                     .append(item.getTitle().replace(",", COMMA_REPLACER))
@@ -133,15 +133,15 @@ class BackupFile {
         }
     }
 
-    List<Mark2> getMarks() {
-        List<Mark2> list = new ArrayList<>();
+    List<Mark> getMarks() {
+        List<Mark> list = new ArrayList<>();
         try {
             BufferedReader reader = new BufferedReader(new FileReader(mRestore));
             reader.readLine(); // Marks header
             String line = reader.readLine();
             do {
                 String[] data = line.split(SEPARATOR);
-                list.add(new Mark2(
+                list.add(new Mark(
                         Long.parseLong(data[0]),
                         data[1].replace(COMMA_REPLACER, ","),
                         Integer.parseInt(data[2].replace(COMMA_REPLACER, ",")),
@@ -158,8 +158,8 @@ class BackupFile {
         return list;
     }
 
-    List<Event2> getEvents() {
-        List<Event2> list = new ArrayList<>();
+    List<Event> getEvents() {
+        List<Event> list = new ArrayList<>();
         try {
             BufferedReader reader = new BufferedReader(new FileReader(mRestore));
             String line = reader.readLine();
@@ -171,7 +171,7 @@ class BackupFile {
 
             do {
                 String[] data = line.split(SEPARATOR);
-                list.add(new Event2(
+                list.add(new Event(
                         Long.parseLong(data[0]),
                         data[1].replace(COMMA_REPLACER, ","),
                         Long.parseLong(data[2].replace(COMMA_REPLACER, ",")),
@@ -187,8 +187,8 @@ class BackupFile {
         return list;
     }
 
-    List<News2> getNews() {
-        List<News2> list = new ArrayList<>();
+    List<News> getNews() {
+        List<News> list = new ArrayList<>();
         try {
             BufferedReader reader = new BufferedReader(new FileReader(mRestore));
             String line = reader.readLine();
@@ -199,7 +199,7 @@ class BackupFile {
 
             do {
                 String[] data = line.split(SEPARATOR);
-                list.add(new News2(
+                list.add(new News(
                         Long.parseLong(data[0]),
                         data[1].replace(COMMA_REPLACER, ","),
                         Long.parseLong(data[2].replace(COMMA_REPLACER, ",")),

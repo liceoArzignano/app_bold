@@ -39,17 +39,17 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import it.liceoarzignano.bold.backup.BackupActivity;
-import it.liceoarzignano.bold.events.Event2;
+import it.liceoarzignano.bold.events.Event;
 import it.liceoarzignano.bold.events.EventListActivity;
 import it.liceoarzignano.bold.events.EventsHandler;
 import it.liceoarzignano.bold.home.HomeAdapter;
 import it.liceoarzignano.bold.home.HomeCard;
 import it.liceoarzignano.bold.home.HomeCardBuilder;
 import it.liceoarzignano.bold.intro.BenefitsActivity;
-import it.liceoarzignano.bold.marks.Mark2;
+import it.liceoarzignano.bold.marks.Mark;
 import it.liceoarzignano.bold.marks.MarksActivity;
 import it.liceoarzignano.bold.marks.MarksHandler;
-import it.liceoarzignano.bold.news.News2;
+import it.liceoarzignano.bold.news.News;
 import it.liceoarzignano.bold.news.NewsHandler;
 import it.liceoarzignano.bold.news.NewsListActivity;
 import it.liceoarzignano.bold.safe.SafeActivity;
@@ -435,10 +435,10 @@ public class MainActivity extends AppCompatActivity
                 .setName(getString(R.string.upcoming_events))
                 .setOnClick(view -> onCardClick(view, new Intent(this, EventListActivity.class)));
 
-        List<Event2> events = mEventsHandler.getAll();
+        List<Event> events = mEventsHandler.getAll();
         int added = 0;
         Date nextWeek = DateUtils.getDate(7);
-        for (Event2 e : events) {
+        for (Event e : events) {
             Date date = new Date(e.getDate());
             if (!DateUtils.dateDiff(nextWeek, date, 8)) {
                 added++;
@@ -459,9 +459,9 @@ public class MainActivity extends AppCompatActivity
                 .setName(getString(R.string.nav_news))
                 .setOnClick(view -> onCardClick(view, new Intent(this, NewsListActivity.class)));
 
-        List<News2> news = mNewsHandler.getAll();
+        List<News> news = mNewsHandler.getAll();
         for (int i = 0; i < 3 && i < news.size(); i++) {
-            News2 n = news.get(i);
+            News n = news.get(i);
             builder.addEntry(n.getTitle(), DateUtils.dateToWordsString(this,
                     new Date(n.getDate())));
         }
@@ -477,10 +477,10 @@ public class MainActivity extends AppCompatActivity
                 .setOnClick(view -> onCardClick(view, new Intent(this, MarksActivity.class)));
 
 
-        List<Mark2> marks = mMarksHandler.getAll();
+        List<Mark> marks = mMarksHandler.getAll();
         Collections.reverse(marks);
         for (int i = 0; i < 3 && i < marks.size(); i++) {
-            Mark2 m = marks.get(i);
+            Mark m = marks.get(i);
             builder.addEntry(m.getSubject(), String.valueOf(m.getValue() / 100d));
         }
 
