@@ -45,6 +45,7 @@ import it.liceoarzignano.bold.events.EventsHandler;
 import it.liceoarzignano.bold.home.HomeAdapter;
 import it.liceoarzignano.bold.home.HomeCard;
 import it.liceoarzignano.bold.home.HomeCardBuilder;
+import it.liceoarzignano.bold.home.ShortcutAdapter;
 import it.liceoarzignano.bold.intro.BenefitsActivity;
 import it.liceoarzignano.bold.marks.Mark;
 import it.liceoarzignano.bold.marks.MarksActivity;
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity
 
     private Toolbar mToolbar;
     private ImageView mBanner;
+    private RecyclerViewExt mShortcutsList;
     private RecyclerViewExt mCardList;
     private TextView mUsername;
     private ImageView mLogo;
@@ -106,6 +108,7 @@ public class MainActivity extends AppCompatActivity
         View header = navView.getHeaderView(0);
         mUsername = header.findViewById(R.id.header_username);
         mLogo = header.findViewById(R.id.header_logo);
+        mShortcutsList = findViewById(R.id.home_shortcuts);
         mCardList = findViewById(R.id.home_list);
 
         if (savedInstance != null) {
@@ -115,6 +118,7 @@ public class MainActivity extends AppCompatActivity
         showWelcome();
         showNewYearHelper();
         ContentUtils.makeEventNotification(this);
+        setupShortcuts();
     }
 
     @Override
@@ -163,7 +167,7 @@ public class MainActivity extends AppCompatActivity
                 case R.id.nav_safe:
                     startActivity(new Intent(this, SafeActivity.class));
                     break;
-                case R.id.nav_website:
+               /* case R.id.nav_website:
                     showUrl(0);
                     break;
                 case R.id.nav_reg:
@@ -177,7 +181,7 @@ public class MainActivity extends AppCompatActivity
                     break;
                 case R.id.nav_teacherzone:
                     showUrl(4);
-                    break;
+                    break;*/
                 case R.id.nav_settings:
                     startActivity(new Intent(this, SettingsActivity.class));
                     break;
@@ -358,7 +362,7 @@ public class MainActivity extends AppCompatActivity
                 .show();
     }
 
-    private void showUrl(int index) {
+    public void showUrl(int index) {
         String url = null;
         switch (index) {
             case -1:
@@ -525,5 +529,11 @@ public class MainActivity extends AppCompatActivity
             default:
                 return getString(R.string.suggestion_notification);
         }
+    }
+
+    private void setupShortcuts() {
+        ShortcutAdapter adapter = new ShortcutAdapter(this);
+        mShortcutsList.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 }

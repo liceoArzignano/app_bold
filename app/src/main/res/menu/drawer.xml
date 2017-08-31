@@ -21,30 +21,6 @@
             android:id="@+id/nav_safe"
             android:icon="@drawable/ic_safe"
             android:title="@string/nav_safe" />
-        <item android:title="@string/nav_links">
-            <menu>
-                <item
-                    android:id="@+id/nav_website"
-                    android:icon="@drawable/ic_website"
-                    android:title="@string/nav_site" />
-                <item
-                    android:id="@+id/nav_reg"
-                    android:icon="@drawable/ic_register"
-                    android:title="@string/nav_register" />
-                <item
-                    android:id="@+id/nav_moodle"
-                    android:icon="@drawable/ic_moodle"
-                    android:title="@string/nav_moodle" />
-                <item
-                    android:id="@+id/nav_copyboox"
-                    android:icon="@drawable/ic_copybook"
-                    android:title="@string/nav_copybook" />
-                <item
-                    android:id="@+id/nav_teacherzone"
-                    android:icon="@drawable/ic_teacherzone"
-                    android:title="@string/nav_teacherzone" />
-            </menu>
-        </item>
     </group>
     <group
         android:id="@+id/nav_more"

@@ -42,17 +42,22 @@ public class RecyclerViewExt extends RecyclerView {
 
     private void setup(Context context, AttributeSet attrs) {
         setItemAnimator(new DefaultItemAnimator());
-
-        if (attrs == null || UiUtils.isPhone(context)) {
-            setLayoutManager(new LinearLayoutManager(context));
+        if (attrs == null) {
             return;
         }
 
         TypedArray array = context.obtainStyledAttributes(attrs,
                 R.styleable.RecyclerViewExt, 0, 0);
+
         try {
-            setLayoutManager(array.getBoolean(R.styleable.RecyclerViewExt_tabletUI, false) ?
-                    new GridLayoutManager(context, 2) : new LinearLayoutManager(context));
+            if (array.getBoolean(R.styleable.RecyclerViewExt_horizontalMode, false)) {
+                setLayoutManager(new LinearLayoutManager(context, HORIZONTAL, false));
+            } else if (UiUtils.isPhone(context)) {
+                setLayoutManager(new LinearLayoutManager(context));
+            } else {
+                setLayoutManager(array.getBoolean(R.styleable.RecyclerViewExt_tabletUI, false) ?
+                        new GridLayoutManager(context, 2) : new LinearLayoutManager(context));
+            }
         } finally {
             array.recycle();
         }

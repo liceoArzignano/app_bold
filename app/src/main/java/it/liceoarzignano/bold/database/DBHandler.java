@@ -2,6 +2,7 @@ package it.liceoarzignano.bold.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
@@ -19,7 +20,7 @@ public abstract class DBHandler<T extends DBItem> extends SQLiteOpenHelper {
 
     public void add(@NonNull T item) {
         if (item.getId() == -1) {
-            item.setId(getAll().size());
+            item.setId(getCount());
         }
 
         SQLiteDatabase db = getWritableDatabase();
@@ -55,6 +56,14 @@ public abstract class DBHandler<T extends DBItem> extends SQLiteOpenHelper {
         for (T item : list) {
             db.delete(getTableName(), KEY_ID + "=?", new String[] { String.valueOf(item.getId()) });
         }
+    }
+
+    private int getCount() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + getTableName(), null);
+        int count = cursor.getCount();
+        cursor.close();
+        return count;
     }
 
     protected abstract List<T> getAll();

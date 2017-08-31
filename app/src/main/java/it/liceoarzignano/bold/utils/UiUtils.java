@@ -72,7 +72,6 @@ public final class UiUtils {
         return context.getResources().getBoolean(R.bool.is_phone);
     }
 
-    @SuppressWarnings("SameParameterValue")
     public static float dpToPx(Resources res, float dp) {
         return dp * ((float) res.getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }

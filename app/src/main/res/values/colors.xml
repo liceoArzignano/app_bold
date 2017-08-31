@@ -36,4 +36,9 @@
     <color name="address_5">#6eff72</color>
     <color name="address_6">#b0e5ff</color>
 
+    <color name="shortcut_website">#FC813A</color>
+    <color name="shortcut_register">#04AEC9</color>
+    <color name="shortcut_moodle">#399B60</color>
+    <color name="shortcut_copybook">#9152C0</color>
+    <color name="shortcut_teacherzone">#FF5758</color>
 </resources>

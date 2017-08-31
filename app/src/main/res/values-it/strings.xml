@@ -7,19 +7,18 @@
     <string name="nav_home">Home</string>
     <string name="nav_mymarks">Voti</string>
     <string name="nav_events">Eventi</string>
-    <string name="nav_links">Collegamenti</string>
-    <string name="nav_site">Sito</string>
     <string name="nav_news">Notizie</string>
-    <string name="nav_register">Registro</string>
-    <string name="nav_moodle">Moodle</string>
-    <string name="nav_copybook">Quaderno</string>
-    <string name="nav_teacherzone">Area docenti</string>
     <string name="nav_settings">Impostazioni</string>
     <string name="nav_safe">Safe</string>
     <string name="nav_share">Condividi</string>
     <string name="nav_help">Guida</string>
 
     <!-- Home -->
+    <string name="shortcut_site">Sito</string>
+    <string name="shortcut_register">Registro</string>
+    <string name="shortcut_moodle">Moodle</string>
+    <string name="shortcut_copybook">Quaderno</string>
+    <string name="shortcut_teacherzone">Area docenti</string>
     <string name="upcoming_events">Prossimi eventi</string>
     <string name="lastest_marks">Ultimi voti</string>
     <string name="suggestions">Suggerimenti</string>
