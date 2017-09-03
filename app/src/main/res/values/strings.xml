@@ -154,9 +154,6 @@
     <string name="pref_address_dialog">Pick an address</string>
     <string name="pref_suggestion_title">Suggestions</string>
     <string name="pref_suggestion_summary">Show information about the app in the Home screen</string>
-    <string name="pref_metrics_title">Send metrics</string>
-    <string name="pref_metrics_summary">Help the development of the app by sending anonymous data regarding your usage of this app</string>
-    <string name="pref_metrics_summary_forced">You\'re using a beta build. You\'re not allowed to turn off metrics reports</string>
     <string name="pref_info">Info</string>
     <string name="pref_app_version_title">App version</string>
     <string name="pref_getintouch">Get in touch</string>
@@ -189,10 +186,6 @@
     <string name="pref_secret_safe_test_fail">Test failed. Your device is running unsecured software, Safe won\'t be enabled</string>
     <string name="pref_secret_safe_test_success">Test succeeded. Your device is secure, Safe will be enabled</string>
     <string name="pref_secret_export_safe_title">Password sharing tool</string>
-    <string name="pref_secret_export_safe_message">You can share your encrypted password.\nYou can do this only once.\nSharing the password could be dangerous because someone else might be able to log in Safe. Be careful</string>
-    <string name="pref_secret_export_message">My encrypted password: %1$s</string>
-    <string name="pref_secret_export_title">Share password</string>
-    <string name="pref_secret_export_already_shared">You can\'t share the password unless you change it</string>
     <string name="pref_opensource_title">Open source</string>
     <string name="pref_opensource_message">Released under LGPL v3 license</string>
 

@@ -5,6 +5,7 @@
 .DS_Store
 /build
 /captures
+/annotations
 *.apk
 safe_mod
 app/google-services.json

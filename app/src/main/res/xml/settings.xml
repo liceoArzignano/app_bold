@@ -37,13 +37,6 @@
             android:key="backup_key"
             android:summary="@string/pref_backup_title"
             android:title="@string/pref_backup_summary" />
-
-        <android.support.v7.preference.SwitchPreferenceCompat
-            android:defaultValue="true"
-            android:key="analytics_key"
-            android:summary="@string/pref_metrics_summary"
-            android:title="@string/pref_metrics_title" />
-
     </android.support.v7.preference.PreferenceCategory>
 
     <android.support.v7.preference.PreferenceCategory android:title="@string/pref_notif">

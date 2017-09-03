@@ -45,7 +45,7 @@
                 android:visibility="invisible"
                 app:backgroundTint="@color/colorAccent" />
 
-            <it.liceoarzignano.bold.ui.InkPageIndicator
+            <com.google.InkPageIndicator
                 android:id="@+id/indicator"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

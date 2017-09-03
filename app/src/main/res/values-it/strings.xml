@@ -153,9 +153,6 @@
     <string name="pref_address_dialog">Seleziona un indirizzo</string>
     <string name="pref_suggestion_title">Suggerimenti</string>
     <string name="pref_suggestion_summary">Visualizza informazioni utili sull\'app nella schermata Home</string>
-    <string name="pref_metrics_title">Invia metriche</string>
-    <string name="pref_metrics_summary">Contribuisci a migliorare lo sviluppo dell\'app consentento l\'invio di dati anonimi</string>
-    <string name="pref_metrics_summary_forced">Stai utilizzando una versione beta. Non puoi disattivare l\'invio delle metriche</string>
     <string name="pref_info">Informazioni</string>
     <string name="pref_app_version_title">Versione app</string>
     <string name="pref_getintouch">Contatti</string>
@@ -187,11 +184,6 @@
     <string name="pref_secret_safe_test_connection">\u00C8 necessaria una connessione ad internet per effetuare il test</string>
     <string name="pref_secret_safe_test_fail">Test fallito. Il dispositivo non \u00E8 sicuro. Safe sar\u00E0 disattivato</string>
     <string name="pref_secret_safe_test_success">Test passato. Il dispositivo \u00E8 sicuro. Safe sar\u00E0 attivato</string>
-    <string name="pref_secret_export_safe_title">Condivisione password di Safe</string>
-    <string name="pref_secret_export_safe_message">Puoi condividere la tua password criptata.\nPuoi compiere quest\'operazione una sola volta.\nLa condivisione della password \u00E8 pericolosa in quanto qualcun\'altro potrebbe accedere a Safe.</string>
-    <string name="pref_secret_export_message">La mia password criptata \u00E8: %1$s</string>
-    <string name="pref_secret_export_title">Condividi password</string>
-    <string name="pref_secret_export_already_shared">Non puoi condividere la password fino a quando non la cambierai</string>
     <string name="pref_opensource_title">Open source</string>
     <string name="pref_opensource_message">Rilasciato sotto licenza LGPL v3</string>
 
