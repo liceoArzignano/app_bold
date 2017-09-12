@@ -9,3 +9,4 @@
 *.apk
 safe_mod
 app/google-services.json
+*.patch
