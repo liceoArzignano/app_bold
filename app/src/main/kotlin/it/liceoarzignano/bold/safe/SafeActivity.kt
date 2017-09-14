@@ -1,8 +1,7 @@
 package it.liceoarzignano.bold.safe
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
+import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.FloatingActionButton
@@ -45,7 +44,6 @@ class SafeActivity : AppCompatActivity() {
     private var mCrInternet: String? = null
     private var isWorking = true
 
-    @SuppressLint("CommitPrefEdits")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -173,12 +171,15 @@ class SafeActivity : AppCompatActivity() {
     }
 
     private fun setupEncryption() {
-        try {
-            mSecretKeys = Encryption.generateKey()
-        } catch (e: GeneralSecurityException) {
-            Log.e(TAG, e.message, e)
-        }
+        object : AsyncTask<Unit, Unit, Unit>() {
+            override fun doInBackground(vararg p0: Unit?) {
+                mSecretKeys = Encryption.generateKey()
+            }
 
+            override fun onPostExecute(result: Unit?) {
+                showPasswordDialog()
+            }
+        }.execute()
     }
 
     private fun encrypt(string: String): String {
@@ -209,10 +210,10 @@ class SafeActivity : AppCompatActivity() {
             Encryption.decrypt(
                     Encryption.CipherTextIvMac(string), mSecretKeys)
         } catch (e: UnsupportedEncodingException) {
-            Log.e("Safe", e.message, e)
+            Log.e(TAG, e.message, e)
             ""
         } catch (e: GeneralSecurityException) {
-            Log.e("Safe", e.message, e)
+            Log.e(TAG, e.message, e)
             ""
         }
 
@@ -227,7 +228,20 @@ class SafeActivity : AppCompatActivity() {
         // Do things with some delay
         Handler().postDelayed({
             if (isPasswordCorrect) {
-                onCreateContinue()
+                object : AsyncTask<Unit, Unit, Unit>() {
+                    override fun doInBackground(vararg p0: Unit?) {
+                        isWorking = false
+
+                        mCrUserName = decrypt(mPrefs.get(AppPrefs.KEY_SAFE_USERNAME))
+                        mCrReg = decrypt(mPrefs.get(AppPrefs.KEY_SAFE_REG))
+                        mCrPc = decrypt(mPrefs.get(AppPrefs.KEY_SAFE_PC))
+                        mCrInternet = decrypt(mPrefs.get(AppPrefs.KEY_SAFE_INTERNET))
+                    }
+
+                    override fun onPostExecute(result: Unit?) {
+                        Handler().postDelayed({ onCreateContinue() }, 600)
+                    }
+                }.execute()
             } else {
                 finish()
             }
@@ -235,13 +249,6 @@ class SafeActivity : AppCompatActivity() {
     }
 
     private fun onCreateContinue() {
-        isWorking = false
-
-        mCrUserName = decrypt(mPrefs.get(AppPrefs.KEY_SAFE_USERNAME))
-        mCrReg = decrypt(mPrefs.get(AppPrefs.KEY_SAFE_REG))
-        mCrPc = decrypt(mPrefs.get(AppPrefs.KEY_SAFE_PC))
-        mCrInternet = decrypt(mPrefs.get(AppPrefs.KEY_SAFE_INTERNET))
-
         mMenu!!.findItem(R.id.action_reset).isVisible = true
         mMenu!!.findItem(R.id.action_info).isVisible = true
         mUserEdit.setText(mCrUserName)
@@ -291,7 +298,6 @@ class SafeActivity : AppCompatActivity() {
             mLoadingText.setText(R.string.safe_first_load)
             Handler().postDelayed({
                 setupEncryption()
-                showPasswordDialog()
             }, 100)
         } else {
             mPrefs.set(AppPrefs.KEY_SAFE_PASSED, false)
@@ -307,35 +313,33 @@ class SafeActivity : AppCompatActivity() {
         mLoadingText.setText(R.string.safe_encrypting)
         mLoadingLayout.visibility = View.VISIBLE
 
-        var text = mUserEdit.text.toString()
-        if (!text.isEmpty()) {
-            mPrefs.set(AppPrefs.KEY_SAFE_USERNAME, encrypt(text))
-        }
-        text = mRegEdit.text.toString()
-        if (!text.isEmpty()) {
-            mPrefs.set(AppPrefs.KEY_SAFE_REG, encrypt(text))
-        }
-        text = mPcEdit.text.toString()
-        if (!text.isEmpty()) {
-            mPrefs.set(AppPrefs.KEY_SAFE_PC, encrypt(text))
-        }
-        text = mInternetEdit.text.toString()
-        if (!text.isEmpty()) {
-            mPrefs.set(AppPrefs.KEY_SAFE_INTERNET, encrypt(text))
-        }
-        finish()
+        object : AsyncTask<Unit, Unit, Unit>() {
+            override fun doInBackground(vararg p0: Unit?) {
+                var text = mUserEdit.text.toString()
+                if (!text.isEmpty()) {
+                    mPrefs.set(AppPrefs.KEY_SAFE_USERNAME, encrypt(text))
+                }
+                text = mRegEdit.text.toString()
+                if (!text.isEmpty()) {
+                    mPrefs.set(AppPrefs.KEY_SAFE_REG, encrypt(text))
+                }
+                text = mPcEdit.text.toString()
+                if (!text.isEmpty()) {
+                    mPrefs.set(AppPrefs.KEY_SAFE_PC, encrypt(text))
+                }
+                text = mInternetEdit.text.toString()
+                if (!text.isEmpty()) {
+                    mPrefs.set(AppPrefs.KEY_SAFE_INTERNET, encrypt(text))
+                }
+            }
+
+            override fun onPostExecute(result: Unit?) {
+                Handler().postDelayed({ finish() }, 1000)
+            }
+        }.execute()
     }
 
     companion object {
         private val TAG = "SafeActivity"
-
-        fun getEncryptedPassword(context: Context): String =
-                AppPrefs(context).get(AppPrefs.KEY_SAFE_ACCESS)
-
-        fun hasSharedPassword(context: Context): Boolean =
-                AppPrefs(context).get(AppPrefs.KEY_SAFE_SHARED)
-
-        fun setSharedPassword(context: Context) =
-                AppPrefs(context).set(AppPrefs.KEY_SAFE_ACCESS, true)
     }
 }

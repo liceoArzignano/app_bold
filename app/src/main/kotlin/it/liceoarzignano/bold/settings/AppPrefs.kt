@@ -49,7 +49,6 @@ open class AppPrefs(context: Context) {
         val safePrefs = context.getSharedPreferences(PREFS_SAFE, 0)
         val extraPrefs = context.getSharedPreferences(PREFS_EXTRA, 0)
 
-        android.util.Log.d("OHAI", "FOOBAR")
         if (mPrefs[KEY_MIGRATION, false]) {
             return
         }

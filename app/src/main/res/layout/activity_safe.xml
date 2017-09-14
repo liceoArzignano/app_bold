@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -20,7 +19,6 @@
             android:orientation="vertical"
             android:paddingTop="?actionBarSize">
 
-
             <LinearLayout
                 android:id="@+id/safe_loading_layout"
                 style="@style/AppTheme.EmptyLayout"
@@ -31,6 +29,14 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@null"
                     app:srcCompat="@drawable/ic_empty_safe" />
+
+                <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+                    style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
+                    android:layout_width="192dp"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true"
+                    android:paddingTop="16dp"
+                    app:mpb_progressStyle="horizontal" />
 
                 <TextView
                     android:id="@+id/safe_loading_text"
@@ -61,8 +67,8 @@
                         <EditText
                             android:id="@+id/safe_username"
                             style="@style/AppTheme.SafeInputText"
-                            android:inputType="numberPassword"
-                            android:hint="@string/safe_username" />
+                            android:hint="@string/safe_username"
+                            android:inputType="numberPassword" />
                     </android.support.design.widget.TextInputLayout>
 
                     <android.support.design.widget.TextInputLayout
@@ -73,8 +79,8 @@
                         <EditText
                             android:id="@+id/safe_register"
                             style="@style/AppTheme.SafeInputText"
-                            android:inputType="textPassword"
-                            android:hint="@string/safe_reg_pwd" />
+                            android:hint="@string/safe_reg_pwd"
+                            android:inputType="textPassword" />
                     </android.support.design.widget.TextInputLayout>
 
                     <android.support.design.widget.TextInputLayout
@@ -85,8 +91,8 @@
                         <EditText
                             android:id="@+id/safe_pc"
                             style="@style/AppTheme.SafeInputText"
-                            android:inputType="textPassword"
-                            android:hint="@string/safe_pc_pwd" />
+                            android:hint="@string/safe_pc_pwd"
+                            android:inputType="textPassword" />
                     </android.support.design.widget.TextInputLayout>
 
                     <android.support.design.widget.TextInputLayout
@@ -97,8 +103,8 @@
                         <EditText
                             android:id="@+id/safe_internet"
                             style="@style/AppTheme.SafeInputText"
-                            android:inputType="textPassword"
-                            android:hint="@string/safe_internet_pwd" />
+                            android:hint="@string/safe_internet_pwd"
+                            android:inputType="textPassword" />
                     </android.support.design.widget.TextInputLayout>
 
                     <RelativeLayout
