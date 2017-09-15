@@ -10,7 +10,7 @@ import it.liceoarzignano.bold.R
 import it.liceoarzignano.bold.editor.EditorActivity
 
 class ActionsDialog @SuppressLint("InflateParams")
-constructor(context: Context, isEvent: Boolean, id: Long) {
+constructor(context: Context, isEditable: Boolean, isMark: Boolean, id: Long) {
     private val mDialog = BottomSheetDialog(context)
     private var mListener: OnActionsDialogListener? = null
 
@@ -23,7 +23,7 @@ constructor(context: Context, isEvent: Boolean, id: Long) {
         val edit = view.findViewById<View>(R.id.actions_dialog_edit)
         val toEvent = view.findViewById<View>(R.id.actions_dialog_to_event)
 
-        if (isEvent) {
+        if (isEditable) {
             edit.visibility = View.VISIBLE
         } else {
             toEvent.visibility = View.VISIBLE
@@ -42,7 +42,7 @@ constructor(context: Context, isEvent: Boolean, id: Long) {
         edit.setOnClickListener { _ ->
             mDialog.hide()
             context.startActivity(Intent(context, EditorActivity::class.java)
-                    .putExtra(EditorActivity.EXTRA_IS_MARK, false)
+                    .putExtra(EditorActivity.EXTRA_IS_MARK, isMark)
                     .putExtra(EditorActivity.EXTRA_ID, id))
         }
 

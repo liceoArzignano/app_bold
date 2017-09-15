@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
+import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
@@ -16,6 +17,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import it.liceoarzignano.bold.R
 import it.liceoarzignano.bold.editor.EditorActivity
 import it.liceoarzignano.bold.settings.AppPrefs
+import it.liceoarzignano.bold.ui.ActionsDialog
 import it.liceoarzignano.bold.ui.recyclerview.DividerDecoration
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerClickListener
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerTouchListener

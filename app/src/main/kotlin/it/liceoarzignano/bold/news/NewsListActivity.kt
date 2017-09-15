@@ -155,7 +155,7 @@ class NewsListActivity : AppCompatActivity() {
     }
 
     internal fun newsActions(news: News): Boolean {
-        val dialog = ActionsDialog(this, false, news.id)
+        val dialog = ActionsDialog(this, false, false, news.id)
         dialog.setOnActionsListener(object : ActionsDialog.OnActionsDialogListener {
             override fun onShare() {
                 val message = String.format("%1\$s (%2\$s)\n%3\$s", news.title,

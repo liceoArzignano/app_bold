@@ -71,8 +71,7 @@ internal class NewsAdapter(private var mNewsList: List<News>, private val mConte
                 if (!url.isEmpty()) {
                     (mContext as NewsListActivity).showUrl(url)
                 }
-                HelpToast(mContext, R.string.intro_toast_news_long_press,
-                        HelpToast.KEY_NEWS_LONG_PRESS)
+                HelpToast(mContext, HelpToast.KEY_NEWS_LONG_PRESS)
             }
 
             mView.setOnLongClickListener { _ -> (mContext as NewsListActivity).newsActions(news) }

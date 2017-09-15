@@ -76,8 +76,7 @@ internal class EventsAdapter(private var mEvents: List<Event>, private val mCont
                             Integer.MAX_VALUE
                         else
                             1
-                HelpToast(mContext, R.string.intro_toast_event_long_press,
-                        HelpToast.KEY_EVENT_LONG_PRESS)
+                HelpToast(mContext, HelpToast.KEY_EVENT_LONG_PRESS)
             }
             mView.setOnLongClickListener { _ ->
                 (mContext as EventListActivity).eventActions(event)

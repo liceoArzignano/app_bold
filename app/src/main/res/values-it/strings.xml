@@ -120,8 +120,7 @@
     <string name="intro_drawer">Da questo menu potrai navigare all\' interno dell\'app.\nLa schermata iniziale mostrer\u00E0 le informazioni al momento giusto</string>
     <string name="intro_fab_save_safe_title">Benvenuto</string>
     <string name="intro_fab_save_safe">Annota le tue credenziali, poi tocca qui per salvare</string>
-    <string name="intro_toast_event_long_press">Premi a lungo per mostrare altre opzioni</string>
-    <string name="intro_toast_news_long_press">Premi a lungo per mostrare altre opzioni</string>
+    <string name="intro_toast_long_press">Premi a lungo per mostrare altre opzioni</string>
 
     <!-- Subjects -->
     <string name="subject_english">Inglese</string>

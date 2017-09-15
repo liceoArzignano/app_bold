@@ -121,7 +121,7 @@ class EventListActivity : AppCompatActivity() {
     }
 
     internal fun eventActions(event: Event): Boolean {
-        val dialog = ActionsDialog(this, true, event.id)
+        val dialog = ActionsDialog(this, true, false, event.id)
         dialog.setOnActionsListener(object : ActionsDialog.OnActionsDialogListener {
             override fun onShare() {
                 val message = String.format("%1\$s (%2\$s)\n%3\$s", event.title,

@@ -28,7 +28,7 @@
         tools:ignore="UnusedIds">
         <item
             android:id="@+id/nav_share"
-            android:icon="@drawable/avd_share"
+            android:icon="@drawable/ic_share"
             android:title="@string/nav_share" />
         <item
             android:id="@+id/nav_settings"
