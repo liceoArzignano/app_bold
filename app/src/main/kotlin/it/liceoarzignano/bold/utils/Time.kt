@@ -11,7 +11,7 @@ class Time : Date {
     constructor() : super()
 
     constructor(dayDiff: Int) {
-        put { it.increase(DAY, dayDiff) }
+        put { it.increase(DAY_OF_YEAR, dayDiff) }
     }
 
     constructor(longTime: Long) : super(longTime)
@@ -43,17 +43,17 @@ class Time : Date {
         return "${string.substring(0, 1).toUpperCase()}${string.substring(1, string.length)}"
     }
 
-    fun diff(compared: Time): Int = getField(DAY) - compared.getField(DAY)
+    fun diff(compared: Time): Int = getField(DAY_OF_YEAR) - compared.getField(DAY_OF_YEAR)
 
     fun diff(compared: Time, minDiff: Int): Boolean = diff(compared) >= minDiff
 
-    fun matchDayOfYear(compared: Time): Boolean =
-            getField(YEAR) == compared.getField(YEAR) && getField(DAY) >= compared.getField(DAY)
+    fun matchDayOfYear(compared: Time): Boolean = getField(YEAR) == compared.getField(YEAR) &&
+            getField(DAY_OF_YEAR) >= compared.getField(DAY_OF_YEAR)
 
     fun isFirstQuarter(context: Context): Boolean {
-        val start = parse(context.getString(R.string.config_end_of_year)).getField(DAY)
-        val end = parse(context.getString(R.string.config_quarter_change)).getField(DAY)
-        val thisDay = getField(DAY)
+        val start = parse(context.getString(R.string.config_end_of_year)).getField(DAY_OF_YEAR)
+        val end = parse(context.getString(R.string.config_quarter_change)).getField(DAY_OF_YEAR)
+        val thisDay = getField(DAY_OF_YEAR)
 
         return thisDay < end || thisDay > start
     }
@@ -88,14 +88,14 @@ class Time : Date {
             throw IllegalArgumentException("$value: invalid format. Must be $DATE_FORMAT")
         }
 
-        @IntDef(YEAR, MONTH, DAY, HOURS, MINUTES)
+        @IntDef(YEAR, MONTH, DAY, DAY_OF_YEAR, HOURS, MINUTES)
         @Retention(AnnotationRetention.SOURCE)
         annotation class CalendarField
-        // These are extracted from java.util.Calendar.class
-        private const val YEAR = Calendar.YEAR.toLong()
-        private const val MONTH = Calendar.MONTH.toLong()
-        private const val DAY = Calendar.DAY_OF_YEAR.toLong()
-        private const val HOURS = Calendar.HOUR.toLong()
-        private const val MINUTES = Calendar.MINUTE.toLong()
+            private const val DAY_OF_YEAR = Calendar.DAY_OF_YEAR.toLong()
+            private const val YEAR = Calendar.YEAR.toLong()
+            private const val MONTH = Calendar.MONTH.toLong()
+            private const val DAY = Calendar.DAY_OF_MONTH.toLong()
+            private const val HOURS = Calendar.HOUR.toLong()
+            private const val MINUTES = Calendar.MINUTE.toLong()
     }
 }
