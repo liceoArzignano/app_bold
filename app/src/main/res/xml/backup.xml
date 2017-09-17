@@ -4,9 +4,6 @@
     <!-- Shared preferences -->
     <include
         domain="sharedpref"
-        path="extraPrefs.xml" />
-    <include
-        domain="sharedpref"
         path="com.google.android.gms.appid.xml" />
     <include
         domain="sharedpref"
@@ -18,7 +15,25 @@
     <!-- Databases -->
     <include
         domain="database"
+        path="EventDatabase.db" />
+    <include
+        domain="database"
+        path="MarksDatabase.db" />
+    <include
+        domain="database"
+        path="NewsDatabase.db" />
+    <include
+        domain="database"
         path="google_app_measurement.db" />
+    <include
+        domain="database"
+        path="EventDatabase.db-journal" />
+    <include
+        domain="database"
+        path="MarksDatabase.db-journal" />
+    <include
+        domain="database"
+        path="NewsDatabase.db-journal" />
     <include
         domain="database"
         path="google_app_measurement.db-journal" />

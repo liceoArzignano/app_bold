@@ -97,11 +97,10 @@ class SettingsActivity : AppCompatActivity() {
             }
 
             val dialog = MaterialDialog.Builder(mContext)
-                    .title(R.string.pref_secret_safe_test_title)
                     .content(R.string.pref_secret_safe_test_running)
                     .cancelable(false)
                     .progress(true, 100)
-                    .progressIndeterminateStyle(false)
+                    .progressIndeterminateStyle(true)
                     .build()
 
             dialog.show()
@@ -129,15 +128,19 @@ class SettingsActivity : AppCompatActivity() {
                     SystemUtils.getSafetyNetApiKey(context))
                     .addOnCompleteListener { task ->
                         dialog.dismiss()
-                        val hasPassed = Encryption.validateResponse(mContext,
+                        val result = Encryption.validateResponse(mContext,
                                 task.result.jwsResult, BuildConfig.DEBUG)
-                        mPrefs.set(AppPrefs.KEY_SAFE_PASSED, hasPassed)
+                        mPrefs.set(AppPrefs.KEY_SAFE_PASSED, result == 0)
                         MaterialDialog.Builder(mContext)
                                 .title(R.string.pref_secret_safe_test_title)
-                                .content(if (hasPassed)
-                                    R.string.pref_secret_safe_test_success
-                                else
-                                    R.string.pref_secret_safe_test_fail)
+                                .content(when (result) {
+                                    1 -> R.string.pref_secret_safe_test_fail_1
+                                    2 -> R.string.pref_secret_safe_test_fail_2
+                                    3 -> R.string.pref_secret_safe_test_fail_3
+                                    4 -> R.string.pref_secret_safe_test_fail_4
+                                    5 -> R.string.pref_secret_safe_test_fail_5
+                                    else -> R.string.pref_secret_safe_test_success
+                                })
                                 .neutralText(android.R.string.ok)
                                 .show()
                     }

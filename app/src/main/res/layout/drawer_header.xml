@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="320dp"
-    android:layout_height="180dp"
-    android:background="@drawable/banner"
-    android:gravity="bottom"
-    android:orientation="vertical"
+    android:layout_width="280dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="32dp"
     android:padding="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     tools:ignore="Overdraw">
@@ -15,19 +12,31 @@
         android:id="@+id/header_logo"
         android:layout_width="64dp"
         android:layout_height="64dp"
+        android:layout_marginRight="16dp"
         android:contentDescription="@null" />
 
-    <TextView
-        android:id="@+id/header_username"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxLines="1"
-        android:paddingTop="8dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="64dp"
+        android:layout_toRightOf="@id/header_logo"
+        android:orientation="vertical"
+        android:gravity="center_vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/school_name"
-        android:textColor="@color/white" />
-</LinearLayout>
+        <TextView
+            android:id="@+id/header_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:paddingTop="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/icon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="@string/school_name"
+            android:textColor="@color/text_secondary" />
+
+    </LinearLayout>
+</RelativeLayout>

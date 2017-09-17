@@ -308,22 +308,22 @@ class BackupActivity : AppCompatActivity() {
         }.execute()
     }
 
-    override fun onActivityResult(request: Int, result: Int, data: Intent) {
+    override fun onActivityResult(request: Int, result: Int, data: Intent?) {
         if (result == RESULT_OK) {
             when (request) {
                 1 -> mBackup!!.start()
                 2 -> {
                     mIntentPicker = null
-                    val backupId = data.getParcelableExtra<DriveId>(
+                    val backupId = data?.getParcelableExtra<DriveId>(
                             OpenFileActivityBuilder.EXTRA_RESPONSE_DRIVE_ID)
-                    mBackupFolder = backupId.encodeToString()
+                    mBackupFolder = backupId?.encodeToString()!!
                     mPrefs.set(AppPrefs.KEY_BACKUP_FOLDER, mBackupFolder)
                     hasValidFolder = true
                 }
                 3 -> {
-                    val restoreId = data.getParcelableExtra<DriveId>(
+                    val restoreId = data?.getParcelableExtra<DriveId>(
                             OpenFileActivityBuilder.EXTRA_RESPONSE_DRIVE_ID)
-                    downloadFromDrive(restoreId.asDriveFile())
+                    downloadFromDrive(restoreId?.asDriveFile()!!)
                 }
                 4 -> openFolderPicker()
             }

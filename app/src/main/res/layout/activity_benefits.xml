@@ -10,51 +10,89 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="8dp">
 
-        <it.liceoarzignano.bold.intro.BenefitViewPager
-            android:id="@+id/container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="?attr/actionBarSize"
-            android:paddingLeft="18dp"
-            android:paddingRight="18dp"
-            android:paddingTop="16dp" />
-
-        <RelativeLayout
+        <TextView
+            android:id="@+id/intro_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="center"
-            android:orientation="vertical"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="32sp" />
+
+        <TextView
+            android:id="@+id/intro_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/intro_title"
+            android:paddingBottom="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="8dp"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <!-- Step 1 - Welcome animation -->
+        <LinearLayout
+            android:id="@+id/intro_step_1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/intro_message"
             android:animateLayoutChanges="true"
-            android:paddingBottom="@dimen/activity_horizontal_margin"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingTop="@dimen/activity_horizontal_margin">
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/intro_animation"
+                android:layout_width="220dp"
+                android:layout_height="220dp" />
 
             <android.support.v7.widget.AppCompatButton
-                android:id="@+id/benefit_button"
+                android:id="@+id/intro_retry_button"
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
                 android:text="@string/intro_btn_retry"
                 android:textColor="@color/white"
                 android:visibility="invisible"
                 app:backgroundTint="@color/colorAccent" />
+        </LinearLayout>
+
+        <!-- Step 2 - Address selector -->
+        <LinearLayout
+            android:id="@+id/intro_step_2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/intro_message"
+            android:gravity="center"
+            android:visibility="gone"
+            android:orientation="vertical">
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/intro_selector"
+                android:layout_width="match_parent"
+                android:layout_height="272dp"
+                android:clipToPadding="false"
+                android:overScrollMode="never"
+                android:paddingBottom="24dp"
+                android:paddingLeft="@dimen/benefits_card_padding"
+                android:paddingRight="@dimen/benefits_card_padding" />
 
             <com.google.InkPageIndicator
-                android:id="@+id/indicator"
-                android:layout_width="match_parent"
+                android:id="@+id/intro_indicator"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@id/benefit_button"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp" />
-        </RelativeLayout>
-
+                android:paddingBottom="16dp"
+                app:currentPageIndicatorColor="@color/black"
+                app:pageIndicatorColor="@color/icon" />
+        </LinearLayout>
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

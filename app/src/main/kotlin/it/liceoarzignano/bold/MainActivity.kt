@@ -2,10 +2,8 @@ package it.liceoarzignano.bold
 
 import android.content.ComponentName
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
 import android.support.customtabs.CustomTabsClient
 import android.support.customtabs.CustomTabsIntent
 import android.support.customtabs.CustomTabsServiceConnection
@@ -13,12 +11,13 @@ import android.support.customtabs.CustomTabsSession
 import android.support.design.widget.NavigationView
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.util.Base64
+import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
@@ -33,7 +32,7 @@ import it.liceoarzignano.bold.home.HomeAdapter
 import it.liceoarzignano.bold.home.HomeCard
 import it.liceoarzignano.bold.home.HomeCardBuilder
 import it.liceoarzignano.bold.home.ShortcutAdapter
-import it.liceoarzignano.bold.intro.BenefitsActivity
+import it.liceoarzignano.bold.intro.IntroActivity
 import it.liceoarzignano.bold.marks.MarksActivity
 import it.liceoarzignano.bold.marks.MarksHandler
 import it.liceoarzignano.bold.news.NewsHandler
@@ -59,7 +58,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     lateinit private var mPrefs: AppPrefs
 
     lateinit private var mToolbar: Toolbar
-    lateinit private var mBanner: ImageView
     lateinit private var mShortcutsList: RecyclerViewExt
     lateinit private var mCardList: RecyclerViewExt
     lateinit private var mUsername: TextView
@@ -86,11 +84,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         mToolbar = findViewById(R.id.toolbar)
         setSupportActionBar(mToolbar)
-        mBanner = findViewById(R.id.home_toolbar_banner)
         val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
         val toggle = ActionBarDrawerToggle(this, drawer, mToolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer.addDrawerListener(toggle)
+        toggle.isDrawerIndicatorEnabled = false
+        toggle.setHomeAsUpIndicator(R.drawable.ic_nav_drawer)
+        toggle.setToolbarNavigationClickListener { drawer.openDrawer(Gravity.LEFT) }
         toggle.syncState()
         val navView = findViewById<NavigationView>(R.id.navigation_view)
         navView.setNavigationItemSelectedListener(this)
@@ -138,23 +138,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         // Do action with some delay to prevent lags when
         // loading big lists of marks and events
-        Handler().postDelayed({
-            when (item.itemId) {
-                R.id.nav_my_marks -> startActivity(Intent(this, MarksActivity::class.java))
-                R.id.nav_calendar -> startActivity(Intent(this, EventListActivity::class.java))
-                R.id.nav_news -> startActivity(Intent(this, NewsListActivity::class.java))
-                R.id.nav_safe -> startActivity(Intent(this, SafeActivity::class.java))
-                R.id.nav_settings -> startActivity(Intent(this, SettingsActivity::class.java))
-                R.id.nav_share -> {
-                    val shareIntent = Intent(Intent.ACTION_SEND)
-                    shareIntent.type = "text/plain"
-                    shareIntent.putExtra(Intent.EXTRA_TEXT, mRemoteConfig!!.getString("share_url"))
-                    startActivity(Intent.createChooser(shareIntent,
-                            getString(R.string.share_title)))
-                }
-                R.id.nav_help -> showUrl(5)
+        when (item.itemId) {
+            R.id.nav_my_marks -> startActivity(Intent(this, MarksActivity::class.java))
+            R.id.nav_calendar -> startActivity(Intent(this, EventListActivity::class.java))
+            R.id.nav_news -> startActivity(Intent(this, NewsListActivity::class.java))
+            R.id.nav_safe -> startActivity(Intent(this, SafeActivity::class.java))
+            R.id.nav_settings -> startActivity(Intent(this, SettingsActivity::class.java))
+            R.id.nav_share -> {
+                val shareIntent = Intent(Intent.ACTION_SEND)
+                shareIntent.type = "text/plain"
+                shareIntent.putExtra(Intent.EXTRA_TEXT, mRemoteConfig!!.getString("share_url"))
+                startActivity(Intent.createChooser(shareIntent,
+                        getString(R.string.share_title)))
             }
-        }, 130)
+            R.id.nav_help -> showUrl(5)
+        }
 
         return true
     }
@@ -182,10 +180,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun setupNavHeader() {
         mUsername.text = mPrefs.get(AppPrefs.KEY_USERNAME, "")
-
-        val imgB64 = Base64.decode(mRemoteConfig!!.getString("home_banner").toByteArray(),
-                Base64.DEFAULT)
-        mBanner.setImageBitmap(BitmapFactory.decodeByteArray(imgB64, 0, imgB64.size))
+        mUsername.visibility = if (mUsername.text.isBlank()) View.GONE else View.VISIBLE
 
         if (!SystemUtils.isNotLegacy) {
             return
@@ -223,6 +218,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         CustomTabsClient.bindCustomTabsService(this, "com.android.chrome", mTabsServiceConnection)
         mTabsIntent = CustomTabsIntent.Builder(mTabsSession)
+                .setToolbarColor(ContextCompat.getColor(this, R.color.colorPrimary))
+                .setShowTitle(true)
                 .setStartAnimations(this,
                         R.anim.slide_in_right,
                         R.anim.slide_out_left)
@@ -237,7 +234,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             return
         }
 
-        startActivity(Intent(this, BenefitsActivity::class.java))
+        startActivity(Intent(this, IntroActivity::class.java))
         finish()
     }
 
@@ -247,7 +244,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         when (mPrefs.get(AppPrefs.KEY_INTRO_VERSION, "0")) {
-            BuildConfig.VERSION_NAME -> {}
+            BuildConfig.VERSION_NAME -> return
             "0" -> {
                 mPrefs.set(AppPrefs.KEY_INTRO_VERSION, BuildConfig.VERSION_NAME)
                 mPrefs.set(AppPrefs.KEY_INTRO_DAY, Time().toString())

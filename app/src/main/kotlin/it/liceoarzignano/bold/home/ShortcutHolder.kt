@@ -34,7 +34,7 @@ class ShortcutHolder(view: View) : RecyclerView.ViewHolder(view) {
         val r = context.resources
         val params = mCardView.layoutParams as RecyclerView.LayoutParams
         val defaultMargin = params.topMargin
-        val extraMargin = UiUtils.dpToPx(r, 8f).toInt()
+        val extraMargin = UiUtils.dpToPx(r, 16f).toInt()
         val isFirst = position == 0
         params.setMargins(if (isFirst) extraMargin else defaultMargin, defaultMargin,
                 if (isFirst) defaultMargin else extraMargin, defaultMargin)

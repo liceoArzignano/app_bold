@@ -13,6 +13,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
@@ -28,6 +29,7 @@ class SafeActivity : AppCompatActivity() {
 
     lateinit private var mLoadingLayout: LinearLayout
     lateinit private var mContentLayout: View
+    lateinit private var mLoadingImage: ImageView
     lateinit private var mLoadingText: TextView
     lateinit private var mUserEdit: EditText
     lateinit private var mRegEdit: EditText
@@ -62,6 +64,7 @@ class SafeActivity : AppCompatActivity() {
 
         mLoadingLayout = findViewById(R.id.safe_loading_layout)
         mContentLayout = findViewById(R.id.safe_layout_content)
+        mLoadingImage = findViewById(R.id.safe_loading_image)
         mLoadingText = findViewById(R.id.safe_loading_text)
         mUserEdit = findViewById(R.id.safe_username)
         mRegEdit = findViewById(R.id.safe_register)
@@ -92,6 +95,7 @@ class SafeActivity : AppCompatActivity() {
             mCrInternet = null
             mCrPc = null
             mCrReg = null
+            mLoadingImage.setImageResource(R.drawable.ic_empty_safe_locked)
             mLoadingText.text = getString(R.string.safe_onpause_locked)
             mUserEdit.setText("")
             mInternetEdit.setText("")
@@ -119,7 +123,6 @@ class SafeActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.action_reset -> safeReset()
             R.id.action_info -> MaterialDialog.Builder(this)
-                    .title(getString(R.string.safe_info_title))
                     .content(getString(R.string.safe_info_content))
                     .neutralText(getString(android.R.string.ok))
                     .show()
@@ -133,9 +136,8 @@ class SafeActivity : AppCompatActivity() {
             super.onBackPressed()
         } else {
             MaterialDialog.Builder(this)
-                    .title(R.string.safe_back_title)
                     .content(R.string.safe_back_message)
-                    .positiveText(R.string.safe_back_title)
+                    .positiveText(R.string.actions_exit)
                     .negativeText(android.R.string.cancel)
                     .onPositive { _, _ -> finish() }
                     .show()
@@ -176,9 +178,7 @@ class SafeActivity : AppCompatActivity() {
                 mSecretKeys = Encryption.generateKey()
             }
 
-            override fun onPostExecute(result: Unit?) {
-                showPasswordDialog()
-            }
+            override fun onPostExecute(result: Unit?) = showPasswordDialog()
         }.execute()
     }
 
@@ -224,6 +224,8 @@ class SafeActivity : AppCompatActivity() {
         if (!isPasswordCorrect) {
             mLoadingText.text = getString(R.string.safe_nomatch)
         }
+        mLoadingImage.setImageResource(R.drawable.ic_empty_safe_unlocked)
+
 
         // Do things with some delay
         Handler().postDelayed({
@@ -275,7 +277,7 @@ class SafeActivity : AppCompatActivity() {
                 .title(getString(R.string.safe_reset_title))
                 .content(getString(R.string.safe_reset_content))
                 .negativeText(getString(android.R.string.no))
-                .positiveText(getString(android.R.string.yes))
+                .positiveText(getString(R.string.safe_reset_positive))
                 .onPositive { _, _ ->
                     mPrefs.remove(AppPrefs.KEY_SAFE_ACCESS)
                     mPrefs.remove(AppPrefs.KEY_SAFE_USERNAME)
@@ -293,8 +295,8 @@ class SafeActivity : AppCompatActivity() {
 
     private fun prepareDevice() {
         // There's no need of doing a SafetyNet test now, just check app integrity
-        if (mPrefs.get(AppPrefs.KEY_SAFE_PASSED) && Encryption.validateResponse(this,
-                null, BuildConfig.DEBUG)) {
+        if (mPrefs.get(AppPrefs.KEY_SAFE_PASSED) &&
+                Encryption.validateResponse(this, null, BuildConfig.DEBUG) == 0) {
             mLoadingText.setText(R.string.safe_first_load)
             Handler().postDelayed({
                 setupEncryption()
@@ -310,6 +312,7 @@ class SafeActivity : AppCompatActivity() {
         mMenu!!.findItem(R.id.action_info).isVisible = false
         mFab.hide()
         mContentLayout.visibility = View.GONE
+        mLoadingImage.setImageResource(R.drawable.ic_empty_safe_locked)
         mLoadingText.setText(R.string.safe_encrypting)
         mLoadingLayout.visibility = View.VISIBLE
 

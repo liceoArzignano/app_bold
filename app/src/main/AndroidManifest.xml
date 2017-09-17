@@ -119,9 +119,9 @@
             android:label="@string/title_activity_backup"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!-- Benefits -->
+        <!-- Intro -->
         <activity
-            android:name=".intro.BenefitsActivity"
+            android:name=".intro.IntroActivity"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 

@@ -18,7 +18,10 @@ import it.liceoarzignano.bold.R
 import it.liceoarzignano.bold.editor.EditorActivity
 import it.liceoarzignano.bold.ui.ActionsDialog
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt
+import it.liceoarzignano.bold.ui.recyclerview.ScrollListener
+import it.liceoarzignano.bold.utils.SystemUtils
 import it.liceoarzignano.bold.utils.Time
+
 
 class EventListActivity : AppCompatActivity() {
     lateinit private var mCoordinator: CoordinatorLayout
@@ -53,6 +56,10 @@ class EventListActivity : AppCompatActivity() {
         mEventsHandler = EventsHandler.getInstance(baseContext)
         mAdapter = EventsAdapter(mEventsHandler.getByQuery(null), this)
         eventList.adapter = mAdapter
+
+        if (SystemUtils.isNotLegacy) {
+            eventList.addOnScrollListener(ScrollListener(toolbar, resources, eventList.top))
+        }
     }
 
     override fun onResume() {

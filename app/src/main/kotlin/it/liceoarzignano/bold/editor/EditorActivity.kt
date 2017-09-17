@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.CoordinatorLayout
 import android.support.design.widget.Snackbar
+import android.support.design.widget.TextInputLayout
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.text.SpannableStringBuilder
 import android.view.*
 import android.widget.*
 import com.afollestad.materialdialogs.MaterialDialog
@@ -24,14 +26,15 @@ class EditorActivity : AppCompatActivity() {
     lateinit private var mCoordinator: CoordinatorLayout
     lateinit private var mTitleLayout: RelativeLayout
     lateinit private var mTitleText: EditText
+    lateinit private var mInputTitle: TextInputLayout
     lateinit private var mSubjectLayout: RelativeLayout
-    lateinit private var mSubjectView: TextView
+    lateinit private var mSubjectView: EditText
     lateinit private var mNotesText: EditText
     lateinit private var mCategoryLayout: RelativeLayout
     lateinit private var mCategorySpinner: Spinner
     lateinit private var mValueLayout: RelativeLayout
-    lateinit private var mValueView: TextView
-    lateinit private var mDateView: TextView
+    lateinit private var mValueView: EditText
+    lateinit private var mDateView: EditText
 
     lateinit private var mTime: Time
     lateinit private var mDateSetListener: DatePickerDialog.OnDateSetListener
@@ -65,12 +68,13 @@ class EditorActivity : AppCompatActivity() {
                 else
                     if (mIsEdit) R.string.editor_update_event else R.string.editor_new_event)
         setSupportActionBar(toolbar)
-        toolbar.setNavigationIcon(R.drawable.ic_clear)
+        toolbar.setNavigationIcon(R.drawable.ic_remove)
         toolbar.setNavigationOnClickListener { _ -> askQuit() }
 
         mCoordinator = findViewById(R.id.coordinator_layout)
         mTitleLayout = findViewById(R.id.editor_title_layout)
         mTitleText = findViewById(R.id.editor_title_text)
+        mInputTitle = findViewById(R.id.editor_input_title)
         mSubjectView = findViewById(R.id.editor_subject_selector)
         mSubjectLayout = findViewById(R.id.editor_subject_layout)
         mNotesText = findViewById(R.id.editor_notes_text)
@@ -98,10 +102,14 @@ class EditorActivity : AppCompatActivity() {
 
         mDateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
             mTime = Time(year, month, dayOfMonth)
-            mDateView.text = mTime.toString()
+            mDateView.text = SpannableStringBuilder(mTime.toString())
         }
         mDateView.setOnClickListener { _ -> showDatePicker() }
-        mDateView.text = mTime.toString()
+        mDateView.text = SpannableStringBuilder(mTime.toString())
+
+        mSubjectView.keyListener = null
+        mValueView.keyListener = null
+        mDateView.keyListener = null
     }
 
     override fun onBackPressed() = askQuit()
@@ -123,12 +131,13 @@ class EditorActivity : AppCompatActivity() {
     private fun initMarkUi() {
         if (mPrefs.get(AppPrefs.KEY_IS_TEACHER)) {
             mTitleLayout.visibility = View.VISIBLE
-            mTitleText.hint = getString(R.string.editor_hint_student)
+            mInputTitle.hint = getString(R.string.editor_hint_student)
         } else {
             mSubjectLayout.visibility = View.VISIBLE
         }
         mValueLayout.visibility = View.VISIBLE
-        mValueView.text = String.format(Locale.ENGLISH, "%.2f", mValue.toDouble() / 100)
+        mValueView.text = SpannableStringBuilder(String.format(Locale.ENGLISH,
+                "%.2f", mValue.toDouble() / 100))
 
         val items: Array<String> = when (mPrefs.get(AppPrefs.KEY_ADDRESS, "0")) {
             "1" -> resources.getStringArray(R.array.subjects_lists_1)
@@ -145,12 +154,14 @@ class EditorActivity : AppCompatActivity() {
             MaterialDialog.Builder(this)
                     .title(R.string.editor_hint_subject)
                     .items(list)
-                    .itemsCallback { _, _, _, text -> mSubjectView.text = text }
+                    .itemsCallback { _, _, _, text ->
+                        mSubjectView.text = SpannableStringBuilder(text)
+                    }
                     .show()
         }
 
 
-        mValueLayout.setOnClickListener { _ ->
+        mValueView.setOnClickListener { _ ->
             MaterialDialog.Builder(this)
                     .title(R.string.editor_dialog_mark_title)
                     .customView(valuePickerView, false)
@@ -158,7 +169,8 @@ class EditorActivity : AppCompatActivity() {
                     .neutralText(android.R.string.cancel)
                     .onPositive { _, _ ->
                         mValue = (mDialogVal * 25).toInt()
-                        mValueView.text = String.format(Locale.ENGLISH, "%.2f", mDialogVal / 4)
+                        mValueView.text = SpannableStringBuilder(String.format(Locale.ENGLISH,
+                                "%.2f", mDialogVal / 4))
                     }
                     .show()
         }
@@ -166,7 +178,7 @@ class EditorActivity : AppCompatActivity() {
 
     private fun initEventUi() {
         mTitleLayout.visibility = View.VISIBLE
-        mTitleText.hint = getString(R.string.editor_hint_event)
+        mInputTitle.hint = getString(R.string.editor_hint_event)
         mCategoryLayout.visibility = View.VISIBLE
 
         val items = resources.getStringArray(R.array.event_categories)
@@ -185,7 +197,7 @@ class EditorActivity : AppCompatActivity() {
             if (mPrefs.get(AppPrefs.KEY_IS_TEACHER)) {
                 mTitleText.setText(mark.subject)
             } else {
-                mSubjectView.text = mark.subject
+                mSubjectView.text = SpannableStringBuilder(mark.subject)
             }
             mNotesText.setText(mark.description)
             mTime = Time(mark.date)
@@ -202,7 +214,7 @@ class EditorActivity : AppCompatActivity() {
             mTime = Time(event.date)
         }
 
-        mDateView.text = mTime.toString()
+        mDateView.text = SpannableStringBuilder(mTime.toString())
     }
 
     private fun loadNews() {
@@ -213,7 +225,7 @@ class EditorActivity : AppCompatActivity() {
         mIsEdit = false
         mTime = Time(news.date)
         mTitleText.setText(news.title)
-        mDateView.text = mTime.toString()
+        mDateView.text = SpannableStringBuilder(mTime.toString())
         mNotesText.setText(String.format("%1\$s\n%2\$s", news.description, news.url))
         mValue = 6
     }
@@ -228,7 +240,6 @@ class EditorActivity : AppCompatActivity() {
 
     private fun askQuit() {
         MaterialDialog.Builder(this)
-                .title(R.string.editor_cancel_title)
                 .content(R.string.editor_cancel_message)
                 .positiveText(android.R.string.yes)
                 .negativeText(android.R.string.no)

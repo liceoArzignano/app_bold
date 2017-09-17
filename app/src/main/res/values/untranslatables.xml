@@ -14,11 +14,11 @@
     <string translatable="false" name="config_url_help">https://liceoarzignano.github.io/guida</string>
 
     <!-- Addresses -->
-    <string translatable="false" name="pref_address_1">Scientifico</string>
-    <string translatable="false" name="pref_address_2">Scientifico Scienze Applicate</string>
-    <string translatable="false" name="pref_address_3">Linguistico</string>
-    <string translatable="false" name="pref_address_4">Scienze Umane</string>
-    <string translatable="false" name="pref_address_5">Scienze Umane Economico-Sociale</string>
+    <string translatable="false" name="pref_address_1">Liceo Scientifico</string>
+    <string translatable="false" name="pref_address_2">Liceo Scientifico Scienze Applicate</string>
+    <string translatable="false" name="pref_address_3">Liceo Linguistico</string>
+    <string translatable="false" name="pref_address_4">Liceo Scienze Umane</string>
+    <string translatable="false" name="pref_address_5">Liceo Scienze Umane Economico-Sociale</string>
 
     <string translatable="false" name="default_mark">0.0</string>
 

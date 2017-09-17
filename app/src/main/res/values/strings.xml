@@ -4,7 +4,6 @@
     <!-- Navigation drawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_home">Home</string>
     <string name="nav_mymarks">Marks</string>
     <string name="nav_events">Events</string>
     <string name="nav_news">News</string>
@@ -36,6 +35,9 @@
     <string name="suggestion_news">You will find the most important news from the right in the app by opening the news section</string>
     <string name="suggestion_feedback">Want to submit a feedback or report an issue you\'ve found? You can do it from the settings</string>
     <string name="share_title">Share with someone</string>
+    <string name="home_welcome_morning">Good morning</string>
+    <string name="home_welcome_afternoon">Good afternoon</string>
+    <string name="home_welcome_evening">Good evening</string>
 
     <!-- Search -->
     <string name="search_action">Search\u2026</string>
@@ -58,14 +60,16 @@
     <string name="editor_new_event">New event</string>
     <string name="editor_update_mark">Update mark</string>
     <string name="editor_update_event">Update event</string>
-    <string name="editor_hint_notes">Notes</string>
-    <string name="editor_hint_subject">Select a subject</string>
-    <string name="editor_hint_student">Student name</string>
-    <string name="editor_hint_event">Event title</string>
+    <string name="editor_hint_notes">Notes (optional)</string>
+    <string name="editor_hint_subject">Subject</string>
+    <string name="editor_hint_student">Student</string>
+    <string name="editor_hint_event">Title</string>
+    <string name="editor_hint_value">Value</string>
+    <string name="editor_hint_category">Category</string>
+    <string name="editor_hint_date">Date</string>
     <string name="editor_save">Save</string>
     <string name="editor_saved">Saved</string>
-    <string name="editor_cancel_title">Discard changes</string>
-    <string name="editor_cancel_message">Do you want to discard all the changes?</string>
+    <string name="editor_cancel_message">Do you want to exit without saving the changes?</string>
     <string name="editor_dialog_mark_title">Select a mark</string>
     <string name="editor_error">Something is wrong, check the values</string>
 
@@ -89,6 +93,7 @@
     <string name="actions_removed">Removed</string>
     <string name="actions_share">Share</string>
     <string name="actions_to_event">Save as event</string>
+    <string name="actions_exit">Exit</string>
 
     <!-- My events -->
     <string name="title_activity_event_list">Events</string>
@@ -182,9 +187,12 @@
     <string name="pref_secret_safe_test_title">Device security test</string>
     <string name="pref_secret_safe_test_running">Checking device security status\u2026</string>
     <string name="pref_secret_safe_test_connection">Internet connection is required to check device security</string>
-    <string name="pref_secret_safe_test_fail">Test failed. Your device is running unsecured software, Safe won\'t be enabled</string>
+    <string name="pref_secret_safe_test_fail_1">Error 1. Unable to complete the test, try again</string>
+    <string name="pref_secret_safe_test_fail_2">Error 2. Device software integrity test failed (SafetyNet failed).\nSafe won\'t be enabled</string>
+    <string name="pref_secret_safe_test_fail_3">Error 3. Device security test failed (Permissive SELinux).\nSafe won\'t be enabled</string>
+    <string name="pref_secret_safe_test_fail_4">Error 4. Malicious installed apps found.\nSafe won\'t be enabled</string>
+    <string name="pref_secret_safe_test_fail_5">Error 5Invalid app signature. You\'re not running a valid version of this app. Please reinstall it from the Play Store.</string>
     <string name="pref_secret_safe_test_success">Test succeeded. Your device is secure, Safe will be enabled</string>
-    <string name="pref_secret_export_safe_title">Password sharing tool</string>
     <string name="pref_opensource_title">Open source</string>
     <string name="pref_opensource_message">Released under LGPL v3 license</string>
 
@@ -208,13 +216,13 @@
     <string name="safe_info_content">The credentials are encrypted and decrypted using the AES algorythm with a 256-bit key. This means they are unreadable for everyone but this app</string>
     <string name="safe_reset_title">Reset password</string>
     <string name="safe_reset_content">If you rest your password you\'ll loose the other stored credentials as well.\nDo you want to continue?</string>
+    <string name="safe_reset_positive">Reset</string>
     <string name="safe_encrypting">Saving\u2026</string>
     <string name="safe_decrypting">Loading\u2026</string>
     <string name="safe_onpause_locked">Locked</string>
     <string name="safe_first_load">Loading\u2026</string>
     <string name="safe_nomatch">Password is incorrect</string>
-    <string name="safe_back_title">Exit</string>
-    <string name="safe_back_message">Are you sure you want to exit? Your changes will be discarded.\nClick the button at the bottom to save</string>
+    <string name="safe_back_message">Are you sure you want to exit? Your changes will be discarded.\nTo save them, click the button at the bottom to save</string>
     <string name="safe_data_usage"><b>Register and Copybook</b>\n\u2022 Username: User ID\n\u2022 Password: Register password\n\n<b>PC account</b>\n\u2022 Username: surname + User ID (<i>rossi123456</i>)\n\u2022 Password: PC Password\n\n<b>Internet access</b>\n\u2022 Username: surname + User ID (<i>rossi123456</i>)\n\u2022 Password: Internet Password</string>
 
     <!-- Notification -->

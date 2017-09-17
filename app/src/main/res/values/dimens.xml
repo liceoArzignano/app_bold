@@ -6,7 +6,10 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="card_margin">16dp</dimen>
     <dimen name="item_horizontal_margin">16dp</dimen>
-    <dimen name="app_bar_height_view">226dp</dimen>
+    <dimen name="app_bar_height_view">192dp</dimen>
+    <dimen name="scroll_toolbar_elevation">2dp</dimen>
 
     <dimen name="sheet_margin">0dp</dimen>
+    <dimen name="action_width">48dp</dimen>
+    <dimen name="benefits_card_padding">64dp</dimen>
 </resources>

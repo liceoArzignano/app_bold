@@ -18,8 +18,11 @@ object ContentUtils {
         val list = handler.getFilteredMarks("", filter)
         val elements = ArrayList<String>()
 
-        list.filterNot { elements.contains(it.subject) }
-                .forEach { elements.add(it.subject) }
+        for (item in list) {
+            if (!elements.contains(item.subject)) {
+                elements.add(item.subject)
+            }
+        }
 
         return elements.toTypedArray()
     }

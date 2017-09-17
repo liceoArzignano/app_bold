@@ -23,6 +23,8 @@ import android.widget.TextView
 import it.liceoarzignano.bold.R
 import it.liceoarzignano.bold.ui.ActionsDialog
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt
+import it.liceoarzignano.bold.ui.recyclerview.ScrollListener
+import it.liceoarzignano.bold.utils.SystemUtils
 import it.liceoarzignano.bold.utils.Time
 
 class NewsListActivity : AppCompatActivity() {
@@ -44,7 +46,7 @@ class NewsListActivity : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         toolbar.setNavigationIcon(R.drawable.ic_toolbar_back)
-        toolbar.setNavigationOnClickListener { v -> finish() }
+        toolbar.setNavigationOnClickListener { _ -> finish() }
 
         mCoordinator = findViewById(R.id.coordinator_layout)
         val newsList = findViewById<RecyclerViewExt>(R.id.news_list)
@@ -61,6 +63,9 @@ class NewsListActivity : AppCompatActivity() {
         mNewsHandler = NewsHandler.getInstance(baseContext)
         mAdapter = NewsAdapter(mNewsHandler.all, this)
         newsList.adapter = mAdapter
+        if (SystemUtils.isNotLegacy) {
+            newsList.addOnScrollListener(ScrollListener(toolbar, resources, newsList.top))
+        }
     }
 
     override fun onResume() {

@@ -25,7 +25,7 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                app:srcCompat="@drawable/ic_info_tutorial" />
+                app:srcCompat="@drawable/ic_info" />
 
             <TextView
                 android:layout_width="match_parent"

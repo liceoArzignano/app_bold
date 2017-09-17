@@ -4,7 +4,6 @@
     <!-- Navigation drawer -->
     <string name="navigation_drawer_open">Apri navigation drawer</string>
     <string name="navigation_drawer_close">Chiudi navigation drawer</string>
-    <string name="nav_home">Home</string>
     <string name="nav_mymarks">Voti</string>
     <string name="nav_events">Eventi</string>
     <string name="nav_news">Notizie</string>
@@ -57,14 +56,16 @@
     <string name="editor_new_event">Nuovo evento</string>
     <string name="editor_update_mark">Modifica voto</string>
     <string name="editor_update_event">Modifica evento</string>
-    <string name="editor_hint_notes">Annotazioni</string>
-    <string name="editor_hint_subject">Seleziona una materia</string>
-    <string name="editor_hint_student">Nome studente</string>
-    <string name="editor_hint_event">Titolo evento</string>
+    <string name="editor_hint_notes">Annotazioni (opzionale)</string>
+    <string name="editor_hint_subject">Materia</string>
+    <string name="editor_hint_student">Studente</string>
+    <string name="editor_hint_event">Titolo</string>
+    <string name="editor_hint_value">Punteggio</string>
+    <string name="editor_hint_category">Categoria</string>
+    <string name="editor_hint_date">Data</string>
     <string name="editor_save">Salva</string>
     <string name="editor_saved">Salvato</string>
-    <string name="editor_cancel_title">Esci</string>
-    <string name="editor_cancel_message">Annullare tutte le modifiche?</string>
+    <string name="editor_cancel_message">Vuoi uscire senza salvare i cambiamenti?</string>
     <string name="editor_dialog_mark_title">Seleziona un voto</string>
     <string name="editor_error">Qualcosa non va, controlla i valori</string>
 
@@ -88,6 +89,7 @@
     <string name="actions_removed">Rimosso</string>
     <string name="actions_share">Condividi</string>
     <string name="actions_to_event">Salva come evento</string>
+    <string name="actions_exit">Esci</string>
 
     <!-- My events -->
     <string name="title_activity_event_list">Eventi</string>
@@ -111,11 +113,10 @@
     <string name="slide0_title">Ciao</string>
     <string name="slide0_message_loading">Sto preparando lo zaino\u2026</string>
     <string name="slide0_message_failed">Oops, connessione ad internet assente, connettiti e riprova</string>
-    <string name="slide0_message_done">Tutto pronto, scorri per cominciare!</string>
     <string name="slide1_title">Indirizzo di studi</string>
     <string name="slide1_message">Per iniziare, seleziona il tuo indirizzo di studi</string>
     <string name="intro_btn_retry">Riprova</string>
-    <string name="intro_btn_done">Tutto pronto</string>
+    <string name="intro_btn_done">Scegli</string>
     <string name="intro_drawer_title">Inizia da qui</string>
     <string name="intro_drawer">Da questo menu potrai navigare all\' interno dell\'app.\nLa schermata iniziale mostrer\u00E0 le informazioni al momento giusto</string>
     <string name="intro_fab_save_safe_title">Benvenuto</string>
@@ -178,11 +179,14 @@
     <string name="pref_safe_status_title">Stato Safe</string>
     <string name="pref_safe_status_message_enabled">Attivato (dispositivo sicuro)</string>
     <string name="pref_safe_status_message_disabled">Disattivato (dispositivo non sicuro)</string>
-    <string name="pref_secret_safe_test_title">Test sicurezza dispositivo</string>
     <string name="pref_secret_safe_test_running">Controllo sicurezza dispositivo\u2026</string>
     <string name="pref_secret_safe_test_connection">\u00C8 necessaria una connessione ad internet per effetuare il test</string>
-    <string name="pref_secret_safe_test_fail">Test fallito. Il dispositivo non \u00E8 sicuro. Safe sar\u00E0 disattivato</string>
-    <string name="pref_secret_safe_test_success">Test passato. Il dispositivo \u00E8 sicuro. Safe sar\u00E0 attivato</string>
+    <string name="pref_secret_safe_test_fail_1">Errore 1. Impossible completare il test, prova di nuovo</string>
+    <string name="pref_secret_safe_test_fail_2">Errore 2. Test integrit\u00E0 software dispositivo fallito (SafetyNet).\nSafe non sar\u00E0 attivo</string>
+    <string name="pref_secret_safe_test_fail_3">Errore 3. Test sicurezza dispositivo fallito (SELinux permissivo).\nSafe non sar\u00E0 attivo</string>
+    <string name="pref_secret_safe_test_fail_4">Errore 4. Applicazione malevola installata.\nSafe non sar\u00E0 attivo</string>
+    <string name="pref_secret_safe_test_fail_5">Errore 5. Firma dell\'app non valida. Non stai utilizzando una versione valida di quest\'app. Reinstallala dal Play Store.</string>
+    <string name="pref_secret_safe_test_success">Test passato. Il dispositivo \u00E8 sicuro. Safe sar\u00E0 attivo</string>
     <string name="pref_opensource_title">Open source</string>
     <string name="pref_opensource_message">Rilasciato sotto licenza LGPL v3</string>
 
@@ -206,12 +210,12 @@
     <string name="safe_info_content">Le credenziali sono criptate e decriptate utilizzando l\'algoritmo AES con chiave a 256-bit. Questo significa che saranno incompresibili per chiunque tranne quest\'app</string>
     <string name="safe_reset_title">Reimpostazione password</string>
     <string name="safe_reset_content">Se reimposti la password anche le credenziali salvate saranno eliminate.\nVuoi procedere?</string>
+    <string name="safe_reset_positive">Reimposta</string>
     <string name="safe_encrypting">Salvataggio\u2026</string>
     <string name="safe_decrypting">Caricamento\u2026</string>
     <string name="safe_onpause_locked">Bloccato. Tocca per sbloccare</string>
     <string name="safe_first_load">Caricamento\u2026</string>
     <string name="safe_nomatch">Password errata</string>
-    <string name="safe_back_title">Esci</string>
     <string name="safe_back_message">Vuoi uscire? I cambiamenti non verranno salvati.\nTocca il pulsante in basso per salvare</string>
     <string name="safe_data_usage"><b>Registro e Quaderno</b>\n\u2022 Nome utente: ID utente\n\u2022 Password: Password registro\n\n<b>Account PC</b>\n\u2022 Nome utente: cognome + ID utente (<i>rossi123456</i>)\n\u2022 Password: Password PC\n\n<b>Accesso internet</b>\n\u2022 Nome utente: cognome + ID utente (<i>rossi123456</i>)\n\u2022 Password: Password Internet</string>
 

@@ -113,7 +113,6 @@ open class AppPrefs(context: Context) {
         private val KEY_OLD_SAFE_REG = "reg_pwd"
         private val KEY_OLD_SAFE_PC = "pd_pwd"
         private val KEY_OLD_SAFE_INTERNET = "internet_pwd"
-        private val KEY_OLD_SAFE_SHARED = "has_shared"
         private val KEY_OLD_INTRO_SAFE = "safeKey"
         private val KEY_OLD_INTRO_VERSION = "introVersion"
         private val KEY_OLD_INITIAL_DAY = "introDay"
