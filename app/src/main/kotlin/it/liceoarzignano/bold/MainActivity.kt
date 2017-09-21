@@ -183,6 +183,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mUsername.visibility = if (mUsername.text.isBlank()) View.GONE else View.VISIBLE
 
         if (!SystemUtils.isNotLegacy) {
+            mLogo.visibility = View.GONE
             return
         }
 
