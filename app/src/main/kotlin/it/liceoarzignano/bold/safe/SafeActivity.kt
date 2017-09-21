@@ -45,6 +45,14 @@ class SafeActivity : AppCompatActivity() {
     private var mCrPc: String? = null
     private var mCrInternet: String? = null
     private var isWorking = true
+    private var mWorkingTask: AsyncTask<Unit, Unit, Unit> = // Default to the first used task
+            object : AsyncTask<Unit, Unit, Unit>() {
+                override fun doInBackground(vararg p0: Unit?) {
+                    mSecretKeys = Encryption.generateKey()
+                }
+
+                override fun onPostExecute(result: Unit?) = showPasswordDialog()
+            }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,6 +119,11 @@ class SafeActivity : AppCompatActivity() {
         super.onPause()
     }
 
+    override fun onDestroy() {
+        mWorkingTask.cancel(true)
+        super.onDestroy()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         this.mMenu = menu
         menuInflater.inflate(R.menu.safe, menu)
@@ -172,16 +185,6 @@ class SafeActivity : AppCompatActivity() {
                 .onNegative { _, _ -> finish() })
     }
 
-    private fun setupEncryption() {
-        object : AsyncTask<Unit, Unit, Unit>() {
-            override fun doInBackground(vararg p0: Unit?) {
-                mSecretKeys = Encryption.generateKey()
-            }
-
-            override fun onPostExecute(result: Unit?) = showPasswordDialog()
-        }.execute()
-    }
-
     private fun encrypt(string: String): String {
         // Don't waste time if there's nothing to do
         if (string.isBlank()) {
@@ -224,13 +227,12 @@ class SafeActivity : AppCompatActivity() {
         if (!isPasswordCorrect) {
             mLoadingText.text = getString(R.string.safe_nomatch)
         }
-        mLoadingImage.setImageResource(R.drawable.ic_empty_safe_unlocked)
-
 
         // Do things with some delay
         Handler().postDelayed({
             if (isPasswordCorrect) {
-                object : AsyncTask<Unit, Unit, Unit>() {
+                mLoadingImage.setImageResource(R.drawable.ic_empty_safe_unlocked)
+                mWorkingTask = object : AsyncTask<Unit, Unit, Unit>() {
                     override fun doInBackground(vararg p0: Unit?) {
                         isWorking = false
 
@@ -243,7 +245,8 @@ class SafeActivity : AppCompatActivity() {
                     override fun onPostExecute(result: Unit?) {
                         Handler().postDelayed({ onCreateContinue() }, 600)
                     }
-                }.execute()
+                }
+                mWorkingTask.execute()
             } else {
                 finish()
             }
@@ -299,7 +302,7 @@ class SafeActivity : AppCompatActivity() {
                 Encryption.validateResponse(this, null, BuildConfig.DEBUG) == 0) {
             mLoadingText.setText(R.string.safe_first_load)
             Handler().postDelayed({
-                setupEncryption()
+                mWorkingTask.execute()
             }, 100)
         } else {
             mPrefs.set(AppPrefs.KEY_SAFE_PASSED, false)
@@ -316,7 +319,7 @@ class SafeActivity : AppCompatActivity() {
         mLoadingText.setText(R.string.safe_encrypting)
         mLoadingLayout.visibility = View.VISIBLE
 
-        object : AsyncTask<Unit, Unit, Unit>() {
+        mWorkingTask = object : AsyncTask<Unit, Unit, Unit>() {
             override fun doInBackground(vararg p0: Unit?) {
                 var text = mUserEdit.text.toString()
                 if (!text.isEmpty()) {
@@ -339,7 +342,8 @@ class SafeActivity : AppCompatActivity() {
             override fun onPostExecute(result: Unit?) {
                 Handler().postDelayed({ finish() }, 1000)
             }
-        }.execute()
+        }
+        mWorkingTask.execute()
     }
 
     companion object {
