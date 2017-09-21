@@ -42,10 +42,10 @@
     <!-- Updated Dialog -->
     <string name="dialog_updated_title">L\'app \u00E8 stata aggiornata!</string>
     <string name="dialog_updated_content">
-        \u2022 Nuovo: invia feedback.\n
-        \u2022 Nuovo: i docenti possono ricevere i comunicati ora.\n
-        \u2022 Aggiornato: migliorati controlli sicurezza di Safe.\n
-        \u2022 Miglioramenti performances.\n
+         \u2022 Nuovo: aggiornata interfaccia utente.\n
+        \u2022 Nuovo: assistente migrazione nuovo anno scolastico.\n
+        \u2022 Nuovo: supporto Android 8.0.\n
+        \u2022 Miglioramenti performance.\n
         \u2022 Bug fix.
     </string>
     <string name="dialog_updated_changelog">Novit\u00E0</string>

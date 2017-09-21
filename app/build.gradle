@@ -12,8 +12,8 @@ android {
         applicationId 'it.liceoarzignano.bold'
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 11703
-        versionName "1.0.17"
+        versionCode 14800
+        versionName "1.0.18"
         vectorDrawables.useSupportLibrary true
         resConfigs "en", "it"
 
@@ -39,15 +39,6 @@ android {
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-
-    splits {
-        abi {
-            enable true
-            reset()
-            include 'armeabi-v7a', 'x86', 'arm64-v8a'
-            universalApk true
         }
     }
 }
@@ -79,18 +70,6 @@ dependencies {
     compile 'com.github.zhukic:sectioned-recyclerview:1.1.0'
     compile('com.afollestad.material-dialogs:core:0.9.4.5') { transitive = true }
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-}
-
-import com.android.build.OutputFile
-
-ext.versionCodes = ['armeabi-v7a':1, x86:2, 'arm64-v8a':3]
-
-android.applicationVariants.all { variant ->
-    // assign different version code for each output
-    variant.outputs.each { output ->
-        int abiVersionCode = project.ext.versionCodes.get(output.getFilter(OutputFile.ABI)) ?: 0
-        output.versionCodeOverride = (abiVersionCode * 1000) + android.defaultConfig.versionCode
-    }
 }
 
 apply plugin: 'com.google.gms.google-services'

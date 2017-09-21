@@ -46,10 +46,10 @@
     <!-- Updated Dialog -->
     <string name="dialog_updated_title">App has been updated</string>
     <string name="dialog_updated_content">
-        \u2022 New: send feedback.\n
-        \u2022 New: teachers can now receive communiques.\n
-        \u2022 Updated: improved Safe security checks.\n
-        \u2022 Increased performances.\n
+         \u2022 New: refreshed user interface.\n
+        \u2022 New: new year migration tool.\n
+        \u2022 New: Android 8.0 support.\n
+        \u2022 Performances improvements.\n
         \u2022 Bug fixes.
     </string>
     <string name="dialog_updated_changelog">Changelog</string>
@@ -191,7 +191,7 @@
     <string name="pref_secret_safe_test_fail_2">Error 2. Device software integrity test failed (SafetyNet failed).\nSafe won\'t be enabled</string>
     <string name="pref_secret_safe_test_fail_3">Error 3. Device security test failed (Permissive SELinux).\nSafe won\'t be enabled</string>
     <string name="pref_secret_safe_test_fail_4">Error 4. Malicious installed apps found.\nSafe won\'t be enabled</string>
-    <string name="pref_secret_safe_test_fail_5">Error 5Invalid app signature. You\'re not running a valid version of this app. Please reinstall it from the Play Store.</string>
+    <string name="pref_secret_safe_test_fail_5">Error 5. Invalid app signature. You\'re not running a valid version of this app. Please reinstall it from the Play Store.</string>
     <string name="pref_secret_safe_test_success">Test succeeded. Your device is secure, Safe will be enabled</string>
     <string name="pref_opensource_title">Open source</string>
     <string name="pref_opensource_message">Released under LGPL v3 license</string>
