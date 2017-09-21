@@ -97,13 +97,13 @@
     <string name="events_time_yesterday">Ieri</string>
     <string name="events_time_today">Oggi</string>
     <string name="events_time_tomorrow">Domani</string>
-    <string name="events_test">📝 Verifica</string>
-    <string name="event_school">📚 A scuola</string>
-    <string name="event_homework">🏠 Compito per casa</string>
-    <string name="event_reminder">📌 Promemoria</string>
-    <string name="event_birthday">🎂 Compleanno</string>
-    <string name="event_meeting">💬 Incontro</string>
-    <string name="event_other">📅 Altro</string>
+    <string name="events_test">Verifica</string>
+    <string name="event_school">A scuola</string>
+    <string name="event_homework">Compito per casa</string>
+    <string name="event_reminder">Promemoria</string>
+    <string name="event_birthday">Compleanno</string>
+    <string name="event_meeting">Incontro</string>
+    <string name="event_other">Altro</string>
 
     <!-- News -->
     <string name="news_empty">Nulla di nuovo per ora</string>
@@ -231,32 +231,32 @@
     </plurals>
     <string name="notification_message_end">.</string>
     <plurals name="notification_test">
-        <item quantity="one">compito 📝</item>
-        <item quantity="other">compiti 📝📝</item>
+        <item quantity="one">compito</item>
+        <item quantity="other">compiti</item>
     </plurals>
     <plurals name="notification_school">
-        <item quantity="one">evento a scuola 📚</item>
-        <item quantity="other">eventi a scuola 📚📚</item>
+        <item quantity="one">evento a scuola</item>
+        <item quantity="other">eventi a scuola</item>
     </plurals>
     <plurals name="notification_birthday">
-        <item quantity="one">compleanno 🎂</item>
-        <item quantity="other">compleanni 🎂🎂</item>
+        <item quantity="one">compleanno</item>
+        <item quantity="other">compleanni</item>
     </plurals>
     <plurals name="notification_homework">
-        <item quantity="one">compito per casa 🏠</item>
-        <item quantity="other">compiti per casa 🏠🏠</item>
+        <item quantity="one">compito per casa</item>
+        <item quantity="other">compiti per casa</item>
     </plurals>
     <plurals name="notification_reminder">
-        <item quantity="one">promemoria 📌</item>
-        <item quantity="other">promemoria 📌📌</item>
+        <item quantity="one">promemoria</item>
+        <item quantity="other">promemoria</item>
     </plurals>
     <plurals name="notification_meeting">
-        <item quantity="one">incontro 💬</item>
-        <item quantity="other">incontri 💬💬</item>
+        <item quantity="one">incontro</item>
+        <item quantity="other">incontri</item>
     </plurals>
     <plurals name="notification_other">
-        <item quantity="one">evento 📅</item>
-        <item quantity="other">eventi 📅📅</item>
+        <item quantity="one">evento</item>
+        <item quantity="other">eventi</item>
     </plurals>
 
     <!-- Backup -->

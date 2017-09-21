@@ -101,13 +101,13 @@
     <string name="events_time_yesterday">Yesterday</string>
     <string name="events_time_today">Today</string>
     <string name="events_time_tomorrow">Tomorrow</string>
-    <string name="events_test">📝 Test</string>
-    <string name="event_school">📚 At school</string>
-    <string name="event_birthday">🎂 Birthday</string>
-    <string name="event_homework">🏠 Homework</string>
-    <string name="event_reminder">📌 Reminder</string>
-    <string name="event_meeting">💬 Meeting</string>
-    <string name="event_other">📅 Other</string>
+    <string name="events_test">Test</string>
+    <string name="event_school">At school</string>
+    <string name="event_birthday">Birthday</string>
+    <string name="event_homework">Homework</string>
+    <string name="event_reminder">Reminder</string>
+    <string name="event_meeting">Meeting</string>
+    <string name="event_other">Other</string>
 
     <!-- News -->
     <string name="news_empty">There\'s nothing new so far</string>
@@ -237,32 +237,32 @@
     </plurals>
     <string name="notification_message_end">tomorrow.</string>
     <plurals name="notification_test">
-        <item quantity="one">test 📝</item>
-        <item quantity="other">tests 📝📝</item>
+        <item quantity="one">test</item>
+        <item quantity="other">tests</item>
     </plurals>
     <plurals name="notification_school">
-        <item quantity="one">event at school 📚</item>
-        <item quantity="other">events at school 📚📚</item>
+        <item quantity="one">event at school</item>
+        <item quantity="other">events at school</item>
     </plurals>
     <plurals name="notification_homework">
-        <item quantity="one">homework 🏠</item>
-        <item quantity="other">homework 🏠🏠</item>
+        <item quantity="one">homework</item>
+        <item quantity="other">homework</item>
     </plurals>
     <plurals name="notification_reminder">
-        <item quantity="one">reminder 📌</item>
-        <item quantity="other">reminders 📌📌</item>
+        <item quantity="one">reminder</item>
+        <item quantity="other">reminders</item>
     </plurals>
     <plurals name="notification_birthday">
-        <item quantity="one">birthday 🎂</item>
-        <item quantity="other">birthdays 🎂🎂</item>
+        <item quantity="one">birthday</item>
+        <item quantity="other">birthdays</item>
     </plurals>
     <plurals name="notification_meeting">
-        <item quantity="one">meeting 💬</item>
-        <item quantity="other">meetings 💬💬</item>
+        <item quantity="one">meeting</item>
+        <item quantity="other">meetings</item>
     </plurals>
     <plurals name="notification_other">
-        <item quantity="one">event 📅</item>
-        <item quantity="other">events 📅📅</item>
+        <item quantity="one">event</item>
+        <item quantity="other">events</item>
     </plurals>
 
     <!-- Backup -->
