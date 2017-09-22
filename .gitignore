@@ -1,11 +1,12 @@
 *.iml
 .gradle
 /local.properties
-/.idea/workspace.xml
-/.idea/libraries
+/.idea
 .DS_Store
 /build
 /captures
+/annotations
 *.apk
 safe_mod
 app/google-services.json
+*.patch

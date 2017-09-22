@@ -10,5 +10,6 @@
 
     <declare-styleable name="RecyclerViewExt">
         <attr name="tabletUI" format="boolean" />
+        <attr name="horizontalMode" format="boolean" />
     </declare-styleable>
 </resources>

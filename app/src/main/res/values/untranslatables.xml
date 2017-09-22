@@ -14,17 +14,20 @@
     <string translatable="false" name="config_url_help">https://liceoarzignano.github.io/guida</string>
 
     <!-- Addresses -->
-    <string translatable="false" name="pref_address_1">Scientifico</string>
-    <string translatable="false" name="pref_address_2">Scientifico Scienze Applicate</string>
-    <string translatable="false" name="pref_address_3">Linguistico</string>
-    <string translatable="false" name="pref_address_4">Scienze Umane</string>
-    <string translatable="false" name="pref_address_5">Scienze Umane Economico-Sociale</string>
+    <string translatable="false" name="pref_address_1">Liceo Scientifico</string>
+    <string translatable="false" name="pref_address_2">Liceo Scientifico Scienze Applicate</string>
+    <string translatable="false" name="pref_address_3">Liceo Linguistico</string>
+    <string translatable="false" name="pref_address_4">Liceo Scienze Umane</string>
+    <string translatable="false" name="pref_address_5">Liceo Scienze Umane Economico-Sociale</string>
 
     <string translatable="false" name="default_mark">0.0</string>
 
-    <!-- First quarter end date. Format: yyyy-mm-dd -->
-    <string translatable="false" name="config_quarter_change">2017-01-10</string>
+    <!-- First quarter end date (year is ignored). Format: yyyy-MM-dd -->
+    <string translatable="false" name="config_quarter_change">2016-02-01</string>
+
+    <!-- Prompt backup and erase date (year is ignored). Format: yyyy-MM-dd -->
+    <string translatable="false" name="config_end_of_year">2016-09-01</string>
 
     <!-- Update APP_VERSION the build.gradle file and strings.xml too when this is changed -->
-    <string translatable="false" name="pref_app_version_summary">Liceo 1.0.17</string>
+    <string translatable="false" name="pref_app_version_summary">Liceo 1.0.18</string>
 </resources>

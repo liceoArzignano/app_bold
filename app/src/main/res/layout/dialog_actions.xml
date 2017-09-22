@@ -32,7 +32,7 @@
 
         <ImageView
             style="@style/AppTheme.BottomSheetIcon"
-            app:srcCompat="@drawable/ic_share_avd" />
+            app:srcCompat="@drawable/ic_share" />
 
         <TextView
             style="@style/AppTheme.BottomSheetText"

@@ -1,20 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:elevation="8dp"
-        app:theme="@style/AppTheme.ToolbarTheme"
-        tools:targetApi="lollipop" />
+    <include layout="@layout/toolbar" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -23,25 +15,37 @@
         android:paddingRight="16dp"
         android:paddingTop="?actionBarSize">
 
-        <TextView
-            android:id="@+id/backup_summary"
+        <RelativeLayout
+            android:id="@+id/backup_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="24dp"
-            android:textColor="@color/text_secondary"
-            android:textSize="16sp" />
+            android:paddingBottom="16dp"
+            android:paddingTop="16dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                app:srcCompat="@drawable/ic_info" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="32dp"
+                android:text="@string/backup_summary"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp" />
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/backup_info"
             android:layout_alignParentRight="true"
-            android:layout_below="@id/backup_summary"
-            android:orientation="horizontal"
-            android:paddingTop="24dp">
+            android:orientation="horizontal">
 
             <android.support.v7.widget.AppCompatButton
-                android:id="@+id/restore_button"
                 style="?borderlessButtonStyle"
+                android:id="@+id/restore_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingRight="16dp"
@@ -49,8 +53,8 @@
                 android:textColor="@color/colorAccent" />
 
             <android.support.v7.widget.AppCompatButton
-                android:id="@+id/backup_button"
                 style="@style/Widget.AppCompat.Button.Colored"
+                android:id="@+id/backup_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"

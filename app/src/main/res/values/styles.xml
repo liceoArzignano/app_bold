@@ -2,11 +2,13 @@
 
     <!-- AppTheme -->
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+        <item name="android:colorBackground">@color/colorPrimary</item>
+        <item name="android:windowBackground">@color/colorPrimary</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -14,7 +16,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.SettingsTheme" parent="@style/AppTheme.NoActionBar" >
+    <style name="AppTheme.SettingsTheme" parent="@style/AppTheme.NoActionBar">
         <item name="alertDialogTheme">@style/AppTheme.PreferenceDialog</item>
     </style>
 
@@ -22,22 +24,34 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.ActionBar" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat" />
 
-    <style name="AppTheme.ToolbarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+    <style name="AppTheme.ToolbarTheme" parent="ThemeOverlay.AppCompat.ActionBar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">?attr/actionBarSize</item>
         <item name="android:background">@color/colorPrimary</item>
     </style>
+
+    <style name="AppTheme.ToolbarTitle" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textColor">@color/icon</item>
+        <item name="android:textStyle">bold</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="AppTheme.CollapsingToolbarTitle" parent="AppTheme.ToolbarTitle">
+        <item name="android:textSize">48sp</item>
+    </style>
+
+    <style name="AppTheme.Home" parent="AppTheme.NoActionBar" />
 
     <style name="AppTheme.HomeCard">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">vertical</item>
     </style>
-    
+
     <style name="AppTheme.HomeTitle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">47dp</item>
@@ -46,6 +60,7 @@
         <item name="android:paddingLeft">16dp</item>
         <item name="android:paddingRight">16dp</item>
         <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/text_secondary</item>
     </style>
 
@@ -87,35 +102,29 @@
     <style name="AppTheme.EditorIcon">
         <item name="android:layout_width">24dp</item>
         <item name="android:layout_height">24dp</item>
-        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginTop">20dp</item>
         <item name="android:layout_marginLeft">8dp</item>
-        <item name="android:contentDescription">@string/accessibility_generic_icon</item>
+        <item name="android:contentDescription">@null</item>
     </style>
 
-    <style name="AppTheme.EditorTextView">
-        <item name="android:layout_width">-2dp</item>
-        <item name="android:layout_height">48dp</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:layout_marginLeft">64dp</item>
-        <item name="android:textColor">@android:color/black</item>
+    <style name="AppTheme.EditorInput">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginLeft">48dp</item>
+        <item name="android:layout_marginRight">8dp</item>
     </style>
 
     <style name="AppTheme.EditorEditText">
         <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">16sp</item>
         <item name="android:ellipsize">start</item>
-        <item name="android:background">@android:color/transparent</item>
-        <item name="android:layout_marginLeft">64dp</item>
-        <item name="android:layout_marginRight">8dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
     </style>
 
     <style name="AppTheme.EditorLayout">
-        <item name="android:paddingTop">16dp</item>
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
-        <item name="android:clickable">true</item>
-        <item name="android:background">?selectableItemBackground</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">56dp</item>
     </style>
 
     <style name="AppTheme.SafeInputText">
@@ -175,7 +184,16 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:hapticFeedbackEnabled">true</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/black</item>
         <item name="android:textSize">20sp</item>
     </style>
+
+    <style name="AppTheme.TapTarget">
+        <item name="mttp_backgroundColour">@color/colorAccentDark</item>
+    </style>
+
+    <style name="AppTheme.TapTargetHome" parent="AppTheme.TapTarget">
+        <item name="mttp_focalColour">@color/colorPrimaryDark</item>
+    </style>
+
 </resources>

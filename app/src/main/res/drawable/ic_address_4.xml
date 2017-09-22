@@ -19,8 +19,14 @@
             tools:targetApi="lollipop">
             <path
                 android:fillColor="#a62c23"
-                android:pathData="M12,2 A3,3,0,0,1,15,5 A3,3,0,0,1,12,8 A3,3,0,0,1,9,5 A3,3,0,0,1,
-12,2 M11,22L8,22 L8,16 L6,16 L6,9 L18,9 L18,16 L16,16 L16,22 L13,22 L13,18 L11,18 L11,22 Z" />
+                android:fillAlpha="0.7"
+                android:pathData="M16,13 C13,13,10,15,10,17 L10,19 L22,19 L22,17 C22,15,19,13,16,13 Z M19,8
+C19,6.343,17.656,5,16,5 S13,6.343,13,8 S14.344,11,16,11 S19,9.657,19,8 Z" />
+            <path
+                android:fillColor="#a62c23"
+                android:pathData="M8,13 C5,13,2,15,2,17 L2,19 L14,19 L14,17 C14,15,11,13,8,13 Z M11,8
+C11,6.343,9.657,5,8,5 S5,6.343,5,8 S6.343,11,8,11 S11,9.657,11,8 Z" />
+
         </vector>
     </item>
 </layer-list>

@@ -10,13 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:elevation="8dp"
-            app:theme="@style/AppTheme.ToolbarTheme"
-            tools:targetApi="lollipop" />
+        <include layout="@layout/toolbar" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,17 +19,25 @@
             android:orientation="vertical"
             android:paddingTop="?actionBarSize">
 
-
             <LinearLayout
                 android:id="@+id/safe_loading_layout"
                 style="@style/AppTheme.EmptyLayout"
                 tools:ignore="UseCompoundDrawables">
 
                 <ImageView
+                    android:id="@+id/safe_loading_image"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/accessibility_safe_icon"
-                    app:srcCompat="@drawable/ic_empty_safe" />
+                    android:contentDescription="@null"
+                    app:srcCompat="@drawable/ic_empty_safe_locked" />
+
+                <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+                    style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
+                    android:layout_width="192dp"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true"
+                    android:paddingTop="16dp"
+                    app:mpb_progressStyle="horizontal" />
 
                 <TextView
                     android:id="@+id/safe_loading_text"
@@ -43,84 +45,89 @@
                     android:text="@string/safe_first_load" />
             </LinearLayout>
 
-            <LinearLayout
+            <ScrollView
                 android:id="@+id/safe_layout_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                android:paddingLeft="@dimen/item_horizontal_margin"
-                android:paddingRight="@dimen/item_horizontal_margin"
                 android:visibility="gone">
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:orientation="vertical">
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/activity_vertical_margin"
+                    android:paddingLeft="@dimen/item_horizontal_margin"
+                    android:paddingRight="@dimen/item_horizontal_margin">
 
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:paddingTop="16dp"
-                        app:passwordToggleEnabled="true">
+                        android:layout_weight="3"
+                        android:orientation="vertical">
 
-                        <EditText
-                            android:id="@+id/safe_username"
-                            style="@style/AppTheme.SafeInputText"
-                            android:hint="@string/safe_username"
-                            android:inputType="numberPassword" />
-                    </android.support.design.widget.TextInputLayout>
+                        <android.support.design.widget.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="16dp"
+                            app:passwordToggleEnabled="true">
 
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="match_parent"
+                            <EditText
+                                android:id="@+id/safe_username"
+                                style="@style/AppTheme.SafeInputText"
+                                android:hint="@string/safe_username"
+                                android:inputType="numberPassword" />
+                        </android.support.design.widget.TextInputLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:passwordToggleEnabled="true">
+
+                            <EditText
+                                android:id="@+id/safe_register"
+                                style="@style/AppTheme.SafeInputText"
+                                android:hint="@string/safe_reg_pwd"
+                                android:inputType="textPassword" />
+                        </android.support.design.widget.TextInputLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:passwordToggleEnabled="true">
+
+                            <EditText
+                                android:id="@+id/safe_pc"
+                                style="@style/AppTheme.SafeInputText"
+                                android:hint="@string/safe_pc_pwd"
+                                android:inputType="textPassword" />
+                        </android.support.design.widget.TextInputLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:passwordToggleEnabled="true">
+
+                            <EditText
+                                android:id="@+id/safe_internet"
+                                style="@style/AppTheme.SafeInputText"
+                                android:hint="@string/safe_internet_pwd"
+                                android:inputType="textPassword" />
+                        </android.support.design.widget.TextInputLayout>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        app:passwordToggleEnabled="true">
-
-                        <EditText
-                            android:id="@+id/safe_register"
-                            style="@style/AppTheme.SafeInputText"
-                            android:hint="@string/safe_reg_pwd"
-                            android:inputType="textPassword" />
-                    </android.support.design.widget.TextInputLayout>
-
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:passwordToggleEnabled="true">
-
-                        <EditText
-                            android:id="@+id/safe_pc"
-                            style="@style/AppTheme.SafeInputText"
-                            android:hint="@string/safe_pc_pwd"
-                            android:inputType="textPassword" />
-                    </android.support.design.widget.TextInputLayout>
-
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:passwordToggleEnabled="true">
-
-                        <EditText
-                            android:id="@+id/safe_internet"
-                            style="@style/AppTheme.SafeInputText"
-                            android:hint="@string/safe_internet_pwd"
-                            android:inputType="textPassword" />
-                    </android.support.design.widget.TextInputLayout>
+                        android:layout_weight="2"
+                        android:paddingBottom="24dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:paddingTop="24dp"
+                        android:text="@string/safe_data_usage"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="14sp" />
                 </LinearLayout>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:paddingBottom="24dp"
-                    android:paddingTop="24dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:text="@string/safe_data_usage"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="14sp" />
-            </LinearLayout>
+            </ScrollView>
         </LinearLayout>
     </RelativeLayout>
 

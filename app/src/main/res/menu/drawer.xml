@@ -3,9 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <group>
         <item
-            android:icon="@drawable/ic_home"
-            android:title="@string/nav_home" />
-        <item
             android:id="@+id/nav_my_marks"
             android:icon="@drawable/ic_my_marks"
             android:title="@string/nav_mymarks" />
@@ -17,50 +14,26 @@
             android:id="@+id/nav_news"
             android:icon="@drawable/ic_news"
             android:title="@string/nav_news" />
-        <item android:title="@string/nav_links">
-            <menu>
-                <item
-                    android:id="@+id/nav_website"
-                    android:icon="@drawable/ic_website"
-                    android:title="@string/nav_site" />
-                <item
-                    android:id="@+id/nav_reg"
-                    android:icon="@drawable/ic_register"
-                    android:title="@string/nav_register" />
-                <item
-                    android:id="@+id/nav_moodle"
-                    android:icon="@drawable/ic_moodle"
-                    android:title="@string/nav_moodle" />
-                <item
-                    android:id="@+id/nav_copyboox"
-                    android:icon="@drawable/ic_copybook"
-                    android:title="@string/nav_copybook" />
-                <item
-                    android:id="@+id/nav_teacherzone"
-                    android:icon="@drawable/ic_teacherzone"
-                    android:title="@string/nav_teacherzone" />
-            </menu>
-        </item>
+        <item
+            android:id="@+id/nav_safe"
+            android:icon="@drawable/ic_safe"
+            android:title="@string/nav_safe" />
     </group>
     <group
         android:id="@+id/nav_more"
         android:checkableBehavior="none"
         tools:ignore="UnusedIds">
         <item
-            android:id="@+id/nav_safe"
-            android:icon="@drawable/ic_safe"
-            android:title="@string/nav_safe" />
-        <item
             android:id="@+id/nav_share"
-            android:icon="@drawable/avd_share"
+            android:icon="@drawable/ic_share"
             android:title="@string/nav_share" />
-        <item
-            android:id="@+id/nav_help"
-            android:icon="@drawable/ic_help"
-            android:title="@string/nav_help" />
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings"
             android:title="@string/nav_settings" />
+        <item
+            android:id="@+id/nav_help"
+            android:icon="@drawable/ic_help"
+            android:title="@string/nav_help" />
     </group>
 </menu>

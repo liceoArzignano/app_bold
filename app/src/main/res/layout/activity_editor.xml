@@ -7,13 +7,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:elevation="8dp"
-        app:theme="@style/AppTheme.ToolbarTheme"
-        tools:targetApi="lollipop" />
+    <include layout="@layout/toolbar" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -22,123 +16,138 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            tools:ignore="UselessParent">
 
             <LinearLayout
-                android:id="@+id/manager_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingTop="2dp">
+                android:paddingTop="8dp">
 
-                <!-- Title -->
+                <!-- Who - 1 -->
                 <RelativeLayout
-                    style="@style/AppTheme.EditorIcon"
-                    android:id="@+id/editor_title_layout"
-                    android:visibility="gone"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp">
-
-                    <ImageView
-                        style="@style/AppTheme.EditorIcon"
-                        app:srcCompat="@drawable/ic_title" />
-
-                    <EditText
-                        style="@style/AppTheme.EditorEditText"
-                        android:id="@+id/editor_title_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        tools:ignore="TextFields" />
-                </RelativeLayout>
-
-                <!-- Subject picker -->
-                <RelativeLayout
-                    style="@style/AppTheme.EditorIcon"
                     android:id="@+id/editor_subject_layout"
-                    android:visibility="gone"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp">
+                    style="@style/AppTheme.EditorLayout"
+                    android:visibility="gone">
+
+                    <android.support.design.widget.TextInputLayout
+                        style="@style/AppTheme.EditorInput"
+                        android:hint="@string/editor_hint_subject">
+
+                        <EditText
+                            android:id="@+id/editor_subject_selector"
+                            style="@style/AppTheme.EditorEditText"
+                            android:focusable="false"
+                            android:inputType="none" />
+                    </android.support.design.widget.TextInputLayout>
 
                     <ImageView
                         style="@style/AppTheme.EditorIcon"
                         app:srcCompat="@drawable/ic_title" />
-
-                    <TextView
-                        style="@style/AppTheme.EditorTextView"
-                        android:id="@+id/editor_subject_selector"
-                        android:text="@string/editor_hint_subject" />
                 </RelativeLayout>
 
-                <!-- Event category spinner -->
+                <!-- Who - 2 -->
                 <RelativeLayout
-                    style="@style/AppTheme.EditorIcon"
-                    android:id="@+id/editor_category_layout"
-                    android:visibility="gone"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp">
+                    android:id="@+id/editor_title_layout"
+                    style="@style/AppTheme.EditorLayout"
+                    android:visibility="gone">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/editor_input_title"
+                        style="@style/AppTheme.EditorInput">
+
+                        <EditText
+                            android:id="@+id/editor_title_text"
+                            style="@style/AppTheme.EditorEditText"
+                            tools:ignore="TextFields" />
+                    </android.support.design.widget.TextInputLayout>
 
                     <ImageView
                         style="@style/AppTheme.EditorIcon"
-                        app:srcCompat="@drawable/ic_category" />
-
-                    <Spinner
-                        android:id="@+id/editor_category_spinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="56dp" />
+                        app:srcCompat="@drawable/ic_title" />
                 </RelativeLayout>
 
-                <!-- Mark value -->
+                <!-- What - 1 -->
                 <RelativeLayout
-                    style="@style/AppTheme.EditorIcon"
                     android:id="@+id/editor_value_layout"
-                    android:visibility="gone"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp">
+                    style="@style/AppTheme.EditorLayout"
+                    android:visibility="gone">
+
+                    <android.support.design.widget.TextInputLayout
+                        style="@style/AppTheme.EditorInput"
+                        android:hint="@string/editor_hint_value">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/editor_value_view"
+                            style="@style/AppTheme.EditorEditText"
+                            android:focusable="false"
+                            android:inputType="none"
+                            android:text="@string/default_mark" />
+                    </android.support.design.widget.TextInputLayout>
 
                     <ImageView
                         style="@style/AppTheme.EditorIcon"
                         app:srcCompat="@drawable/ic_trophy" />
-
-                    <TextView
-                        style="@style/AppTheme.EditorTextView"
-                        android:id="@+id/editor_value_view"
-                        android:text="@string/default_mark" />
                 </RelativeLayout>
 
-                <!-- Notes -->
+                <!-- What  - 2 -->
                 <RelativeLayout
-                    style="@style/AppTheme.EditorIcon"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:id="@+id/editor_category_layout"
+                    style="@style/AppTheme.EditorLayout"
+                    android:visibility="gone">
+
+                    <Spinner
+                        android:id="@+id/editor_category_spinner"
+                        style="@style/Widget.AppCompat.Spinner.Underlined"
+                        android:layout_width="match_parent"
+                        android:layout_marginLeft="40dp"
+                        android:layout_height="match_parent" />
 
                     <ImageView
                         style="@style/AppTheme.EditorIcon"
-                        app:srcCompat="@drawable/ic_notes" />
-
-                    <EditText
-                        style="@style/AppTheme.EditorEditText"
-                        android:id="@+id/editor_notes_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:hint="@string/editor_hint_notes"
-                        android:minHeight="48dp" />
+                        app:srcCompat="@drawable/ic_category" />
                 </RelativeLayout>
 
-                <!-- Date picker -->
-                <RelativeLayout
-                    style="@style/AppTheme.EditorIcon"
-                    android:id="@+id/editor_date_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp">
+                <!-- When -->
+                <RelativeLayout style="@style/AppTheme.EditorLayout">
+
+                    <android.support.design.widget.TextInputLayout
+                        style="@style/AppTheme.EditorInput"
+                        android:hint="@string/editor_hint_date">
+
+                        <EditText
+                            android:id="@+id/editor_date_view"
+                            style="@style/AppTheme.EditorEditText"
+                            android:focusable="false"
+                            android:inputType="none"
+                            tools:ignore="TextFields" />
+                    </android.support.design.widget.TextInputLayout>
 
                     <ImageView
                         style="@style/AppTheme.EditorIcon"
                         app:srcCompat="@drawable/ic_calendar" />
+                </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/editor_date_view"
-                        style="@style/AppTheme.EditorTextView" />
+                <!-- Why -->
+                <RelativeLayout
+                    style="@style/AppTheme.EditorLayout"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputLayout
+                        style="@style/AppTheme.EditorInput"
+                        android:hint="@string/editor_hint_notes">
+
+                        <EditText
+                            android:id="@+id/editor_notes_text"
+                            style="@style/AppTheme.EditorEditText"
+                            android:layout_height="match_parent"
+                            android:minHeight="48dp" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <ImageView
+                        style="@style/AppTheme.EditorIcon"
+                        app:srcCompat="@drawable/ic_notes" />
                 </RelativeLayout>
             </LinearLayout>
         </ScrollView>

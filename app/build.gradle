@@ -1,10 +1,9 @@
 apply plugin: 'com.android.application'
-apply plugin: 'realm-android'
-apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    compileSdkVersion 26
+    buildToolsVersion '26.0.1'
 
     //noinspection GroovyMissingReturnStatement
     defaultConfig {
@@ -12,9 +11,9 @@ android {
         generatedDensities = []
         applicationId 'it.liceoarzignano.bold'
         minSdkVersion 16
-        targetSdkVersion 25
-        versionCode 11700
-        versionName "1.0.17"
+        targetSdkVersion 26
+        versionCode 14800
+        versionName "1.0.18"
         vectorDrawables.useSupportLibrary true
         resConfigs "en", "it"
 
@@ -27,6 +26,10 @@ android {
 
     aaptOptions.additionalParameters "--no-version-vectors"
 
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
     buildTypes {
         release {
             minifyEnabled true
@@ -37,20 +40,6 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
-
-    splits {
-        abi {
-            enable true
-            reset()
-            include 'armeabi-v7a', 'x86', 'arm64-v8a'
-            universalApk true
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -75,23 +64,12 @@ dependencies {
     compile "com.google.firebase:firebase-messaging:${googlePlayServicesVersion}"
     releaseCompile "com.google.firebase:firebase-crash:${googlePlayServicesVersion}"
     compile "com.google.firebase:firebase-config:${googlePlayServicesVersion}"
+    compile 'com.firebase:firebase-jobdispatcher:0.8.0'
     // others
-    compile 'uk.co.samuelwall:material-tap-target-prompt:1.9.5'
-    compile 'com.github.zhukic:sectioned-recyclerview:1.0.0'
-    compile('com.afollestad.material-dialogs:core:0.9.4.1') { transitive = true }
-    compile 'org.eclipse.mylyn.github:org.eclipse.egit.github.core:2.1.5'
-}
-
-import com.android.build.OutputFile
-
-ext.versionCodes = ['armeabi-v7a':1, x86:2, 'arm64-v8a':3]
-
-android.applicationVariants.all { variant ->
-    // assign different version code for each output
-    variant.outputs.each { output ->
-        int abiVersionCode = project.ext.versionCodes.get(output.getFilter(OutputFile.ABI)) ?: 0
-        output.versionCodeOverride = (abiVersionCode * 1000) + android.defaultConfig.versionCode
-    }
+    compile 'uk.co.samuelwall:material-tap-target-prompt:2.0.1'
+    compile 'com.github.zhukic:sectioned-recyclerview:1.1.0'
+    compile('com.afollestad.material-dialogs:core:0.9.4.5') { transitive = true }
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }
 
 apply plugin: 'com.google.gms.google-services'

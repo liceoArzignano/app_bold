@@ -1,65 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:elevation="8dp"
-        app:theme="@style/AppTheme.ToolbarTheme"
-        tools:targetApi="lollipop" />
+    <include layout="@layout/toolbar" />
 
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/subject_nested_view"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="?attr/actionBarSize">
 
-        <LinearLayout
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/subject_nested_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:paddingLeft="48dp"
-            android:paddingRight="48dp">
+            android:layout_height="match_parent">
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:paddingBottom="28dp"
-                android:paddingLeft="24dp"
-                android:paddingRight="24dp"
-                android:paddingTop="28dp">
+                android:orientation="horizontal"
+                android:paddingLeft="48dp"
+                android:paddingRight="48dp">
 
-                <it.liceoarzignano.bold.ui.CircularProgressBar
-                    android:id="@+id/subject_hint_bar"
-                    android:layout_width="240dp"
-                    android:layout_height="240dp" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:minWidth="240dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:paddingBottom="28dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginRight="24dp"
+                    android:paddingTop="28dp">
 
-                <TextView
-                    android:id="@+id/subject_hint_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="16dp"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="16sp" />
+                    <it.liceoarzignano.bold.ui.CircularProgressBar
+                        android:id="@+id/subject_hint_bar"
+                        android:layout_width="240dp"
+                        android:layout_height="240dp" />
+
+                    <TextView
+                        android:id="@+id/subject_hint_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="16dp"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt
+                    android:id="@+id/subject_list"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:scrollbars="vertical"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
             </LinearLayout>
-
-            <it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt
-                android:id="@+id/subject_list"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:scrollbars="vertical"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+        </android.support.v4.widget.NestedScrollView>
+    </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

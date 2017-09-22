@@ -5,8 +5,8 @@
     android:foreground="?android:attr/selectableItemBackground"
     android:minHeight="56dp"
     android:paddingBottom="16dp"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingLeft="@dimen/item_horizontal_margin"
+    android:paddingRight="@dimen/item_horizontal_margin"
     android:paddingTop="16dp">
 
     <TextView

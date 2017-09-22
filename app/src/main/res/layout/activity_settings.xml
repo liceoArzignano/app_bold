@@ -1,24 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:elevation="8dp"
-        app:theme="@style/AppTheme.ToolbarTheme"
-        tools:targetApi="lollipop" />
+    <include android:id="@+id/toolbar_include"
+        layout="@layout/toolbar" />
 
     <fragment
-        android:name="it.liceoarzignano.bold.settings.SettingsActivity$MyPreferenceFragment"
         android:tag="it.liceoarzignano.bold.settings.SettingsActivity$MyPreferenceFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar" />
+        android:name="it.liceoarzignano.bold.settings.SettingsActivity$MyPreferenceFragment"
+        android:layout_below="@+id/toolbar_include" />
 </RelativeLayout>
