@@ -45,11 +45,13 @@ android {
 
 repositories {
     mavenCentral()
+    flatDir { dirs 'libs' }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(':safe_mod')
+    debugCompile project(':safe_mod')
+    releaseCompile(name:'safe_mod-release', ext:'aar')
     // android support
     compile "com.android.support:appcompat-v7:${androidSupportVersion}"
     compile "com.android.support:design:${androidSupportVersion}"
