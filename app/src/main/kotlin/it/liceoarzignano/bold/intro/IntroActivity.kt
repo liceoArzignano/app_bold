@@ -65,16 +65,20 @@ class IntroActivity : AppCompatActivity() {
         mTitle.text = getString(R.string.slide0_title)
         mMessage.text = getString(R.string.slide0_message_loading)
 
-        mImageAnimation.setImageResource(R.drawable.avd_intro_start)
-        UiUtils.animateAVD(mImageAnimation.drawable)
+        if (SystemUtils.isNotLegacy) {
+            UiUtils.animateAVD(mImageAnimation, R.drawable.avd_intro_start)
+        } else {
+            mImageAnimation.setImageResource(R.drawable.ic_intro_hat)
+        }
 
         // Check for internet
         if (SystemUtils.hasNoInternetConnection(baseContext)) {
             mMessage.text = getString(R.string.slide0_message_failed)
             if (SystemUtils.isNotLegacy) {
                 isWorking = false
-                mImageAnimation.setImageResource(R.drawable.avd_intro_failed)
-                UiUtils.animateAVD(mImageAnimation.drawable)
+                if (SystemUtils.isNotLegacy) {
+                    UiUtils.animateAVD(mImageAnimation, R.drawable.avd_intro_failed)
+                }
                 mRetryButton.visibility = View.VISIBLE
             }
             return
@@ -86,17 +90,14 @@ class IntroActivity : AppCompatActivity() {
         if (SystemUtils.isNotLegacy) {
             mAnimThread = Thread {
                 do { // Show the animation least once
-                    runOnUiThread { UiUtils.animateAVD(mImageAnimation.drawable) }
+                    runOnUiThread { UiUtils.animateAVD(mImageAnimation, R.drawable.avd_intro_load) }
                     Thread.sleep(800)
                 } while (isWorking)
             }
 
             isWorking = true
             // Let the previous animation end
-            Handler().postDelayed({
-                mImageAnimation.setImageResource(R.drawable.avd_intro_load)
-                mAnimThread!!.start()
-            }, 500)
+            Handler().postDelayed({ mAnimThread!!.start() }, 500)
         }
 
         // Don't run SafetyNet test on devices without GMS
@@ -140,8 +141,7 @@ class IntroActivity : AppCompatActivity() {
             mAnimThread?.join()
 
             Handler().postDelayed({
-                mImageAnimation.setImageResource(R.drawable.avd_intro_done)
-                UiUtils.animateAVD(mImageAnimation.drawable)
+                UiUtils.animateAVD(mImageAnimation, R.drawable.avd_intro_done)
 
                 // Step 2 once animation ends
                 Handler().postDelayed({

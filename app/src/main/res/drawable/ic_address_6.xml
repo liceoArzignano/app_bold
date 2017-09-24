@@ -1,33 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
-    <item>
-        <shape android:shape="oval">
-            <solid android:color="@color/address_6" />
-        </shape>
-    </item>
-    <item
-        android:bottom="16dp"
-        android:left="16dp"
-        android:right="16dp"
-        android:top="16dp">
-        <vector
-            android:width="24dp"
-            android:height="24dp"
-            android:viewportHeight="24"
-            android:viewportWidth="24"
-            tools:targetApi="lollipop">
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportHeight="24"
+    android:viewportWidth="24">
 
-            <path
-                android:fillColor="#7295a6"
-                android:pathData="M20,6 L17,6 L17,5 C17,2.8,15.21,2,14,2 L10,2 C7.8,2,7,3.79,7,5 L7,6 L4,6
+    <path
+        android:fillColor="#7295a6"
+        android:pathData="M20,6 L17,6 L17,5 C17,2.8,15.21,2,14,2 L10,2 C7.8,2,7,3.79,7,5 L7,6 L4,6
 C2.9,6,2,6.9,2,8 L2,19 C2,20.1,2.9,21,4,21 L20,21 C21.1,21,22,20.1,22,19 L22,8
 C22,6.9,21.1,6,20,6 Z M9,5.01 C9.01,4.55,9.19,4,10,4 L13.99,4
 C14.45,4.01,15,4.19,15,5 L15,6 L9,6 L9,5.01 Z" />
-            <path
-                android:fillAlpha="0.2"
-                android:fillColor="#FFFFFF"
-                android:pathData="M22,8 L22,12 L2,12 L2,8 C2,6.9,2.9,6,4,6 L20,6 C21.1,6,22,6.9,22,8 Z" />
-        </vector>
-    </item>
-</layer-list>
+    <path
+        android:fillAlpha="0.2"
+        android:fillColor="#FFFFFF"
+        android:pathData="M22,8 L22,12 L2,12 L2,8 C2,6.9,2.9,6,4,6 L20,6 C21.1,6,22,6.9,22,8 Z" />
+</vector>

@@ -4,13 +4,14 @@ import android.app.Activity
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.drawable.AnimatedVectorDrawable
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Handler
+import android.support.annotation.DrawableRes
 import android.support.design.widget.FloatingActionButton
 import android.support.graphics.drawable.AnimatedVectorDrawableCompat
 import android.util.DisplayMetrics
 import android.view.View
+import android.widget.ImageView
 import it.liceoarzignano.bold.R
 import it.liceoarzignano.bold.settings.AppPrefs
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
@@ -37,10 +38,12 @@ object UiUtils {
         }, 500)
     }
 
-    fun animateAVD(drawable: Drawable) {
+    fun animateAVD(view: ImageView, @DrawableRes res: Int) {
         if (!SystemUtils.isNotLegacy) {
             return
         }
+        view.setImageResource(res)
+        val drawable = view.drawable
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             (drawable as AnimatedVectorDrawable).start()
         } else {

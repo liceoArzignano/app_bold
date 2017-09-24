@@ -91,7 +91,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:paddingBottom="16dp"
-                app:currentPageIndicatorColor="@color/black"
+                app:currentPageIndicatorColor="@color/grey"
                 app:pageIndicatorColor="@color/icon" />
         </LinearLayout>
     </RelativeLayout>

@@ -42,7 +42,6 @@ import it.liceoarzignano.bold.settings.AppPrefs
 import it.liceoarzignano.bold.settings.SettingsActivity
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt
 import it.liceoarzignano.bold.utils.ContentUtils
-import it.liceoarzignano.bold.utils.SystemUtils
 import it.liceoarzignano.bold.utils.Time
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
 import java.security.SecureRandom
@@ -182,20 +181,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mUsername.text = mPrefs.get(AppPrefs.KEY_USERNAME, "")
         mUsername.visibility = if (mUsername.text.isBlank()) View.GONE else View.VISIBLE
 
-        if (!SystemUtils.isNotLegacy) {
-            mLogo.visibility = View.GONE
-            return
-        }
-
         if (mPrefs.get(AppPrefs.KEY_IS_TEACHER, false)) {
-            mLogo.background = getDrawable(R.drawable.ic_address_6)
+            mLogo.setImageResource(R.drawable.ic_address_6)
         } else {
             when (mPrefs.get(AppPrefs.KEY_ADDRESS, "0")) {
-                "1" -> mLogo.background = getDrawable(R.drawable.ic_address_1)
-                "2" -> mLogo.background = getDrawable(R.drawable.ic_address_2)
-                "3" -> mLogo.background = getDrawable(R.drawable.ic_address_3)
-                "4" -> mLogo.background = getDrawable(R.drawable.ic_address_4)
-                "5" -> mLogo.background = getDrawable(R.drawable.ic_address_5)
+                "1" -> mLogo.setImageResource(R.drawable.ic_address_1)
+                "2" -> mLogo.setImageResource(R.drawable.ic_address_2)
+                "3" -> mLogo.setImageResource(R.drawable.ic_address_3)
+                "4" -> mLogo.setImageResource(R.drawable.ic_address_4)
+                "5" -> mLogo.setImageResource(R.drawable.ic_address_5)
             }
         }
     }
