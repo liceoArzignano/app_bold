@@ -3,6 +3,7 @@ package it.liceoarzignano.bold.events
 import android.app.SearchManager
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.support.design.widget.CoordinatorLayout
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
@@ -25,8 +26,10 @@ import it.liceoarzignano.bold.utils.Time
 
 class EventListActivity : AppCompatActivity() {
     lateinit private var mCoordinator: CoordinatorLayout
+    lateinit private var mRecyclerView: RecyclerViewExt
     lateinit private var mEmptyLayout: LinearLayout
     lateinit private var mEmptyText: TextView
+    lateinit private var mFab: FloatingActionButton
 
     lateinit private var mAdapter: EventsAdapter
     lateinit private var mEventsHandler: EventsHandler
@@ -41,12 +44,12 @@ class EventListActivity : AppCompatActivity() {
         toolbar.setNavigationOnClickListener { _ -> finish() }
 
         mCoordinator = findViewById(R.id.coordinator_layout)
-        val eventList = findViewById<RecyclerViewExt>(R.id.event_list)
+        mRecyclerView = findViewById(R.id.event_list)
         mEmptyLayout = findViewById(R.id.event_empty_layout)
         mEmptyText = findViewById(R.id.events_empty_text)
 
-        val fab = findViewById<FloatingActionButton>(R.id.fab)
-        fab.setOnClickListener { _ ->
+        mFab = findViewById(R.id.fab)
+        mFab.setOnClickListener { _ ->
             val intent = Intent(this, EditorActivity::class.java)
             intent.putExtra(EditorActivity.EXTRA_IS_MARK, false)
             startActivity(intent)
@@ -55,11 +58,13 @@ class EventListActivity : AppCompatActivity() {
         // Load by query for reverse order
         mEventsHandler = EventsHandler.getInstance(baseContext)
         mAdapter = EventsAdapter(mEventsHandler.getByQuery(null), this)
-        eventList.adapter = mAdapter
+        mRecyclerView.adapter = mAdapter
 
         if (SystemUtils.isNotLegacy) {
-            eventList.addOnScrollListener(ScrollListener(toolbar, resources, eventList.top))
+            mRecyclerView.addOnScrollListener(ScrollListener(toolbar, resources, mRecyclerView.top))
         }
+
+        Handler().postDelayed({ mFab.show() }, 400)
     }
 
     override fun onResume() {
@@ -72,6 +77,11 @@ class EventListActivity : AppCompatActivity() {
         }
 
         refreshList(query)
+    }
+
+    override fun finish() {
+        mFab.hide()
+        Handler().postDelayed({ super.finish() }, 180)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -146,6 +156,7 @@ class EventListActivity : AppCompatActivity() {
                 refreshList(null)
             }
         })
+
         dialog.show()
 
         return true

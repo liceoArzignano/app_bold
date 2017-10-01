@@ -92,7 +92,13 @@ class BoldMessagingService : FirebaseMessagingService() {
         manager.notify(Calendar.getInstance().timeInMillis.toInt() * 1000, builder.build())
     }
 
-    private fun saveNews() = NewsHandler.getInstance(this).add(mNews)
+    private fun saveNews() {
+        val handler = NewsHandler.getInstance(baseContext)
+        // Prevent duplicated items
+        if (handler.all.none { it.url == mNews.url }) {
+            handler.add(mNews)
+        }
+    }
 
     companion object {
         private val TAG = "BoldFireBase"

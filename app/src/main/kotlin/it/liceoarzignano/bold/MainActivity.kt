@@ -4,13 +4,13 @@ import android.content.ComponentName
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.support.annotation.IdRes
 import android.support.customtabs.CustomTabsClient
 import android.support.customtabs.CustomTabsIntent
 import android.support.customtabs.CustomTabsServiceConnection
 import android.support.customtabs.CustomTabsSession
 import android.support.design.widget.NavigationView
-import android.support.v4.app.ActivityCompat
-import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
@@ -57,6 +57,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     lateinit private var mPrefs: AppPrefs
 
     lateinit private var mToolbar: Toolbar
+    lateinit private var mDrawer: DrawerLayout
     lateinit private var mShortcutsList: RecyclerViewExt
     lateinit private var mCardList: RecyclerViewExt
     lateinit private var mUsername: TextView
@@ -83,14 +84,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         mToolbar = findViewById(R.id.toolbar)
         setSupportActionBar(mToolbar)
-        val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
-        val toggle = ActionBarDrawerToggle(this, drawer, mToolbar,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawer.addDrawerListener(toggle)
-        toggle.isDrawerIndicatorEnabled = false
-        toggle.setHomeAsUpIndicator(R.drawable.ic_nav_drawer)
-        toggle.setToolbarNavigationClickListener { drawer.openDrawer(Gravity.LEFT) }
-        toggle.syncState()
+        mDrawer = findViewById(R.id.drawer_layout)
         val navView = findViewById<NavigationView>(R.id.navigation_view)
         navView.setNavigationItemSelectedListener(this)
         val header = navView.getHeaderView(0)
@@ -103,6 +97,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             mShouldAnimate = savedInstance.getBoolean(BUNDLE_SHOULD_ANIMATE, true)
         }
 
+        initializeDrawer()
         showWelcome()
         showNewYearHelper()
         ContentUtils.makeEventNotification(this)
@@ -120,10 +115,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onPause() {
         super.onPause()
 
-        if (mTabsServiceConnection != null) {
-            unbindService(mTabsServiceConnection)
-            mTabsServiceConnection = null
-        }
+        stopTabsService()
     }
 
     public override fun onSaveInstanceState(outState: Bundle) {
@@ -132,12 +124,34 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
-        drawer.closeDrawer(GravityCompat.START)
-
         // Do action with some delay to prevent lags when
         // loading big lists of marks and events
-        when (item.itemId) {
+        Handler().postDelayed({ onDrawerClick(item.itemId) }, 200)
+        mDrawer.closeDrawer(GravityCompat.START)
+        return true
+    }
+
+    private fun stopTabsService() {
+        if (mTabsServiceConnection == null) {
+            return
+        }
+
+        unbindService(mTabsServiceConnection)
+        mTabsServiceConnection = null
+    }
+
+    private fun initializeDrawer() {
+        val toggle = ActionBarDrawerToggle(this, mDrawer, mToolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        mDrawer.addDrawerListener(toggle)
+        toggle.isDrawerIndicatorEnabled = false
+        toggle.setHomeAsUpIndicator(R.drawable.ic_nav_drawer)
+        toggle.setToolbarNavigationClickListener { mDrawer.openDrawer(Gravity.LEFT) }
+        toggle.syncState()
+    }
+
+    private fun onDrawerClick(@IdRes id: Int) {
+        when (id) {
             R.id.nav_my_marks -> startActivity(Intent(this, MarksActivity::class.java))
             R.id.nav_calendar -> startActivity(Intent(this, EventListActivity::class.java))
             R.id.nav_news -> startActivity(Intent(this, NewsListActivity::class.java))
@@ -150,10 +164,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(Intent.createChooser(shareIntent,
                         getString(R.string.share_title)))
             }
-            R.id.nav_help -> showUrl(5)
         }
-
-        return true
     }
 
     private fun setupDBHandler() {
@@ -323,6 +334,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    private fun setupShortcuts() {
+        val adapter = ShortcutAdapter(this)
+        mShortcutsList.adapter = adapter
+        adapter.notifyDataSetChanged()
+    }
+
     private fun setupCards() {
         val cards = ArrayList<HomeCard>()
 
@@ -355,20 +372,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    private fun onCardClick(view: View, intent: Intent) {
-        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
-                view, "card_activity")
-        ActivityCompat.startActivity(this, intent, options.toBundle())
-
-    }
-
     private val eventsCard: HomeCard?
         get() {
             val builder = HomeCardBuilder()
                     .setName(getString(R.string.upcoming_events))
                     .setOnClick(object : HomeCard.HomeCardClickListener {
-                        override fun onClick(view: View) =
-                                onCardClick(view, Intent(baseContext, EventListActivity::class.java))
+                        override fun onClick() =
+                                startActivity(Intent(baseContext, EventListActivity::class.java))
                     })
 
             val events = mEventsHandler.all
@@ -394,8 +404,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val builder = HomeCardBuilder()
                     .setName(getString(R.string.nav_news))
                     .setOnClick(object : HomeCard.HomeCardClickListener {
-                        override fun onClick(view: View) =
-                                onCardClick(view, Intent(baseContext, NewsListActivity::class.java))
+                        override fun onClick() =
+                                startActivity(Intent(baseContext, NewsListActivity::class.java))
                     })
 
             val news = mNewsHandler.all
@@ -415,8 +425,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val builder = HomeCardBuilder()
                     .setName(getString(R.string.lastest_marks))
                     .setOnClick(object : HomeCard.HomeCardClickListener {
-                        override fun onClick(view: View) =
-                                onCardClick(view, Intent(baseContext, MarksActivity::class.java))
+                        override fun onClick() =
+                                startActivity(Intent(baseContext, MarksActivity::class.java))
                     })
 
 
@@ -456,12 +466,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 12 -> getString(R.string.suggestion_safe)
                 else -> getString(R.string.suggestion_notification)
         }
-
-    private fun setupShortcuts() {
-        val adapter = ShortcutAdapter(this)
-        mShortcutsList.adapter = adapter
-        adapter.notifyDataSetChanged()
-    }
 
     companion object {
         private val BUNDLE_SHOULD_ANIMATE = "homeShouldAnimate"

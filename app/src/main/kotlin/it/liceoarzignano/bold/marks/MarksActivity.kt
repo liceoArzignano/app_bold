@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.Handler
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
@@ -26,6 +27,7 @@ import it.liceoarzignano.bold.utils.Time
 class MarksActivity : AppCompatActivity() {
     lateinit private var mList: RecyclerViewExt
     lateinit private var mEmptyLayout: LinearLayout
+    lateinit private var mFab: FloatingActionButton
 
     lateinit private var mAdapter: AverageAdapter
     lateinit private var mPrefs: AppPrefs
@@ -46,8 +48,8 @@ class MarksActivity : AppCompatActivity() {
         mList = findViewById(R.id.marks_list)
         mEmptyLayout = findViewById(R.id.marks_empty_layout)
 
-        val fab = findViewById<FloatingActionButton>(R.id.fab)
-        fab.setOnClickListener { _ ->
+        mFab = findViewById(R.id.fab)
+        mFab.setOnClickListener { _ ->
             startActivity(Intent(this, EditorActivity::class.java))
         }
 
@@ -56,12 +58,19 @@ class MarksActivity : AppCompatActivity() {
         mList.addItemDecoration(DividerDecoration(this))
         mAdapter = AverageAdapter(this, ContentUtils.getAverageElements(this, mQuarter))
         mList.adapter = mAdapter
+
+        Handler().postDelayed({ mFab.show() }, 400)
     }
 
     public override fun onResume() {
         super.onResume()
 
         refresh()
+    }
+
+    override fun finish() {
+        mFab.hide()
+        Handler().postDelayed({ super.finish() }, 170)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

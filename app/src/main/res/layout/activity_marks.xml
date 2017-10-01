@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,9 +11,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="?attr/actionBarSize"
-        android:transitionName="card_activity"
-        tools:targetApi="lollipop">
+        android:paddingTop="?attr/actionBarSize">
 
         <it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt
             android:id="@+id/marks_list"
@@ -24,8 +21,8 @@
             app:tabletUI="true" />
 
         <LinearLayout
-            style="@style/AppTheme.EmptyLayout"
             android:id="@+id/marks_empty_layout"
+            style="@style/AppTheme.EmptyLayout"
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
@@ -44,5 +41,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/ic_add"/>
+        android:visibility="invisible"
+        app:srcCompat="@drawable/ic_add" />
 </android.support.design.widget.CoordinatorLayout>

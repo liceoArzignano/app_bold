@@ -72,7 +72,7 @@ class HomeAdapter(private val mContext: Context, private val mObjects: List<Home
                 }
             }
             mNameView.text = name
-            mCardView.setOnClickListener({ obj.doClickAction(it) })
+            mCardView.setOnClickListener({ obj.doClickAction() })
         }
     }
 }

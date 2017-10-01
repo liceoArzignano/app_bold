@@ -12,9 +12,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="?actionBarSize"
-        android:transitionName="card_activity"
-        tools:targetApi="lollipop">
+        android:paddingTop="?actionBarSize">
 
         <it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt
             android:id="@+id/event_list"
@@ -45,6 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
+        android:visibility="invisible"
         app:srcCompat="@drawable/ic_add" />
 
 </android.support.design.widget.CoordinatorLayout>
