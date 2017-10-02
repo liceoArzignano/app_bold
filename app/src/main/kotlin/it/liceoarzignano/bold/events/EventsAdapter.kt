@@ -29,17 +29,8 @@ internal class EventsAdapter(private var mEvents: List<Event>, private val mCont
                     .inflate(R.layout.item_subheader, parent, false))
 
     override fun onBindSubheaderViewHolder(holder: HeaderViewHolder, position: Int) {
-        val eventDate = Time(mEvents[position].date)
-        val diff = eventDate.diff(Time())
-
-        val title = when (diff) {
-            -1 -> mContext.getString(R.string.events_time_yesterday)
-            0 -> mContext.getString(R.string.events_time_today)
-            1 -> mContext.getString(R.string.events_time_tomorrow)
-            else -> eventDate.asString(mContext)
-        }
-
-        holder.setTitle(title)
+        val time = Time(mEvents[position].date)
+        holder.bind(ContentUtils.getHeaderTitle(mContext.resources, time))
     }
 
     override fun getItemSize(): Int = mEvents.size

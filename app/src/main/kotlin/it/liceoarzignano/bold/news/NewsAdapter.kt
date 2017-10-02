@@ -9,6 +9,7 @@ import android.widget.TextView
 import com.zhukic.sectionedrecyclerview.SectionedRecyclerViewAdapter
 import it.liceoarzignano.bold.R
 import it.liceoarzignano.bold.ui.recyclerview.HeaderViewHolder
+import it.liceoarzignano.bold.utils.ContentUtils
 import it.liceoarzignano.bold.utils.HelpToast
 import it.liceoarzignano.bold.utils.Time
 
@@ -31,16 +32,7 @@ internal class NewsAdapter(private var mNewsList: List<News>, private val mConte
 
     override fun onBindSubheaderViewHolder(holder: HeaderViewHolder, position: Int) {
         val time = Time(mNewsList[position].date)
-        val diff = time.diff(Time())
-
-        val title = when (diff) {
-            -1 -> mContext.getString(R.string.events_time_yesterday)
-            0 -> mContext.getString(R.string.events_time_today)
-            1 -> mContext.getString(R.string.events_time_tomorrow)
-            else -> time.asString(mContext)
-        }
-
-        holder.setTitle(title)
+        holder.bind(ContentUtils.getHeaderTitle(mContext.resources, time))
     }
 
     override fun getItemSize(): Int = mNewsList.size

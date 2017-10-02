@@ -8,8 +8,10 @@ import it.liceoarzignano.bold.R
 
 class HeaderViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val mTitle: TextView = view.findViewById(R.id.subheader_title)
+    private val mDescription: TextView = view.findViewById(R.id.subheader_description)
 
-    fun setTitle(title: String) {
-        mTitle.text = title
+    fun bind(data: Pair<String, String>) {
+        mTitle.text = data.first
+        mDescription.text = data.second
     }
 }

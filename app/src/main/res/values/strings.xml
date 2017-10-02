@@ -101,6 +101,13 @@
     <string name="events_time_yesterday">Yesterday</string>
     <string name="events_time_today">Today</string>
     <string name="events_time_tomorrow">Tomorrow</string>
+    <string name="events_time_default_format">MMM dd</string>
+    <plurals name="events_time_past">
+        <item quantity="one">Last %1$s</item>
+        <item quantity="two">One week ago</item>
+        <item quantity="other">%1$d weeks ago</item>
+    </plurals>
+    <string name="events_time_future">In %1$d weeks</string>
     <string name="events_test">Test</string>
     <string name="event_school">At school</string>
     <string name="event_birthday">Birthday</string>

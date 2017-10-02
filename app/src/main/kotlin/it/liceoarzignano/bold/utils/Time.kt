@@ -34,7 +34,7 @@ class Time : Date {
         }
     }
 
-    override fun toString():String = SimpleDateFormat(DATE_FORMAT, APP_LOCALE).format(this)
+    override fun toString():String = format(DATE_FORMAT)
 
     fun asString(context: Context): String {
         val string = SimpleDateFormat(context.getString(R.string.date_formatting, APP_LOCALE))
@@ -57,6 +57,10 @@ class Time : Date {
 
         return thisDay < end || thisDay > start
     }
+
+    fun getWeekDay(): String = format("EEEE")
+
+    fun format(format: String): String = SimpleDateFormat(format, APP_LOCALE).format(this)
 
     private fun Calendar.put(@CalendarField field: Long, value: Int) = set(field.toInt(), value)
 

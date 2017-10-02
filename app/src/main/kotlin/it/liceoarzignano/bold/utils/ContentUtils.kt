@@ -117,4 +117,35 @@ object ContentUtils {
 
         dispatcher.mustSchedule(job)
     }
+
+    fun getHeaderTitle(res: Resources, time: Time): Pair<String, String> {
+        val diff = time.diff(Time())
+
+        val title = when {
+            // Past weeks
+            diff < -7 -> res.getQuantityString(R.plurals.events_time_past, 2, diff / -7)
+            // Last week
+            diff in -7..-2 -> res.getQuantityString(R.plurals.events_time_past,
+                    1, time.getWeekDay()).upperCaseFirstChar()
+            // Yesterday
+            diff == -1 -> res.getString(R.string.events_time_yesterday)
+            // Today
+            diff == 0 -> res.getString(R.string.events_time_today)
+            // Tomorrow
+            diff == 1 -> res.getString(R.string.events_time_tomorrow)
+            // This week
+            diff in 2..7 -> time.getWeekDay().upperCaseFirstChar()
+            // Future weeks
+            else -> res.getString(R.string.events_time_future, diff / 7)
+        }
+
+        val description = time.format(res.getString(R.string.events_time_default_format))
+                .upperCaseFirstChar()
+
+        return Pair(title, description)
+    }
+
+
+    private fun String.upperCaseFirstChar() =
+            "${substring(0, 1).toUpperCase()}${substring(1, length)}"
 }
