@@ -17,11 +17,12 @@ import com.afollestad.materialdialogs.MaterialDialog
 import it.liceoarzignano.bold.R
 import it.liceoarzignano.bold.editor.EditorActivity
 import it.liceoarzignano.bold.settings.AppPrefs
-import it.liceoarzignano.bold.ui.recyclerview.DividerDecoration
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerClickListener
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerTouchListener
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt
+import it.liceoarzignano.bold.ui.recyclerview.ScrollListener
 import it.liceoarzignano.bold.utils.ContentUtils
+import it.liceoarzignano.bold.utils.SystemUtils
 import it.liceoarzignano.bold.utils.Time
 
 class MarksActivity : AppCompatActivity() {
@@ -55,10 +56,12 @@ class MarksActivity : AppCompatActivity() {
 
         mPrefs = AppPrefs(baseContext)
 
-        mList.addItemDecoration(DividerDecoration(this))
         mAdapter = AverageAdapter(this, ContentUtils.getAverageElements(this, mQuarter))
         mList.adapter = mAdapter
 
+        if (SystemUtils.isNotLegacy) {
+            mList.addOnScrollListener(ScrollListener(toolbar, resources, mList.top))
+        }
         Handler().postDelayed({ mFab.show() }, 400)
     }
 

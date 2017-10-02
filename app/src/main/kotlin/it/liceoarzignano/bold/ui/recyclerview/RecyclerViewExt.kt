@@ -41,18 +41,18 @@ class RecyclerViewExt : RecyclerView {
 
         val array = context.obtainStyledAttributes(attrs,
                 R.styleable.RecyclerViewExt, 0, 0)
+        val horizontalMode = array.getBoolean(R.styleable.RecyclerViewExt_horizontalMode, false)
+        val twoColumnsGrid = array.getBoolean(R.styleable.RecyclerViewExt_twoColumsGrid, false)
+        val isPhone = UiUtils.isPhone(context)
+        val tabletOnlyGrid = array.getBoolean(R.styleable.RecyclerViewExt_tabletUI, false)
 
         layoutManager = try {
             when {
-                array.getBoolean(R.styleable.RecyclerViewExt_horizontalMode, false) ->
-                    LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-                UiUtils.isPhone(context) ->
-                    LinearLayoutManager(context)
-                else ->
-                    if (array.getBoolean(R.styleable.RecyclerViewExt_tabletUI, false))
-                        GridLayoutManager(context, 2)
-                    else
-                        LinearLayoutManager(context)
+                horizontalMode -> LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+                twoColumnsGrid  -> GridLayoutManager(context, 2)
+                isPhone -> LinearLayoutManager(context)
+                tabletOnlyGrid -> GridLayoutManager(context, 2)
+                else -> LinearLayoutManager(context)
             }
         } finally {
             array.recycle()

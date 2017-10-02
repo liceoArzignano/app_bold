@@ -1,7 +1,7 @@
 package it.liceoarzignano.bold.marks
 
 import android.content.Context
-import android.graphics.Color
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -10,9 +10,9 @@ import android.widget.TextView
 import it.liceoarzignano.bold.R
 import java.util.*
 
-internal class AverageAdapter(context: Context, private var mResults: Array<String>?) :
+internal class AverageAdapter(private var mContext: Context, private var mResults: Array<String>?) :
         RecyclerView.Adapter<AverageAdapter.AverageHolder>() {
-    private val mHandler = MarksHandler.getInstance(context)
+    private val mHandler = MarksHandler.getInstance(mContext)
 
     override fun onCreateViewHolder(parent: ViewGroup, type: Int): AverageAdapter.AverageHolder =
             AverageHolder(LayoutInflater.from(parent.context)
@@ -36,9 +36,11 @@ internal class AverageAdapter(context: Context, private var mResults: Array<Stri
             mTitle.text = result
 
             val value = mHandler.getAverage(result, 0)
-            if (value < 6) {
-                mValue.setTextColor(Color.RED)
-            }
+            mValue.setTextColor(ContextCompat.getColor(mContext, if (value < 6)
+                R.color.red
+            else
+                R.color.black))
+            android.util.Log.d("OHAI", "$result: $value --- ${mValue.currentTextColor}")
             mValue.text = String.format(Locale.ENGLISH, "%.2f", value)
         }
     }

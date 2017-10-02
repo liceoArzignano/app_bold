@@ -18,7 +18,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical"
-            app:tabletUI="true" />
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            app:twoColumsGrid="true" />
 
         <LinearLayout
             android:id="@+id/marks_empty_layout"

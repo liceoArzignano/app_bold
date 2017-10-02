@@ -14,6 +14,8 @@ import it.liceoarzignano.bold.settings.AppPrefs
 import it.liceoarzignano.bold.ui.ActionsDialog
 import it.liceoarzignano.bold.ui.CircularProgressBar
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt
+import it.liceoarzignano.bold.utils.SystemUtils
+import it.liceoarzignano.bold.utils.UiUtils
 
 
 class SubjectActivity : AppCompatActivity() {
@@ -53,6 +55,17 @@ class SubjectActivity : AppCompatActivity() {
 
         mAdapter = SubjectAdapter(mMarksHandler.getFilteredMarks(mTitle, mFilter), this)
         marksList.adapter = mAdapter
+
+        if (SystemUtils.isNotLegacy) {
+            mNestedView.setOnScrollChangeListener { _: NestedScrollView?, _: Int, scrollY: Int,
+                                                    _: Int, _: Int ->
+                toolbar.elevation = UiUtils.dpToPx(resources, if (scrollY == 0)
+                    0f else
+                    resources.getDimension(R.dimen.scroll_toolbar_elevation))
+            }
+        }
+
+        mProgressBar.requestFocus()
     }
 
     public override fun onResume() {

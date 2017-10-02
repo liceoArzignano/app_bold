@@ -9,6 +9,7 @@
     </declare-styleable>
 
     <declare-styleable name="RecyclerViewExt">
+        <attr name="twoColumsGrid" format="boolean" />
         <attr name="tabletUI" format="boolean" />
         <attr name="horizontalMode" format="boolean" />
     </declare-styleable>
