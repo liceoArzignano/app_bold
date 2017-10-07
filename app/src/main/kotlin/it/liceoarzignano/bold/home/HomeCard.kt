@@ -1,12 +1,24 @@
 package it.liceoarzignano.bold.home
 
-class HomeCard internal constructor(val size: Int, val name: String,
-                                    val title: List<String>, val content: List<String>,
-                                    private val mClickListner: HomeCardClickListener?) {
+class HomeCard(val type: CardType) {
 
-    internal fun doClickAction() = mClickListner?.onClick()
+    var title = ""
+    var content = ""
+    var action = ""
+    var listener: Listener? = null
 
-    interface HomeCardClickListener {
-        fun onClick()
+    fun onCardClick() = listener?.onCardClick()
+    fun onActionClick() = listener?.onActionClick()
+
+    interface Listener {
+        fun onCardClick()
+        fun onActionClick()
+    }
+
+    enum class CardType {
+        EVENTS,
+        NEWS,
+        MARKS,
+        SUGGESTIONS
     }
 }

@@ -3,6 +3,7 @@ package it.liceoarzignano.bold
 import android.content.ComponentName
 import android.content.Intent
 import android.net.Uri
+import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Handler
 import android.support.annotation.IdRes
@@ -26,11 +27,11 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import it.liceoarzignano.bold.backup.BackupActivity
+import it.liceoarzignano.bold.editor.EditorActivity
 import it.liceoarzignano.bold.events.EventListActivity
 import it.liceoarzignano.bold.events.EventsHandler
 import it.liceoarzignano.bold.home.HomeAdapter
 import it.liceoarzignano.bold.home.HomeCard
-import it.liceoarzignano.bold.home.HomeCardBuilder
 import it.liceoarzignano.bold.home.ShortcutAdapter
 import it.liceoarzignano.bold.intro.IntroActivity
 import it.liceoarzignano.bold.marks.MarksActivity
@@ -47,6 +48,7 @@ import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
 import java.security.SecureRandom
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -342,112 +344,181 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun setupCards() {
         val cards = ArrayList<HomeCard>()
-
-        val events = eventsCard
-        if (events != null) {
-            cards.add(events)
-        }
-
-        val news = newsCard
-        if (news != null) {
-            cards.add(news)
-        }
-
-        val marks = marksCard
-        val date = Time.parse(mPrefs.get(AppPrefs.KEY_INTRO_DAY, "2017-01-01"))
-        if (Time().diff(date, 7) && marks != null) {
-            cards.add(marks)
-        }
-
-        if (mPrefs.get(AppPrefs.KEY_SUGGESTIONS)) {
-            cards.add(suggestionsCard)
-        }
-
-        val adapter = HomeAdapter(this, cards, mShouldAnimate)
+        val adapter = HomeAdapter(baseContext, cards, mShouldAnimate)
         mCardList.adapter = adapter
-        adapter.notifyDataSetChanged()
 
-        if (mShouldAnimate) {
-            mShouldAnimate = false
-        }
+        loadCardASync(HomeCard.CardType.EVENTS, adapter)
+
+        loadCardASync(HomeCard.CardType.NEWS, adapter)
+
+        loadCardASync(HomeCard.CardType.MARKS, adapter)
+
+        loadCardASync(HomeCard.CardType.SUGGESTIONS, adapter)
     }
 
-    private val eventsCard: HomeCard?
-        get() {
-            val builder = HomeCardBuilder()
-                    .setName(getString(R.string.upcoming_events))
-                    .setOnClick(object : HomeCard.HomeCardClickListener {
-                        override fun onClick() =
-                                startActivity(Intent(baseContext, EventListActivity::class.java))
-                    })
 
-            val events = mEventsHandler.all
-            var added = 0
-            val nextWeek = Time(7)
-            for (e in events) {
-                val date = Time(e.date)
-                if (!nextWeek.diff(date, 8)) {
-                    added++
-                    builder.addEntry(e.title, date.asString(baseContext))
+    private fun loadCardASync(type: HomeCard.CardType, adapter: HomeAdapter) {
+        object : AsyncTask<Unit, Unit, HomeCard?>() {
+            override fun doInBackground(vararg p0: Unit?): HomeCard? =
+                    when (type) {
+                        HomeCard.CardType.EVENTS -> dayCard
+                        HomeCard.CardType.NEWS -> newsCard
+                        HomeCard.CardType.MARKS -> {
+                            val date = Time.parse(mPrefs.get(AppPrefs.KEY_INTRO_DAY, "2017-01-01"))
+                            if (Time().diff(date, 7)) marksCard else null
+                        }
+                        HomeCard.CardType.SUGGESTIONS -> {
+                            if (mPrefs.get(AppPrefs.KEY_SUGGESTIONS)) suggestionsCard else null
+                        }
+                    }
+
+            override fun onPostExecute(card: HomeCard?) {
+                if (card == null || card.content.isBlank()) {
+                    adapter.remove(type)
+                } else {
+                    adapter.update(card)
                 }
-                if (added == 3) {
-                    break
+
+                // Stop animations when the lastest is added
+                if (type == HomeCard.CardType.SUGGESTIONS) {
+                    if (mShouldAnimate) {
+                        mShouldAnimate = false
+                    }
+                }
+            }
+        }.execute()
+
+    }
+
+    private val dayCard: HomeCard
+        get() {
+            val categories = intArrayOf(R.plurals.notification_test, R.plurals.notification_school,
+                    R.plurals.notification_birthday, R.plurals.notification_homework,
+                    R.plurals.notification_reminder, R.plurals.notification_meeting,
+                    R.plurals.notification_other)
+
+            val builder = StringBuilder()
+            val hour = Time().getHour()
+
+            builder.append(getString(R.string.home_card_week_beginnning, getString(when {
+                hour < 13 -> R.string.home_card_week_morning
+                hour < 19 -> R.string.home_card_week_afternoon
+                else -> R.string.home_card_week_evening
+            })))
+
+            val username = mPrefs.get(AppPrefs.KEY_USERNAME, "")
+            if (username.isNotBlank()) {
+                builder.append(", $username")
+            }
+            builder.append(".\n")
+
+            val map = mEventsHandler.getStats(Time(6).time)
+            builder.append("${getString(
+                    if (map.isEmpty()) R.string.home_card_week_free
+                    else (R.string.home_card_week_recap))}\n")
+
+            for (item in map) {
+                val category = resources.getQuantityString(categories[item.value.second],
+                        item.value.first)
+                val day = Time(item.key).getWeekDay()
+                builder.append("\n${resources.getQuantityString(R.plurals.home_card_week_item,
+                        item.value.first, item.value.first, category, day)}")
+            }
+
+            val card = HomeCard(HomeCard.CardType.EVENTS)
+            card.title = getString(R.string.home_card_week_title)
+            card.content = builder.toString()
+            card.action = getString(R.string.home_card_week_action)
+            card.listener = object : HomeCard.Listener {
+                override fun onCardClick() =
+                        startActivity(Intent(baseContext, EventListActivity::class.java))
+
+                override fun onActionClick() {
+                    val intent = Intent(baseContext, EditorActivity::class.java)
+                    intent.putExtra(EditorActivity.EXTRA_IS_MARK, false)
+                    startActivity(intent)
                 }
             }
 
-            val card = builder.build()
-            return if (card.size == 0) null else card
+            return card
         }
 
     private val newsCard: HomeCard?
         get() {
-            val builder = HomeCardBuilder()
-                    .setName(getString(R.string.nav_news))
-                    .setOnClick(object : HomeCard.HomeCardClickListener {
-                        override fun onClick() =
-                                startActivity(Intent(baseContext, NewsListActivity::class.java))
-                    })
-
+            // TODO: show unread news only
             val news = mNewsHandler.all
-            var i = 0
-            while (i < 3 && i < news.size) {
-                val n = news[i]
-                builder.addEntry(n.title, Time(n.date).asString(baseContext))
-                i++
+            if (news.isEmpty()) {
+                return null
             }
 
-            val card = builder.build()
-            return if (card.size == 0) null else card
+            val builder = StringBuilder()
+            for ((index, item) in news.withIndex()) {
+                if (index != 0) {
+                    builder.append('\n')
+                }
+                builder.append("\u2022 ${item.title}")
+
+                if (index == 3) {
+                    break
+                }
+            }
+
+            val card = HomeCard(HomeCard.CardType.NEWS)
+            card.title = getString(R.string.nav_news)
+            card.content = builder.toString()
+            card.listener = object : HomeCard.Listener {
+                override fun onActionClick() = Unit
+                override fun onCardClick() =
+                        startActivity(Intent(baseContext, NewsListActivity::class.java))
+            }
+
+            return card
         }
 
-    private val marksCard: HomeCard?
+    private val marksCard: HomeCard
         get() {
-            val builder = HomeCardBuilder()
-                    .setName(getString(R.string.lastest_marks))
-                    .setOnClick(object : HomeCard.HomeCardClickListener {
-                        override fun onClick() =
-                                startActivity(Intent(baseContext, MarksActivity::class.java))
-                    })
+            val quarter = if (Time().isFirstQuarter(baseContext)) 0 else 1
+            val map = mMarksHandler.getAllSubjectsAverages(quarter)
 
-
-            val marks = mMarksHandler.all
-            Collections.reverse(marks)
-            var i = 0
-            while (i < 3 && i < marks.size) {
-                val m = marks[i]
-                builder.addEntry(m.subject, (m.value / 100.0).toString())
-                i++
+            val globalAverage = map.keys.average()
+            var max = Pair(0.toDouble(), "")
+            map.forEach { average, subject ->
+                if (globalAverage > 6) {
+                    if (average > max.first) {
+                        max = Pair(average, subject)
+                    }
+                } else if (average < max.first || max.second.isEmpty()) {
+                    max = Pair(average, subject)
+                }
             }
 
-            val card = builder.build()
-            return if (card.size == 0) null else card
+            val card = HomeCard(HomeCard.CardType.MARKS)
+            card.title = getString(R.string.nav_mymarks)
+            card.content = getString(when {
+                map.isEmpty() -> R.string.home_card_marks_empty
+                globalAverage < 6 -> R.string.home_card_marks_negative
+                globalAverage < 8 -> R.string.home_card_marks_neutral
+                else -> R.string.home_card_marks_positive
+            }, String.format("%.2f", globalAverage), max.second)
+            card.action = getString(R.string.home_card_marks_action)
+            card.listener = object : HomeCard.Listener {
+                override fun onActionClick() =
+                        startActivity(Intent(baseContext, EditorActivity::class.java))
+
+                override fun onCardClick() =
+                        startActivity(Intent(baseContext, MarksActivity::class.java))
+            }
+
+            return card
         }
 
     private val suggestionsCard: HomeCard
-        get() = HomeCardBuilder()
-                .setName(getString(R.string.suggestions))
-                .addEntry("", suggestion)
-                .build()
+        get() {
+            val card = HomeCard(HomeCard.CardType.SUGGESTIONS)
+            card.title = getString(R.string.suggestions)
+            card.content = suggestion
+            return card
+        }
 
     private val suggestion: String
         get() =
@@ -465,7 +536,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 11 -> getString(R.string.suggestion_feedback)
                 12 -> getString(R.string.suggestion_safe)
                 else -> getString(R.string.suggestion_notification)
-        }
+            }
 
     companion object {
         private val BUNDLE_SHOULD_ANIMATE = "homeShouldAnimate"

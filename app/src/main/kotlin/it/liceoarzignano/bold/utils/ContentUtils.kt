@@ -53,7 +53,7 @@ object ContentUtils {
                 R.plurals.notification_other)
 
         val handler = EventsHandler.getInstance(context)
-        val events = handler.tomorrow
+        val events = handler.getDayEvents(1)
 
         if (events.isEmpty()) {
             return ""

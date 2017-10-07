@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import it.liceoarzignano.bold.database.DBHandler
 import java.util.*
+import kotlin.collections.HashMap
 
 class MarksHandler private constructor(context: Context) :
         DBHandler<Mark>(context, DB_NAME, DB_VERSION) {
@@ -122,6 +123,24 @@ class MarksHandler private constructor(context: Context) :
 
         val sum = list.sumByDouble { it.value.toDouble() }
         return 6 * (list.size + 1) - sum / 100
+    }
+
+    fun getAllSubjectsAverages(quarter: Int): HashMap<Double, String> {
+        val query = "SELECT AVG($KEY_VALUE), $KEY_SUBJECT FROM $tableName " +
+                "WHERE $KEY_FIRSTQUARTER = ? GROUP BY $KEY_SUBJECT"
+        val map = HashMap<Double, String>()
+        val db = readableDatabase
+        val cursor = db.rawQuery(query, arrayOf("$quarter"))
+
+        if (cursor.moveToFirst()) {
+            do {
+                map.put(cursor.getDouble(0) / 100, cursor.getString(1))
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
+        return map
+
     }
 
     companion object {

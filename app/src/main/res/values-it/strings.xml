@@ -34,6 +34,24 @@
     <string name="suggestion_backups">Creando un backup, potrai ripristinare i tuoi dati nel caso in cui cambiassi o perdessi il telefono</string>
     <string name="suggestion_news">Tutte le circolari e le notizie importanti saranno salvate direttamente nella sezione "Notizie"</string>
     <string name="share_title">Condividi con qualcuno</string>
+    <string name="home_card_week_title">Questa settimana</string>
+    <string name="home_card_week_empty">Non ci sono eventi imminenti, vuoi aggiungerne uno?</string>
+    <string name="home_card_week_beginnning">Buon %1$s</string>
+    <string name="home_card_week_morning">giorno</string>
+    <string name="home_card_week_afternoon">pomeriggio</string>
+    <string name="home_card_week_evening">sera</string>
+    <string name="home_card_week_free">Sembra che non ci sia nulla %1$s</string>
+    <string name="home_card_week_recap">Ecco un riassunto degli impegni di questa settimana:</string>
+    <string name="home_card_week_action">Pianifica qualcosa</string>
+    <plurals name="home_card_week_item">
+        <item quantity="one">\u2022 %1$d %2$s di %3$s</item>
+        <item quantity="other">\u2022 %1$d %2$s (la prima volta %3$s)</item>
+    </plurals>
+    <string name="home_card_marks_action">Aggiungi un voto</string>
+    <string name="home_card_marks_empty">Non hai ancora registrato nessun voto. Aggiungine un paio per vedere i tuoi risultati</string>
+    <string name="home_card_marks_positive">Ottimo, la tua media \u00E8 <i>%1$s</i>.\nSembra che la tua materia migliore sia %2$s. Continua cos\u00EC!</string>
+    <string name="home_card_marks_neutral">Bene, la tua media \u00E8 <i>%1$s</i>.\nTi piace %2$s? \u00C8 la materia con la media pi\u00F9 alta</string>
+    <string name="home_card_marks_negative">Oh no, la tua media \u00E8 <i>%1$s</i>.\nProva a migliorare %2$s: ha la media pi\u00F9 bassa</string>
 
     <!-- Search -->
     <string name="search_action">Cerca\u2026</string>

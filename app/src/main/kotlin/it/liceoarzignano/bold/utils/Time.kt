@@ -62,6 +62,8 @@ class Time : Date {
 
     fun format(format: String): String = SimpleDateFormat(format, APP_LOCALE).format(this)
 
+    fun getHour() = getField(HOURS)
+
     private fun Calendar.put(@CalendarField field: Long, value: Int) = set(field.toInt(), value)
 
     private inline fun Time.put(operation: (Calendar) -> Unit) {
@@ -99,7 +101,7 @@ class Time : Date {
             private const val YEAR = Calendar.YEAR.toLong()
             private const val MONTH = Calendar.MONTH.toLong()
             private const val DAY = Calendar.DAY_OF_MONTH.toLong()
-            private const val HOURS = Calendar.HOUR.toLong()
+            private const val HOURS = Calendar.HOUR_OF_DAY.toLong()
             private const val MINUTES = Calendar.MINUTE.toLong()
     }
 }

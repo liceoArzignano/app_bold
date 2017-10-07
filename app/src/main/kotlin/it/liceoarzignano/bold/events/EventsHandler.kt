@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase
 import it.liceoarzignano.bold.database.DBHandler
 import it.liceoarzignano.bold.utils.Time
 import java.util.*
+import kotlin.collections.LinkedHashMap
 
 class EventsHandler
 private constructor(context: Context) : DBHandler<Event>(context, DB_NAME, DB_VERSION) {
@@ -75,44 +76,42 @@ private constructor(context: Context) : DBHandler<Event>(context, DB_NAME, DB_VE
     override val tableName: String
         get() = "events"
 
-    val tomorrow: List<Event>
-        get() {
-            val tomorrow = Calendar.getInstance()
-            val today = Calendar.getInstance()
-            tomorrow.add(Calendar.DAY_OF_YEAR, 1)
+    fun getDayEvents(diff: Int): List<Event> {
+        val beginning = Calendar.getInstance()
+        beginning.add(Calendar.DAY_OF_YEAR, diff)
+        val end = beginning.clone() as Calendar
 
-            // Set at the end of the day to include events at any hour
-            tomorrow.set(Calendar.HOUR_OF_DAY, 23)
-            tomorrow.set(Calendar.MINUTE, 59)
-            tomorrow.set(Calendar.SECOND, 59)
-            today.set(Calendar.HOUR_OF_DAY, 23)
-            today.set(Calendar.MINUTE, 59)
-            today.set(Calendar.SECOND, 59)
+        beginning[Calendar.HOUR_OF_DAY] = 0
+        beginning[Calendar.MINUTE] = 0
+        beginning[Calendar.SECOND] = 0
 
-            val timestampTomorrow = tomorrow.timeInMillis
-            val timestampToday = today.timeInMillis
+        end[Calendar.HOUR_OF_DAY] = 23
+        end[Calendar.MINUTE] = 59
+        end[Calendar.SECOND] = 59
 
-            val list = ArrayList<Event>()
-            val db = readableDatabase
-            val cursor = db.rawQuery("SELECT * FROM $tableName  WHERE $KEY_DATE  > " +
-                    "$timestampToday AND $KEY_DATE  < $timestampTomorrow ORDER BY $KEY_DATE DESC",
-                    null)
+        val timestampBeginning = beginning.timeInMillis
+        val timestampEnd = end.timeInMillis
 
-            if (cursor.moveToFirst()) {
-                do {
-                    list.add(Event(
-                            cursor.getString(0).toLong(),
-                            cursor.getString(1),
-                            cursor.getString(2).toLong(),
-                            cursor.getString(3),
-                            cursor.getString(4).toInt()))
-                } while (cursor.moveToNext())
-            }
+        val list = ArrayList<Event>()
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM $tableName  WHERE $KEY_DATE  > " +
+                "$timestampBeginning AND $KEY_DATE  < $timestampEnd ORDER BY $KEY_DATE DESC",
+                null)
 
-            cursor.close()
-            return list
-
+        if (cursor.moveToFirst()) {
+            do {
+                list.add(Event(
+                        cursor.getString(0).toLong(),
+                        cursor.getString(1),
+                        cursor.getString(2).toLong(),
+                        cursor.getString(3),
+                        cursor.getString(4).toInt()))
+            } while (cursor.moveToNext())
         }
+
+        cursor.close()
+        return list
+    }
 
     fun getByQuery(query: String?): List<Event> {
         val list = all
@@ -126,6 +125,28 @@ private constructor(context: Context) : DBHandler<Event>(context, DB_NAME, DB_VE
         }
 
         return list
+    }
+
+    fun getStats(limitTimestamp: Long): HashMap<Long, Pair<Int, Int>> {
+        val map = LinkedHashMap<Long, Pair<Int, Int>>()
+        val query = "SELECT COUNT($KEY_CATEGORY), $KEY_CATEGORY, $KEY_DATE " +
+                "FROM $tableName WHERE $KEY_DATE > ? and $KEY_DATE < ? GROUP BY $KEY_CATEGORY " +
+                "ORDER BY $KEY_DATE"
+
+        val db = readableDatabase
+        val cursor = db.rawQuery(query,
+                arrayOf(System.currentTimeMillis().toString(), limitTimestamp.toString()))
+
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    map.put(cursor.getLong(2), Pair(cursor.getInt(0), cursor.getInt(1)))
+                } while (cursor.moveToNext())
+            }
+        }
+
+        return map
     }
 
     companion object {

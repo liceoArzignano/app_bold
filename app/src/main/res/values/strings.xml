@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Liceo</string>
 
     <!-- Navigation drawer -->
@@ -18,8 +18,6 @@
     <string name="shortcut_moodle">Moodle</string>
     <string name="shortcut_copybook">Copybook</string>
     <string name="shortcut_teacherzone">Teacher area</string>
-    <string name="upcoming_events">Upcoming events</string>
-    <string name="lastest_marks">Lastest marks</string>
     <string name="suggestions">Suggestions</string>
     <string name="suggestion_safe">You forgot your password? Check Safe out and store all of them in a single place</string>
     <string name="suggestion_safe_pwd">Someone knows your Safe password? Log in and change it</string>
@@ -35,9 +33,24 @@
     <string name="suggestion_news">You will find the most important news from the right in the app by opening the news section</string>
     <string name="suggestion_feedback">Want to submit a feedback or report an issue you\'ve found? You can do it from the settings</string>
     <string name="share_title">Share with someone</string>
-    <string name="home_welcome_morning">Good morning</string>
-    <string name="home_welcome_afternoon">Good afternoon</string>
-    <string name="home_welcome_evening">Good evening</string>
+    <string name="home_card_week_title">This week</string>
+    <string name="home_card_week_empty">It looks like you\'re free, would you like to plan something?</string>
+    <string name="home_card_week_beginnning">Good %1$s</string>
+    <string name="home_card_week_morning">morning</string>
+    <string name="home_card_week_afternoon">afternoon</string>
+    <string name="home_card_week_evening">evening</string>
+    <string name="home_card_week_free">It looks like you\'re free %1$s</string>
+    <string name="home_card_week_recap">Here\'s a quick recap of this week:</string>
+    <string name="home_card_week_action">Plan something</string>
+    <plurals name="home_card_week_item">
+        <item quantity="one">\u2022 %1$d %2$s on %3$s</item>
+        <item quantity="other">\u2022 %1$d %2$s (first one on %3$s)</item>
+    </plurals>
+    <string name="home_card_marks_action">Add a mark</string>
+    <string name="home_card_marks_empty">You\'ve not registered any mark so far. Add some to see your results here</string>
+    <string name="home_card_marks_positive">Well done, your average is <i>%1$s</i>.\nIt looks like you\'re good in %2$s. Keep it on!</string>
+    <string name="home_card_marks_neutral">Good, your average is <i>%1$s</i>.\nDo you like %2$s? It\'s the subject with the highest average</string>
+    <string name="home_card_marks_negative">Oh no, your average is <i>%1$s</i>.\nYou should really improve %2$s: it has the lowest average</string>
 
     <!-- Search -->
     <string name="search_action">Search\u2026</string>
@@ -107,7 +120,7 @@
         <item quantity="two">One week ago</item>
         <item quantity="other">%1$d weeks ago</item>
     </plurals>
-    <string name="events_time_future">In %1$d weeks</string>
+    <string name="events_time_future" tools:ignore="PluralsCandidate">In %1$d weeks</string>
     <string name="events_test">Test</string>
     <string name="event_school">At school</string>
     <string name="event_birthday">Birthday</string>

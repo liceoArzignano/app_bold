@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,56 +8,34 @@
 
     <TextView
         android:id="@+id/home_item_name"
-        style="@style/AppTheme.HomeTitle" />
+        style="@style/AppTheme.HomeTitle"
+        tools:text="Riepilogo settimanale" />
 
     <android.support.v7.widget.CardView
         android:id="@+id/home_item_card"
         style="@style/AppTheme.HomeCard"
         android:transitionName="card_activity"
-        tools:targetApi="lollipop"
         app:cardCornerRadius="0dp"
-        app:cardElevation="4dp">
+        app:cardElevation="4dp"
+        tools:targetApi="lollipop">
 
         <LinearLayout style="@style/AppTheme.HomeCardContent">
 
-            <LinearLayout
-                android:id="@+id/home_item_layout_0"
-                style="@style/AppTheme.HomeCardListLayout">
+            <TextView
+                android:id="@+id/home_item_text"
+                style="@style/AppTheme.HomeTextCard"
+                tools:text="Questa settimana ci sono\n\u2022 2 verifiche (la prossima venerdi)\n\u2022 Un compleanno (giovedi)\n\u2022 10 compiti per casa" />
 
-                <TextView
-                    android:id="@+id/home_item_title_0"
-                    style="@style/AppTheme.HomeTextCardTitle" />
-
-                <TextView
-                    android:id="@+id/home_item_sec_0"
-                    style="@style/AppTheme.HomeTextCardSecondary" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/home_item_layout_1"
-                style="@style/AppTheme.HomeCardListLayout">
-
-                <TextView
-                    android:id="@+id/home_item_title_1"
-                    style="@style/AppTheme.HomeTextCardTitle" />
-
-                <TextView
-                    android:id="@+id/home_item_sec_1"
-                    style="@style/AppTheme.HomeTextCardSecondary" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/home_item_layout_2"
-                style="@style/AppTheme.HomeCardListLayout">
-
-                <TextView
-                    android:id="@+id/home_item_title_2"
-                    style="@style/AppTheme.HomeTextCardTitle" />
-
-                <TextView
-                    android:id="@+id/home_item_sec_2"
-                    style="@style/AppTheme.HomeTextCardSecondary" />
-            </LinearLayout>
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/home_item_action"
+                style="?borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:textColor="@color/colorAccent"
+                android:visibility="gone"
+                tools:text="Add a mark" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
