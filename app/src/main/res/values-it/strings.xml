@@ -40,7 +40,7 @@
     <string name="home_card_week_morning">giorno</string>
     <string name="home_card_week_afternoon">pomeriggio</string>
     <string name="home_card_week_evening">sera</string>
-    <string name="home_card_week_free">Sembra che non ci sia nulla %1$s</string>
+    <string name="home_card_week_free">Sembra che non ci sia nulla</string>
     <string name="home_card_week_recap">Ecco un riassunto degli impegni di questa settimana:</string>
     <string name="home_card_week_action">Pianifica qualcosa</string>
     <plurals name="home_card_week_item">

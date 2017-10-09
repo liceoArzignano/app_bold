@@ -482,7 +482,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             val globalAverage = map.keys.average()
             var max = Pair(0.toDouble(), "")
-            map.forEach { average, subject ->
+            for (item in map) {
+                val average = item.key
+                val subject = item.value
                 if (globalAverage > 6) {
                     if (average > max.first) {
                         max = Pair(average, subject)
@@ -491,7 +493,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     max = Pair(average, subject)
                 }
             }
-
             val card = HomeCard(HomeCard.CardType.MARKS)
             card.title = getString(R.string.nav_mymarks)
             card.content = getString(when {

@@ -39,7 +39,7 @@
     <string name="home_card_week_morning">morning</string>
     <string name="home_card_week_afternoon">afternoon</string>
     <string name="home_card_week_evening">evening</string>
-    <string name="home_card_week_free">It looks like you\'re free %1$s</string>
+    <string name="home_card_week_free">It looks like you\'re free</string>
     <string name="home_card_week_recap">Here\'s a quick recap of this week:</string>
     <string name="home_card_week_action">Plan something</string>
     <plurals name="home_card_week_item">

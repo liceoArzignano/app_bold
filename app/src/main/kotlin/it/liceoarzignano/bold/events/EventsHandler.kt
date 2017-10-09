@@ -117,10 +117,12 @@ private constructor(context: Context) : DBHandler<Event>(context, DB_NAME, DB_VE
         val list = all
 
         if (query != null) {
-            list.removeIf { it ->
-                val title = it.title.toLowerCase()
-                val date = Time(it.date).toString().toLowerCase()
-                !title.contains(query.toLowerCase()) && !date.contains(query.toLowerCase())
+            for ((index, item) in list.withIndex()) {
+                val title = item.title.toLowerCase()
+                val date = Time(item.date).toString().toLowerCase()
+                if (!title.contains(query.toLowerCase()) && !date.contains(query.toLowerCase())) {
+                    list.removeAt(index)
+                }
             }
         }
 
