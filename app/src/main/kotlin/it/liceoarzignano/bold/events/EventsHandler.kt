@@ -16,10 +16,14 @@ private constructor(context: Context) : DBHandler<Event>(context, DB_NAME, DB_VE
             "$KEY_TITLE TEXT, " +
             "$KEY_DATE INTEGER, " +
             "$KEY_DESCRIPTION TEXT, " +
-            "$KEY_CATEGORY INTEGER)")
+            "$KEY_CATEGORY INTEGER, " +
+            "$KEY_HASHTAGS TEXT)")
 
-    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) = // Update this when db table will be changed
-            Unit
+    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        if (oldVersion == 1 && newVersion == 2) {
+            db.execSQL("ALTER TABLE $tableName ADD COLUMN $KEY_HASHTAGS TEXT DEFAULT \"\"")
+        }
+    }
 
     public override val all: MutableList<Event>
         get() {
@@ -29,11 +33,12 @@ private constructor(context: Context) : DBHandler<Event>(context, DB_NAME, DB_VE
             if (cursor.moveToFirst()) {
                 do {
                     list.add(Event(
-                            cursor.getString(0).toLong(),
+                            cursor.getLong(0),
                             cursor.getString(1),
-                            cursor.getString(2).toLong(),
+                            cursor.getLong(2),
                             cursor.getString(3),
-                            cursor.getString(4).toInt()))
+                            cursor.getInt(4),
+                            cursor.getString(5)))
                 } while (cursor.moveToNext())
             }
 
@@ -49,11 +54,12 @@ private constructor(context: Context) : DBHandler<Event>(context, DB_NAME, DB_VE
         var event: Event? = null
         if (cursor.moveToFirst()) {
             event = Event(
-                    cursor.getString(0).toLong(),
+                    cursor.getLong(0),
                     cursor.getString(1),
-                    cursor.getString(2).toLong(),
+                    cursor.getLong(2),
                     cursor.getString(3),
-                    cursor.getString(4).toInt())
+                    cursor.getInt(4),
+                    cursor.getString(5))
         }
         cursor.close()
         return event
@@ -65,6 +71,7 @@ private constructor(context: Context) : DBHandler<Event>(context, DB_NAME, DB_VE
         values.put(KEY_DATE, item.date)
         values.put(KEY_DESCRIPTION, item.description)
         values.put(KEY_CATEGORY, item.category)
+        values.put(KEY_HASHTAGS, item.hashtags)
 
         if (withId) {
             values.put(DBHandler.Companion.KEY_ID, item.id)
@@ -101,11 +108,12 @@ private constructor(context: Context) : DBHandler<Event>(context, DB_NAME, DB_VE
         if (cursor.moveToFirst()) {
             do {
                 list.add(Event(
-                        cursor.getString(0).toLong(),
+                        cursor.getLong(0),
                         cursor.getString(1),
-                        cursor.getString(2).toLong(),
+                        cursor.getLong(2),
                         cursor.getString(3),
-                        cursor.getString(4).toInt()))
+                        cursor.getInt(4),
+                        cursor.getString(5)))
             } while (cursor.moveToNext())
         }
 
@@ -153,11 +161,12 @@ private constructor(context: Context) : DBHandler<Event>(context, DB_NAME, DB_VE
 
     companion object {
         private val DB_NAME = "EventDatabase.db"
-        private val DB_VERSION = 1
+        private val DB_VERSION = 2
         private val KEY_TITLE = "title"
         private val KEY_DATE = "date"
         private val KEY_DESCRIPTION = "description"
         private val KEY_CATEGORY = "category"
+        private val KEY_HASHTAGS = "hashtags"
 
         // Singleton
         @Volatile private var INSTANCE: EventsHandler? = null

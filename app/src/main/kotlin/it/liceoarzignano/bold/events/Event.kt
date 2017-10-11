@@ -7,6 +7,7 @@ class Event : DBItem {
     var date = 0L
     var description = ""
     var category = 0
+    var hashtags = ""
 
     /*
      * Category values
@@ -21,11 +22,13 @@ class Event : DBItem {
 
     constructor()
 
-    constructor(id: Long, title: String, date: Long, description: String, category: Int) {
+    constructor(id: Long, title: String, date: Long, description: String,
+                category: Int, hashtags: String) {
         this.id = id
         this.title = title
         this.date = date
         this.description = description
         this.category = category
+        this.hashtags = hashtags
     }
 }

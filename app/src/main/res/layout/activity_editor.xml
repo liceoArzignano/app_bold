@@ -101,8 +101,9 @@
                         android:id="@+id/editor_category_spinner"
                         style="@style/Widget.AppCompat.Spinner.Underlined"
                         android:layout_width="match_parent"
-                        android:layout_marginLeft="40dp"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="48dp"
+                        android:layout_marginRight="8dp" />
 
                     <ImageView
                         style="@style/AppTheme.EditorIcon"
@@ -148,6 +149,34 @@
                     <ImageView
                         style="@style/AppTheme.EditorIcon"
                         app:srcCompat="@drawable/ic_notes" />
+                </RelativeLayout>
+
+                <!-- # hashtags -->
+                <RelativeLayout
+                    style="@style/AppTheme.EditorLayout"
+                    android:layout_height="wrap_content">
+
+                    <it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt
+                        android:id="@+id/editor_hashtags_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="56dp"
+                        android:layout_marginTop="16dp"
+                        app:horizontalMode="true" />
+
+                    <TextView
+                        android:id="@+id/editor_hashtags_hint"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/editor_hashtags_list"
+                        android:layout_marginLeft="56dp"
+                        android:paddingBottom="8dp"
+                        android:paddingTop="8dp"
+                        android:text="@string/editor_hashtag_hint" />
+
+                    <ImageView
+                        style="@style/AppTheme.EditorIcon"
+                        app:srcCompat="@drawable/ic_hashtag" />
                 </RelativeLayout>
             </LinearLayout>
         </ScrollView>

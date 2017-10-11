@@ -8,7 +8,9 @@ import android.support.design.widget.Snackbar
 import android.support.design.widget.TextInputLayout
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.text.Editable
 import android.text.SpannableStringBuilder
+import android.text.TextWatcher
 import android.view.*
 import android.widget.*
 import com.afollestad.materialdialogs.MaterialDialog
@@ -19,8 +21,10 @@ import it.liceoarzignano.bold.marks.Mark
 import it.liceoarzignano.bold.marks.MarksHandler
 import it.liceoarzignano.bold.news.NewsHandler
 import it.liceoarzignano.bold.settings.AppPrefs
+import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt
 import it.liceoarzignano.bold.utils.Time
 import java.util.*
+import kotlin.collections.ArrayList
 
 class EditorActivity : AppCompatActivity() {
     lateinit private var mCoordinator: CoordinatorLayout
@@ -30,6 +34,8 @@ class EditorActivity : AppCompatActivity() {
     lateinit private var mSubjectLayout: RelativeLayout
     lateinit private var mSubjectView: EditText
     lateinit private var mNotesText: EditText
+    lateinit private var mHashtagLayout: RecyclerViewExt
+    lateinit private var mHashtagHint: TextView
     lateinit private var mCategoryLayout: RelativeLayout
     lateinit private var mCategorySpinner: Spinner
     lateinit private var mValueLayout: RelativeLayout
@@ -41,6 +47,7 @@ class EditorActivity : AppCompatActivity() {
     lateinit private var mMarksHandler: MarksHandler
     lateinit private var mEventsHandler: EventsHandler
     lateinit private var mPrefs: AppPrefs
+    private var mHashtagAdapter = HashtagsAdapter()
 
     private var mId = 0L
     private var mIsEdit = false
@@ -78,6 +85,8 @@ class EditorActivity : AppCompatActivity() {
         mSubjectView = findViewById(R.id.editor_subject_selector)
         mSubjectLayout = findViewById(R.id.editor_subject_layout)
         mNotesText = findViewById(R.id.editor_notes_text)
+        mHashtagLayout = findViewById(R.id.editor_hashtags_list)
+        mHashtagHint = findViewById(R.id.editor_hashtags_hint)
         mCategoryLayout = findViewById(R.id.editor_category_layout)
         mCategorySpinner = findViewById(R.id.editor_category_spinner)
         mValueLayout = findViewById(R.id.editor_value_layout)
@@ -180,11 +189,14 @@ class EditorActivity : AppCompatActivity() {
         mTitleLayout.visibility = View.VISIBLE
         mInputTitle.hint = getString(R.string.editor_hint_event)
         mCategoryLayout.visibility = View.VISIBLE
+        mHashtagLayout.visibility = View.VISIBLE
 
         val items = resources.getStringArray(R.array.event_categories)
         mCategorySpinner.adapter = ArrayAdapter(this,
                 android.R.layout.simple_dropdown_item_1line, items)
         mCategorySpinner.setSelection(mValue)
+
+        setupHashtags()
     }
 
     private fun loadUi() {
@@ -212,6 +224,8 @@ class EditorActivity : AppCompatActivity() {
             mNotesText.setText(event.description)
             mValue = event.category
             mTime = Time(event.date)
+            mHashtagAdapter.tags = ArrayList(event.hashtags.split(","))
+            mHashtagAdapter.update(event.hashtags.replace(",", " "))
         }
 
         mDateView.text = SpannableStringBuilder(mTime.toString())
@@ -245,6 +259,21 @@ class EditorActivity : AppCompatActivity() {
                 .negativeText(android.R.string.no)
                 .onPositive { _, _ -> finish() }
                 .show()
+    }
+
+    private fun setupHashtags() {
+        mHashtagLayout.adapter = mHashtagAdapter
+
+        mNotesText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
+            override fun afterTextChanged(p0: Editable?) {
+                val text = mNotesText.text.toString()
+                        .replace(",", "")
+                        .replace("\n", " ")
+                mHashtagAdapter.update(text)
+            }
+        })
     }
 
     private val valuePickerView: View
@@ -318,6 +347,7 @@ class EditorActivity : AppCompatActivity() {
         event.category = mCategorySpinner.selectedItemPosition
         event.date = mTime.time
         event.description = mNotesText.text.toString()
+        event.hashtags = mHashtagAdapter.getTags()
 
         if (mIsEdit) {
             event.id = mId
@@ -329,6 +359,7 @@ class EditorActivity : AppCompatActivity() {
         Snackbar.make(mCoordinator, getString(R.string.editor_saved), Snackbar.LENGTH_LONG).show()
         Handler().postDelayed({ this.finish() }, 800)
     }
+
 
     companion object {
         val EXTRA_ID = "extra_id"

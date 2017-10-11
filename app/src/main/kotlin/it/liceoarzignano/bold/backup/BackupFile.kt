@@ -165,7 +165,8 @@ internal class BackupFile(activity: Activity) {
                             data[1].replace(COMMA_REPLACER, ","),
                             data[2].replace(COMMA_REPLACER, ",").toLong(),
                             data[3].replace(COMMA_REPLACER, ","),
-                            data[4].toInt()))
+                            data[4].toInt(),
+                            data[5].replace(COMMA_REPLACER, ",")))
                     line = reader.readLine()
                 } while (line != null && NEWS_HEADER != line)
             } catch (e: IOException) {

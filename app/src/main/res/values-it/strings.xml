@@ -86,6 +86,7 @@
     <string name="editor_cancel_message">Vuoi uscire senza salvare i cambiamenti?</string>
     <string name="editor_dialog_mark_title">Seleziona un voto</string>
     <string name="editor_error">Qualcosa non va, controlla i valori</string>
+    <string name="editor_hashtag_hint">Puoi organizzare i tuoi eventi aggiungendo dei tag. Prova a scrivere <i>#importante</i>. I tag vengono aggiunti quando scrivi una parola preceduta da un # nelle note</string>
 
     <!-- My marks -->
     <string name="title_activity_mark_list">Voti</string>
