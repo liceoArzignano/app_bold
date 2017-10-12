@@ -33,12 +33,12 @@ class MarksHandler private constructor(context: Context) :
         var mark: Mark? = null
         if (cursor.moveToFirst()) {
             mark = Mark(
-                    cursor.getString(0).toLong(),
+                    cursor.getLong(0),
                     cursor.getString(1),
-                    cursor.getString(2).toInt(),
-                    cursor.getString(3).toLong(),
+                    cursor.getInt(2),
+                    cursor.getLong(3),
                     cursor.getString(4),
-                    cursor.getString(5) == "1")
+                    cursor.getInt(5) == 1)
         }
         cursor.close()
         return mark
@@ -92,12 +92,12 @@ class MarksHandler private constructor(context: Context) :
         if (cursor.moveToFirst()) {
             do {
                 list.add(Mark(
-                        cursor.getString(0).toLong(),
+                        cursor.getLong(0),
                         cursor.getString(1),
-                        cursor.getString(2).toInt(),
-                        cursor.getString(3).toLong(),
+                        cursor.getInt(2),
+                        cursor.getLong(3),
                         cursor.getString(4),
-                        cursor.getString(5) == "1"))
+                        cursor.getInt(5) == 1))
             } while (cursor.moveToNext())
         }
 

@@ -74,19 +74,26 @@ class NewsHandler private constructor(context: Context) : DBHandler<News>(contex
     override val tableName: String get() = "news"
 
     fun getByQuery(query: String?): List<News> {
-        val list = all
-
-        if (query != null) {
-            list.removeIf { it ->
-                val title = it.title.toLowerCase()
-                val message = it.description.toLowerCase()
-                val date = Date(it.date).toString().toLowerCase()
-                !title.contains(query) &&
-                        !date.contains(query) &&
-                        !message.contains(query)
-            }
+        if (query == null || query.isBlank()) {
+            return all
         }
 
+        val list = ArrayList<News>()
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM $tableName WHERE $KEY_TITLE LIKE ?",
+                arrayOf("%$query%"))
+        if (cursor.moveToFirst()) {
+            do {
+                list.add(News(
+                        cursor.getString(0).toLong(),
+                        cursor.getString(1),
+                        cursor.getString(2).toLong(),
+                        cursor.getString(3),
+                        cursor.getString(4)))
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
         return list
     }
 

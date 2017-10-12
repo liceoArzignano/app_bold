@@ -4,7 +4,6 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import it.liceoarzignano.bold.database.DBHandler
-import it.liceoarzignano.bold.utils.Time
 import java.util.*
 import kotlin.collections.LinkedHashMap
 
@@ -122,18 +121,27 @@ private constructor(context: Context) : DBHandler<Event>(context, DB_NAME, DB_VE
     }
 
     fun getByQuery(query: String?): List<Event> {
-        val list = all
-
-        if (query != null) {
-            for ((index, item) in list.withIndex()) {
-                val title = item.title.toLowerCase()
-                val date = Time(item.date).toString().toLowerCase()
-                if (!title.contains(query.toLowerCase()) && !date.contains(query.toLowerCase())) {
-                    list.removeAt(index)
-                }
-            }
+        if (query == null || query.isBlank()) {
+            return all
         }
 
+        val list = ArrayList<Event>()
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM $tableName WHERE $KEY_TITLE LIKE ? OR " +
+                "$KEY_HASHTAGS LIKE ?", arrayOf("%$query%", "%$query%"))
+        if (cursor.moveToFirst()) {
+            do {
+                list.add(Event(
+                        cursor.getLong(0),
+                        cursor.getString(1),
+                        cursor.getLong(2),
+                        cursor.getString(3),
+                        cursor.getInt(4),
+                        cursor.getString(5)))
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
         return list
     }
 
