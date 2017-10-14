@@ -5,7 +5,6 @@ import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.FloatingActionButton
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.Menu
@@ -25,8 +24,7 @@ import it.liceoarzignano.bold.utils.UiUtils
 import java.io.UnsupportedEncodingException
 import java.security.GeneralSecurityException
 
-class SafeActivity : AppCompatActivity() {
-
+class SafeActivity : SecureActivity() {
     lateinit private var mLoadingLayout: LinearLayout
     lateinit private var mContentLayout: View
     lateinit private var mLoadingImage: ImageView
@@ -125,10 +123,10 @@ class SafeActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        this.mMenu = menu
         menuInflater.inflate(R.menu.safe, menu)
-        this.mMenu!!.findItem(R.id.action_info).isVisible = false
-        this.mMenu!!.findItem(R.id.action_reset).isVisible = false
+        mMenu = menu
+        mMenu?.findItem(R.id.action_info)?.isVisible = false
+        mMenu?.findItem(R.id.action_reset)?.isVisible = false
         return true
     }
 
@@ -157,32 +155,33 @@ class SafeActivity : AppCompatActivity() {
         }
     }
 
+    override fun onAuthSucceded() {
+        mLoadingImage.setImageResource(R.drawable.ic_empty_safe_unlocked)
+        mWorkingTask = object : AsyncTask<Unit, Unit, Unit>() {
+            override fun doInBackground(vararg p0: Unit?) {
+                isWorking = false
+
+                Log.d("OHAI", "WORKING")
+
+                mCrUserName = decrypt(mPrefs.get(AppPrefs.KEY_SAFE_USERNAME))
+                mCrReg = decrypt(mPrefs.get(AppPrefs.KEY_SAFE_REG))
+                mCrPc = decrypt(mPrefs.get(AppPrefs.KEY_SAFE_PC))
+                mCrInternet = decrypt(mPrefs.get(AppPrefs.KEY_SAFE_INTERNET))
+            }
+
+            override fun onPostExecute(result: Unit?) {
+                Log.d("OHAI", "DONE")
+                Handler().postDelayed({ onCreateContinue() }, 600)
+            }
+        }
+        mWorkingTask.execute()
+    }
+
     private fun showPasswordDialog() {
         val hasCompletedSetup = mPrefs.get(AppPrefs.KEY_SAFE_SETUP, false)
-        val loginDialog = SafeLoginDialog(this, !hasCompletedSetup)
-        loginDialog.build(MaterialDialog.Builder(this)
-                .customView(loginDialog.view, false)
-                .canceledOnTouchOutside(false)
-                .positiveText(if (hasCompletedSetup)
-                    R.string.safe_dialog_positive
-                else
-                    R.string.safe_dialog_first_positive)
-                .onPositive { _, _ ->
-                    loginDialog.dismiss()
-                    mLoadingText.text = getString(R.string.safe_decrypting)
-                    Handler().postDelayed({
-                        val input = loginDialog.input
-                        if (hasCompletedSetup) {
-                            validateLogin(input)
-                        } else {
-                            mPrefs.set(AppPrefs.KEY_SAFE_SETUP, true)
-                            mPrefs.set(AppPrefs.KEY_SAFE_ACCESS, encrypt(input))
-                            onCreateContinue()
-                        }
-                    }, 240)
-                }
-                .negativeText(android.R.string.cancel)
-                .onNegative { _, _ -> finish() })
+        val loginDialog = SafeLoginDialog(this, !hasCompletedSetup, hasFingerprint,
+                { callback, icon -> setupFingerprint(callback, icon) })
+        loginDialog.build(this, { dialog -> onLoginPositive(dialog) }, { finish() })
     }
 
     private fun encrypt(string: String): String {
@@ -222,6 +221,30 @@ class SafeActivity : AppCompatActivity() {
 
     }
 
+    private fun setupFingerprint(callback: SafeLoginDialog.Callback, icon: ImageView) {
+        if (!hasFingerprint) {
+            return
+        }
+
+        startListeningToFp(callback, icon)
+    }
+
+    private fun onLoginPositive(loginDialog: SafeLoginDialog) {
+        val hasCompletedSetup = mPrefs.get(AppPrefs.KEY_SAFE_SETUP, false)
+        loginDialog.dismiss()
+        mLoadingText.text = getString(R.string.safe_decrypting)
+        Handler().postDelayed({
+            val input = loginDialog.input
+            if (hasCompletedSetup) {
+                validateLogin(input)
+            } else {
+                mPrefs.set(AppPrefs.KEY_SAFE_SETUP, true)
+                mPrefs.set(AppPrefs.KEY_SAFE_ACCESS, encrypt(input))
+                onCreateContinue()
+            }
+        }, 240)
+    }
+
     private fun validateLogin(input: String) {
         val isPasswordCorrect = input == decrypt(mPrefs.get(AppPrefs.KEY_SAFE_ACCESS))
         if (!isPasswordCorrect) {
@@ -231,22 +254,7 @@ class SafeActivity : AppCompatActivity() {
         // Do things with some delay
         Handler().postDelayed({
             if (isPasswordCorrect) {
-                mLoadingImage.setImageResource(R.drawable.ic_empty_safe_unlocked)
-                mWorkingTask = object : AsyncTask<Unit, Unit, Unit>() {
-                    override fun doInBackground(vararg p0: Unit?) {
-                        isWorking = false
-
-                        mCrUserName = decrypt(mPrefs.get(AppPrefs.KEY_SAFE_USERNAME))
-                        mCrReg = decrypt(mPrefs.get(AppPrefs.KEY_SAFE_REG))
-                        mCrPc = decrypt(mPrefs.get(AppPrefs.KEY_SAFE_PC))
-                        mCrInternet = decrypt(mPrefs.get(AppPrefs.KEY_SAFE_INTERNET))
-                    }
-
-                    override fun onPostExecute(result: Unit?) {
-                        Handler().postDelayed({ onCreateContinue() }, 600)
-                    }
-                }
-                mWorkingTask.execute()
+                onAuthSucceded()
             } else {
                 finish()
             }

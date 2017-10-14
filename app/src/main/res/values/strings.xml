@@ -221,6 +221,7 @@
     <string name="title_activity_safe">Safe</string>
     <string name="safe_dialog_title">Safe login</string>
     <string name="safe_dialog_hint">Input your password to access your private data</string>
+    <string name="safe_dialog_hint_fingerprint">Input your password or use your fingerprint to access your private data</string>
     <string name="safe_dialog_first_hint">Choose a password to access your private data</string>
     <string name="safe_dialog_first_hint_low">Not so good\u2026 An 8 characters long password would be better</string>
     <string name="safe_dialog_first_hint_medium">Fine, what about using both numbers and letters?</string>

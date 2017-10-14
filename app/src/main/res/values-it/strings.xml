@@ -219,6 +219,7 @@
     <string name="title_activity_safe">Safe</string>
     <string name="safe_dialog_title">Accesso a Safe</string>
     <string name="safe_dialog_hint">Inserisci la password per accedere</string>
+    <string name="safe_dialog_hint_fingerprint">Inserisci la password o utilizza l\'impronta digitale per accedere</string>
     <string name="safe_dialog_first_hint">Scegli una password per accedere</string>
     <string name="safe_dialog_first_hint_low">Hmm\u2026 Una password con almeno 8 caratteri sarebbe meglio</string>
     <string name="safe_dialog_first_hint_medium">Buona password, che ne dici di usare sia numeri e che lettere?</string>
