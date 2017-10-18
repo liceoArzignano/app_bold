@@ -18,8 +18,6 @@
     <string name="shortcut_moodle">Moodle</string>
     <string name="shortcut_copybook">Quaderno</string>
     <string name="shortcut_teacherzone">Area docenti</string>
-    <string name="upcoming_events">Prossimi eventi</string>
-    <string name="lastest_marks">Ultimi voti</string>
     <string name="suggestions">Suggerimenti</string>
     <string name="suggestion_safe">Dimentichi le password? Prova Safe per tenerle tutte in un unico posto</string>
     <string name="suggestion_safe_pwd">Qualcuno conosce la password di Safe? Cambiala tramite l\'apposito pulsante in Safe</string>
@@ -36,11 +34,10 @@
     <string name="share_title">Condividi con qualcuno</string>
     <string name="home_card_week_title">Questa settimana</string>
     <string name="home_card_week_empty">Non ci sono eventi imminenti, vuoi aggiungerne uno?</string>
-    <string name="home_card_week_beginnning">Buon %1$s</string>
-    <string name="home_card_week_morning">giorno</string>
-    <string name="home_card_week_afternoon">pomeriggio</string>
-    <string name="home_card_week_evening">sera</string>
-    <string name="home_card_week_free">Sembra che non ci sia nulla</string>
+    <string name="home_card_week_morning">Buongiorno</string>
+    <string name="home_card_week_afternoon">Buon pomeriggio</string>
+    <string name="home_card_week_evening">Buona sera</string>
+    <string name="home_card_week_free">Sembra che non ci sia nulla in programma</string>
     <string name="home_card_week_recap">Ecco un riassunto degli impegni di questa settimana:</string>
     <string name="home_card_week_action">Pianifica qualcosa</string>
     <plurals name="home_card_week_item">
@@ -60,7 +57,8 @@
     <!-- Updated Dialog -->
     <string name="dialog_updated_title">L\'app \u00E8 stata aggiornata!</string>
     <string name="dialog_updated_content">
-         \u2022 Nuovo: aggiornata interfaccia utente.\n
+        \u2022 Nuovo: aggiornata interfaccia utente.\n
+        \u2022 Nuovo: accesso a Safe tramite l\'impronta digitale.\n
         \u2022 Nuovo: assistente migrazione nuovo anno scolastico.\n
         \u2022 Nuovo: supporto Android 8.0.\n
         \u2022 Miglioramenti performance.\n

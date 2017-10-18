@@ -400,11 +400,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val builder = StringBuilder()
             val hour = Time().getHour()
 
-            builder.append(getString(R.string.home_card_week_beginnning, getString(when {
+            builder.append(getString(when {
                 hour < 13 -> R.string.home_card_week_morning
                 hour < 19 -> R.string.home_card_week_afternoon
                 else -> R.string.home_card_week_evening
-            })))
+            }))
 
             val username = mPrefs.get(AppPrefs.KEY_USERNAME, "")
             if (username.isNotBlank()) {
