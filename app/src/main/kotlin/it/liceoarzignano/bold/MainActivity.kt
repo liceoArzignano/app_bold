@@ -522,8 +522,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
     private val suggestion: String
-        get() =
-            when (SecureRandom().nextInt(13) + 1) {
+        get() {
+            if (!mPrefs.get(AppPrefs.KEY_INTRO_SAFE, false)) {
+                return getString(R.string.suggestion_safe_intro)
+            }
+
+            if (mPrefs.get(AppPrefs.KEY_USERNAME, "").isBlank()) {
+                return getString(R.string.suggestion_username)
+            }
+
+            return when (SecureRandom().nextInt(10) + 1) {
                 1 -> getString(R.string.suggestion_safe_pwd)
                 2 -> getString(R.string.suggestion_avg)
                 3 -> getString(R.string.suggestion_quarter)
@@ -533,11 +541,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 7 -> getString(R.string.suggestion_address)
                 8 -> getString(R.string.suggestion_backups)
                 9 -> getString(R.string.suggestion_suggestions)
-                10 -> getString(R.string.suggestion_news)
-                11 -> getString(R.string.suggestion_feedback)
-                12 -> getString(R.string.suggestion_safe)
                 else -> getString(R.string.suggestion_notification)
             }
+        }
 
     companion object {
         private val BUNDLE_SHOULD_ANIMATE = "homeShouldAnimate"

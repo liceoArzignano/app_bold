@@ -19,7 +19,8 @@
     <string name="shortcut_copybook">Quaderno</string>
     <string name="shortcut_teacherzone">Area docenti</string>
     <string name="suggestions">Suggerimenti</string>
-    <string name="suggestion_safe">Dimentichi le password? Prova Safe per tenerle tutte in un unico posto</string>
+    <string name="suggestion_username">Inserisci il tuo nome nelle impostazioni per un\'esperienza personalizzata</string>
+    <string name="suggestion_safe_intro">Dimentichi le password? Prova Safe per tenerle tutte in un unico posto</string>
     <string name="suggestion_safe_pwd">Qualcuno conosce la password di Safe? Cambiala tramite l\'apposito pulsante in Safe</string>
     <string name="suggestion_avg">Qual\'\u00E8 il prossimo voto da prendere per avere la sufficienza? Seleziona la materia e guarda i suggerimenti</string>
     <string name="suggestion_quarter">\u00C8 iniziato un nuovo quadrimestre? Nessun problema, i voti verranno filtrati automaticamente</string>

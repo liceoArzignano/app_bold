@@ -19,7 +19,8 @@
     <string name="shortcut_copybook">Copybook</string>
     <string name="shortcut_teacherzone">Teacher area</string>
     <string name="suggestions">Suggestions</string>
-    <string name="suggestion_safe">You forgot your password? Check Safe out and store all of them in a single place</string>
+    <string name="suggestion_username">Insert your name in the settings for a more personalized experience</string>
+    <string name="suggestion_safe_intro">You keep forgetting your password? Check Safe out and store all of them in a single place</string>
     <string name="suggestion_safe_pwd">Someone knows your Safe password? Log in and change it</string>
     <string name="suggestion_avg">Would you like to know what mark you should get to have the sufficiency in a subject? Pick a subject and look at the suggestions</string>
     <string name="suggestion_quarter">A new quarter has begun? No problem, marks will be automatically filtered</string>
@@ -31,7 +32,6 @@
     <string name="suggestion_notification">You will be notified about your events the day before</string>
     <string name="suggestion_backups">Create a backup in Google Drive, you\'ll be able to restore your data in case you lose or change your phone</string>
     <string name="suggestion_news">You will find the most important news from the right in the app by opening the news section</string>
-    <string name="suggestion_feedback">Want to submit a feedback or report an issue you\'ve found? You can do it from the settings</string>
     <string name="share_title">Share with someone</string>
     <string name="home_card_week_title">This week</string>
     <string name="home_card_week_empty">It looks like you\'re free, would you like to plan something?</string>
