@@ -11,7 +11,9 @@ import android.support.v7.widget.Toolbar
 import android.text.Editable
 import android.text.SpannableStringBuilder
 import android.text.TextWatcher
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import com.afollestad.materialdialogs.MaterialDialog
 import it.liceoarzignano.bold.R
@@ -23,6 +25,7 @@ import it.liceoarzignano.bold.news.NewsHandler
 import it.liceoarzignano.bold.settings.AppPrefs
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt
 import it.liceoarzignano.bold.utils.Time
+import it.liceoarzignano.bold.utils.UiUtils
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -52,19 +55,21 @@ class EditorActivity : AppCompatActivity() {
     private var mId = 0L
     private var mIsEdit = false
     private var mIsMark = false
+    private var mIsTeacher = false
     private var mValue = 0
     private var mDialogVal = 0.toDouble()
 
     override fun onCreate(savedInstance: Bundle?) {
         super.onCreate(savedInstance)
 
+        mPrefs = AppPrefs(baseContext)
         mId = intent.getLongExtra(EXTRA_ID, -1)
         mIsEdit = mId != -1L
         mIsMark = intent.getBooleanExtra(EXTRA_IS_MARK, true)
+        mIsTeacher = mPrefs.get(AppPrefs.KEY_IS_TEACHER)
 
         mMarksHandler = MarksHandler.getInstance(baseContext)
         mEventsHandler = EventsHandler.getInstance(baseContext)
-        mPrefs = AppPrefs(baseContext)
 
         setContentView(R.layout.activity_editor)
 
@@ -92,6 +97,7 @@ class EditorActivity : AppCompatActivity() {
         mValueLayout = findViewById(R.id.editor_value_layout)
         mValueView = findViewById(R.id.editor_value_view)
         mDateView = findViewById(R.id.editor_date_view)
+        val saveButton = findViewById<View>(R.id.editor_save_button)
 
         if (mIsEdit) {
             if (intent.getBooleanExtra(EXTRA_IS_NEWS, false)) {
@@ -113,8 +119,10 @@ class EditorActivity : AppCompatActivity() {
             mTime = Time(year, month, dayOfMonth)
             mDateView.text = SpannableStringBuilder(mTime.toString())
         }
-        mDateView.setOnClickListener { _ -> showDatePicker() }
+        mDateView.setOnClickListener{ _ -> showDatePicker() }
         mDateView.text = SpannableStringBuilder(mTime.toString())
+
+        saveButton.setOnClickListener{ _ -> save() }
 
         mSubjectView.keyListener = null
         mValueView.keyListener = null
@@ -123,22 +131,8 @@ class EditorActivity : AppCompatActivity() {
 
     override fun onBackPressed() = askQuit()
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.editor, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.menu_save) {
-            save()
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-
-
     private fun initMarkUi() {
-        if (mPrefs.get(AppPrefs.KEY_IS_TEACHER)) {
+        if (mIsTeacher) {
             mTitleLayout.visibility = View.VISIBLE
             mInputTitle.hint = getString(R.string.editor_hint_student)
         } else {
@@ -205,7 +199,7 @@ class EditorActivity : AppCompatActivity() {
                 mIsEdit = false
                 return
             }
-            if (mPrefs.get(AppPrefs.KEY_IS_TEACHER)) {
+            if (mIsTeacher) {
                 mTitleText.setText(mark.subject)
             } else {
                 mSubjectView.text = SpannableStringBuilder(mark.subject)
@@ -252,6 +246,12 @@ class EditorActivity : AppCompatActivity() {
     }
 
     private fun askQuit() {
+        // Do not ask to save changes if nothing has changed
+        if (!mIsEdit && isEmpty()) {
+            finish()
+            return
+        }
+
         MaterialDialog.Builder(this)
                 .content(R.string.editor_cancel_message)
                 .positiveText(android.R.string.yes)
@@ -303,28 +303,66 @@ class EditorActivity : AppCompatActivity() {
             return dialog
         }
 
-    private fun save() = if (mIsMark) {
-        if (mValue == 0 || mTitleText.text.toString().isEmpty() && mSubjectView.text.toString().isEmpty()) {
-            Snackbar.make(mCoordinator, getString(R.string.editor_error),
-                    Snackbar.LENGTH_SHORT).show()
+    private fun isEmpty(): Boolean =
+        if (mIsMark) {
+            if (mValue == 0) {
+                true
+            } else {
+                if (mIsTeacher) {
+                    mTitleText.text.isBlank()
+                } else {
+                    mSubjectView.text.isBlank()
+                }
+            }
         } else {
-            saveMark()
+            mTitleText.text.isBlank()
         }
-    } else {
-        if (mTitleText.text.toString().isEmpty()) {
+
+    private fun showError(view: View) {
+        val diff = UiUtils.dpToPx(resources, 6f)
+        // Right 1
+        view.animate()
+                .translationXBy(diff)
+                .setDuration(200)
+                .withEndAction {
+                    // Left 2
+                    view.animate()
+                            .translationXBy(-2 * diff)
+                            .setDuration(200)
+                            .withEndAction {
+                                // Right 1
+                                view.animate()
+                                        .translationXBy(diff)
+                                        .setDuration(200)
+                                        .start()
+                            }
+                            .start()
+                }
+                .start()
+    }
+
+    private fun save() {
+        if (isEmpty()) {
+            if (mPrefs.get(AppPrefs.KEY_IS_TEACHER) || !mIsMark) {
+                showError(mTitleText)
+            } else {
+                showError(mValueView)
+            }
+
             Snackbar.make(mCoordinator, getString(R.string.editor_error),
                     Snackbar.LENGTH_SHORT).show()
         } else {
-            saveEvent()
+            if (mIsMark) {
+                saveMark()
+            } else {
+                saveEvent()
+            }
         }
     }
 
     private fun saveMark() {
         val mark = Mark()
-        mark.subject = (if (mPrefs.get(AppPrefs.KEY_IS_TEACHER))
-            mTitleText.text
-        else
-            mSubjectView.text).toString()
+        mark.subject = (if (mIsTeacher) mTitleText.text else mSubjectView.text).toString()
         mark.value = mValue
         mark.date = mTime.time
         mark.isFirstQuarter = mTime.isFirstQuarter(baseContext)

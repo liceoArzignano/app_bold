@@ -181,5 +181,16 @@
                 </RelativeLayout>
             </LinearLayout>
         </ScrollView>
+
+        <Button
+            android:id="@+id/editor_save_button"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorAccent"
+            android:foreground="?attr/selectableItemBackground"
+            android:text="@string/editor_save"
+            android:textColor="@color/slide_color"
+            android:textSize="18sp" />
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
