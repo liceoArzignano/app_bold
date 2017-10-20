@@ -40,4 +40,6 @@
     <color name="shortcut_moodle">#34bc6e</color>
     <color name="shortcut_copybook">#c22dd5</color>
     <color name="shortcut_teacherzone">#e62325</color>
+
+    <color name="ic_launcher_background">#393939</color>
 </resources>
