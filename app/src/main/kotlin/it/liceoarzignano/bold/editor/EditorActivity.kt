@@ -34,8 +34,8 @@ class EditorActivity : AppCompatActivity() {
     lateinit private var mSubjectLayout: RelativeLayout
     lateinit private var mSubjectView: EditText
     lateinit private var mNotesText: EditText
-    lateinit private var mHashtagLayout: RecyclerViewExt
-    lateinit private var mHashtagHint: TextView
+    lateinit private var mHashtagLayout: RelativeLayout
+    lateinit private var mHashtagList: RecyclerViewExt
     lateinit private var mCategoryLayout: RelativeLayout
     lateinit private var mCategorySpinner: Spinner
     lateinit private var mValueLayout: RelativeLayout
@@ -85,8 +85,8 @@ class EditorActivity : AppCompatActivity() {
         mSubjectView = findViewById(R.id.editor_subject_selector)
         mSubjectLayout = findViewById(R.id.editor_subject_layout)
         mNotesText = findViewById(R.id.editor_notes_text)
-        mHashtagLayout = findViewById(R.id.editor_hashtags_list)
-        mHashtagHint = findViewById(R.id.editor_hashtags_hint)
+        mHashtagLayout = findViewById(R.id.editor_hashtags_layout)
+        mHashtagList = findViewById(R.id.editor_hashtags_list)
         mCategoryLayout = findViewById(R.id.editor_category_layout)
         mCategorySpinner = findViewById(R.id.editor_category_spinner)
         mValueLayout = findViewById(R.id.editor_value_layout)
@@ -189,7 +189,6 @@ class EditorActivity : AppCompatActivity() {
         mTitleLayout.visibility = View.VISIBLE
         mInputTitle.hint = getString(R.string.editor_hint_event)
         mCategoryLayout.visibility = View.VISIBLE
-        mHashtagLayout.visibility = View.VISIBLE
 
         val items = resources.getStringArray(R.array.event_categories)
         mCategorySpinner.adapter = ArrayAdapter(this,
@@ -262,7 +261,8 @@ class EditorActivity : AppCompatActivity() {
     }
 
     private fun setupHashtags() {
-        mHashtagLayout.adapter = mHashtagAdapter
+        mHashtagLayout.visibility = View.VISIBLE
+        mHashtagList.adapter = mHashtagAdapter
 
         mNotesText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit

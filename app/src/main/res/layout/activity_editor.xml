@@ -153,8 +153,10 @@
 
                 <!-- # hashtags -->
                 <RelativeLayout
+                    android:id="@+id/editor_hashtags_layout"
                     style="@style/AppTheme.EditorLayout"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
 
                     <it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt
                         android:id="@+id/editor_hashtags_list"
@@ -165,7 +167,6 @@
                         app:horizontalMode="true" />
 
                     <TextView
-                        android:id="@+id/editor_hashtags_hint"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/editor_hashtags_list"
