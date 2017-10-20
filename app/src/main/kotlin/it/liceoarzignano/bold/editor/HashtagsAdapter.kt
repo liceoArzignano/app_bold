@@ -25,7 +25,7 @@ class HashtagsAdapter : RecyclerView.Adapter<HashtagsAdapter.HashtagViewHolder>(
     fun update(new: String) {
         object : AsyncTask<Unit, Unit, DiffUtil.DiffResult>() {
             override fun doInBackground(vararg p0: Unit?): DiffUtil.DiffResult {
-                val newList = new.split(" ").filter { it.startsWith('#') }
+                val newList = new.split(" ").filter { it.startsWith('#') && it.length > 1 }
                 val diff = DiffUtil.calculateDiff(DiffHelper(tags, newList))
                 tags = newList
                 return diff
