@@ -9,6 +9,7 @@ import android.app.KeyguardManager
 import android.content.Context
 import android.content.pm.PackageManager
 import android.hardware.fingerprint.FingerprintManager
+import android.os.Build
 import android.os.Bundle
 import android.os.CancellationSignal
 import android.os.Handler
@@ -33,23 +34,25 @@ open class SecureActivity : AppCompatActivity() {
     private var mCipher: Cipher? = null
     private var mCryptoObject: FingerprintManager.CryptoObject? = null
     private val mKeyStore = KeyStore.getInstance(KEYSTORE_NAME)
-    private var mGenerator =
-            KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, KEYSTORE_NAME)
+    lateinit private var mGenerator: KeyGenerator
+    private val hasAPI23 = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mFingerprintManager = getSystemService(Context.FINGERPRINT_SERVICE) as FingerprintManager
-        mKeyguardManager = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
-
-        setupFingerprint()
-        setContentView(R.layout.item_home_shortcut)
+        if (hasAPI23) {
+            mFingerprintManager = getSystemService(Context.FINGERPRINT_SERVICE) as FingerprintManager
+            mKeyguardManager = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+            setupFingerprint()
+        }
     }
 
     private fun setupFingerprint() {
-        if (!hasFingerprint) {
+        if (!hasAPI23 || !hasFingerprint) {
             return
         }
+
+        mGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, KEYSTORE_NAME)
 
         if (hasEnrolled) {
             generateKey()
@@ -86,9 +89,11 @@ open class SecureActivity : AppCompatActivity() {
             mKeyStore.load(null)
             val key = mKeyStore.getKey(KEY_NAME, null)
             mCipher?.init(Cipher.ENCRYPT_MODE, key)
-        } catch (e: KeyPermanentlyInvalidatedException) {
-            return false
         } catch (e: Exception) {
+            // Hack to prevent VerifyError on older devices
+            if (e is KeyPermanentlyInvalidatedException) {
+                return false
+            }
             Log.e(TAG, e.message)
         }
         return true
@@ -99,7 +104,7 @@ open class SecureActivity : AppCompatActivity() {
                 PackageManager.PERMISSION_GRANTED
 
     protected val hasFingerprint: Boolean
-        get() = mFingerprintManager.isHardwareDetected && hasFpPermission
+        get() = hasAPI23 && mFingerprintManager.isHardwareDetected && hasFpPermission
 
     private val hasEnrolled: Boolean
         get() = mFingerprintManager.hasEnrolledFingerprints()

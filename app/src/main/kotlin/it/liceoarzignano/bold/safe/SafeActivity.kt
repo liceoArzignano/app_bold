@@ -298,8 +298,10 @@ class SafeActivity : SecureActivity() {
                     mPrefs.remove(AppPrefs.KEY_SAFE_SHARED)
                     mPrefs.remove(AppPrefs.KEY_SAFE_SETUP)
 
-                    Handler().postDelayed({ startActivity(Intent(this,
-                            SafeActivity::class.java)) }, 700)
+                    Handler().postDelayed({
+                        startActivity(Intent(this, SafeActivity::class.java))
+                        finish()
+                    }, 700)
                 }
                 .show()
     }
