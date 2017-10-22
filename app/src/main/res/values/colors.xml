@@ -25,6 +25,7 @@
     <color name="list_header">#8b000000</color>
     <color name="tag_background">#eeeeee</color>
     <color name="tag_text">#757575</color>
+    <color name="preference_fallback_accent_color">@color/colorAccent</color>
 
     <color name="slide_color">@color/colorPrimary</color>
 
