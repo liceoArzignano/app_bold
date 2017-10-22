@@ -359,10 +359,14 @@ class EditorActivity : AppCompatActivity() {
 
     private fun save() {
         if (isEmpty()) {
-            if (mPrefs.get(AppPrefs.KEY_IS_TEACHER) || !mIsMark) {
-                showError(mTitleText)
+            if (mIsMark) {
+                showError(when {
+                    mValue == 0 -> mValueView
+                    mIsTeacher -> mTitleText
+                    else -> mSubjectView
+                })
             } else {
-                showError(mValueView)
+                showError(mTitleText)
             }
 
             Snackbar.make(mCoordinator, getString(R.string.editor_error),
