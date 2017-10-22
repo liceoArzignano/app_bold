@@ -106,7 +106,7 @@ class EditorActivity : AppCompatActivity() {
                 loadUi()
             }
         } else {
-            mTime = Time()
+            setTime(Time(1))
         }
 
         if (mIsMark) {
@@ -116,11 +116,9 @@ class EditorActivity : AppCompatActivity() {
         }
 
         mDateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-            mTime = Time(year, month, dayOfMonth)
-            mDateView.text = SpannableStringBuilder(mTime.toString())
+            setTime(Time(year, month, dayOfMonth))
         }
         mDateView.setOnClickListener{ _ -> showDatePicker() }
-        mDateView.text = SpannableStringBuilder(mTime.toString())
 
         saveButton.setOnClickListener{ _ -> save() }
 
@@ -205,7 +203,7 @@ class EditorActivity : AppCompatActivity() {
                 mSubjectView.text = SpannableStringBuilder(mark.subject)
             }
             mNotesText.setText(mark.description)
-            mTime = Time(mark.date)
+            setTime(Time(mark.date))
             mValue = mark.value
         } else {
             val event = mEventsHandler[mId]
@@ -216,12 +214,10 @@ class EditorActivity : AppCompatActivity() {
             mTitleText.setText(event.title)
             mNotesText.setText(event.description)
             mValue = event.category
-            mTime = Time(event.date)
+            setTime(Time(event.date))
             mHashtagAdapter.tags = ArrayList(event.hashtags.split(","))
             mHashtagAdapter.update(event.hashtags.replace(",", " "))
         }
-
-        mDateView.text = SpannableStringBuilder(mTime.toString())
     }
 
     private fun loadNews() {
@@ -230,19 +226,39 @@ class EditorActivity : AppCompatActivity() {
 
         mIsMark = false
         mIsEdit = false
-        mTime = Time(news.date)
+        setTime(Time(news.date))
         mTitleText.setText(news.title)
-        mDateView.text = SpannableStringBuilder(mTime.toString())
         mNotesText.setText(String.format("%1\$s\n%2\$s", news.description, news.url))
         mValue = 6
     }
 
     private fun showDatePicker() {
+        val items = resources.getStringArray(R.array.editor_dates)
+
+        MaterialDialog.Builder(this)
+                .title(R.string.editor_hint_date)
+                .items(items.toList())
+                .itemsCallback { _, _, position, _ ->
+                    when {
+                        position < 3 -> setTime(Time(position))
+                        position == 3 -> setTime(Time(7))
+                        else -> showDateCalendar()
+                    }
+                }
+                .show()
+    }
+
+    private fun showDateCalendar() {
         val calendar = Calendar.getInstance()
         calendar.time = mTime
         DatePickerDialog(this, mDateSetListener, calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
                 .show()
+    }
+
+    private fun setTime(time: Time) {
+        mTime = time
+        mDateView.text = SpannableStringBuilder(mTime.toString())
     }
 
     private fun askQuit() {

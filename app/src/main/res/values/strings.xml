@@ -86,6 +86,9 @@
     <string name="editor_dialog_mark_title">Select a mark</string>
     <string name="editor_error">Something is wrong, check the values</string>
     <string name="editor_hashtag_hint">You can organize your events by adding hashtags. Try to write <i>#important</i>. Hashtags are automatically added when you write a world preceded by an # in the notes</string>
+    <string name="editor_date_two_days">The day after tomorrow</string>
+    <string name="editor_date_next_week">Next week</string>
+    <string name="editor_date_custom">Select a date\u2026</string>
 
     <!-- My marks -->
     <string name="title_activity_mark_list">Marks</string>
