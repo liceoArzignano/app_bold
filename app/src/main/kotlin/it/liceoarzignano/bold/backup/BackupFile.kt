@@ -126,13 +126,7 @@ internal class BackupFile(activity: Activity) {
                             .split(SEPARATOR.toRegex())
                             .dropLastWhile { it.isEmpty() }
                             .toTypedArray()
-                    list.add(Mark(
-                            data[0].toLong(),
-                            data[1].replace(COMMA_REPLACER, ","),
-                            data[2].replace(COMMA_REPLACER, ",").toInt(),
-                            data[3].replace(COMMA_REPLACER, ",").toLong(),
-                            data[4].replace(COMMA_REPLACER, ","),
-                            "1" == data[5]))
+                    list.add(readMark(data))
                     line = reader.readLine()
                 } while (line != null && EVENT_HEADER != line)
             } catch (e: IOException) {
@@ -160,13 +154,7 @@ internal class BackupFile(activity: Activity) {
                             .split(SEPARATOR.toRegex())
                             .dropLastWhile { it.isEmpty() }
                             .toTypedArray()
-                    list.add(Event(
-                            data[0].toLong(),
-                            data[1].replace(COMMA_REPLACER, ","),
-                            data[2].replace(COMMA_REPLACER, ",").toLong(),
-                            data[3].replace(COMMA_REPLACER, ","),
-                            data[4].toInt(),
-                            data[5].replace(COMMA_REPLACER, ",")))
+                    list.add(readEvent(data))
                     line = reader.readLine()
                 } while (line != null && NEWS_HEADER != line)
             } catch (e: IOException) {
@@ -193,13 +181,7 @@ internal class BackupFile(activity: Activity) {
                             .split(SEPARATOR.toRegex())
                             .dropLastWhile { it.isEmpty() }
                             .toTypedArray()
-                    list.add(News(
-                            data[0].toLong(),
-                            data[1].replace(COMMA_REPLACER, ","),
-                            data[2].replace(COMMA_REPLACER, ",").toLong(),
-                            data[3].replace(COMMA_REPLACER, ","),
-                            data[4].replace(COMMA_REPLACER, ","))
-                    )
+                    list.add(readNews(data))
                     line = reader.readLine()
                 } while (line != null)
             } catch (e: IOException) {
@@ -208,6 +190,39 @@ internal class BackupFile(activity: Activity) {
 
             return list
         }
+
+    private fun readMark(data: Array<String>) = Mark(
+            data[0].toLong(),
+            data[1].replace(COMMA_REPLACER, ","),
+            data[2].replace(COMMA_REPLACER, ",").toInt(),
+            data[3].replace(COMMA_REPLACER, ",").toLong(),
+            data[4].replace(COMMA_REPLACER, ","),
+            "1" == data[5])
+
+    private fun readEvent(data: Array<String>) =
+            when (data.size) {
+                5 -> Event( // Old db backup, doesn't have tags
+                        data[0].toLong(),
+                        data[1].replace(COMMA_REPLACER, ","),
+                        data[2].replace(COMMA_REPLACER, ",").toLong(),
+                        data[3].replace(COMMA_REPLACER, ","),
+                        data[4].toInt(),
+                        "")
+                else -> Event(
+                        data[0].toLong(),
+                        data[1].replace(COMMA_REPLACER, ","),
+                        data[2].replace(COMMA_REPLACER, ",").toLong(),
+                        data[3].replace(COMMA_REPLACER, ","),
+                        data[4].toInt(),
+                        data[5].replace(COMMA_REPLACER, ","))
+            }
+
+    private fun readNews(data: Array<String>) = News(
+            data[0].toLong(),
+            data[1].replace(COMMA_REPLACER, ","),
+            data[2].replace(COMMA_REPLACER, ",").toLong(),
+            data[3].replace(COMMA_REPLACER, ","),
+            data[4].replace(COMMA_REPLACER, ","))
 
     companion object {
         private val TAG = "BackupFile"

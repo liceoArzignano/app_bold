@@ -122,7 +122,6 @@ class BackupActivity : AppCompatActivity() {
         val backupTitles = mBackupList.map {
             String.format("%1\$s (%2\$s)", it.time?: "", backupSize(it.size))
         }
-        // Stream fails with proguard optimizations
 
         MaterialDialog.Builder(this)
                 .title(R.string.backup_dialog_list_title)
