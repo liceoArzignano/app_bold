@@ -64,18 +64,13 @@ private constructor(context: Context) : DBHandler<Event>(context, DB_NAME, DB_VE
         return event
     }
 
-    override fun getValues(item: Event, withId: Boolean): ContentValues {
+    override fun getValues(item: Event): ContentValues {
         val values = ContentValues()
         values.put(KEY_TITLE, item.title)
         values.put(KEY_DATE, item.date)
         values.put(KEY_DESCRIPTION, item.description)
         values.put(KEY_CATEGORY, item.category)
         values.put(KEY_HASHTAGS, item.hashtags)
-
-        if (withId) {
-            values.put(DBHandler.Companion.KEY_ID, item.id)
-        }
-
         return values
     }
 

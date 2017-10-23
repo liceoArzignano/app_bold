@@ -55,7 +55,9 @@ internal class EventsAdapter(private var mEvents: List<Event>, private val mCont
         fun setData(event: Event) {
             mTitle.text = event.title
 
-            if (!TextUtils.isEmpty(event.description)) {
+            if (TextUtils.isEmpty(event.description)) {
+                mValue.visibility = View.GONE
+            } else {
                 mValue.text = event.description
                 mValue.visibility = View.VISIBLE
             }

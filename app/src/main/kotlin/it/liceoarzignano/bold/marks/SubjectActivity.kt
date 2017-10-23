@@ -72,13 +72,13 @@ class SubjectActivity : AppCompatActivity() {
         super.onResume()
 
         refresh()
+        // Scroll to top
+        mNestedView.scrollTo(0, 0)
     }
 
     private fun refresh() {
         val marks = mMarksHandler.getFilteredMarks(mTitle, mFilter)
         mAdapter.updateList(marks)
-        // Scroll to top
-        mNestedView.scrollTo(0, 0)
 
         setHint(mMarksHandler.getAverage(mTitle, mFilter),
                 mMarksHandler.whatShouldIGet(mTitle, mFilter))
@@ -119,7 +119,7 @@ class SubjectActivity : AppCompatActivity() {
                 mMarksHandler.delete(mark.id)
                 Snackbar.make(mCoordinator, getString(R.string.actions_removed), Snackbar.LENGTH_LONG)
                         .show()
-                mAdapter.notifyDataSetChanged()
+                refresh()
             }
         })
         dialog.show()

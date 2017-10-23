@@ -15,12 +15,12 @@ protected constructor(context: Context, name: String, version: Int) :
         }
 
         val db = writableDatabase
-        db.insert(tableName, null, getValues(item, true))
+        db.insert(tableName, null, getValues(item))
     }
 
     fun update(item: T) {
         val db = writableDatabase
-        db.update(tableName, getValues(item, false), KEY_ID + "=?",
+        db.update(tableName, getValues(item), KEY_ID + "=?",
                 arrayOf(item.id.toString()))
     }
 
@@ -37,7 +37,7 @@ protected constructor(context: Context, name: String, version: Int) :
         }
 
         for (item in items) {
-            db.insert(tableName, null, getValues(item, true))
+            db.insert(tableName, null, getValues(item))
         }
     }
 
@@ -60,7 +60,7 @@ protected constructor(context: Context, name: String, version: Int) :
 
     protected abstract val all: List<T>
     abstract operator fun get(id: Long): T?
-    protected abstract fun getValues(item: T, withId: Boolean): ContentValues
+    protected abstract fun getValues(item: T): ContentValues
     protected abstract val tableName: String
 
     companion object {

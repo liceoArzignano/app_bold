@@ -9,7 +9,7 @@ import java.util.*
 class NewsHandler private constructor(context: Context) : DBHandler<News>(context, DB_NAME, DB_VERSION) {
 
     override fun onCreate(db: SQLiteDatabase) = db.execSQL("CREATE TABLE $tableName (" +
-            "$KEY_ID INTEGER PRIMARY KEY, " +
+            "$KEY_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
             "$KEY_TITLE TEXT, " +
             "$KEY_DATE INTEGER, " +
             "$KEY_DESCRIPTION TEXT, " +
@@ -57,17 +57,12 @@ class NewsHandler private constructor(context: Context) : DBHandler<News>(contex
         return news
     }
 
-    override fun getValues(item: News, withId: Boolean): ContentValues {
+    override fun getValues(item: News): ContentValues {
         val values = ContentValues()
         values.put(KEY_TITLE, item.title)
         values.put(KEY_DATE, item.date)
         values.put(KEY_DESCRIPTION, item.description)
         values.put(KEY_URL, item.url)
-
-        if (withId) {
-            values.put(DBHandler.Companion.KEY_ID, item.id)
-        }
-
         return values
     }
 

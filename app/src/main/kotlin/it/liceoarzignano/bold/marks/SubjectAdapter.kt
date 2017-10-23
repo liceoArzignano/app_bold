@@ -1,7 +1,7 @@
 package it.liceoarzignano.bold.marks
 
 import android.content.Context
-import android.graphics.Color
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -39,9 +39,11 @@ internal class SubjectAdapter(private var mMarks: List<Mark>, private val mConte
             mDate.text = Time(mark.date).asString(mContext)
 
             val value = mark.value.toDouble() / 100
-            if (value < 6) {
-                mValue.setTextColor(Color.RED)
-            }
+            val context = mView.context
+            mValue.setTextColor(ContextCompat.getColor(context,
+                    if  (value < 6) R.color.red
+                    else R.color.black))
+
             mValue.text = String.format(Locale.ENGLISH, "%.2f", value)
 
             val summary = mark.description

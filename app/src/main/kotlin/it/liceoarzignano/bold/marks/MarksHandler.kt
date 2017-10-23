@@ -12,7 +12,7 @@ class MarksHandler private constructor(context: Context) :
 
     override fun onCreate(db: SQLiteDatabase) =
             db.execSQL("CREATE TABLE $tableName (" +
-                    "$KEY_ID INTEGER PRIMARY KEY, " +
+                    "$KEY_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "$KEY_SUBJECT TEXT, " +
                     "$KEY_VALUE INTEGER, " +
                     "$KEY_DATE INTEGER, " +
@@ -44,11 +44,8 @@ class MarksHandler private constructor(context: Context) :
         return mark
     }
 
-    override fun getValues(item: Mark, withId: Boolean): ContentValues {
+    override fun getValues(item: Mark): ContentValues {
         val values = ContentValues()
-        if (withId) {
-            values.put(DBHandler.Companion.KEY_ID, item.id)
-        }
         values.put(KEY_SUBJECT, item.subject)
         values.put(KEY_VALUE, item.value)
         values.put(KEY_DATE, item.date)
