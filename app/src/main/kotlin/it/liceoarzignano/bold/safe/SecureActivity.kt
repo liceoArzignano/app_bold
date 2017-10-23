@@ -130,26 +130,19 @@ open class SecureActivity : AppCompatActivity() {
             manager.authenticate(cryptoObject, mCancellationSignal, 0, this, null)
         }
 
-        override fun onAuthenticationError(errorCode: Int, errString: CharSequence?) {
-            onFailed()
-        }
+        override fun onAuthenticationError(errorCode: Int, errString: CharSequence?) = onFailed()
 
-        override fun onAuthenticationFailed() {
-            onFailed()
-        }
+        override fun onAuthenticationFailed() = onFailed()
 
         override fun onAuthenticationSucceeded(result: FingerprintManager.AuthenticationResult?) {
             recolorTo(accentColor, Runnable { mLoginCallback.dismiss() })
             onAuthSucceded()
         }
 
-        override fun onAuthenticationHelp(helpCode: Int, helpString: CharSequence?) {
-            recolorTo(defaultColor, null)
-        }
+        override fun onAuthenticationHelp(helpCode: Int, helpString: CharSequence?) =
+                recolorTo(defaultColor, null)
 
-        private fun onFailed() {
-            recolorTo(errorColor, Runnable { recolorTo(defaultColor, null) })
-        }
+        private fun onFailed() = recolorTo(errorColor, Runnable { recolorTo(defaultColor, null) })
 
         private fun recolorTo(color: Int, onPostAnimation: Runnable?) {
             val oldColor = mIcon.imageTintList.defaultColor

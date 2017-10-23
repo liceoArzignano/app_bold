@@ -357,28 +357,26 @@ class EditorActivity : AppCompatActivity() {
                 .start()
     }
 
-    private fun save() {
-        if (isEmpty()) {
-            if (mIsMark) {
-                showError(when {
-                    mValue == 0 -> mValueView
-                    mIsTeacher -> mTitleText
-                    else -> mSubjectView
-                })
+    private fun save() =
+            if (isEmpty()) {
+                if (mIsMark) {
+                    showError(when {
+                        mValue == 0 -> mValueView
+                        mIsTeacher -> mTitleText
+                        else -> mSubjectView
+                    })
+                } else {
+                    showError(mTitleText)
+                }
+                Snackbar.make(mCoordinator, getString(R.string.editor_error),
+                        Snackbar.LENGTH_SHORT).show()
             } else {
-                showError(mTitleText)
+                if (mIsMark) {
+                    saveMark()
+                } else {
+                    saveEvent()
+                }
             }
-
-            Snackbar.make(mCoordinator, getString(R.string.editor_error),
-                    Snackbar.LENGTH_SHORT).show()
-        } else {
-            if (mIsMark) {
-                saveMark()
-            } else {
-                saveEvent()
-            }
-        }
-    }
 
     private fun saveMark() {
         val mark = Mark()
