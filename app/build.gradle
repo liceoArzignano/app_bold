@@ -12,7 +12,7 @@ android {
         applicationId 'it.liceoarzignano.bold'
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 14800
+        versionCode 14801
         versionName "1.0.18"
         vectorDrawables.useSupportLibrary true
         resConfigs "en", "it"
@@ -63,7 +63,6 @@ dependencies {
     compile "com.google.firebase:firebase-core:${googlePlayServicesVersion}"
     compile "com.google.firebase:firebase-messaging:${googlePlayServicesVersion}"
     releaseCompile "com.google.firebase:firebase-crash:${googlePlayServicesVersion}"
-    compile "com.google.firebase:firebase-config:${googlePlayServicesVersion}"
     compile 'com.firebase:firebase-jobdispatcher:0.8.0'
     // others
     compile 'uk.co.samuelwall:material-tap-target-prompt:2.2.0'

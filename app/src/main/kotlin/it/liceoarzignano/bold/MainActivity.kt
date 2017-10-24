@@ -24,8 +24,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import it.liceoarzignano.bold.backup.BackupActivity
 import it.liceoarzignano.bold.editor.EditorActivity
 import it.liceoarzignano.bold.events.EventListActivity
@@ -47,12 +45,9 @@ import it.liceoarzignano.bold.utils.Time
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
 import java.security.SecureRandom
 import java.util.*
-import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-
-    private var mRemoteConfig: FirebaseRemoteConfig? = null
     lateinit private var mMarksHandler: MarksHandler
     lateinit private var mEventsHandler: EventsHandler
     lateinit private var mNewsHandler: NewsHandler
@@ -79,7 +74,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mPrefs.migrate(baseContext)
 
         setupDBHandler()
-        setupRemoteConfig()
         showIntroIfNeeded()
 
         setContentView(R.layout.activity_main)
@@ -162,10 +156,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_share -> {
                 val shareIntent = Intent(Intent.ACTION_SEND)
                 shareIntent.type = "text/plain"
-                shareIntent.putExtra(Intent.EXTRA_TEXT, mRemoteConfig!!.getString("share_url"))
+                shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.config_share_url))
                 startActivity(Intent.createChooser(shareIntent,
                         getString(R.string.share_title)))
             }
+            R.id.nav_help -> showUrl(5)
         }
     }
 
@@ -173,21 +168,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mMarksHandler = MarksHandler.getInstance(this)
         mEventsHandler = EventsHandler.getInstance(this)
         mNewsHandler = NewsHandler.getInstance(this)
-    }
-
-    private fun setupRemoteConfig() {
-        val settings = FirebaseRemoteConfigSettings.Builder()
-                .setDeveloperModeEnabled(BuildConfig.DEBUG)
-                .build()
-        mRemoteConfig = FirebaseRemoteConfig.getInstance()
-        mRemoteConfig!!.setConfigSettings(settings)
-        mRemoteConfig!!.setDefaults(R.xml.firebase_remote_config_defaults)
-        mRemoteConfig!!.fetch(if (BuildConfig.DEBUG) 0 else TimeUnit.HOURS.toSeconds(12))
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        mRemoteConfig!!.activateFetched()
-                    }
-                }
     }
 
     private fun setupNavHeader() {
@@ -355,7 +335,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         loadCardASync(HomeCard.CardType.SUGGESTIONS, adapter)
     }
-
 
     private fun loadCardASync(type: HomeCard.CardType, adapter: HomeAdapter) {
         object : AsyncTask<Unit, Unit, HomeCard?>() {

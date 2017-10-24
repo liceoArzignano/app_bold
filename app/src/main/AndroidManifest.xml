@@ -35,6 +35,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="liceoarzignano.github.io"
+                    android:pathPrefix="/app"
+                    android:scheme="https" />
+            </intent-filter>
+
             <meta-data
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
@@ -129,7 +141,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- Services -->
-        <service android:name=".events.EventsJobUtils"
+        <service
+            android:name=".events.EventsJobUtils"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />

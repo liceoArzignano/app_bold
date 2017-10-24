@@ -12,6 +12,7 @@
     <string translatable="false" name="config_url_changelog">https://liceoarzignano.github.io/changelog</string>
     <string translatable="false" name="config_url_sources">https://github.com/liceoArzignano/app_bold</string>
     <string translatable="false" name="config_url_help">https://liceoarzignano.github.io/guida</string>
+    <string translatable="false" name="config_share_url">https://goo.gl/q3BKad</string>
 
     <!-- Addresses -->
     <string translatable="false" name="pref_address_1">Liceo Scientifico</string>
