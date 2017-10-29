@@ -1,5 +1,6 @@
 package it.liceoarzignano.bold
 
+import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Intent
 import android.net.Uri
@@ -136,6 +137,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mTabsServiceConnection = null
     }
 
+    @SuppressLint("RtlHardcoded")
     private fun initializeDrawer() {
         val toggle = ActionBarDrawerToggle(this, mDrawer, mToolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close)
@@ -336,37 +338,35 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         loadCardASync(HomeCard.CardType.SUGGESTIONS, adapter)
     }
 
-    private fun loadCardASync(type: HomeCard.CardType, adapter: HomeAdapter) {
-        object : AsyncTask<Unit, Unit, HomeCard?>() {
-            override fun doInBackground(vararg p0: Unit?): HomeCard? =
-                    when (type) {
-                        HomeCard.CardType.EVENTS -> dayCard
-                        HomeCard.CardType.NEWS -> newsCard
-                        HomeCard.CardType.MARKS -> {
-                            val date = Time.parse(mPrefs.get(AppPrefs.KEY_INTRO_DAY, "2017-01-01"))
-                            if (Time().diff(date, 7)) marksCard else null
-                        }
-                        HomeCard.CardType.SUGGESTIONS -> {
-                            if (mPrefs.get(AppPrefs.KEY_SUGGESTIONS)) suggestionsCard else null
-                        }
-                    }
+    private fun loadCardASync(type: HomeCard.CardType, adapter: HomeAdapter) =
+        LoadCardAsync({ loadCard(type) }, { card -> onCardLoaded(card, adapter, type) }).execute()
 
-            override fun onPostExecute(card: HomeCard?) {
-                if (card == null || card.content.isBlank()) {
-                    adapter.remove(type)
-                } else {
-                    adapter.update(card)
+    private fun loadCard(type: HomeCard.CardType): HomeCard? =
+            when (type) {
+                HomeCard.CardType.EVENTS -> dayCard
+                HomeCard.CardType.NEWS -> newsCard
+                HomeCard.CardType.MARKS -> {
+                    val date = Time.parse(mPrefs.get(AppPrefs.KEY_INTRO_DAY,  "2017-01-01"))
+                    if (Time().diff(date, 7)) marksCard else null
                 }
-
-                // Stop animations when the lastest is added
-                if (type == HomeCard.CardType.SUGGESTIONS) {
-                    if (mShouldAnimate) {
-                        mShouldAnimate = false
-                    }
+                HomeCard.CardType.SUGGESTIONS -> {
+                    if (mPrefs.get(AppPrefs.KEY_SUGGESTIONS)) suggestionsCard else null
                 }
             }
-        }.execute()
 
+    private fun onCardLoaded(card: HomeCard?, adapter: HomeAdapter, type: HomeCard.CardType) {
+        if (card == null || card.content.isBlank()) {
+            adapter.remove(type)
+        } else {
+            adapter.update(card)
+        }
+
+        // Stop animations when the lastest is added
+        if (type == HomeCard.CardType.SUGGESTIONS) {
+            if (mShouldAnimate) {
+                mShouldAnimate = false
+            }
+        }
     }
 
     private val dayCard: HomeCard
@@ -523,6 +523,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 else -> getString(R.string.suggestion_notification)
             }
         }
+
+    private class LoadCardAsync(private val operation: () -> HomeCard?,
+                                private val onPost: (HomeCard?) -> Unit) :
+            AsyncTask<Unit, Unit, HomeCard?>() {
+
+        override fun doInBackground(vararg p0: Unit?) = operation()
+        override fun onPostExecute(result: HomeCard?) {
+            onPost(result)
+        }
+    }
 
     companion object {
         private val BUNDLE_SHOULD_ANIMATE = "homeShouldAnimate"

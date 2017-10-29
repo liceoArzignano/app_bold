@@ -23,18 +23,8 @@ class HashtagsAdapter : RecyclerView.Adapter<HashtagsAdapter.HashtagViewHolder>(
     override fun getItemCount() = tags.size
 
     fun update(new: String) {
-        object : AsyncTask<Unit, Unit, DiffUtil.DiffResult>() {
-            override fun doInBackground(vararg p0: Unit?): DiffUtil.DiffResult {
-                val newList = new.split(" ").filter { it.startsWith('#') && it.length > 1 }
-                val diff = DiffUtil.calculateDiff(DiffHelper(tags, newList))
-                tags = newList
-                return diff
-            }
-
-            override fun onPostExecute(result: DiffUtil.DiffResult?) {
-                result?.dispatchUpdatesTo(this@HashtagsAdapter)
-            }
-        }.execute()
+        UpdateTask(new, tags, { list -> tags = list }, { result ->
+            result?.dispatchUpdatesTo(this@HashtagsAdapter)})
     }
 
     fun getTags(): String {
@@ -61,7 +51,7 @@ class HashtagsAdapter : RecyclerView.Adapter<HashtagsAdapter.HashtagViewHolder>(
         }
     }
 
-    inner class DiffHelper(private val old: List<String>, private val new: List<String>):
+    private class DiffHelper(private val old: List<String>, private val new: List<String>):
             DiffUtil.Callback() {
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) =
@@ -73,5 +63,20 @@ class HashtagsAdapter : RecyclerView.Adapter<HashtagsAdapter.HashtagViewHolder>(
         override fun getNewListSize() = new.size
 
         override fun getOldListSize() = old.size
+    }
+
+    private class UpdateTask(private val new: String,
+                             private val oldList: List<String>,
+                             private val updateList: (List<String>) -> Unit,
+                             private val onDone: (DiffUtil.DiffResult?) -> Unit) :
+            AsyncTask<Unit, Unit, DiffUtil.DiffResult>() {
+        override fun doInBackground(vararg p0: Unit?): DiffUtil.DiffResult {
+            val newList = new.split(" ").filter { it.startsWith('#') && it.length > 1 }
+            val diff = DiffUtil.calculateDiff(DiffHelper(oldList, newList))
+            updateList(newList)
+            return diff
+        }
+
+        override fun onPostExecute(result: DiffUtil.DiffResult?) = onDone(result)
     }
 }

@@ -13,6 +13,7 @@ object SystemUtils {
     private val TAG = "SystemUtils"
 
     val isNotLegacy: Boolean get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+    val hasApi23: Boolean get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
 
     fun hasGDrive(context: Context): Boolean =
             try {

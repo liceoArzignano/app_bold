@@ -21,10 +21,8 @@ class BoldApp : Application() {
         // Enable StrictMode
         if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             StrictMode.setVmPolicy(StrictMode.VmPolicy.Builder()
-                    .detectFileUriExposure()
-                    .detectCleartextNetwork()
+                    .detectAll()
                     .penaltyLog()
-                    .penaltyDeath()
                     .build())
         }
 

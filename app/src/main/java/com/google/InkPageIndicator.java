@@ -29,6 +29,7 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
@@ -146,11 +147,18 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     public void setViewPager(ViewPager viewPager) {
         this.viewPager = viewPager;
         viewPager.addOnPageChangeListener(this);
-        setPageCount(viewPager.getAdapter().getCount());
-        viewPager.getAdapter().registerDataSetObserver(new DataSetObserver() {
+        PagerAdapter adapter = viewPager.getAdapter();
+        if (adapter == null) {
+            return;
+        }
+        setPageCount(adapter.getCount());
+        adapter.registerDataSetObserver(new DataSetObserver() {
             @Override
             public void onChanged() {
-                setPageCount(InkPageIndicator.this.viewPager.getAdapter().getCount());
+                PagerAdapter thisAdapter = InkPageIndicator.this.viewPager.getAdapter();
+                if (thisAdapter != null) {
+                    setPageCount(thisAdapter.getCount());
+                }
             }
         });
         setCurrentPageImmediate();

@@ -35,9 +35,9 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="8dp"
             android:layout_marginTop="16dp"
+            android:tint="@color/icon"
             android:visibility="gone"
-            app:srcCompat="@drawable/ic_fingerprint"
-            app:tint="@color/icon" />
+            app:srcCompat="@drawable/ic_fingerprint" />
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/safe_dialog_input_layout"

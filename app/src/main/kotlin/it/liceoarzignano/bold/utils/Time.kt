@@ -37,7 +37,7 @@ class Time : Date {
     override fun toString():String = format(DATE_FORMAT)
 
     fun asString(context: Context): String {
-        val string = SimpleDateFormat(context.getString(R.string.date_formatting, APP_LOCALE))
+        val string = SimpleDateFormat(context.getString(R.string.date_formatting), APP_LOCALE)
                 .format(this)
         // Uppercase first char
         return "${string.substring(0, 1).toUpperCase()}${string.substring(1, string.length)}"

@@ -31,10 +31,8 @@
     <string name="suggestion_suggestions">Suggestions annoy you? Turn them off</string>
     <string name="suggestion_notification">You will be notified about your events the day before</string>
     <string name="suggestion_backups">Create a backup in Google Drive, you\'ll be able to restore your data in case you lose or change your phone</string>
-    <string name="suggestion_news">You will find the most important news from the right in the app by opening the news section</string>
     <string name="share_title">Share with someone</string>
     <string name="home_card_week_title">This week</string>
-    <string name="home_card_week_empty">It looks like you\'re free, would you like to plan something?</string>
     <string name="home_card_week_morning">Good morning</string>
     <string name="home_card_week_afternoon">Good afternoon</string>
     <string name="home_card_week_evening">Good evening</string>
@@ -78,7 +76,6 @@
     <string name="editor_hint_student">Student</string>
     <string name="editor_hint_event">Title</string>
     <string name="editor_hint_value">Value</string>
-    <string name="editor_hint_category">Category</string>
     <string name="editor_hint_date">Date</string>
     <string name="editor_save">Save</string>
     <string name="editor_saved">Saved</string>
@@ -101,8 +98,8 @@
     <string name="marks_filter_description">Click on a quarter to show or hide its marks</string>
     <string name="marks_filter_error">Select at least one</string>
     <string name="marks_filter_action">Filter</string>
-    <string name="marks_share_student">I got %1$s in %2$s</string>
-    <string name="marks_share_teacher">%1$s has got %2$s</string>
+    <string name="marks_share_student">I got %1$d in %2$s</string>
+    <string name="marks_share_teacher">%1$s has got %2$d</string>
 
     <!-- Actions -->
     <string name="actions_edit">Edit</string>
@@ -141,7 +138,6 @@
     <string name="slide0_title">Hello</string>
     <string name="slide0_message_loading">Getting ready\u2026</string>
     <string name="slide0_message_failed">Oops, there\'s no internet connection</string>
-    <string name="slide0_message_done">Good to go, slide to start</string>
     <string name="slide1_title">Address</string>
     <string name="slide1_message">To begin, please pick your address</string>
     <string name="intro_btn_retry">Retry</string>
@@ -192,7 +188,6 @@
     <string name="pref_changelog">Changelog</string>
     <string name="pref_username">User name</string>
     <string name="pref_username_dialog_title">Set user name</string>
-    <string name="pref_username_dialog_msg">Write your name</string>
     <string name="pref_notif">Notifications</string>
     <string name="pref_notification_news_title">Show news notifications</string>
     <string name="pref_notification_news_summary">Get notification about news as soon as they\'re received</string>

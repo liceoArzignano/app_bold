@@ -20,6 +20,7 @@ import it.liceoarzignano.bold.BuildConfig
 import it.liceoarzignano.bold.R
 import it.liceoarzignano.bold.safe.mod.Encryption
 import it.liceoarzignano.bold.settings.AppPrefs
+import it.liceoarzignano.bold.utils.SystemUtils
 import it.liceoarzignano.bold.utils.UiUtils
 import java.io.UnsupportedEncodingException
 import java.security.GeneralSecurityException
@@ -43,14 +44,7 @@ class SafeActivity : SecureActivity() {
     private var mCrPc: String? = null
     private var mCrInternet: String? = null
     private var isWorking = true
-    private var mWorkingTask: AsyncTask<Unit, Unit, Unit> = // Default to the first used task
-            object : AsyncTask<Unit, Unit, Unit>() {
-                override fun doInBackground(vararg p0: Unit?) {
-                    mSecretKeys = Encryption.generateKey()
-                }
-
-                override fun onPostExecute(result: Unit?) = showPasswordDialog()
-            }
+    lateinit private var mWorkingTask: WorkingTask<*>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -157,23 +151,17 @@ class SafeActivity : SecureActivity() {
 
     override fun onAuthSucceded() {
         mLoadingImage.setImageResource(R.drawable.ic_empty_safe_unlocked)
-        mWorkingTask = object : AsyncTask<Unit, Unit, Unit>() {
-            override fun doInBackground(vararg p0: Unit?) {
-                isWorking = false
+        isWorking = false
 
-                Log.d("OHAI", "WORKING")
-
-                mCrUserName = decrypt(mPrefs.get(AppPrefs.KEY_SAFE_USERNAME))
-                mCrReg = decrypt(mPrefs.get(AppPrefs.KEY_SAFE_REG))
-                mCrPc = decrypt(mPrefs.get(AppPrefs.KEY_SAFE_PC))
-                mCrInternet = decrypt(mPrefs.get(AppPrefs.KEY_SAFE_INTERNET))
+        mWorkingTask = DecryptTask(mPrefs, mSecretKeys, { result ->
+            if (result != null && result.size == 4) {
+                mCrUserName = result[0]
+                mCrReg = result[1]
+                mCrPc = result[2]
+                mCrInternet = result[3]
             }
-
-            override fun onPostExecute(result: Unit?) {
-                Log.d("OHAI", "DONE")
-                Handler().postDelayed({ onCreateContinue() }, 600)
-            }
-        }
+            onCreateContinue()
+        })
         mWorkingTask.execute()
     }
 
@@ -218,15 +206,12 @@ class SafeActivity : SecureActivity() {
             Log.e(TAG, e.message, e)
             ""
         }
-
     }
 
     private fun setupFingerprint(callback: SafeLoginDialog.Callback, icon: ImageView) {
-        if (!hasFingerprint) {
-            return
+        if (SystemUtils.hasApi23 && hasFingerprint) {
+            startListeningToFp(callback, icon)
         }
-
-        startListeningToFp(callback, icon)
     }
 
     private fun onLoginPositive(loginDialog: SafeLoginDialog) {
@@ -312,6 +297,10 @@ class SafeActivity : SecureActivity() {
                 Encryption.validateResponse(this, null, BuildConfig.DEBUG) == 0) {
             mLoadingText.setText(R.string.safe_first_load)
             Handler().postDelayed({
+                mWorkingTask = GenerateKeyTask({ keys ->
+                    mSecretKeys = keys
+                    showPasswordDialog()
+                })
                 mWorkingTask.execute()
             }, 100)
         } else {
@@ -329,32 +318,97 @@ class SafeActivity : SecureActivity() {
         mLoadingText.setText(R.string.safe_encrypting)
         mLoadingLayout.visibility = View.VISIBLE
 
-        mWorkingTask = object : AsyncTask<Unit, Unit, Unit>() {
-            override fun doInBackground(vararg p0: Unit?) {
-                var text = mUserEdit.text.toString()
-                if (!text.isEmpty()) {
-                    mPrefs.set(AppPrefs.KEY_SAFE_USERNAME, encrypt(text))
-                }
-                text = mRegEdit.text.toString()
-                if (!text.isEmpty()) {
-                    mPrefs.set(AppPrefs.KEY_SAFE_REG, encrypt(text))
-                }
-                text = mPcEdit.text.toString()
-                if (!text.isEmpty()) {
-                    mPrefs.set(AppPrefs.KEY_SAFE_PC, encrypt(text))
-                }
-                text = mInternetEdit.text.toString()
-                if (!text.isEmpty()) {
-                    mPrefs.set(AppPrefs.KEY_SAFE_INTERNET, encrypt(text))
-                }
-            }
-
-            override fun onPostExecute(result: Unit?) {
-                Handler().postDelayed({ finish() }, 1000)
-            }
-        }
+        mWorkingTask = EncryptTask(mPrefs, mSecretKeys, arrayOf(
+                mUserEdit.text.toString(),
+                mRegEdit.text.toString(),
+                mPcEdit.text.toString(),
+                mInternetEdit.text.toString()
+        ), { finish() })
         mWorkingTask.execute()
     }
+
+    private class GenerateKeyTask(private val onDone: (Encryption.SecretKeys?) -> Unit) :
+            WorkingTask<Encryption.SecretKeys?>() {
+        override fun doInBackground(vararg p0: Unit?): Encryption.SecretKeys? =
+                Encryption.generateKey()
+
+        override fun onPostExecute(result: Encryption.SecretKeys?) {
+            if (result != null) {
+                onDone(result)
+            }
+        }
+    }
+
+    private class DecryptTask(private val mPrefs: AppPrefs,
+                              private val mSecretKeys: Encryption.SecretKeys?,
+                              private val onDone: (Array<String>?) -> Unit) :
+            WorkingTask<Array<String>>() {
+
+        override fun doInBackground(vararg p0: Unit?): Array<String> =
+                arrayOf(
+                        decrypt(mPrefs.get(AppPrefs.KEY_SAFE_USERNAME, "")),
+                        decrypt(mPrefs.get(AppPrefs.KEY_SAFE_REG, "")),
+                        decrypt(mPrefs.get(AppPrefs.KEY_SAFE_PC, "")),
+                        decrypt(mPrefs.get(AppPrefs.KEY_SAFE_INTERNET, "")))
+
+        override fun onPostExecute(result: Array<String>?) {
+            Handler().postDelayed({ onDone(result) }, 600)
+        }
+
+        fun decrypt(string: String): String {
+            // Don't waste time if there's nothing to do
+            if (string.isBlank()) {
+                return ""
+            }
+
+            return try {
+                Encryption.decrypt(
+                        Encryption.CipherTextIvMac(string), mSecretKeys)
+            } catch (e: UnsupportedEncodingException) {
+                Log.e(TAG, e.message, e)
+                ""
+            } catch (e: GeneralSecurityException) {
+                Log.e(TAG, e.message, e)
+                ""
+            }
+        }
+    }
+
+    private class EncryptTask(private val mPrefs: AppPrefs,
+                              private val mSecretKeys: Encryption.SecretKeys?,
+                              private val strings: Array<String>,
+                              private val onDone: () -> Unit) : WorkingTask<Unit>() {
+
+        override fun doInBackground(vararg p0: Unit?) {
+            mPrefs.set(AppPrefs.KEY_SAFE_USERNAME, encrypt(strings[0]))
+            mPrefs.set(AppPrefs.KEY_SAFE_REG, encrypt(strings[1]))
+            mPrefs.set(AppPrefs.KEY_SAFE_PC, encrypt(strings[2]))
+            mPrefs.set(AppPrefs.KEY_SAFE_INTERNET, encrypt(strings[3]))
+        }
+
+        override fun onPostExecute(result: Unit?) = onDone()
+
+        private fun encrypt(string: String): String {
+            // Don't waste time if there's nothing to do
+            if (string.isBlank()) {
+                return ""
+            }
+
+            return try {
+                Encryption.encrypt(string, mSecretKeys).toString()
+            } catch (e: UnsupportedEncodingException) {
+                Log.e(TAG, e.message, e)
+                ""
+            } catch (e: GeneralSecurityException) {
+                Log.e(TAG, e.message, e)
+                ""
+            }
+
+        }
+    }
+
+
+    private abstract class WorkingTask<T> : AsyncTask<Unit, Unit, T>()
 
     companion object {
         private val TAG = "SafeActivity"

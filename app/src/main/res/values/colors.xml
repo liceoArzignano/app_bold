@@ -29,13 +29,6 @@
 
     <color name="slide_color">@color/colorPrimary</color>
 
-    <color name="address_1">#ffc108</color>
-    <color name="address_2">#8093ff</color>
-    <color name="address_3">#ff216b</color>
-    <color name="address_4">#ff4336</color>
-    <color name="address_5">#6eff72</color>
-    <color name="address_6">#b0e5ff</color>
-
     <color name="shortcut_website">#fe6100</color>
     <color name="shortcut_register">#648fff</color>
     <color name="shortcut_moodle">#34bc6e</color>

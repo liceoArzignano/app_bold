@@ -1,5 +1,6 @@
 package it.liceoarzignano.bold.safe
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.support.annotation.StringRes
@@ -13,6 +14,7 @@ import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
 import it.liceoarzignano.bold.R
 
+@SuppressLint("InflateParams")
 internal class SafeLoginDialog constructor(context: Context, private val mFirstTime: Boolean,
                                            hasFingerprint: Boolean,
                                            startFpListener: (calback: Callback,

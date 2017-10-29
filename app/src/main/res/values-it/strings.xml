@@ -31,10 +31,8 @@
     <string name="suggestion_suggestions">I suggerimenti ti infastidiscono? Disattivali</string>
     <string name="suggestion_notification">Gli eventi ti verranno ricordati il giorno prima che accadano</string>
     <string name="suggestion_backups">Creando un backup, potrai ripristinare i tuoi dati nel caso in cui cambiassi o perdessi il telefono</string>
-    <string name="suggestion_news">Tutte le circolari e le notizie importanti saranno salvate direttamente nella sezione "Notizie"</string>
     <string name="share_title">Condividi con qualcuno</string>
     <string name="home_card_week_title">Questa settimana</string>
-    <string name="home_card_week_empty">Non ci sono eventi imminenti, vuoi aggiungerne uno?</string>
     <string name="home_card_week_morning">Buongiorno</string>
     <string name="home_card_week_afternoon">Buon pomeriggio</string>
     <string name="home_card_week_evening">Buona sera</string>
@@ -78,7 +76,6 @@
     <string name="editor_hint_student">Studente</string>
     <string name="editor_hint_event">Titolo</string>
     <string name="editor_hint_value">Punteggio</string>
-    <string name="editor_hint_category">Categoria</string>
     <string name="editor_hint_date">Data</string>
     <string name="editor_save">Salva</string>
     <string name="editor_saved">Salvato</string>
@@ -101,8 +98,8 @@
     <string name="marks_filter_description">Tocca su un quadrimestre per mostrarne o nasconderne i voti</string>
     <string name="marks_filter_error">Selezionane almeno uno</string>
     <string name="marks_filter_action">Filtra</string>
-    <string name="marks_share_student">Ho preso %1$s in %2$s</string>
-    <string name="marks_share_teacher">%1$s ha preso %2$s</string>
+    <string name="marks_share_student">Ho preso %1$d in %2$s</string>
+    <string name="marks_share_teacher">%1$s ha preso %2$d</string>
 
     <!-- Actions -->
     <string name="actions_edit">Modifica</string>
@@ -190,7 +187,6 @@
     <string name="pref_changelog">Ultimi cambiamenti</string>
     <string name="pref_username">Nome utente</string>
     <string name="pref_username_dialog_title">Nome</string>
-    <string name="pref_username_dialog_msg">Come ti chiami?</string>
     <string name="pref_notif">Notifiche</string>
     <string name="pref_notification_news_title">Notifiche per le notizie</string>
     <string name="pref_notification_news_summary">Ricevi informazioni sulle notizie appena vengono ricevute</string>

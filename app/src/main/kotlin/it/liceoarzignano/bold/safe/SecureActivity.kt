@@ -3,7 +3,6 @@ package it.liceoarzignano.bold.safe
 import android.Manifest
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.app.KeyguardManager
 import android.content.Context
@@ -16,6 +15,7 @@ import android.os.Handler
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyPermanentlyInvalidatedException
 import android.security.keystore.KeyProperties
+import android.support.annotation.RequiresApi
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
@@ -35,12 +35,11 @@ open class SecureActivity : AppCompatActivity() {
     private var mCryptoObject: FingerprintManager.CryptoObject? = null
     private val mKeyStore = KeyStore.getInstance(KEYSTORE_NAME)
     lateinit private var mGenerator: KeyGenerator
-    private val hasAPI23 = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (hasAPI23) {
+        if (SystemUtils.hasApi23) {
             mFingerprintManager = getSystemService(Context.FINGERPRINT_SERVICE) as FingerprintManager
             mKeyguardManager = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
             setupFingerprint()
@@ -48,7 +47,7 @@ open class SecureActivity : AppCompatActivity() {
     }
 
     private fun setupFingerprint() {
-        if (!hasAPI23 || !hasFingerprint) {
+        if (!SystemUtils.hasApi23 || !hasFingerprint) {
             return
         }
 
@@ -66,9 +65,11 @@ open class SecureActivity : AppCompatActivity() {
 
     protected open fun onAuthSucceded() = Unit
 
+    @RequiresApi(23)
     internal fun startListeningToFp(calback: SafeLoginDialog.Callback, icon: ImageView) =
             AuthCallback(calback, icon).start(mFingerprintManager, mCryptoObject)
 
+    @RequiresApi(23)
     private fun generateKey() {
         mGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore")
         mGenerator.init(KeyGenParameterSpec.Builder(KEY_NAME,
@@ -81,6 +82,7 @@ open class SecureActivity : AppCompatActivity() {
         mGenerator.generateKey()
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun generateCipher(): Boolean {
         mCipher = Cipher.getInstance("${KeyProperties.KEY_ALGORITHM_AES}/" +
                 "${KeyProperties.BLOCK_MODE_CBC}/${KeyProperties.ENCRYPTION_PADDING_PKCS7}")
@@ -100,15 +102,16 @@ open class SecureActivity : AppCompatActivity() {
     }
 
     private val hasFpPermission: Boolean
-        get() = ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) ==
-                PackageManager.PERMISSION_GRANTED
+        get() = SystemUtils.hasApi23 && ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.USE_FINGERPRINT) == PackageManager.PERMISSION_GRANTED
 
     protected val hasFingerprint: Boolean
-        get() = hasAPI23 && mFingerprintManager.isHardwareDetected && hasFpPermission
+        get() = SystemUtils.hasApi23 && mFingerprintManager.isHardwareDetected && hasFpPermission
 
     private val hasEnrolled: Boolean
-        get() = mFingerprintManager.hasEnrolledFingerprints()
+        get() = SystemUtils.hasApi23 && mFingerprintManager.hasEnrolledFingerprints()
 
+    @RequiresApi(23)
     internal inner class AuthCallback(private val mLoginCallback: SafeLoginDialog.Callback,
                                       private val mIcon: ImageView):
             FingerprintManager.AuthenticationCallback() {
@@ -145,17 +148,12 @@ open class SecureActivity : AppCompatActivity() {
         private fun onFailed() = recolorTo(errorColor, Runnable { recolorTo(defaultColor, null) })
 
         private fun recolorTo(color: Int, onPostAnimation: Runnable?) {
-            val oldColor = mIcon.imageTintList.defaultColor
-            val anim: ValueAnimator
-
-            if (SystemUtils.isNotLegacy) {
-                anim = ValueAnimator.ofArgb(oldColor, color)
-            } else {
-                anim = ValueAnimator()
-                anim.setIntValues(oldColor, color)
-                anim.setEvaluator(ArgbEvaluator())
+            if (!SystemUtils.isNotLegacy) {
+                return
             }
 
+            val oldColor = mIcon.imageTintList.defaultColor
+            val anim = ValueAnimator.ofArgb(oldColor, color)
             if (onPostAnimation != null) {
                 anim.addListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator?) {

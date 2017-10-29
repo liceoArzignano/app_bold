@@ -204,24 +204,21 @@ class BackupActivity : AppCompatActivity() {
                 .show()
 
         val context = applicationContext
+        RestoreTask(MarksHandler.getInstance(context),
+                EventsHandler.getInstance(context),
+                NewsHandler.getInstance(context),
+                backupFile,
+                { onRestoredData(progress) }).execute()
+    }
 
-        object : AsyncTask<Void, Void, Boolean>() {
-            public override fun doInBackground(vararg params: Void): Boolean? {
-                MarksHandler.getInstance(context).refillTable(backupFile.marks)
-                EventsHandler.getInstance(context).refillTable(backupFile.events)
-                NewsHandler.getInstance(context).refillTable(backupFile.news)
-                return true
-            }
+    private fun onRestoredData(progressDialog: MaterialDialog) {
+        Handler().postDelayed({
+            progressDialog.dismiss()
+            mStatus = 3
+            showResult(true)
+            mStatus = 0
+        }, 1000)
 
-            public override fun onPostExecute(result: Boolean?) {
-                Handler().postDelayed({
-                    progress.dismiss()
-                    mStatus = 3
-                    showResult(true)
-                    mStatus = 0
-                }, 1000)
-            }
-        }.execute()
     }
 
     private fun uploadToDrive(folderId: DriveId?) {
@@ -248,7 +245,7 @@ class BackupActivity : AppCompatActivity() {
         val backupFile = BackupFile(this)
         backupFile.createBackup(this)
 
-        val progress = MaterialDialog.Builder(this)
+        val progressDialog = MaterialDialog.Builder(this)
                 .content(R.string.backup_progress_message)
                 .progress(true, 100)
                 .progressIndeterminateStyle(true)
@@ -256,55 +253,35 @@ class BackupActivity : AppCompatActivity() {
                 .canceledOnTouchOutside(false)
                 .show()
 
-        object : AsyncTask<Void, Boolean, Boolean>() {
-            public override fun doInBackground(vararg params: Void): Boolean? {
-                val oStream = content.outputStream
-                val iStream: FileInputStream
+        UploadTask(content, backupFile, { changeSet ->
+            onBackupUploaded(folder, changeSet, content, result, progressDialog) }).execute()
+    }
 
-                try {
-                    iStream = FileInputStream(backupFile.output)
-                    val buffer = ByteArray(1024)
-                    var read = iStream.read(buffer)
-
-                    while (read > 0) {
-                        oStream.write(buffer, 0, read)
-                        read = iStream.read(buffer)
-                    }
-                } catch (e: IOException) {
-                    Log.e(TAG, e.message)
+    private fun onBackupUploaded(folder: DriveFolder, changeSet: MetadataChangeSet?,
+                                 content: DriveContents, result: DriveApi.DriveContentsResult,
+                                 progressDialog: MaterialDialog) {
+        folder.createFile(mGoogleApiClient!!, changeSet, content)
+                .setResultCallback { _ ->
+                    onBackupCompleted(progressDialog, result.status.isSuccess)
                 }
+        mStatus = 2
 
-                val changeSet = MetadataChangeSet.Builder()
-                        .setTitle(BackupFile.FILE_NAME)
-                        .setMimeType("text/plain")
-                        .build()
+        if (changeSet == null) {
+            progressDialog.dismiss()
+            showResult(false)
+        }
+    }
 
-                folder.createFile(mGoogleApiClient!!, changeSet, content)
-                        .setResultCallback { _ -> onBackupCompleted(result.status.isSuccess) }
-                mStatus = 2
-                return true
+    private fun onBackupCompleted(progressDialog: MaterialDialog, isSuccess: Boolean) {
+        // Dismiss the dialog (add some delay to make sure the user had time to read it
+        Handler().postDelayed({
+            progressDialog.dismiss()
+            showResult(isSuccess)
+
+            if (mIsEOYSession) {
+                endOfYearCleanup()
             }
-
-            public override fun onPostExecute(values: Boolean) {
-                // Handle exceptions
-                if (!values) {
-                    progress.dismiss()
-                    showResult(false)
-                }
-            }
-
-            internal fun onBackupCompleted(isSuccess: Boolean) {
-                // Dismiss the dialog (add some delay to make sure the user had time to read it
-                Handler().postDelayed({
-                    progress.dismiss()
-                    showResult(isSuccess)
-
-                    if (mIsEOYSession) {
-                        endOfYearCleanup()
-                    }
-                }, 1000)
-            }
-        }.execute()
+        }, 1000)
     }
 
     override fun onActivityResult(request: Int, result: Int, data: Intent?) {
@@ -383,7 +360,7 @@ class BackupActivity : AppCompatActivity() {
     }
 
     private fun removeAllData() {
-        val progress = MaterialDialog.Builder(this)
+        val progressDialog = MaterialDialog.Builder(this)
                 .content(R.string.backup_end_of_year_deleting_message)
                 .progress(true, 10)
                 .progressIndeterminateStyle(true)
@@ -391,27 +368,90 @@ class BackupActivity : AppCompatActivity() {
                 .canceledOnTouchOutside(false)
                 .show()
 
-        val context = this
+        val context = applicationContext
+        NukeTask(MarksHandler.getInstance(context),
+                EventsHandler.getInstance(context),
+                NewsHandler.getInstance(context),
+                { onDataRemoved(progressDialog) })
+                .execute()
+    }
 
-        object : AsyncTask<Void, Void, Boolean>() {
-            public override fun doInBackground(vararg params: Void): Boolean? {
-                MarksHandler.getInstance(context).clearTable()
-                EventsHandler.getInstance(context).clearTable()
-                NewsHandler.getInstance(context).clearTable()
-                return true
+    private fun onDataRemoved(progressDialog: MaterialDialog) {
+        progressDialog.dismiss()
+        MaterialDialog.Builder(this)
+                .title(R.string.backup_end_of_year_done_title)
+                .content(R.string.backup_end_of_year_done_message)
+                .neutralText(android.R.string.ok)
+                .show()
+    }
+
+    private class RestoreTask(private val marksHandler: MarksHandler,
+                              private val eventsHandler: EventsHandler,
+                              private val newsHandler: NewsHandler,
+                              private val file: BackupFile,
+                              private val onDone: () -> Unit) :
+            AsyncTask<Void, Void, Boolean>() {
+
+        public override fun doInBackground(vararg params: Void): Boolean? {
+            marksHandler.refillTable(file.marks)
+            eventsHandler.refillTable(file.events)
+            newsHandler.refillTable(file.news)
+            return true
+        }
+
+        public override fun onPostExecute(result: Boolean?) = onDone()
+    }
+
+    private class UploadTask(private val content: DriveContents,
+                             private val backupFile: BackupFile,
+                             private val onDone: (MetadataChangeSet?) -> Unit) :
+            AsyncTask<Void, Boolean, MetadataChangeSet?>() {
+
+        public override fun doInBackground(vararg params: Void): MetadataChangeSet? {
+            val oStream = content.outputStream
+            val iStream: FileInputStream
+
+            try {
+                iStream = FileInputStream(backupFile.output)
+                val buffer = ByteArray(1024)
+                var read = iStream.read(buffer)
+
+                while (read > 0) {
+                    oStream.write(buffer, 0, read)
+                    read = iStream.read(buffer)
+                }
+            } catch (e: IOException) {
+                Log.e(TAG, e.message)
+                return null
             }
 
-            public override fun onPostExecute(result: Boolean?) {
-                Handler().postDelayed({
-                    progress.dismiss()
-                    MaterialDialog.Builder(context)
-                            .title(R.string.backup_end_of_year_done_title)
-                            .content(R.string.backup_end_of_year_done_message)
-                            .neutralText(android.R.string.ok)
-                            .show()
-                }, 1000)
-            }
-        }.execute()
+            return MetadataChangeSet.Builder()
+                    .setTitle(BackupFile.FILE_NAME)
+                    .setMimeType("text/plain")
+                    .build()
+        }
+
+        public override fun onPostExecute(values: MetadataChangeSet?) = onDone(values)
+    }
+
+    private class NukeTask(private val marksHandler: MarksHandler,
+                           private val eventsHandler: EventsHandler,
+                           private val newsHandler: NewsHandler,
+                           private val onDone: () -> Unit) :
+            AsyncTask<Void, Void, Boolean>() {
+
+        public override fun doInBackground(vararg params: Void): Boolean? {
+            marksHandler.clearTable()
+            eventsHandler.clearTable()
+            newsHandler.clearTable()
+            return true
+        }
+
+        public override fun onPostExecute(result: Boolean?) {
+            Handler().postDelayed({
+                onDone()
+            }, 1000)
+        }
     }
 
     companion object {

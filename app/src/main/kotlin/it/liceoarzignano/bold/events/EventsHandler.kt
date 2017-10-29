@@ -159,6 +159,7 @@ private constructor(context: Context) : DBHandler<Event>(context, DB_NAME, DB_VE
             }
         }
 
+        cursor.close()
         return map
     }
 
