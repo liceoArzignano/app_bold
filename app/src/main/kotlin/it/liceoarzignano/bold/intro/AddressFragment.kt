@@ -24,9 +24,9 @@ class AddressFragment : Fragment() {
     lateinit private var mButton: AppCompatButton
     var mPosition: Int = 0
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = inflater!!.inflate(R.layout.item_benefits_address, container, false)
+        val view = inflater.inflate(R.layout.item_benefits_address, container, false)
         if (view == null) {
             return view
         }
@@ -64,14 +64,15 @@ class AddressFragment : Fragment() {
     }
 
     private fun setAddress() {
-        val prefs = AppPrefs(context)
+        val fragmentContext = context ?: return
+        val prefs = AppPrefs(fragmentContext)
         val isTeacher = mPosition == 5
         prefs.set(AppPrefs.KEY_IS_TEACHER, isTeacher)
         prefs.set(AppPrefs.KEY_ADDRESS, if (isTeacher) "0" else "${mPosition + 1}")
         prefs.set(AppPrefs.KEY_INTRO_SCREEN, true)
         prefs.set(AppPrefs.KEY_INTRO_VERSION, "0")
-        context.startActivity(Intent(activity, MainActivity::class.java))
-        activity.finish()
+        fragmentContext.startActivity(Intent(activity, MainActivity::class.java))
+        activity?.finish()
     }
 
     @TargetApi(21)

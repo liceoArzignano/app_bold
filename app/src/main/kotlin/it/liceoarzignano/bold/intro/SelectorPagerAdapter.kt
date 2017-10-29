@@ -17,7 +17,7 @@ class SelectorPagerAdapter(manager: FragmentManager) : FragmentPagerAdapter(mana
         return fragment
     }
 
-    override fun instantiateItem(container: ViewGroup?, position: Int): Any {
+    override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val fragment = super.instantiateItem(container, position) as AddressFragment
         fragment.mPosition = position
         return fragment

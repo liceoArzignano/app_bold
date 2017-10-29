@@ -227,7 +227,7 @@
     <string name="safe_dialog_first_hint_medium">Buona password, che ne dici di usare sia numeri e che lettere?</string>
     <string name="safe_dialog_first_hint_good">Ottima scelta, questa password \u00E8 sicura</string>
     <string name="safe_dialog_password_input_hint">Password</string>
-    <string name="safe_error_security">Dispositivo non sicuro. Safe non pu\u00F2 eseguito</string>
+    <string name="safe_error_security">Dispositivo non sicuro. Safe non pu\u00F2 essere eseguito</string>
     <string name="safe_dialog_first_positive">Imposta</string>
     <string name="safe_dialog_positive">Sblocca</string>
     <string name="safe_username">ID utente</string>

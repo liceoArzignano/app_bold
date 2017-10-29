@@ -41,7 +41,7 @@ class SettingsActivity : AppCompatActivity() {
         override fun onCreatePreferences(savedInstance: Bundle?, key: String?) {
             addPreferencesFromResource(R.xml.settings)
 
-            mContext = activity
+            mContext = activity ?: return
             mPrefs = AppPrefs(mContext)
 
             val changeLog = findPreference("changelog_key")
@@ -125,7 +125,7 @@ class SettingsActivity : AppCompatActivity() {
             }
 
             SafetyNet.getClient(activity).attest(oStream.toByteArray(),
-                    SystemUtils.getSafetyNetApiKey(context))
+                    SystemUtils.getSafetyNetApiKey(mContext))
                     .addOnCompleteListener { task ->
                         dialog.dismiss()
                         val result = Encryption.validateResponse(mContext,
