@@ -44,7 +44,7 @@ class SafeActivity : SecureActivity() {
     private var mCrPc: String? = null
     private var mCrInternet: String? = null
     private var isWorking = true
-    lateinit private var mWorkingTask: WorkingTask<*>
+    private var mWorkingTask: WorkingTask<*>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,7 +112,7 @@ class SafeActivity : SecureActivity() {
     }
 
     override fun onDestroy() {
-        mWorkingTask.cancel(true)
+        mWorkingTask?.cancel(true)
         super.onDestroy()
     }
 
@@ -162,7 +162,7 @@ class SafeActivity : SecureActivity() {
             }
             onCreateContinue()
         })
-        mWorkingTask.execute()
+        mWorkingTask?.execute()
     }
 
     private fun showPasswordDialog() {
@@ -301,7 +301,7 @@ class SafeActivity : SecureActivity() {
                     mSecretKeys = keys
                     showPasswordDialog()
                 })
-                mWorkingTask.execute()
+                mWorkingTask?.execute()
             }, 100)
         } else {
             mPrefs.set(AppPrefs.KEY_SAFE_PASSED, false)
@@ -323,8 +323,8 @@ class SafeActivity : SecureActivity() {
                 mRegEdit.text.toString(),
                 mPcEdit.text.toString(),
                 mInternetEdit.text.toString()
-        ), { finish() })
-        mWorkingTask.execute()
+        ), { Handler().postDelayed({ finish() }, 1000) })
+        mWorkingTask?.execute()
     }
 
     private class GenerateKeyTask(private val onDone: (Encryption.SecretKeys?) -> Unit) :
