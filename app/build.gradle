@@ -11,7 +11,7 @@ android {
         generatedDensities = []
         applicationId 'it.liceoarzignano.bold'
         minSdkVersion 16
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 14802
         versionName "1.0.18"
         vectorDrawables.useSupportLibrary true
@@ -65,9 +65,9 @@ dependencies {
     releaseCompile "com.google.firebase:firebase-crash:${googlePlayServicesVersion}"
     compile 'com.firebase:firebase-jobdispatcher:0.8.4'
     // others
-    compile 'uk.co.samuelwall:material-tap-target-prompt:2.3.0'
+    compile 'uk.co.samuelwall:material-tap-target-prompt:2.5.0'
     compile 'com.github.zhukic:sectioned-recyclerview:1.1.0'
-    compile 'com.afollestad.material-dialogs:core:0.9.5.0'
+    compile 'com.afollestad.material-dialogs:core:0.9.6.0'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }
 
