@@ -55,6 +55,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     lateinit private var mPrefs: AppPrefs
 
     lateinit private var mToolbar: Toolbar
+    lateinit private var mToggle: ActionBarDrawerToggle
     lateinit private var mDrawer: DrawerLayout
     lateinit private var mShortcutsList: RecyclerViewExt
     lateinit private var mCardList: RecyclerViewExt
@@ -104,6 +105,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onResume() {
         super.onResume()
 
+        updateToolbar()
         setupTabs()
         setupNavHeader()
         setupCards()
@@ -139,13 +141,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     @SuppressLint("RtlHardcoded")
     private fun initializeDrawer() {
-        val toggle = ActionBarDrawerToggle(this, mDrawer, mToolbar,
+        mToggle = ActionBarDrawerToggle(this, mDrawer, mToolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        mDrawer.addDrawerListener(toggle)
-        toggle.isDrawerIndicatorEnabled = false
-        toggle.setHomeAsUpIndicator(R.drawable.ic_nav_drawer)
-        toggle.setToolbarNavigationClickListener { mDrawer.openDrawer(Gravity.LEFT) }
-        toggle.syncState()
+        mDrawer.addDrawerListener(mToggle)
+        mToggle.isDrawerIndicatorEnabled = false
+        mToggle.setHomeAsUpIndicator(R.drawable.ic_nav_drawer)
+        mToggle.setToolbarNavigationClickListener { mDrawer.openDrawer(Gravity.LEFT) }
+        mToggle.syncState()
+    }
+
+    private fun updateToolbar() {
+        mToggle.setHomeAsUpIndicator(
+                if (mNewsHandler.hasUnread()) R.drawable.ic_nav_unread
+                else R.drawable.ic_nav_drawer)
     }
 
     private fun onDrawerClick(@IdRes id: Int) {
@@ -424,8 +432,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private val newsCard: HomeCard?
         get() {
-            // TODO: show unread news only
-            val news = mNewsHandler.all
+            val news = mNewsHandler.getUnread()
             if (news.isEmpty()) {
                 return null
             }

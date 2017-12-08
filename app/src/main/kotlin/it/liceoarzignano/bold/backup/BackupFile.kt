@@ -217,12 +217,24 @@ internal class BackupFile(activity: Activity) {
                         data[5].replace(COMMA_REPLACER, ","))
             }
 
-    private fun readNews(data: Array<String>) = News(
-            data[0].toLong(),
-            data[1].replace(COMMA_REPLACER, ","),
-            data[2].replace(COMMA_REPLACER, ",").toLong(),
-            data[3].replace(COMMA_REPLACER, ","),
-            data[4].replace(COMMA_REPLACER, ","))
+    private fun readNews(data: Array<String>) =
+            when (data.size) {
+                5 -> News(
+                        data[0].toLong(),
+                        data[1].replace(COMMA_REPLACER, ","),
+                        data[2].replace(COMMA_REPLACER, ",").toLong(),
+                        data[3].replace(COMMA_REPLACER, ","),
+                        data[4].replace(COMMA_REPLACER, ","),
+                        false)
+                else -> News(
+                        data[0].toLong(),
+                        data[1].replace(COMMA_REPLACER, ","),
+                        data[2].replace(COMMA_REPLACER, ",").toLong(),
+                        data[3].replace(COMMA_REPLACER, ","),
+                        data[4].replace(COMMA_REPLACER, ","),
+                        data[5].replace(COMMA_REPLACER, ",") == "1")
+            }
+
 
     companion object {
         private val TAG = "BackupFile"

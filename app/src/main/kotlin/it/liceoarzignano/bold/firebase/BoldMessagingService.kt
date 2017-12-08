@@ -1,5 +1,6 @@
 package it.liceoarzignano.bold.firebase
 
+import android.annotation.TargetApi
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -46,7 +47,7 @@ class BoldMessagingService : FirebaseMessagingService() {
             if (isPrivate) {
                 message = getString(R.string.news_type_private, message)
             }
-            mNews = News(title, System.currentTimeMillis(), message?: "", url)
+            mNews = News(title, System.currentTimeMillis(), message?: "", url, true)
             saveNews()
 
             if (prefs.get(AppPrefs.KEY_NOTIF_NEWS, true)) {
@@ -79,23 +80,30 @@ class BoldMessagingService : FirebaseMessagingService() {
                 .setStyle(NotificationCompat.BigTextStyle().bigText(mNews.description))
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            var channel: NotificationChannel? = manager.getNotificationChannel(CHANNEL)
-            if (channel == null) {
-                channel = NotificationChannel(CHANNEL, getString(R.string.channel_title_news),
-                        NotificationManager.IMPORTANCE_DEFAULT)
-                channel.description = getString(R.string.channel_description_news)
-                channel.enableLights(true)
-                manager.createNotificationChannel(channel)
-            }
+            prepareChannel(manager)
         }
 
         manager.notify(Calendar.getInstance().timeInMillis.toInt() * 1000, builder.build())
     }
 
+    @TargetApi(26)
+    private fun prepareChannel(manager: NotificationManager) {
+        var channel = manager.getNotificationChannel(CHANNEL)
+        if (channel != null) {
+            return
+        }
+
+        channel = NotificationChannel(CHANNEL, getString(R.string.channel_title_news),
+                NotificationManager.IMPORTANCE_DEFAULT)
+        channel.description = getString(R.string.channel_description_news)
+        channel.enableLights(true)
+        manager.createNotificationChannel(channel)
+    }
+
     private fun saveNews() {
         val handler = NewsHandler.getInstance(baseContext)
         // Prevent duplicated items
-        if (handler.all.none { it.url == mNews.url }) {
+        if (mNews.url.isNotBlank() && handler.all.none { it.url == mNews.url }) {
             handler.add(mNews)
         }
     }

@@ -4,7 +4,6 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import it.liceoarzignano.bold.database.DBHandler
-import java.util.*
 
 class NewsHandler private constructor(context: Context) : DBHandler<News>(context, DB_NAME, DB_VERSION) {
 
@@ -13,10 +12,14 @@ class NewsHandler private constructor(context: Context) : DBHandler<News>(contex
             "$KEY_TITLE TEXT, " +
             "$KEY_DATE INTEGER, " +
             "$KEY_DESCRIPTION TEXT, " +
-            "$KEY_URL TEXT)")
+            "$KEY_URL TEXT," +
+            "$KEY_UNREAD INTEGER)")
 
-    // Update this when db table will be changed
-    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) = Unit
+    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        if (oldVersion == 1 && newVersion == 2) {
+            db.execSQL("ALTER TABLE $tableName ADD COLUMN $KEY_UNREAD INTEGER DEFAULT 0")
+        }
+    }
 
     public override val all: MutableList<News>
         get() {
@@ -27,11 +30,12 @@ class NewsHandler private constructor(context: Context) : DBHandler<News>(contex
             if (cursor.moveToFirst()) {
                 do {
                     list.add(News(
-                            cursor.getString(0).toLong(),
+                            cursor.getLong(0),
                             cursor.getString(1),
-                            cursor.getString(2).toLong(),
+                            cursor.getLong(2),
                             cursor.getString(3),
-                            cursor.getString(4)))
+                            cursor.getString(4),
+                            cursor.getInt(5) == 1))
                 } while (cursor.moveToNext())
             }
 
@@ -47,11 +51,12 @@ class NewsHandler private constructor(context: Context) : DBHandler<News>(contex
         var news: News? = null
         if (cursor.moveToFirst()) {
             news = News(
-                    cursor.getString(0).toLong(),
+                    cursor.getLong(0),
                     cursor.getString(1),
-                    cursor.getString(2).toLong(),
+                    cursor.getLong(2),
                     cursor.getString(3),
-                    cursor.getString(4))
+                    cursor.getString(4),
+                    cursor.getInt(5) == 1)
         }
         cursor.close()
         return news
@@ -63,6 +68,7 @@ class NewsHandler private constructor(context: Context) : DBHandler<News>(contex
         values.put(KEY_DATE, item.date)
         values.put(KEY_DESCRIPTION, item.description)
         values.put(KEY_URL, item.url)
+        values.put(KEY_UNREAD, if (item.unread) 1 else 0)
         return values
     }
 
@@ -80,11 +86,12 @@ class NewsHandler private constructor(context: Context) : DBHandler<News>(contex
         if (cursor.moveToFirst()) {
             do {
                 list.add(News(
-                        cursor.getString(0).toLong(),
+                        cursor.getLong(0),
                         cursor.getString(1),
-                        cursor.getString(2).toLong(),
+                        cursor.getLong(2),
                         cursor.getString(3),
-                        cursor.getString(4)))
+                        cursor.getString(4),
+                        cursor.getInt(5) == 1))
             } while (cursor.moveToNext())
         }
 
@@ -92,13 +99,65 @@ class NewsHandler private constructor(context: Context) : DBHandler<News>(contex
         return list
     }
 
+    fun getByUrl(query: String): List<News> {
+        val list = ArrayList<News>()
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM $tableName WHERE $KEY_URL LIKE ?",
+                arrayOf("%$query%"))
+        if (cursor.moveToFirst()) {
+            do {
+                list.add(News(
+                        cursor.getLong(0),
+                        cursor.getString(1),
+                        cursor.getLong(2),
+                        cursor.getString(3),
+                        cursor.getString(4),
+                        cursor.getInt(5) == 1))
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
+        return list
+
+    }
+
+    fun getUnread(): List<News> {
+        val list = ArrayList<News>()
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM $tableName ORDER BY $KEY_DATE DESC, $KEY_UNREAD DESC", emptyArray())
+        if (cursor.moveToFirst()) {
+            do {
+                list.add(News(
+                        cursor.getLong(0),
+                        cursor.getString(1),
+                        cursor.getLong(2),
+                        cursor.getString(3),
+                        cursor.getString(4),
+                        cursor.getInt(5) == 1))
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
+        return list
+    }
+
+    fun hasUnread(): Boolean {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM $tableName WHERE $KEY_UNREAD = 1", emptyArray())
+
+        val hasItems = cursor.count != 0
+        cursor.close()
+        return hasItems
+    }
+
     companion object {
         private val DB_NAME = "NewsDatabase.db"
-        private val DB_VERSION = 1
+        private val DB_VERSION = 2
         private val KEY_TITLE = "title"
         private val KEY_DATE = "date"
         private val KEY_DESCRIPTION = "description"
         private val KEY_URL = "url"
+        private val KEY_UNREAD = "unread"
 
         // Singleton
         @Volatile private var INSTANCE: NewsHandler? = null

@@ -7,19 +7,23 @@ class News : DBItem {
     var date = 0L
     var description = ""
     var url = ""
+    var unread = false
 
-    constructor(title: String, date: Long, description: String, url: String) {
+    constructor(title: String, date: Long, description: String, url: String, unread: Boolean) {
         this.title = title
         this.date = date
         this.description = description
         this.url = url
+        this.unread = unread
     }
 
-    constructor(id: Long, title: String, date: Long, description: String, url: String) {
+    constructor(id: Long, title: String, date: Long, description: String,
+                url: String, unread: Boolean) {
         this.id = id
         this.title = title
         this.date = date
         this.description = description
         this.url = url
+        this.unread = unread
     }
 }

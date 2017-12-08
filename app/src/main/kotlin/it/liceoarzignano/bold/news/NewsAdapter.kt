@@ -44,7 +44,6 @@ internal class NewsAdapter(private var mNewsList: List<News>, private val mConte
         return a.diff(b) >= 1
     }
 
-
     fun updateList(list: List<News>) {
         mNewsList = list
         notifyDataChanged()
@@ -55,7 +54,8 @@ internal class NewsAdapter(private var mNewsList: List<News>, private val mConte
         private val mMessage: TextView = mView.findViewById(R.id.row_news_message)
 
         fun setData(news: News) {
-            mTitle.text = news.title
+            val title = if (news.unread) "$UNREAD_INDICATOR${news.title}" else news.title
+            mTitle.text = title
             mMessage.text = news.description
 
             val url = news.url
@@ -63,10 +63,18 @@ internal class NewsAdapter(private var mNewsList: List<News>, private val mConte
                 if (!url.isEmpty()) {
                     (mContext as NewsListActivity).showUrl(url)
                 }
+
                 HelpToast(mContext, HelpToast.KEY_NEWS_LONG_PRESS)
+
+                (mContext as NewsListActivity).markAsRead(news)
+                mTitle.text.removePrefix(UNREAD_INDICATOR)
             }
 
             mView.setOnLongClickListener { _ -> (mContext as NewsListActivity).newsActions(news) }
         }
+    }
+
+    companion object {
+        val UNREAD_INDICATOR = "\u2022 "
     }
 }

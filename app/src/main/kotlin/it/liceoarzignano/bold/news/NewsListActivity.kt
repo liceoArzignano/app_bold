@@ -56,15 +56,16 @@ class NewsListActivity : AppCompatActivity() {
         val callingIntent = intent
         val url = callingIntent.getStringExtra("newsUrl")
 
-        if (url != null && !url.isEmpty()) {
-            showUrl(url)
-        }
-
         mNewsHandler = NewsHandler.getInstance(baseContext)
         mAdapter = NewsAdapter(mNewsHandler.all, this)
         newsList.adapter = mAdapter
         if (SystemUtils.isNotLegacy) {
             newsList.addOnScrollListener(ScrollListener(toolbar, resources, newsList.top))
+        }
+
+        if (url != null && !url.isEmpty()) {
+            showUrl(url)
+            markAsRead(mNewsHandler.getByUrl(url)[0])
         }
     }
 
@@ -182,4 +183,15 @@ class NewsListActivity : AppCompatActivity() {
 
         return true
     }
+
+    internal fun markAsRead(news: News) {
+        if (!news.unread) {
+            return
+        }
+
+        val handler = NewsHandler.getInstance(baseContext)
+        news.unread = false
+        handler.update(news)
+    }
+
 }
