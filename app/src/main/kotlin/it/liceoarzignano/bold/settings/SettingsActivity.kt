@@ -124,7 +124,9 @@ class SettingsActivity : AppCompatActivity() {
                 Log.e("SafetyNetTest", e.message)
             }
 
-            SafetyNet.getClient(activity).attest(oStream.toByteArray(),
+            val ctx = context ?: return
+
+            SafetyNet.getClient(ctx).attest(oStream.toByteArray(),
                     SystemUtils.getSafetyNetApiKey(mContext))
                     .addOnCompleteListener { task ->
                         dialog.dismiss()
