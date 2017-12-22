@@ -4,10 +4,15 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.support.annotation.RequiresApi
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.preference.PreferenceFragmentCompat
 import android.support.v7.widget.Toolbar
 import android.util.Log
+import android.view.Gravity
+import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.gms.common.ConnectionResult
@@ -18,6 +23,7 @@ import it.liceoarzignano.bold.R
 import it.liceoarzignano.bold.backup.BackupActivity
 import it.liceoarzignano.bold.safe.mod.Encryption
 import it.liceoarzignano.bold.utils.SystemUtils
+import it.liceoarzignano.bold.utils.UiUtils
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.security.SecureRandom
@@ -38,6 +44,8 @@ class SettingsActivity : AppCompatActivity() {
         lateinit private var mContext: Context
         lateinit private var mPrefs: AppPrefs
 
+        private var bunnyCounter = 0
+
         override fun onCreatePreferences(savedInstance: Bundle?, key: String?) {
             addPreferencesFromResource(R.xml.settings)
 
@@ -50,18 +58,13 @@ class SettingsActivity : AppCompatActivity() {
             val safe = findPreference("safe_key")
 
             changeLog.setOnPreferenceClickListener { _ ->
-                MaterialDialog.Builder(mContext)
-                        .title(getString(R.string.pref_changelog))
-                        .content(getString(R.string.dialog_updated_content))
-                        .positiveText(getString(android.R.string.ok))
-                        .negativeText(R.string.dialog_updated_changelog)
-                        .onNegative { dialog, _ ->
-                            dialog.hide()
-                            val mIntent = Intent(Intent.ACTION_VIEW)
-                            mIntent.data = Uri.parse(getString(R.string.config_url_changelog))
-                            startActivity(mIntent)
-                        }
-                        .show()
+                bunnyCounter++
+                if (bunnyCounter == 2 && SystemUtils.isNotLegacy) {
+                    bouncingBunny()
+                    bunnyCounter = 0
+                } else {
+                    changelogDialog()
+                }
                 true
             }
 
@@ -146,6 +149,54 @@ class SettingsActivity : AppCompatActivity() {
                                 .neutralText(android.R.string.ok)
                                 .show()
                     }
+        }
+
+        @RequiresApi(21)
+        private fun bouncingBunny() {
+            val ctx = context ?: return
+            val size = UiUtils.dpToPx(resources, 256f).toInt()
+
+            val params = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+                    size)
+            params.gravity = Gravity.CENTER_HORIZONTAL
+
+            val layout = FrameLayout(context)
+            layout.layoutParams = params
+            val imageView = ImageView(context)
+            imageView.layoutParams = params
+            imageView.adjustViewBounds = true
+            layout.addView(imageView)
+
+            val dialog = MaterialDialog.Builder(ctx)
+                    .customView(layout, false)
+                    .build()
+
+            dialog.show()
+            UiUtils.animateAVD(imageView, R.drawable.avd_intro_start)
+            Handler().postDelayed({
+                UiUtils.animateAVD(imageView, R.drawable.avd_intro_load)
+                Handler().postDelayed({
+                    UiUtils.animateAVD(imageView, R.drawable.avd_intro_done)
+                    Handler().postDelayed({
+                        dialog.dismiss()
+                    }, 3500)
+                }, 1800)
+            }, 800)
+        }
+
+        private fun changelogDialog() {
+            MaterialDialog.Builder(mContext)
+                    .title(getString(R.string.pref_changelog))
+                    .content(getString(R.string.dialog_updated_content))
+                    .positiveText(getString(android.R.string.ok))
+                    .negativeText(R.string.dialog_updated_changelog)
+                    .onNegative { dialog, _ ->
+                        dialog.hide()
+                        val mIntent = Intent(Intent.ACTION_VIEW)
+                        mIntent.data = Uri.parse(getString(R.string.config_url_changelog))
+                        startActivity(mIntent)
+                    }
+                    .show()
         }
     }
 }
