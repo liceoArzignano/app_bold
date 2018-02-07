@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion '27.0.2'
+    buildToolsVersion '27.0.3'
 
     //noinspection GroovyMissingReturnStatement
     defaultConfig {
@@ -12,7 +12,7 @@ android {
         applicationId 'it.liceoarzignano.bold'
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 14802
+        versionCode 14803
         versionName "1.0.18"
         vectorDrawables.useSupportLibrary true
         resConfigs "en", "it"
