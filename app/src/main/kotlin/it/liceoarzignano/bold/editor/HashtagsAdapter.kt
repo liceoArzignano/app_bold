@@ -24,7 +24,7 @@ class HashtagsAdapter : RecyclerView.Adapter<HashtagsAdapter.HashtagViewHolder>(
 
     fun update(new: String) {
         UpdateTask(new, tags, { list -> tags = list }, { result ->
-            result?.dispatchUpdatesTo(this@HashtagsAdapter)})
+            result?.dispatchUpdatesTo(this@HashtagsAdapter)}).execute()
     }
 
     fun getTags(): String {
