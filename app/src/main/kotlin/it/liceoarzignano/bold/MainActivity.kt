@@ -37,6 +37,7 @@ import it.liceoarzignano.bold.marks.MarksActivity
 import it.liceoarzignano.bold.marks.MarksHandler
 import it.liceoarzignano.bold.news.NewsHandler
 import it.liceoarzignano.bold.news.NewsListActivity
+import it.liceoarzignano.bold.poster.PosterActivity
 import it.liceoarzignano.bold.safe.SafeActivity
 import it.liceoarzignano.bold.settings.AppPrefs
 import it.liceoarzignano.bold.settings.SettingsActivity
@@ -161,6 +162,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_my_marks -> startActivity(Intent(this, MarksActivity::class.java))
             R.id.nav_calendar -> startActivity(Intent(this, EventListActivity::class.java))
             R.id.nav_news -> startActivity(Intent(this, NewsListActivity::class.java))
+            R.id.nav_poster -> startActivity(Intent(this, PosterActivity::class.java))
             R.id.nav_safe -> startActivity(Intent(this, SafeActivity::class.java))
             R.id.nav_settings -> startActivity(Intent(this, SettingsActivity::class.java))
             R.id.nav_share -> {

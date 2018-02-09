@@ -15,6 +15,10 @@
             android:icon="@drawable/ic_news"
             android:title="@string/nav_news" />
         <item
+            android:id="@+id/nav_poster"
+            android:icon="@drawable/ic_poster"
+            android:title="@string/title_activity_poster" />
+        <item
             android:id="@+id/nav_safe"
             android:icon="@drawable/ic_safe"
             android:title="@string/nav_safe" />

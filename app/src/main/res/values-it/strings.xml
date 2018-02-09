@@ -312,6 +312,12 @@
     <string name="backup_end_of_year_done_title">Anno nuovo</string>
     <string name="backup_end_of_year_done_message">Ottimo, ora puoi cominiciare un nuovo anno scolastico</string>
 
+    <!-- Poster -->
+    <string name="title_activity_poster">Sostituzioni</string>
+    <string name="poster_empty">Nessuna sostituzione programmata per questo giorno</string>
+    <string name="poster_loading">Ricerca di sostituzioni in corso\u2026</string>
+    <string name="poster_connection_error">Connessione ad internet assente. I risultati potrebbero non essere aggiornati</string>
+
     <!-- Shortcuts -->
     <string name="shortcut_marks_short">Voti</string>
     <string name="shortcut_marks_long">Voti</string>

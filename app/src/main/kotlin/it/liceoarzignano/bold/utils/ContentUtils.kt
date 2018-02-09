@@ -145,6 +145,13 @@ object ContentUtils {
         return Pair(title, description)
     }
 
+    fun getHeaderTitleSimple(res: Resources, time: Time): String =
+            when (time.diff(Time())) {
+                -1 -> res.getString(R.string.events_time_yesterday)
+                0 -> res.getString(R.string.events_time_today)
+                1 -> res.getString(R.string.events_time_tomorrow)
+                else -> time.format(res.getString(R.string.date_formatting)).upperCaseFirstChar()
+            }
 
     private fun String.upperCaseFirstChar() =
             "${substring(0, 1).toUpperCase()}${substring(1, length)}"

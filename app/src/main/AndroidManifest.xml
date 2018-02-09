@@ -102,6 +102,24 @@
                 android:resource="@xml/searchable" />
         </activity>
 
+        <!-- Poster -->
+        <activity
+            android:name=".poster.PosterActivity"
+            android:label="@string/title_activity_poster"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="www.infoliceoleonardodavinci.it"
+                    android:pathPrefix="/sostituzioni"
+                    android:scheme="http" />
+            </intent-filter>
+        </activity>
+
         <!-- Editor -->
         <activity
             android:name=".editor.EditorActivity"

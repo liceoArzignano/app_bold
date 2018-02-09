@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <include layout="@layout/toolbar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="?actionBarSize">
+
+        <LinearLayout
+            android:id="@+id/poster_seeker_layout"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/list_divider"
+            android:orientation="horizontal"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp">
+
+            <TextView
+                android:id="@+id/poster_seeker_day"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="32dp"
+                android:layout_weight="8"
+                android:gravity="center_vertical"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:ellipsize="end"
+                android:text="@string/events_time_tomorrow"
+                android:textColor="@color/icon"
+                android:textSize="24sp" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:background="?selectableItemBackgroundBorderless"
+                android:padding="4dp"
+                app:srcCompat="@drawable/ic_date_swap" />
+        </LinearLayout>
+
+        <it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt
+            android:id="@+id/poster_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="55dp"
+            android:scrollbars="vertical" />
+
+        <LinearLayout
+            android:id="@+id/poster_empty_layout"
+            style="@style/AppTheme.EmptyLayout"
+            android:layout_marginTop="54dp"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                style="@style/AppTheme.EmptyImage"
+                app:srcCompat="@drawable/ic_empty_poster" />
+
+            <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+                android:id="@+id/poster_loading_bar"
+                style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
+                android:layout_width="192dp"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:paddingTop="16dp"
+                app:mpb_progressStyle="horizontal" />
+
+            <TextView
+                android:id="@+id/poster_empty_text"
+                style="@style/AppTheme.EmptyText" />
+        </LinearLayout>
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>
