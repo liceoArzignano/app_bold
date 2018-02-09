@@ -92,7 +92,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="www.liceoarzignano.it"
+                    android:host="www.infoliceoleonardodavinci.it"
                     android:pathPrefix="/app"
                     android:scheme="http" />
             </intent-filter>
