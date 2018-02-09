@@ -24,5 +24,5 @@
 -optimizations 25
 -dontskipnonpubliclibraryclasses
 -keep class android.support.v7.widget.SearchView { *; }
--keep class org.eclipse.egit.github.core.service.IssueService { *; }
--keep class org.eclipse.egit.github.core.Issue { *; }
+-keepattributes Signature
+-keepclassmembers class it.liceoarzignano.bold.poster.** { *;}
