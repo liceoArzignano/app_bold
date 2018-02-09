@@ -21,14 +21,14 @@ import java.io.ByteArrayOutputStream
 import java.security.SecureRandom
 
 class IntroActivity : AppCompatActivity() {
-    lateinit private var mTitle: TextView
-    lateinit private var mMessage: TextView
-    lateinit private var mStep1: LinearLayout
-    lateinit private var mStep2: LinearLayout
-    lateinit private var mImageAnimation: ImageView
-    lateinit private var mRetryButton: AppCompatButton
-    lateinit private var mSelectorPager: ViewPager
-    lateinit private var mIndicator: InkPageIndicator
+    private lateinit var mTitle: TextView
+    private lateinit var mMessage: TextView
+    private lateinit var mStep1: LinearLayout
+    private lateinit var mStep2: LinearLayout
+    private lateinit var mImageAnimation: ImageView
+    private lateinit var mRetryButton: AppCompatButton
+    private lateinit var mSelectorPager: ViewPager
+    private lateinit var mIndicator: InkPageIndicator
 
     private var mAnimThread: Thread? = null
     private var isWorking = false

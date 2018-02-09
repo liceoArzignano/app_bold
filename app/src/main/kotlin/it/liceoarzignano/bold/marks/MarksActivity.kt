@@ -26,12 +26,12 @@ import it.liceoarzignano.bold.utils.SystemUtils
 import it.liceoarzignano.bold.utils.Time
 
 class MarksActivity : AppCompatActivity() {
-    lateinit private var mList: RecyclerViewExt
-    lateinit private var mEmptyLayout: LinearLayout
-    lateinit private var mFab: FloatingActionButton
+    private lateinit var mList: RecyclerViewExt
+    private lateinit var mEmptyLayout: LinearLayout
+    private lateinit var mFab: FloatingActionButton
 
-    lateinit private var mAdapter: AverageAdapter
-    lateinit private var mPrefs: AppPrefs
+    private lateinit var mAdapter: AverageAdapter
+    private lateinit var mPrefs: AppPrefs
     private var mQuarter = 0
     private var isFirstEnabled = false
     private var isSecondEnabled = false

@@ -25,14 +25,14 @@ import it.liceoarzignano.bold.utils.Time
 
 
 class EventListActivity : AppCompatActivity() {
-    lateinit private var mCoordinator: CoordinatorLayout
-    lateinit private var mRecyclerView: RecyclerViewExt
-    lateinit private var mEmptyLayout: LinearLayout
-    lateinit private var mEmptyText: TextView
-    lateinit private var mFab: FloatingActionButton
+    private lateinit var mCoordinator: CoordinatorLayout
+    private lateinit var mRecyclerView: RecyclerViewExt
+    private lateinit var mEmptyLayout: LinearLayout
+    private lateinit var mEmptyText: TextView
+    private lateinit var mFab: FloatingActionButton
 
-    lateinit private var mAdapter: EventsAdapter
-    lateinit private var mEventsHandler: EventsHandler
+    private lateinit var mAdapter: EventsAdapter
+    private lateinit var mEventsHandler: EventsHandler
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

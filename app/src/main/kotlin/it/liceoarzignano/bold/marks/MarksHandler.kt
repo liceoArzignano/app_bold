@@ -141,13 +141,13 @@ class MarksHandler private constructor(context: Context) :
     }
 
     companion object {
-        private val DB_NAME = "MarksDatabase.db"
-        private val DB_VERSION = 1
-        private val KEY_SUBJECT = "subject"
-        private val KEY_VALUE = "value"
-        private val KEY_DATE = "date"
-        private val KEY_DESCRIPTION = "description"
-        private val KEY_FIRSTQUARTER = "firstQuarter"
+        private const val DB_NAME = "MarksDatabase.db"
+        private const val DB_VERSION = 1
+        private const val KEY_SUBJECT = "subject"
+        private const val KEY_VALUE = "value"
+        private const val KEY_DATE = "date"
+        private const val KEY_DESCRIPTION = "description"
+        private const val KEY_FIRSTQUARTER = "firstQuarter"
 
         // Singleton
         @Volatile private var INSTANCE: MarksHandler? = null

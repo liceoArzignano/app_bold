@@ -164,13 +164,13 @@ private constructor(context: Context) : DBHandler<Event>(context, DB_NAME, DB_VE
     }
 
     companion object {
-        private val DB_NAME = "EventDatabase.db"
-        private val DB_VERSION = 2
-        private val KEY_TITLE = "title"
-        private val KEY_DATE = "date"
-        private val KEY_DESCRIPTION = "description"
-        private val KEY_CATEGORY = "category"
-        private val KEY_HASHTAGS = "hashtags"
+        private const val DB_NAME = "EventDatabase.db"
+        private const val DB_VERSION = 2
+        private const val KEY_TITLE = "title"
+        private const val KEY_DATE = "date"
+        private const val KEY_DESCRIPTION = "description"
+        private const val KEY_CATEGORY = "category"
+        private const val KEY_HASHTAGS = "hashtags"
 
         // Singleton
         @Volatile private var INSTANCE: EventsHandler? = null

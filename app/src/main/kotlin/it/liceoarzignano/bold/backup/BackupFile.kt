@@ -237,12 +237,12 @@ internal class BackupFile(activity: Activity) {
 
 
     companion object {
-        private val TAG = "BackupFile"
-        val FILE_NAME = "Liceo.backup"
-        private val MARK_HEADER = "_ID, subject, value, time, description, firstQuarter"
-        private val EVENT_HEADER = "_ID, title, time, description, category"
-        private val NEWS_HEADER = "_ID, title, time, description, url"
-        private val COMMA_REPLACER = "\u2016"
-        private val SEPARATOR = ", "
+        private const val TAG = "BackupFile"
+        const val FILE_NAME = "Liceo.backup"
+        private const val MARK_HEADER = "_ID, subject, value, time, description, firstQuarter"
+        private const val EVENT_HEADER = "_ID, title, time, description, category"
+        private const val NEWS_HEADER = "_ID, title, time, description, url"
+        private const val COMMA_REPLACER = "\u2016"
+        private const val SEPARATOR = ", "
     }
 }

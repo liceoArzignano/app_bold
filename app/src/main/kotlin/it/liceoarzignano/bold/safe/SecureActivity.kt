@@ -29,12 +29,12 @@ import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 
 open class SecureActivity : AppCompatActivity() {
-    lateinit private var mFingerprintManager: FingerprintManager
-    lateinit private var mKeyguardManager: KeyguardManager
+    private lateinit var mFingerprintManager: FingerprintManager
+    private lateinit var mKeyguardManager: KeyguardManager
     private var mCipher: Cipher? = null
     private var mCryptoObject: FingerprintManager.CryptoObject? = null
     private val mKeyStore = KeyStore.getInstance(KEYSTORE_NAME)
-    lateinit private var mGenerator: KeyGenerator
+    private lateinit var mGenerator: KeyGenerator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -175,8 +175,8 @@ open class SecureActivity : AppCompatActivity() {
     }
 
     companion object {
-        private val TAG = "SecureActivity"
-        private val KEYSTORE_NAME = "AndroidKeyStore"
-        private val KEY_NAME = "bold_safe_fp_key"
+        private const val TAG = "SecureActivity"
+        private const val KEYSTORE_NAME = "AndroidKeyStore"
+        private const val KEY_NAME = "bold_safe_fp_key"
     }
 }

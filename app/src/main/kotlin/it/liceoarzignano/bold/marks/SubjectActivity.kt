@@ -19,13 +19,13 @@ import it.liceoarzignano.bold.utils.UiUtils
 
 
 class SubjectActivity : AppCompatActivity() {
-    lateinit private var mCoordinator: CoordinatorLayout
-    lateinit private var mProgressBar: CircularProgressBar
-    lateinit private var mTextHint: TextView
-    lateinit private var mNestedView: NestedScrollView
+    private lateinit var mCoordinator: CoordinatorLayout
+    private lateinit var mProgressBar: CircularProgressBar
+    private lateinit var mTextHint: TextView
+    private lateinit var mNestedView: NestedScrollView
 
-    lateinit private var mMarksHandler: MarksHandler
-    lateinit private var mAdapter: SubjectAdapter
+    private lateinit var mMarksHandler: MarksHandler
+    private lateinit var mAdapter: SubjectAdapter
 
     private var mTitle = ""
     private var mFilter: Int = 0
@@ -128,7 +128,7 @@ class SubjectActivity : AppCompatActivity() {
     }
 
     companion object {
-        internal val EXTRA_TITLE = "extra_subject_position"
-        internal val EXTRA_FILTER = "extra_subject_filter"
+        internal const val EXTRA_TITLE = "extra_subject_position"
+        internal const val EXTRA_FILTER = "extra_subject_filter"
     }
 }

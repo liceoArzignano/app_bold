@@ -30,26 +30,26 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class EditorActivity : AppCompatActivity() {
-    lateinit private var mCoordinator: CoordinatorLayout
-    lateinit private var mTitleLayout: RelativeLayout
-    lateinit private var mTitleText: EditText
-    lateinit private var mInputTitle: TextInputLayout
-    lateinit private var mSubjectLayout: RelativeLayout
-    lateinit private var mSubjectView: EditText
-    lateinit private var mNotesText: EditText
-    lateinit private var mHashtagLayout: RelativeLayout
-    lateinit private var mHashtagList: RecyclerViewExt
-    lateinit private var mCategoryLayout: RelativeLayout
-    lateinit private var mCategorySpinner: Spinner
-    lateinit private var mValueLayout: RelativeLayout
-    lateinit private var mValueView: EditText
-    lateinit private var mDateView: EditText
+    private lateinit var mCoordinator: CoordinatorLayout
+    private lateinit var mTitleLayout: RelativeLayout
+    private lateinit var mTitleText: EditText
+    private lateinit var mInputTitle: TextInputLayout
+    private lateinit var mSubjectLayout: RelativeLayout
+    private lateinit var mSubjectView: EditText
+    private lateinit var mNotesText: EditText
+    private lateinit var mHashtagLayout: RelativeLayout
+    private lateinit var mHashtagList: RecyclerViewExt
+    private lateinit var mCategoryLayout: RelativeLayout
+    private lateinit var mCategorySpinner: Spinner
+    private lateinit var mValueLayout: RelativeLayout
+    private lateinit var mValueView: EditText
+    private lateinit var mDateView: EditText
 
-    lateinit private var mTime: Time
-    lateinit private var mDateSetListener: DatePickerDialog.OnDateSetListener
-    lateinit private var mMarksHandler: MarksHandler
-    lateinit private var mEventsHandler: EventsHandler
-    lateinit private var mPrefs: AppPrefs
+    private lateinit var mTime: Time
+    private lateinit var mDateSetListener: DatePickerDialog.OnDateSetListener
+    private lateinit var mMarksHandler: MarksHandler
+    private lateinit var mEventsHandler: EventsHandler
+    private lateinit var mPrefs: AppPrefs
     private var mHashtagAdapter = HashtagsAdapter()
 
     private var mId = 0L
@@ -418,8 +418,8 @@ class EditorActivity : AppCompatActivity() {
 
 
     companion object {
-        val EXTRA_ID = "extra_id"
-        val EXTRA_IS_MARK = "extra_is_mark"
-        val EXTRA_IS_NEWS = "extra_is_news"
+        const val EXTRA_ID = "extra_id"
+        const val EXTRA_IS_MARK = "extra_is_mark"
+        const val EXTRA_IS_NEWS = "extra_is_news"
     }
 }

@@ -151,13 +151,13 @@ class NewsHandler private constructor(context: Context) : DBHandler<News>(contex
     }
 
     companion object {
-        private val DB_NAME = "NewsDatabase.db"
-        private val DB_VERSION = 2
-        private val KEY_TITLE = "title"
-        private val KEY_DATE = "date"
-        private val KEY_DESCRIPTION = "description"
-        private val KEY_URL = "url"
-        private val KEY_UNREAD = "unread"
+        private const val DB_NAME = "NewsDatabase.db"
+        private const val DB_VERSION = 2
+        private const val KEY_TITLE = "title"
+        private const val KEY_DATE = "date"
+        private const val KEY_DESCRIPTION = "description"
+        private const val KEY_URL = "url"
+        private const val KEY_UNREAD = "unread"
 
         // Singleton
         @Volatile private var INSTANCE: NewsHandler? = null

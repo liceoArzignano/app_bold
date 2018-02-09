@@ -10,7 +10,7 @@ import com.google.android.gms.common.GoogleApiAvailability
 import it.liceoarzignano.bold.BuildConfig
 
 object SystemUtils {
-    private val TAG = "SystemUtils"
+    private const val TAG = "SystemUtils"
 
     val isNotLegacy: Boolean get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
     val hasApi23: Boolean get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M

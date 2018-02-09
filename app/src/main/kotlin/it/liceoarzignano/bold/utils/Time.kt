@@ -84,7 +84,7 @@ class Time : Date {
     }
 
     companion object {
-        private val DATE_FORMAT = "yyyy-MM-dd"
+        private const val DATE_FORMAT = "yyyy-MM-dd"
         private val APP_LOCALE = Locale.ITALIAN
 
         fun parse(value: String): Time = try {

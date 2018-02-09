@@ -23,7 +23,7 @@ import org.json.JSONObject
 import java.util.*
 
 class BoldMessagingService : FirebaseMessagingService() {
-    lateinit private var mNews: News
+    private lateinit var mNews: News
 
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
         if (remoteMessage == null || remoteMessage.data.isEmpty()) {
@@ -109,7 +109,7 @@ class BoldMessagingService : FirebaseMessagingService() {
     }
 
     companion object {
-        private val TAG = "BoldFireBase"
-        private val CHANNEL = "channel_news"
+        private const val TAG = "BoldFireBase"
+        private const val CHANNEL = "channel_news"
     }
 }

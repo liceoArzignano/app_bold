@@ -28,11 +28,11 @@ import java.util.*
 
 class BackupActivity : AppCompatActivity() {
 
-    lateinit private var mCoordinatorLayout: CoordinatorLayout
-    lateinit private var mBackupButton: AppCompatButton
-    lateinit private var mRestoreButton: AppCompatButton
+    private lateinit var mCoordinatorLayout: CoordinatorLayout
+    private lateinit var mBackupButton: AppCompatButton
+    private lateinit var mRestoreButton: AppCompatButton
 
-    lateinit private var mPrefs: AppPrefs
+    private lateinit var mPrefs: AppPrefs
     private var mBackup: Backup? = null
     private var mGoogleApiClient: GoogleApiClient? = null
     private var mIntentPicker: IntentSender? = null
@@ -455,8 +455,8 @@ class BackupActivity : AppCompatActivity() {
     }
 
     companion object {
-        private val TAG = "BackupActivity"
-        val EXTRA_EOY_BACKUP = "extraEndOfYearBackup"
+        private const val TAG = "BackupActivity"
+        const val EXTRA_EOY_BACKUP = "extraEndOfYearBackup"
 
         private fun backupSize(bytes: Long): String {
             val unit = 1000

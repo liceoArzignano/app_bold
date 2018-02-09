@@ -75,6 +75,6 @@ internal class NewsAdapter(private var mNewsList: List<News>, private val mConte
     }
 
     companion object {
-        val UNREAD_INDICATOR = "\u2022 "
+        const val UNREAD_INDICATOR = "\u2022 "
     }
 }

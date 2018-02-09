@@ -18,10 +18,10 @@ import it.liceoarzignano.bold.utils.SystemUtils
 import it.liceoarzignano.bold.utils.UiUtils
 
 class AddressFragment : Fragment() {
-    lateinit private var mCard: CardView
-    lateinit private var mIcon: ImageView
-    lateinit private var mTitle: TextView
-    lateinit private var mButton: AppCompatButton
+    private lateinit var mCard: CardView
+    private lateinit var mIcon: ImageView
+    private lateinit var mTitle: TextView
+    private lateinit var mButton: AppCompatButton
     var mPosition: Int = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

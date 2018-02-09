@@ -50,18 +50,18 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-    lateinit private var mMarksHandler: MarksHandler
-    lateinit private var mEventsHandler: EventsHandler
-    lateinit private var mNewsHandler: NewsHandler
-    lateinit private var mPrefs: AppPrefs
+    private lateinit var mMarksHandler: MarksHandler
+    private lateinit var mEventsHandler: EventsHandler
+    private lateinit var mNewsHandler: NewsHandler
+    private lateinit var mPrefs: AppPrefs
 
-    lateinit private var mToolbar: Toolbar
-    lateinit private var mToggle: ActionBarDrawerToggle
-    lateinit private var mDrawer: DrawerLayout
-    lateinit private var mShortcutsList: RecyclerViewExt
-    lateinit private var mCardList: RecyclerViewExt
-    lateinit private var mUsername: TextView
-    lateinit private var mLogo: ImageView
+    private lateinit var mToolbar: Toolbar
+    private lateinit var mToggle: ActionBarDrawerToggle
+    private lateinit var mDrawer: DrawerLayout
+    private lateinit var mShortcutsList: RecyclerViewExt
+    private lateinit var mCardList: RecyclerViewExt
+    private lateinit var mUsername: TextView
+    private lateinit var mLogo: ImageView
 
     private var mTabsClient: CustomTabsClient? = null
     private var mTabsSession: CustomTabsSession? = null
@@ -544,6 +544,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     companion object {
-        private val BUNDLE_SHOULD_ANIMATE = "homeShouldAnimate"
+        private const val BUNDLE_SHOULD_ANIMATE = "homeShouldAnimate"
     }
 }

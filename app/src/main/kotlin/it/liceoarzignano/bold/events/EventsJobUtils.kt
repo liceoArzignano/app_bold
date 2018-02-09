@@ -65,7 +65,7 @@ class EventsJobUtils : JobService() {
     override fun onStopJob(parameters: JobParameters): Boolean = false
 
     companion object {
-        private val CHANNEL = "channel_events"
-        private val NOTIFICATION_ID = 21
+        private const val CHANNEL = "channel_events"
+        private const val NOTIFICATION_ID = 21
     }
 }

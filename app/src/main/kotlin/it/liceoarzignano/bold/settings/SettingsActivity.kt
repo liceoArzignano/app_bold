@@ -41,8 +41,8 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     class MyPreferenceFragment : PreferenceFragmentCompat() {
-        lateinit private var mContext: Context
-        lateinit private var mPrefs: AppPrefs
+        private lateinit var mContext: Context
+        private lateinit var mPrefs: AppPrefs
 
         private var bunnyCounter = 0
 

@@ -57,6 +57,6 @@ internal class GoogleDriveBackup : Backup, GoogleApiClient.OnConnectionFailedLis
     }
 
     companion object {
-        private val TAG = "GoogleDriveBackup"
+        private const val TAG = "GoogleDriveBackup"
     }
 }

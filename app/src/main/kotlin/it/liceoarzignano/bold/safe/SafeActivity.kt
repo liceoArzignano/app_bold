@@ -26,19 +26,19 @@ import java.io.UnsupportedEncodingException
 import java.security.GeneralSecurityException
 
 class SafeActivity : SecureActivity() {
-    lateinit private var mLoadingLayout: LinearLayout
-    lateinit private var mContentLayout: View
-    lateinit private var mLoadingImage: ImageView
-    lateinit private var mLoadingText: TextView
-    lateinit private var mUserEdit: EditText
-    lateinit private var mRegEdit: EditText
-    lateinit private var mPcEdit: EditText
-    lateinit private var mInternetEdit: EditText
-    lateinit private var mFab: FloatingActionButton
+    private lateinit var mLoadingLayout: LinearLayout
+    private lateinit var mContentLayout: View
+    private lateinit var mLoadingImage: ImageView
+    private lateinit var mLoadingText: TextView
+    private lateinit var mUserEdit: EditText
+    private lateinit var mRegEdit: EditText
+    private lateinit var mPcEdit: EditText
+    private lateinit var mInternetEdit: EditText
+    private lateinit var mFab: FloatingActionButton
     private var mMenu: Menu? = null
     private var mSecretKeys: Encryption.SecretKeys? = null
 
-    lateinit private var mPrefs: AppPrefs
+    private lateinit var mPrefs: AppPrefs
     private var mCrUserName: String? = null
     private var mCrReg: String? = null
     private var mCrPc: String? = null
@@ -411,6 +411,6 @@ class SafeActivity : SecureActivity() {
     private abstract class WorkingTask<T> : AsyncTask<Unit, Unit, T>()
 
     companion object {
-        private val TAG = "SafeActivity"
+        private const val TAG = "SafeActivity"
     }
 }

@@ -28,12 +28,12 @@ import it.liceoarzignano.bold.utils.SystemUtils
 import it.liceoarzignano.bold.utils.Time
 
 class NewsListActivity : AppCompatActivity() {
-    lateinit private var mCoordinator: CoordinatorLayout
-    lateinit private var mEmptyLayout: LinearLayout
-    lateinit private var mEmptyText: TextView
+    private lateinit var mCoordinator: CoordinatorLayout
+    private lateinit var mEmptyLayout: LinearLayout
+    private lateinit var mEmptyText: TextView
 
-    lateinit private var mNewsHandler: NewsHandler
-    lateinit private var mAdapter: NewsAdapter
+    private lateinit var mNewsHandler: NewsHandler
+    private lateinit var mAdapter: NewsAdapter
     private var mClient: CustomTabsClient? = null
     private var mCustomTabsSession: CustomTabsSession? = null
     private var mCustomTabsServiceConnection: CustomTabsServiceConnection? = null
