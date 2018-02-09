@@ -108,6 +108,8 @@
     <string name="actions_share">Condividi</string>
     <string name="actions_to_event">Salva come evento</string>
     <string name="actions_exit">Esci</string>
+    <string name="actions_yes">Si</string>
+    <string name="actions_no">No</string>
 
     <!-- My events -->
     <string name="title_activity_event_list">Eventi</string>

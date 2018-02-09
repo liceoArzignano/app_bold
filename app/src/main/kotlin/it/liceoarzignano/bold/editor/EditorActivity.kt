@@ -270,8 +270,8 @@ class EditorActivity : AppCompatActivity() {
 
         MaterialDialog.Builder(this)
                 .content(R.string.editor_cancel_message)
-                .positiveText(android.R.string.yes)
-                .negativeText(android.R.string.no)
+                .positiveText(R.string.actions_yes)
+                .negativeText(R.string.actions_no)
                 .onPositive { _, _ -> finish() }
                 .show()
     }
