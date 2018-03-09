@@ -20,6 +20,7 @@
 -dontwarn android.support.**
 -dontwarn com.google.**
 -dontwarn java.lang.invoke.*
+-dontwarn lineageos.**
 -forceprocessing
 -optimizations 25
 -dontskipnonpubliclibraryclasses

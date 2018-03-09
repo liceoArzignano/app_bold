@@ -202,6 +202,10 @@
     <string name="pref_notification_time_evening">In the evening</string>
     <string name="pref_backup_title">Backup &amp; restore</string>
     <string name="pref_backup_summary">Save your data on Google Drive</string>
+    <string name="pref_night_mode_title">Interface</string>
+    <string name="pref_night_mode_summary_on">The interface is dark</string>
+    <string name="pref_night_mode_summary_off">The interface is light</string>
+    <string name="pref_night_mode_summary_auto">The interface follows the system style</string>
     <string name="pref_safe_status_title">Safe status</string>
     <string name="pref_safe_status_message_enabled">Enabled (device is secure)</string>
     <string name="pref_safe_status_message_disabled">Disabled (device is unsecure)</string>

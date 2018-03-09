@@ -84,6 +84,7 @@ open class AppPrefs(context: Context) {
         const val KEY_NOTIF_NEWS = "notification_news_key"
         const val KEY_NOTIF_EVENT = "notification_events_key"
         const val KEY_NOTIF_EVENT_TIME = "notification_events_time_key"
+        const val KEY_DARK_MODE = "darkMode_key"
 
         const val KEY_SAFE_DONE = "safe_done_key"
         const val KEY_SAFE_SETUP = "safe_setup_key"

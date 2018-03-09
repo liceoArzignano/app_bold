@@ -7,7 +7,9 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.annotation.RequiresApi
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.app.AppCompatDelegate
 import android.support.v7.preference.PreferenceFragmentCompat
+import android.support.v7.preference.SwitchPreferenceCompat
 import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.Gravity
@@ -56,6 +58,7 @@ class SettingsActivity : AppCompatActivity() {
             val backup = findPreference("backup_key")
             val name = findPreference("username_key")
             val safe = findPreference("safe_key")
+            val darkMode = findPreference("darkMode_key") as SwitchPreferenceCompat
 
             changeLog.setOnPreferenceClickListener { _ ->
                 bunnyCounter++
@@ -66,6 +69,17 @@ class SettingsActivity : AppCompatActivity() {
                     changelogDialog()
                 }
                 true
+            }
+
+            if (Encryption.supportsAutoTune()) {
+                darkMode.isVisible = false
+            } else {
+                darkMode.setOnPreferenceClickListener { _ ->
+                    AppCompatDelegate.setDefaultNightMode(
+                            if (darkMode.isChecked) AppCompatDelegate.MODE_NIGHT_YES
+                            else AppCompatDelegate.MODE_NIGHT_NO)
+                    true
+                }
             }
 
             backup.isEnabled = GoogleApiAvailability.getInstance()
