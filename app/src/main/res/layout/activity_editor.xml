@@ -191,7 +191,7 @@
             android:background="@color/colorAccent"
             android:foreground="?attr/selectableItemBackground"
             android:text="@string/editor_save"
-            android:textColor="@color/slide_color"
+            android:textColor="@color/white"
             android:textSize="18sp" />
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

@@ -33,4 +33,10 @@ class BoldApp : Application() {
             AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         }
     }
+
+    companion object {
+        init {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        }
+    }
 }

@@ -8,9 +8,13 @@
     <color name="icon">#272727</color>
     <color name="editor_icon">#535a5a</color>
 
+    <color name="main_inverted">#212121</color>
+    <color name="main">#fafafa</color>
+
     <color name="black">#212121</color>
     <color name="white">#fafafa</color>
     <color name="grey">#595859</color>
+
     <color name="red">#ff5c49</color>
     <color name="yellow">#ffb000</color>
     <color name="green">#95d13c</color>

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="180dp"
-    android:background="@android:color/white"
+    android:background="@color/main"
     android:orientation="vertical"
     android:paddingLeft="@dimen/sheet_margin"
     android:paddingRight="@dimen/sheet_margin"

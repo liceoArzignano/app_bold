@@ -42,7 +42,7 @@ internal class SubjectAdapter(private var mMarks: List<Mark>, private val mConte
             val context = mView.context
             mValue.setTextColor(ContextCompat.getColor(context,
                     if  (value < 6) R.color.red
-                    else R.color.black))
+                    else R.color.main_inverted))
 
             mValue.text = String.format(Locale.ENGLISH, "%.2f", value)
 

@@ -5,6 +5,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
         <item name="android:windowLightStatusBar">@bool/light_bars</item>
+        <item name="android:windowLightNavigationBar">@bool/light_bars</item>
         <item name="android:colorBackground">@color/colorPrimary</item>
         <item name="android:windowBackground">@color/colorPrimary</item>
     </style>

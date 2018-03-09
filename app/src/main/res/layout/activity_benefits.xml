@@ -22,7 +22,7 @@
             android:maxLines="1"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:textColor="@color/black"
+            android:textColor="@color/main_inverted"
             android:textStyle="bold"
             android:textSize="32sp" />
 
@@ -35,7 +35,7 @@
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:paddingTop="8dp"
-            android:textColor="@color/black"
+            android:textColor="@color/main_inverted"
             android:textSize="16sp" />
 
         <!-- Step 1 - Welcome animation -->
@@ -59,7 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/intro_btn_retry"
-                android:textColor="@color/white"
+                android:textColor="@color/main"
                 android:visibility="invisible"
                 app:backgroundTint="@color/colorAccent" />
         </LinearLayout>

@@ -1,0 +1,21 @@
+<resources>
+    <color name="colorPrimary">#343334</color>
+    <color name="colorPrimaryDark">#212121</color>
+
+    <color name="icon">#fefefe</color>
+    <color name="editor_icon">#e0e0e0</color>
+
+    <color name="main_inverted">#fafafa</color>
+    <color name="main">#212121</color>
+
+    <color name="empty_image">#eaeaea</color>
+    <color name="empty_background">#424242</color>
+    <color name="empty_text">#c0bfc0</color>
+    <color name="circular_progress_bar_bg">#424242</color>
+
+    <color name="text_secondary">#e0e0e0</color>
+    <color name="list_divider">#424242</color>
+    <color name="list_header">#8bFFFFFF</color>
+    <color name="tag_background">#535a5a</color>
+    <color name="tag_text">#e0e0e0</color>
+</resources>

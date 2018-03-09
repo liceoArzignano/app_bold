@@ -6,7 +6,7 @@
     android:viewportWidth="24">
 
     <path
-        android:fillColor="@color/black"
+        android:fillColor="@color/main_inverted"
         android:pathData="M4,12 C4,11.448,4.448,11,5,11 L19,11 C19.553,11,20,11.448,20,12 L20,12
 C20,12.552,19.553,13,19,13 L5,13 C4.448,13,4,12.552,4,12 L4,12 Z M4,8
 C4,8.552,4.448,9,5,9 L19,9 C19.553,9,20,8.552,20,8 L20,8 C20,7.448,19.553,7,19,7

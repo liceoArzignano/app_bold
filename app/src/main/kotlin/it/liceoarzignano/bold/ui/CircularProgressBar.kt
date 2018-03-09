@@ -28,7 +28,7 @@ class CircularProgressBar : View {
     private var mViewHeight: Int = 0
     private var mSweepAngle = 0f
     private var mProgressColor: Int = 0
-    private val mTextColor = ContextCompat.getColor(context, R.color.black)
+    private val mTextColor = ContextCompat.getColor(context, R.color.main_inverted)
     private var mValue: Double = 0.toDouble()
 
     constructor(context: Context): super(context)

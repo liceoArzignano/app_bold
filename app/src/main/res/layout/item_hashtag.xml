@@ -13,6 +13,6 @@
         android:paddingLeft="12dp"
         android:paddingRight="12dp"
         android:gravity="center_vertical"
-        android:textColor="@color/white"
+        android:textColor="@color/main"
         android:textAllCaps="true"/>
 </FrameLayout>

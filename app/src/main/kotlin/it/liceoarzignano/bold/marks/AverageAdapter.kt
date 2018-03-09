@@ -39,7 +39,7 @@ internal class AverageAdapter(context: Context, private var mResults: Array<Stri
             val context = mTitle.context
             mValue.setTextColor(ContextCompat.getColor(context,
                     if (value < 6) R.color.red
-                    else R.color.black))
+                    else R.color.main_inverted))
             mValue.text = String.format(Locale.ENGLISH, "%.2f", value)
         }
     }

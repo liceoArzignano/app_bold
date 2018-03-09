@@ -9,7 +9,7 @@
         android:translateX="4"
         android:translateY="7">
     <path
-        android:fillColor="@color/black"
+        android:fillColor="@color/main_inverted"
         android:pathData="M12.0354,0 L1,0 C0.447998,0,0,0.447998,0,1 C0,1.552,0.447998,2,1,2 L12.3368,2
 C12.1208,1.54537,12,1.0368,12,0.5 C12,0.330238,12.0121,0.1633,12.0354,0 Z M1,4
 C0.447998,4,0,4.448,0,5 C0,5.552,0.447998,6,1,6 L15,6 C15.553,6,16,5.552,16,5
