@@ -17,6 +17,7 @@
         <item
             android:id="@+id/nav_poster"
             android:icon="@drawable/ic_poster"
+            android:visible="false"
             android:title="@string/title_activity_poster" />
         <item
             android:id="@+id/nav_safe"

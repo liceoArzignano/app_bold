@@ -5,7 +5,6 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.app.KeyguardManager
-import android.content.Context
 import android.content.pm.PackageManager
 import android.hardware.fingerprint.FingerprintManager
 import android.os.Build
@@ -29,8 +28,8 @@ import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 
 open class SecureActivity : AppCompatActivity() {
-    private lateinit var mFingerprintManager: FingerprintManager
-    private lateinit var mKeyguardManager: KeyguardManager
+    private var mFingerprintManager: FingerprintManager? = null
+    private var mKeyguardManager: KeyguardManager? = null
     private var mCipher: Cipher? = null
     private var mCryptoObject: FingerprintManager.CryptoObject? = null
     private val mKeyStore = KeyStore.getInstance(KEYSTORE_NAME)
@@ -40,8 +39,8 @@ open class SecureActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         if (SystemUtils.hasApi23) {
-            mFingerprintManager = getSystemService(Context.FINGERPRINT_SERVICE) as FingerprintManager
-            mKeyguardManager = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+            mFingerprintManager = getSystemService(FingerprintManager::class.java)
+            mKeyguardManager = getSystemService(KeyguardManager::class.java)
             setupFingerprint()
         }
     }
@@ -63,11 +62,11 @@ open class SecureActivity : AppCompatActivity() {
         }
     }
 
-    protected open fun onAuthSucceded() = Unit
+    protected open fun onAuthSucceeded() = Unit
 
     @RequiresApi(23)
-    internal fun startListeningToFp(calback: SafeLoginDialog.Callback, icon: ImageView) =
-            AuthCallback(calback, icon).start(mFingerprintManager, mCryptoObject)
+    internal fun startListeningToFp(callback: SafeLoginDialog.Callback, icon: ImageView) =
+            AuthCallback(callback, icon).start(mFingerprintManager!!, mCryptoObject)
 
     @RequiresApi(23)
     private fun generateKey() {
@@ -106,10 +105,15 @@ open class SecureActivity : AppCompatActivity() {
                 Manifest.permission.USE_FINGERPRINT) == PackageManager.PERMISSION_GRANTED
 
     protected val hasFingerprint: Boolean
-        get() = SystemUtils.hasApi23 && mFingerprintManager.isHardwareDetected && hasFpPermission
+        get() = SystemUtils.hasApi23 &&
+                mFingerprintManager != null &&
+                mFingerprintManager!!.isHardwareDetected
+                && hasFpPermission
 
     private val hasEnrolled: Boolean
-        get() = SystemUtils.hasApi23 && mFingerprintManager.hasEnrolledFingerprints()
+        get() = SystemUtils.hasApi23 &&
+                mFingerprintManager != null &&
+                mFingerprintManager!!.hasEnrolledFingerprints()
 
     @RequiresApi(23)
     internal inner class AuthCallback(private val mLoginCallback: SafeLoginDialog.Callback,
@@ -139,7 +143,7 @@ open class SecureActivity : AppCompatActivity() {
 
         override fun onAuthenticationSucceeded(result: FingerprintManager.AuthenticationResult?) {
             recolorTo(accentColor, Runnable { mLoginCallback.dismiss() })
-            onAuthSucceded()
+            onAuthSucceeded()
         }
 
         override fun onAuthenticationHelp(helpCode: Int, helpString: CharSequence?) =

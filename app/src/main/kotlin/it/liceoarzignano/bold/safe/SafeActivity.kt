@@ -149,7 +149,7 @@ class SafeActivity : SecureActivity() {
         }
     }
 
-    override fun onAuthSucceded() {
+    override fun onAuthSucceeded() {
         mLoadingImage.setImageResource(R.drawable.ic_empty_safe_unlocked)
         isWorking = false
 
@@ -239,7 +239,7 @@ class SafeActivity : SecureActivity() {
         // Do things with some delay
         Handler().postDelayed({
             if (isPasswordCorrect) {
-                onAuthSucceded()
+                onAuthSucceeded()
             } else {
                 finish()
             }
