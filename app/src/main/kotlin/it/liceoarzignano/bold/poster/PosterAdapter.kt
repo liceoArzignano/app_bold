@@ -14,7 +14,7 @@ class PosterAdapter : RecyclerView.Adapter<PosterAdapter.PosterHolder>() {
             PosterHolder(LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_poster, parent, false))
 
-    override fun onBindViewHolder(holder: PosterHolder?, position: Int) {
+    override fun onBindViewHolder(holder: PosterHolder, position: Int) {
         holder?.bind(mList[position])
     }
 

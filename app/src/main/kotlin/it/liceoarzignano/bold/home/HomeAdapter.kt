@@ -57,11 +57,9 @@ class HomeAdapter(private val mContext: Context, private val mCards: MutableList
         }
     }
 
-
-
-    override fun onViewDetachedFromWindow(homeHolder: HomeHolder?) {
+    override fun onViewDetachedFromWindow(homeHolder: HomeHolder) {
         super.onViewDetachedFromWindow(homeHolder)
-        homeHolder!!.itemView.clearAnimation()
+        homeHolder.itemView.clearAnimation()
     }
 
     class HomeHolder(view: View) : RecyclerView.ViewHolder(view) {

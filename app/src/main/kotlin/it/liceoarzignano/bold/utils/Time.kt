@@ -64,7 +64,7 @@ class Time : Date {
 
     fun getHour() = getField(HOURS)
 
-    private fun Calendar.put(@CalendarField field: Long, value: Int) = set(field.toInt(), value)
+    private fun Calendar.put(@CalendarField field: Int, value: Int) = set(field, value)
 
     private inline fun Time.put(operation: (Calendar) -> Unit) {
         val cal = Calendar.getInstance()
@@ -72,15 +72,15 @@ class Time : Date {
         this.time = cal.timeInMillis
     }
 
-    private fun Time.getField(@CalendarField field: Long): Int {
+    private fun Time.getField(@CalendarField field: Int): Int {
         val cal = Calendar.getInstance()
         cal.time = this
-        return cal.get(field.toInt())
+        return cal.get(field)
     }
 
-    private fun Calendar.increase(@CalendarField field: Long, value: Int) {
+    private fun Calendar.increase(@CalendarField field: Int, value: Int) {
         time = this@Time
-        add(field.toInt(), value)
+        add(field, value)
     }
 
     companion object {
@@ -97,11 +97,11 @@ class Time : Date {
         @IntDef(YEAR, MONTH, DAY, DAY_OF_YEAR, HOURS, MINUTES)
         @Retention(AnnotationRetention.SOURCE)
         annotation class CalendarField
-            private const val DAY_OF_YEAR = Calendar.DAY_OF_YEAR.toLong()
-            private const val YEAR = Calendar.YEAR.toLong()
-            private const val MONTH = Calendar.MONTH.toLong()
-            private const val DAY = Calendar.DAY_OF_MONTH.toLong()
-            private const val HOURS = Calendar.HOUR_OF_DAY.toLong()
-            private const val MINUTES = Calendar.MINUTE.toLong()
+            private const val DAY_OF_YEAR = Calendar.DAY_OF_YEAR
+            private const val YEAR = Calendar.YEAR
+            private const val MONTH = Calendar.MONTH
+            private const val DAY = Calendar.DAY_OF_MONTH
+            private const val HOURS = Calendar.HOUR_OF_DAY
+            private const val MINUTES = Calendar.MINUTE
     }
 }

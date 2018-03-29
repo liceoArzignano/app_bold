@@ -16,7 +16,7 @@ class HashtagsAdapter : RecyclerView.Adapter<HashtagsAdapter.HashtagViewHolder>(
             HashtagViewHolder(LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_hashtag, parent, false))
 
-    override fun onBindViewHolder(holder: HashtagViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: HashtagViewHolder, position: Int) {
         holder?.bind(tags[position])
     }
 
