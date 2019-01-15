@@ -4,10 +4,10 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import android.view.*
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -24,11 +24,11 @@ import it.liceoarzignano.bold.utils.ContentUtils
 import it.liceoarzignano.bold.utils.Time
 
 class MarksActivity : AppCompatActivity() {
-    lateinit private var mList: RecyclerViewExt
-    lateinit private var mEmptyLayout: LinearLayout
+    private lateinit var mList: RecyclerViewExt
+    private lateinit var mEmptyLayout: LinearLayout
 
-    lateinit private var mAdapter: AverageAdapter
-    lateinit private var mPrefs: AppPrefs
+    private lateinit var mAdapter: AverageAdapter
+    private lateinit var mPrefs: AppPrefs
     private var mQuarter = 0
     private var isFirstEnabled = false
     private var isSecondEnabled = false
@@ -41,13 +41,13 @@ class MarksActivity : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         toolbar.setNavigationIcon(R.drawable.ic_toolbar_back)
-        toolbar.setNavigationOnClickListener { _ -> finish() }
+        toolbar.setNavigationOnClickListener { finish() }
 
         mList = findViewById(R.id.marks_list)
         mEmptyLayout = findViewById(R.id.marks_empty_layout)
 
         val fab = findViewById<FloatingActionButton>(R.id.fab)
-        fab.setOnClickListener { _ ->
+        fab.setOnClickListener {
             startActivity(Intent(this, EditorActivity::class.java))
         }
 
@@ -146,14 +146,14 @@ class MarksActivity : AppCompatActivity() {
             else
                 noBg
 
-            firstSel.setOnClickListener { _ ->
+            firstSel.setOnClickListener {
                 isFirstEnabled = !isFirstEnabled
                 firstSel.background = if (isFirstEnabled)
                     ContextCompat.getDrawable(this, R.drawable.ic_filter_bg_enabled)
                 else
                     noBg
             }
-            secondSel.setOnClickListener { _ ->
+            secondSel.setOnClickListener {
                 isSecondEnabled = !isSecondEnabled
                 secondSel.background = if (isSecondEnabled)
                     ContextCompat.getDrawable(this, R.drawable.ic_filter_bg_enabled)

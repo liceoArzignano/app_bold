@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -59,7 +59,7 @@
                     android:paddingLeft="@dimen/item_horizontal_margin"
                     android:paddingRight="@dimen/item_horizontal_margin">
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingTop="16dp"
@@ -70,9 +70,9 @@
                             style="@style/AppTheme.SafeInputText"
                             android:hint="@string/safe_username"
                             android:inputType="numberPassword" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:passwordToggleEnabled="true">
@@ -82,9 +82,9 @@
                             style="@style/AppTheme.SafeInputText"
                             android:hint="@string/safe_reg_pwd"
                             android:inputType="textPassword" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:passwordToggleEnabled="true">
@@ -94,9 +94,9 @@
                             style="@style/AppTheme.SafeInputText"
                             android:hint="@string/safe_pc_pwd"
                             android:inputType="textPassword" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:passwordToggleEnabled="true">
@@ -106,7 +106,7 @@
                             style="@style/AppTheme.SafeInputText"
                             android:hint="@string/safe_internet_pwd"
                             android:inputType="textPassword" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -132,7 +132,7 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -140,4 +140,4 @@
         android:layout_margin="@dimen/fab_margin"
         android:visibility="gone"
         app:srcCompat="@drawable/ic_safe_done" />
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

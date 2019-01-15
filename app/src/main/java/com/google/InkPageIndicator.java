@@ -29,17 +29,18 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.Interpolator;
 
 import java.util.Arrays;
 
+import androidx.core.view.ViewCompat;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
+import androidx.viewpager.widget.ViewPager;
 import it.liceoarzignano.bold.R;
 
+@SuppressWarnings("ConstantConditions")
 public class InkPageIndicator extends View implements ViewPager.OnPageChangeListener,
         View.OnAttachStateChangeListener {
 

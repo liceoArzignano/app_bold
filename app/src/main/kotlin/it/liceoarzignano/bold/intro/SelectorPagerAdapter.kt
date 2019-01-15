@@ -1,8 +1,8 @@
 package it.liceoarzignano.bold.intro
 
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 import it.liceoarzignano.bold.utils.SystemUtils
 
 class SelectorPagerAdapter(manager: FragmentManager) : FragmentPagerAdapter(manager) {
@@ -17,7 +17,7 @@ class SelectorPagerAdapter(manager: FragmentManager) : FragmentPagerAdapter(mana
         return fragment
     }
 
-    override fun instantiateItem(container: ViewGroup?, position: Int): Any {
+    override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val fragment = super.instantiateItem(container, position) as AddressFragment
         fragment.mPosition = position
         return fragment

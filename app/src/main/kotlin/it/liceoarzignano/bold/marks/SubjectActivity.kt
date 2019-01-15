@@ -2,13 +2,12 @@ package it.liceoarzignano.bold.marks
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.CoordinatorLayout
-import android.support.design.widget.Snackbar
-import android.support.v4.content.ContextCompat
-import android.support.v4.widget.NestedScrollView
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
+import androidx.core.widget.NestedScrollView
+import com.google.android.material.snackbar.Snackbar
 import it.liceoarzignano.bold.R
 import it.liceoarzignano.bold.settings.AppPrefs
 import it.liceoarzignano.bold.ui.ActionsDialog
@@ -17,13 +16,13 @@ import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt
 
 
 class SubjectActivity : AppCompatActivity() {
-    lateinit private var mCoordinator: CoordinatorLayout
-    lateinit private var mProgressBar: CircularProgressBar
-    lateinit private var mTextHint: TextView
-    lateinit private var mNestedView: NestedScrollView
+    private lateinit var mCoordinator: androidx.coordinatorlayout.widget.CoordinatorLayout
+    private lateinit var mProgressBar: CircularProgressBar
+    private lateinit var mTextHint: TextView
+    private lateinit var mNestedView: NestedScrollView
 
-    lateinit private var mMarksHandler: MarksHandler
-    lateinit private var mAdapter: SubjectAdapter
+    private lateinit var mMarksHandler: MarksHandler
+    private lateinit var mAdapter: SubjectAdapter
 
     private var mTitle = ""
     private var mFilter: Int = 0
@@ -43,7 +42,7 @@ class SubjectActivity : AppCompatActivity() {
         toolbar.title = mTitle
         setSupportActionBar(toolbar)
         toolbar.setNavigationIcon(R.drawable.ic_toolbar_back)
-        toolbar.setNavigationOnClickListener { _ -> finish() }
+        toolbar.setNavigationOnClickListener { finish() }
 
         mCoordinator = findViewById(R.id.coordinator_layout)
         mNestedView = findViewById(R.id.subject_nested_view)
@@ -115,7 +114,7 @@ class SubjectActivity : AppCompatActivity() {
     }
 
     companion object {
-        internal val EXTRA_TITLE = "extra_subject_position"
-        internal val EXTRA_FILTER = "extra_subject_filter"
+        internal const val EXTRA_TITLE = "extra_subject_position"
+        internal const val EXTRA_FILTER = "extra_subject_filter"
     }
 }

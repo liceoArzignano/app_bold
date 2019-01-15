@@ -34,7 +34,7 @@ open class AppPrefs(context: Context) {
         }
     }
 
-    operator inline fun <reified T : Any> SharedPreferences.get(key: String,
+    inline operator fun <reified T : Any> SharedPreferences.get(key: String,
                                                                 defaultValue: T? = null): T =
             when (T::class.java.simpleName) {
                 "String" -> getString(key, defaultValue as? String ?: "") as T
@@ -57,7 +57,7 @@ open class AppPrefs(context: Context) {
             // Migrate safe
             it.putBoolean(KEY_SAFE_DONE, safePrefs[KEY_OLD_SAFE_DONE, false])
             it.putBoolean(KEY_SAFE_SETUP, safePrefs[KEY_OLD_SAFE_SETUP, false])
-            it.putBoolean(KEY_SAFE_PASSED, safePrefs[KEY_OLD_SAFE_PASSED, false])
+            it.putBoolean(KEY_SAFE_PASSED, safePrefs[KEY_OLD_SAFE_PASSED, true])
             it.putString(KEY_SAFE_ACCESS, safePrefs[KEY_OLD_SAFE_ACCESS, ""])
             it.putString(KEY_SAFE_USERNAME, safePrefs[KEY_OLD_SAFE_USERNAME, ""])
             it.putString(KEY_SAFE_REG, safePrefs[KEY_OLD_SAFE_REG, ""])
@@ -77,52 +77,52 @@ open class AppPrefs(context: Context) {
     }
 
     companion object {
-        val KEY_IS_TEACHER = "isTeacher_key"
-        val KEY_ADDRESS = "address_key"
-        val KEY_USERNAME = "username_key"
-        val KEY_SUGGESTIONS = "showSuggestions_key"
-        val KEY_NOTIF_NEWS = "notification_news_key"
-        val KEY_NOTIF_EVENT = "notification_events_key"
-        val KEY_NOTIF_EVENT_TIME = "notification_events_time_key"
+        const val KEY_IS_TEACHER = "isTeacher_key"
+        const val KEY_ADDRESS = "address_key"
+        const val KEY_USERNAME = "username_key"
+        const val KEY_SUGGESTIONS = "showSuggestions_key"
+        const val KEY_NOTIF_NEWS = "notification_news_key"
+        const val KEY_NOTIF_EVENT = "notification_events_key"
+        const val KEY_NOTIF_EVENT_TIME = "notification_events_time_key"
 
-        val KEY_SAFE_DONE = "safe_done_key"
-        val KEY_SAFE_SETUP = "safe_setup_key"
-        val KEY_SAFE_PASSED = "safe_passed_key"
-        val KEY_SAFE_ACCESS = "safe_access_key"
-        val KEY_SAFE_USERNAME = "safe_username_key"
-        val KEY_SAFE_REG = "safe_reg_key"
-        val KEY_SAFE_PC = "safe_pc_key"
-        val KEY_SAFE_INTERNET = "safe_internet_key"
-        val KEY_SAFE_SHARED = "safe_shared_key"
-        val KEY_INTRO_VERSION = "intro_version_key"
-        val KEY_INTRO_DAY = "intro_day_key"
-        val KEY_INTRO_DRAWER = "intro_drawer_key"
-        val KEY_INTRO_SCREEN = "intro_screen_key"
-        val KEY_INTRO_SAFE = "intro_safe_key"
-        val KEY_CURRENT_YEAR = "current_year_key"
-        val KEY_BACKUP_FOLDER = "backup_folder_key"
-        val KEY_QUARTER_SELECTOR = "quarter_selector_key"
+        const val KEY_SAFE_DONE = "safe_done_key"
+        const val KEY_SAFE_SETUP = "safe_setup_key"
+        const val KEY_SAFE_PASSED = "safe_passed_key"
+        const val KEY_SAFE_ACCESS = "safe_access_key"
+        const val KEY_SAFE_USERNAME = "safe_username_key"
+        const val KEY_SAFE_REG = "safe_reg_key"
+        const val KEY_SAFE_PC = "safe_pc_key"
+        const val KEY_SAFE_INTERNET = "safe_internet_key"
+        const val KEY_SAFE_SHARED = "safe_shared_key"
+        const val KEY_INTRO_VERSION = "intro_version_key"
+        const val KEY_INTRO_DAY = "intro_day_key"
+        const val KEY_INTRO_DRAWER = "intro_drawer_key"
+        const val KEY_INTRO_SCREEN = "intro_screen_key"
+        const val KEY_INTRO_SAFE = "intro_safe_key"
+        const val KEY_CURRENT_YEAR = "current_year_key"
+        const val KEY_BACKUP_FOLDER = "backup_folder_key"
+        const val KEY_QUARTER_SELECTOR = "quarter_selector_key"
 
         // Deprecated stuffs
-        private val KEY_MIGRATION = "key_prefs_migration"
-        private val KEY_OLD_SAFE_DONE = "doneSetup"
-        private val KEY_OLD_SAFE_SETUP = "hasCompletedSetup"
-        private val KEY_OLD_SAFE_PASSED = "safetyNetPassed"
-        private val KEY_OLD_SAFE_ACCESS = "access_pwd"
-        private val KEY_OLD_SAFE_USERNAME = "user_name"
-        private val KEY_OLD_SAFE_REG = "reg_pwd"
-        private val KEY_OLD_SAFE_PC = "pd_pwd"
-        private val KEY_OLD_SAFE_INTERNET = "internet_pwd"
-        private val KEY_OLD_INTRO_SAFE = "safeKey"
-        private val KEY_OLD_INTRO_VERSION = "introVersion"
-        private val KEY_OLD_INITIAL_DAY = "introDay"
-        private val KEY_OLD_INTRO_DRAWER = "introDrawer"
-        private val KEY_OLD_INTRO_SCREEN = "introScreen"
-        private val KEY_OLD_BACKUP_FOLDER = "BACKUP_FOLDER"
-        private val KEY_OLD_CURRENT_SCHOOL_YEAR = "currentSchoolYear"
-        private val KEY_OLD_QUARTER_SELECTOR = "quarterSelector_key"
-        private val PREFS_SAFE = "SafePrefs"
-        private val PREFS_EXTRA = "extraPrefs"
+        private const val KEY_MIGRATION = "key_prefs_migration"
+        private const val KEY_OLD_SAFE_DONE = "doneSetup"
+        private const val KEY_OLD_SAFE_SETUP = "hasCompletedSetup"
+        private const val KEY_OLD_SAFE_PASSED = "safetyNetPassed"
+        private const val KEY_OLD_SAFE_ACCESS = "access_pwd"
+        private const val KEY_OLD_SAFE_USERNAME = "user_name"
+        private const val KEY_OLD_SAFE_REG = "reg_pwd"
+        private const val KEY_OLD_SAFE_PC = "pd_pwd"
+        private const val KEY_OLD_SAFE_INTERNET = "internet_pwd"
+        private const val KEY_OLD_INTRO_SAFE = "safeKey"
+        private const val KEY_OLD_INTRO_VERSION = "introVersion"
+        private const val KEY_OLD_INITIAL_DAY = "introDay"
+        private const val KEY_OLD_INTRO_DRAWER = "introDrawer"
+        private const val KEY_OLD_INTRO_SCREEN = "introScreen"
+        private const val KEY_OLD_BACKUP_FOLDER = "BACKUP_FOLDER"
+        private const val KEY_OLD_CURRENT_SCHOOL_YEAR = "currentSchoolYear"
+        private const val KEY_OLD_QUARTER_SELECTOR = "quarterSelector_key"
+        private const val PREFS_SAFE = "SafePrefs"
+        private const val PREFS_EXTRA = "extraPrefs"
     }
 
 }

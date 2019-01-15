@@ -16,9 +16,9 @@ class HelpToast(context: Context, key: String) {
     }
 
     companion object {
-        private val HELP_TOAST_PREFS = "HelpToastPrefs"
-        val KEY_MARK_LONG_PRESS = "MarksLongPress"
-        val KEY_EVENT_LONG_PRESS = "EventsLongPress"
-        val KEY_NEWS_LONG_PRESS = "NewsLongPress"
+        private const val HELP_TOAST_PREFS = "HelpToastPrefs"
+        const val KEY_MARK_LONG_PRESS = "MarksLongPress"
+        const val KEY_EVENT_LONG_PRESS = "EventsLongPress"
+        const val KEY_NEWS_LONG_PRESS = "NewsLongPress"
     }
 }

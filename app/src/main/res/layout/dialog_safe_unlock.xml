@@ -31,7 +31,7 @@
         android:paddingRight="24dp"
         android:paddingTop="24dp">
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:passwordToggleEnabled="true">
@@ -40,7 +40,7 @@
                 android:id="@+id/safe_dialog_input"
                 style="@style/AppTheme.SafeInputText"
                 android:hint="@string/safe_dialog_password_input_hint" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             android:id="@+id/safe_dialog_hint_text"

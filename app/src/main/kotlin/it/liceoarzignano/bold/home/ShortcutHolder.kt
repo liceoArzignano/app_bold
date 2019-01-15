@@ -1,20 +1,18 @@
 package it.liceoarzignano.bold.home
 
 import android.content.Context
-import android.support.annotation.ColorRes
-import android.support.annotation.DrawableRes
-import android.support.annotation.StringRes
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.CardView
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
 import it.liceoarzignano.bold.R
 import it.liceoarzignano.bold.utils.UiUtils
 
-class ShortcutHolder(view: View) : RecyclerView.ViewHolder(view) {
-    private val mCardView: CardView = view.findViewById(R.id.home_item_shortcut_card)
+class ShortcutHolder(view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
+    private val mCardView: androidx.cardview.widget.CardView = view.findViewById(R.id.home_item_shortcut_card)
     private val mIcon: ImageView = view.findViewById(R.id.home_item_shortcut_icon)
     private val mTitle: TextView = view.findViewById(R.id.home_item_shortcut_title)
 
@@ -24,7 +22,7 @@ class ShortcutHolder(view: View) : RecyclerView.ViewHolder(view) {
         mTitle.text = context.getString(title)
         mIcon.setImageResource(icon)
         mCardView.setCardBackgroundColor(ContextCompat.getColor(context, color))
-        mCardView.setOnClickListener { _ -> listener.onClick(position) }
+        mCardView.setOnClickListener { listener.onClick(position) }
 
         if (position != 0 && position != 4) {
             return
@@ -32,7 +30,7 @@ class ShortcutHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         // Fix margins to match the default grid
         val r = context.resources
-        val params = mCardView.layoutParams as RecyclerView.LayoutParams
+        val params = mCardView.layoutParams as androidx.recyclerview.widget.RecyclerView.LayoutParams
         val defaultMargin = params.topMargin
         val extraMargin = UiUtils.dpToPx(r, 16f).toInt()
         val isFirst = position == 0

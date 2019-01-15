@@ -2,30 +2,27 @@ package it.liceoarzignano.bold
 
 import android.content.ComponentName
 import android.content.Intent
+import android.content.ServiceConnection
 import android.net.Uri
 import android.os.Bundle
-import android.support.customtabs.CustomTabsClient
-import android.support.customtabs.CustomTabsIntent
-import android.support.customtabs.CustomTabsServiceConnection
-import android.support.customtabs.CustomTabsSession
-import android.support.design.widget.NavigationView
-import android.support.v4.app.ActivityCompat
-import android.support.v4.app.ActivityOptionsCompat
-import android.support.v4.content.ContextCompat
-import android.support.v4.view.GravityCompat
-import android.support.v4.widget.DrawerLayout
-import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.browser.customtabs.CustomTabsClient
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.browser.customtabs.CustomTabsServiceConnection
+import androidx.browser.customtabs.CustomTabsSession
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.content.ContextCompat
+import androidx.core.view.GravityCompat
 import com.afollestad.materialdialogs.MaterialDialog
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
-import it.liceoarzignano.bold.backup.BackupActivity
+import com.google.android.material.navigation.NavigationView
 import it.liceoarzignano.bold.events.EventListActivity
 import it.liceoarzignano.bold.events.EventsHandler
 import it.liceoarzignano.bold.home.HomeAdapter
@@ -47,21 +44,19 @@ import it.liceoarzignano.bold.utils.Time
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
 import java.security.SecureRandom
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    private var mRemoteConfig: FirebaseRemoteConfig? = null
-    lateinit private var mMarksHandler: MarksHandler
-    lateinit private var mEventsHandler: EventsHandler
-    lateinit private var mNewsHandler: NewsHandler
-    lateinit private var mPrefs: AppPrefs
+    private lateinit var mMarksHandler: MarksHandler
+    private lateinit var mEventsHandler: EventsHandler
+    private lateinit var mNewsHandler: NewsHandler
+    private lateinit var mPrefs: AppPrefs
 
-    lateinit private var mToolbar: Toolbar
-    lateinit private var mShortcutsList: RecyclerViewExt
-    lateinit private var mCardList: RecyclerViewExt
-    lateinit private var mUsername: TextView
-    lateinit private var mLogo: ImageView
+    private lateinit var mToolbar: Toolbar
+    private lateinit var mShortcutsList: RecyclerViewExt
+    private lateinit var mCardList: RecyclerViewExt
+    private lateinit var mUsername: TextView
+    private lateinit var mLogo: ImageView
 
     private var mTabsClient: CustomTabsClient? = null
     private var mTabsSession: CustomTabsSession? = null
@@ -77,14 +72,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mPrefs.migrate(baseContext)
 
         setupDBHandler()
-        setupRemoteConfig()
         showIntroIfNeeded()
 
         setContentView(R.layout.activity_main)
 
         mToolbar = findViewById(R.id.toolbar)
         setSupportActionBar(mToolbar)
-        val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
+        val drawer = findViewById<androidx.drawerlayout.widget.DrawerLayout>(R.id.drawer_layout)
         val toggle = ActionBarDrawerToggle(this, drawer, mToolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer.addDrawerListener(toggle)
@@ -105,7 +99,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         showWelcome()
-        showNewYearHelper()
         ContentUtils.makeEventNotification(this)
         setupShortcuts()
     }
@@ -122,7 +115,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onPause()
 
         if (mTabsServiceConnection != null) {
-            unbindService(mTabsServiceConnection)
+            unbindService(mTabsServiceConnection as ServiceConnection)
             mTabsServiceConnection = null
         }
     }
@@ -133,7 +126,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
+        val drawer = findViewById<androidx.drawerlayout.widget.DrawerLayout>(R.id.drawer_layout)
         drawer.closeDrawer(GravityCompat.START)
 
         // Do action with some delay to prevent lags when
@@ -147,7 +140,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_share -> {
                 val shareIntent = Intent(Intent.ACTION_SEND)
                 shareIntent.type = "text/plain"
-                shareIntent.putExtra(Intent.EXTRA_TEXT, mRemoteConfig!!.getString("share_url"))
+                shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_url))
                 startActivity(Intent.createChooser(shareIntent,
                         getString(R.string.share_title)))
             }
@@ -161,21 +154,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mMarksHandler = MarksHandler.getInstance(this)
         mEventsHandler = EventsHandler.getInstance(this)
         mNewsHandler = NewsHandler.getInstance(this)
-    }
-
-    private fun setupRemoteConfig() {
-        val settings = FirebaseRemoteConfigSettings.Builder()
-                .setDeveloperModeEnabled(BuildConfig.DEBUG)
-                .build()
-        mRemoteConfig = FirebaseRemoteConfig.getInstance()
-        mRemoteConfig!!.setConfigSettings(settings)
-        mRemoteConfig!!.setDefaults(R.xml.firebase_remote_config_defaults)
-        mRemoteConfig!!.fetch(if (BuildConfig.DEBUG) 0 else TimeUnit.HOURS.toSeconds(12))
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        mRemoteConfig!!.activateFetched()
-                    }
-                }
     }
 
     private fun setupNavHeader() {
@@ -281,34 +259,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 .show()
     }
 
-    private fun showNewYearHelper() {
-        val today = Time(0)
-        val change = Time.parse(getString(R.string.config_end_of_year))
-        val cal = Calendar.getInstance()
-        val latestSavedYear: String = mPrefs.get(AppPrefs.KEY_CURRENT_YEAR, "2000-01-01")
-        val thisYear = cal.get(Calendar.YEAR).toString()
-
-        if (latestSavedYear == thisYear || !today.matchDayOfYear(change)) {
-            return
-        }
-
-        val calendar = Calendar.getInstance()
-        mPrefs.set(AppPrefs.KEY_CURRENT_YEAR, calendar.get(Calendar.YEAR))
-        mPrefs.set(AppPrefs.KEY_QUARTER_SELECTOR, 0)
-
-        MaterialDialog.Builder(this)
-                .title(R.string.backup_end_of_year_prompt_title)
-                .content(R.string.backup_end_of_year_prompt_message)
-                .positiveText(R.string.backup_end_of_year_prompt_positive)
-                .negativeText(R.string.backup_end_of_year_prompt_negative)
-                .onPositive { _, _ ->
-                    val intent = Intent(this, BackupActivity::class.java)
-                    intent.putExtra(BackupActivity.EXTRA_EOY_BACKUP, "OK")
-                    startActivity(intent)
-                }
-                .show()
-    }
-
     fun showUrl(index: Int) {
         var url: String? = null
         when (index) {
@@ -325,7 +275,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         if (url != null) {
-            mTabsIntent!!.launchUrl(this, Uri.parse(url))
+            mTabsIntent?.launchUrl(this, Uri.parse(url))
         }
     }
 
@@ -426,8 +376,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     })
 
 
-            val marks = mMarksHandler.all
-            Collections.reverse(marks)
+            val marks = mMarksHandler.all.reversed()
             var i = 0
             while (i < 3 && i < marks.size) {
                 val m = marks[i]
@@ -455,7 +404,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 5 -> getString(R.string.suggestion_notification_remote)
                 6 -> getString(R.string.suggestion_get_touch)
                 7 -> getString(R.string.suggestion_address)
-                8 -> getString(R.string.suggestion_backups)
                 9 -> getString(R.string.suggestion_suggestions)
                 10 -> getString(R.string.suggestion_news)
                 11 -> getString(R.string.suggestion_feedback)
@@ -470,6 +418,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     companion object {
-        private val BUNDLE_SHOULD_ANIMATE = "homeShouldAnimate"
+        private const val BUNDLE_SHOULD_ANIMATE = "homeShouldAnimate"
     }
 }

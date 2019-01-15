@@ -1,7 +1,8 @@
 package it.liceoarzignano.bold.utils
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.support.annotation.IntDef
+import androidx.annotation.IntDef
 import it.liceoarzignano.bold.R
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -36,6 +37,7 @@ class Time : Date {
 
     override fun toString():String = SimpleDateFormat(DATE_FORMAT, APP_LOCALE).format(this)
 
+    @SuppressLint("StringFormatInvalid", "SimpleDateFormat")
     fun asString(context: Context): String {
         val string = SimpleDateFormat(context.getString(R.string.date_formatting, APP_LOCALE))
                 .format(this)
@@ -58,27 +60,27 @@ class Time : Date {
         return thisDay < end || thisDay > start
     }
 
-    private fun Calendar.put(@CalendarField field: Long, value: Int) = set(field.toInt(), value)
+    private fun Calendar.put(@CalendarField field: Int, value: Int) = set(field, value)
 
-    private inline fun Time.put(operation: (Calendar) -> Unit) {
+    private inline fun put(operation: (Calendar) -> Unit) {
         val cal = Calendar.getInstance()
         operation(cal)
         this.time = cal.timeInMillis
     }
 
-    private fun Time.getField(@CalendarField field: Long): Int {
+    private fun getField(@CalendarField field: Int): Int {
         val cal = Calendar.getInstance()
         cal.time = this
-        return cal.get(field.toInt())
+        return cal.get(field)
     }
 
-    private fun Calendar.increase(@CalendarField field: Long, value: Int) {
+    private fun Calendar.increase(@CalendarField field: Int, value: Int) {
         time = this@Time
-        add(field.toInt(), value)
+        add(field, value)
     }
 
     companion object {
-        private val DATE_FORMAT = "yyyy-MM-dd"
+        private const val DATE_FORMAT = "yyyy-MM-dd"
         private val APP_LOCALE = Locale.ITALIAN
 
         fun parse(value: String): Time = try {
@@ -91,11 +93,11 @@ class Time : Date {
         @IntDef(YEAR, MONTH, DAY, DAY_OF_YEAR, HOURS, MINUTES)
         @Retention(AnnotationRetention.SOURCE)
         annotation class CalendarField
-            private const val DAY_OF_YEAR = Calendar.DAY_OF_YEAR.toLong()
-            private const val YEAR = Calendar.YEAR.toLong()
-            private const val MONTH = Calendar.MONTH.toLong()
-            private const val DAY = Calendar.DAY_OF_MONTH.toLong()
-            private const val HOURS = Calendar.HOUR.toLong()
-            private const val MINUTES = Calendar.MINUTE.toLong()
+            private const val DAY_OF_YEAR = Calendar.DAY_OF_YEAR
+            private const val YEAR = Calendar.YEAR
+            private const val MONTH = Calendar.MONTH
+            private const val DAY = Calendar.DAY_OF_MONTH
+            private const val HOURS = Calendar.HOUR
+            private const val MINUTES = Calendar.MINUTE
     }
 }

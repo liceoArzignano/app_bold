@@ -46,9 +46,8 @@
     <!-- Updated Dialog -->
     <string name="dialog_updated_title">App has been updated</string>
     <string name="dialog_updated_content">
-         \u2022 New: refreshed user interface.\n
-        \u2022 New: new year migration tool.\n
-        \u2022 New: Android 8.0 support.\n
+        \u2022 New: Android 9 support.\n
+        \u2022 Backups are no longer supported.\n
         \u2022 Performances improvements.\n
         \u2022 Bug fixes.
     </string>

@@ -20,20 +20,20 @@ protected constructor(context: Context, name: String, version: Int) :
 
     fun update(item: T) {
         val db = writableDatabase
-        db.update(tableName, getValues(item, false), KEY_ID + "=?",
+        db.update(tableName, getValues(item, false), "$KEY_ID=?",
                 arrayOf(item.id.toString()))
     }
 
     fun delete(id: Long) {
         val db = writableDatabase
-        db.delete(tableName, KEY_ID + "=?", arrayOf(id.toString()))
+        db.delete(tableName, "$KEY_ID=?", arrayOf(id.toString()))
     }
 
     fun refillTable(items: List<T>) {
         val db = writableDatabase
         val list = all
         for (item in list) {
-            db.delete(tableName, KEY_ID + "=?", arrayOf(item.id.toString()))
+            db.delete(tableName, "$KEY_ID=?", arrayOf(item.id.toString()))
         }
 
         for (item in items) {
@@ -45,14 +45,14 @@ protected constructor(context: Context, name: String, version: Int) :
         val db = writableDatabase
         val list = all
         for (item in list) {
-            db.delete(tableName, KEY_ID + "=?", arrayOf(item.id.toString()))
+            db.delete(tableName, "$KEY_ID=?", arrayOf(item.id.toString()))
         }
     }
 
     private val count: Int
         get() {
             val db = readableDatabase
-            val cursor = db.rawQuery("SELECT * FROM " + tableName, null)
+            val cursor = db.rawQuery("SELECT * FROM $tableName", null)
             val count = cursor.count
             cursor.close()
             return count

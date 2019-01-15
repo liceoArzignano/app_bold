@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:foreground="?android:attr/selectableItemBackground"
@@ -7,7 +8,8 @@
     android:paddingBottom="16dp"
     android:paddingLeft="@dimen/item_horizontal_margin"
     android:paddingRight="@dimen/item_horizontal_margin"
-    android:paddingTop="16dp">
+    android:paddingTop="16dp"
+    tools:targetApi="m">
 
     <TextView
         android:id="@+id/row_event_tag"

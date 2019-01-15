@@ -1,15 +1,14 @@
 package it.liceoarzignano.bold.home
 
-import android.support.annotation.ColorRes
-import android.support.annotation.DrawableRes
-import android.support.annotation.StringRes
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import it.liceoarzignano.bold.MainActivity
 import it.liceoarzignano.bold.R
 
-class ShortcutAdapter(activity: MainActivity) : RecyclerView.Adapter<ShortcutHolder>() {
+class ShortcutAdapter(activity: MainActivity) : androidx.recyclerview.widget.RecyclerView.Adapter<ShortcutHolder>() {
 
     private val mContext = activity.baseContext
     private val mListener = object : ShortcutHolder.ShortcutListener {

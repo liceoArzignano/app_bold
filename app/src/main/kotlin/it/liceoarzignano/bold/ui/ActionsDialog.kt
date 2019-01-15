@@ -3,7 +3,7 @@ package it.liceoarzignano.bold.ui
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.support.design.widget.BottomSheetDialog
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import android.view.LayoutInflater
 import android.view.View
 import it.liceoarzignano.bold.R
@@ -29,24 +29,24 @@ constructor(context: Context, isEditable: Boolean, isMark: Boolean, id: Long) {
             toEvent.visibility = View.VISIBLE
         }
 
-        share.setOnClickListener { _ ->
+        share.setOnClickListener {
             mDialog.hide()
             mListener!!.onShare()
         }
 
-        remove.setOnClickListener { _ ->
+        remove.setOnClickListener {
             mDialog.hide()
             mListener!!.onDelete()
         }
 
-        edit.setOnClickListener { _ ->
+        edit.setOnClickListener {
             mDialog.hide()
             context.startActivity(Intent(context, EditorActivity::class.java)
                     .putExtra(EditorActivity.EXTRA_IS_MARK, isMark)
                     .putExtra(EditorActivity.EXTRA_ID, id))
         }
 
-        toEvent.setOnClickListener { _ ->
+        toEvent.setOnClickListener {
             mDialog.hide()
             context.startActivity(Intent(context, EditorActivity::class.java)
                     .putExtra(EditorActivity.EXTRA_IS_NEWS, true)

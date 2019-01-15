@@ -7,10 +7,9 @@ import android.graphics.drawable.AnimatedVectorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Handler
-import android.support.design.widget.FloatingActionButton
-import android.support.graphics.drawable.AnimatedVectorDrawableCompat
 import android.util.DisplayMetrics
-import android.view.View
+import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import it.liceoarzignano.bold.R
 import it.liceoarzignano.bold.settings.AppPrefs
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
@@ -25,7 +24,7 @@ object UiUtils {
             fab.show()
         }
         Handler().postDelayed({
-            fab.visibility = View.VISIBLE
+            fab.show()
             if (isFirstTime) {
                 prefs.set(key, false)
                 MaterialTapTargetPrompt.Builder(activity, R.style.AppTheme_TapTarget)

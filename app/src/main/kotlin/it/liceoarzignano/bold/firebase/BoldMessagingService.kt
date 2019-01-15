@@ -6,8 +6,8 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.support.v4.app.NotificationCompat
-import android.support.v4.content.ContextCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -22,7 +22,7 @@ import org.json.JSONObject
 import java.util.*
 
 class BoldMessagingService : FirebaseMessagingService() {
-    lateinit private var mNews: News
+    private lateinit var mNews: News
 
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
         if (remoteMessage == null || remoteMessage.data.isEmpty()) {
@@ -95,7 +95,7 @@ class BoldMessagingService : FirebaseMessagingService() {
     private fun saveNews() = NewsHandler.getInstance(this).add(mNews)
 
     companion object {
-        private val TAG = "BoldFireBase"
-        private val CHANNEL = "channel_news"
+        private const val TAG = "BoldFireBase"
+        private const val CHANNEL = "channel_news"
     }
 }

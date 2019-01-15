@@ -2,7 +2,6 @@ package it.liceoarzignano.bold.marks
 
 import android.content.Context
 import android.graphics.Color
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,7 @@ import it.liceoarzignano.bold.R
 import java.util.*
 
 internal class AverageAdapter(context: Context, private var mResults: Array<String>?) :
-        RecyclerView.Adapter<AverageAdapter.AverageHolder>() {
+        androidx.recyclerview.widget.RecyclerView.Adapter<AverageAdapter.AverageHolder>() {
     private val mHandler = MarksHandler.getInstance(context)
 
     override fun onCreateViewHolder(parent: ViewGroup, type: Int): AverageAdapter.AverageHolder =
@@ -28,7 +27,7 @@ internal class AverageAdapter(context: Context, private var mResults: Array<Stri
         notifyDataSetChanged()
     }
 
-    inner class AverageHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class AverageHolder(view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
         private val mTitle: TextView = view.findViewById(R.id.row_avg_title)
         private val mValue: TextView = view.findViewById(R.id.row_avg_value)
 

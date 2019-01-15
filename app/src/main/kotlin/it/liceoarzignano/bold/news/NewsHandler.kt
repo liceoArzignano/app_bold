@@ -65,7 +65,7 @@ class NewsHandler private constructor(context: Context) : DBHandler<News>(contex
         values.put(KEY_URL, item.url)
 
         if (withId) {
-            values.put(DBHandler.Companion.KEY_ID, item.id)
+            values.put(DBHandler.KEY_ID, item.id)
         }
 
         return values
@@ -74,29 +74,28 @@ class NewsHandler private constructor(context: Context) : DBHandler<News>(contex
     override val tableName: String get() = "news"
 
     fun getByQuery(query: String?): List<News> {
-        val list = all
+        var list = all
 
         if (query != null) {
-            list.removeIf { it ->
+            list = list.filter {
                 val title = it.title.toLowerCase()
                 val message = it.description.toLowerCase()
                 val date = Date(it.date).toString().toLowerCase()
-                !title.contains(query) &&
-                        !date.contains(query) &&
-                        !message.contains(query)
-            }
+
+                title.contains(query) || date.contains(query) || message.contains(query)
+            }.toMutableList()
         }
 
         return list
     }
 
     companion object {
-        private val DB_NAME = "NewsDatabase.db"
-        private val DB_VERSION = 1
-        private val KEY_TITLE = "title"
-        private val KEY_DATE = "date"
-        private val KEY_DESCRIPTION = "description"
-        private val KEY_URL = "url"
+        private const val DB_NAME = "NewsDatabase.db"
+        private const val DB_VERSION = 1
+        private const val KEY_TITLE = "title"
+        private const val KEY_DATE = "date"
+        private const val KEY_DESCRIPTION = "description"
+        private const val KEY_URL = "url"
 
         // Singleton
         @Volatile private var INSTANCE: NewsHandler? = null

@@ -1,7 +1,6 @@
 package it.liceoarzignano.bold.news
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,7 +57,7 @@ internal class NewsAdapter(private var mNewsList: List<News>, private val mConte
         notifyDataChanged()
     }
 
-    internal inner class NewsHolder(private val mView: View) : RecyclerView.ViewHolder(mView) {
+    internal inner class NewsHolder(private val mView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(mView) {
         private val mTitle: TextView = mView.findViewById(R.id.row_news_title)
         private val mMessage: TextView = mView.findViewById(R.id.row_news_message)
 
@@ -67,14 +66,14 @@ internal class NewsAdapter(private var mNewsList: List<News>, private val mConte
             mMessage.text = news.description
 
             val url = news.url
-            mView.setOnClickListener { _ ->
+            mView.setOnClickListener {
                 if (!url.isEmpty()) {
                     (mContext as NewsListActivity).showUrl(url)
                 }
                 HelpToast(mContext, HelpToast.KEY_NEWS_LONG_PRESS)
             }
 
-            mView.setOnLongClickListener { _ -> (mContext as NewsListActivity).newsActions(news) }
+            mView.setOnLongClickListener { (mContext as NewsListActivity).newsActions(news) }
         }
     }
 }

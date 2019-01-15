@@ -3,23 +3,23 @@ package it.liceoarzignano.bold.news
 import android.app.SearchManager
 import android.content.ComponentName
 import android.content.Intent
+import android.content.ServiceConnection
 import android.net.Uri
 import android.os.Bundle
-import android.support.customtabs.CustomTabsClient
-import android.support.customtabs.CustomTabsIntent
-import android.support.customtabs.CustomTabsServiceConnection
-import android.support.customtabs.CustomTabsSession
-import android.support.design.widget.CoordinatorLayout
-import android.support.design.widget.Snackbar
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.SearchView
-import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.Toolbar
+import androidx.browser.customtabs.CustomTabsClient
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.browser.customtabs.CustomTabsServiceConnection
+import androidx.browser.customtabs.CustomTabsSession
+import androidx.core.content.ContextCompat
+import com.google.android.material.snackbar.Snackbar
 import it.liceoarzignano.bold.R
 import it.liceoarzignano.bold.ui.ActionsDialog
 import it.liceoarzignano.bold.ui.recyclerview.RecyclerViewExt
@@ -28,12 +28,12 @@ import it.liceoarzignano.bold.utils.SystemUtils
 import it.liceoarzignano.bold.utils.Time
 
 class NewsListActivity : AppCompatActivity() {
-    lateinit private var mCoordinator: CoordinatorLayout
-    lateinit private var mEmptyLayout: LinearLayout
-    lateinit private var mEmptyText: TextView
+    private lateinit var mCoordinator: androidx.coordinatorlayout.widget.CoordinatorLayout
+    private lateinit var mEmptyLayout: LinearLayout
+    private lateinit var mEmptyText: TextView
 
-    lateinit private var mNewsHandler: NewsHandler
-    lateinit private var mAdapter: NewsAdapter
+    private lateinit var mNewsHandler: NewsHandler
+    private lateinit var mAdapter: NewsAdapter
     private var mClient: CustomTabsClient? = null
     private var mCustomTabsSession: CustomTabsSession? = null
     private var mCustomTabsServiceConnection: CustomTabsServiceConnection? = null
@@ -46,7 +46,7 @@ class NewsListActivity : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         toolbar.setNavigationIcon(R.drawable.ic_toolbar_back)
-        toolbar.setNavigationOnClickListener { _ -> finish() }
+        toolbar.setNavigationOnClickListener { finish() }
 
         mCoordinator = findViewById(R.id.coordinator_layout)
         val newsList = findViewById<RecyclerViewExt>(R.id.news_list)
@@ -86,7 +86,7 @@ class NewsListActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         if (mCustomTabsServiceConnection != null) {
-            unbindService(mCustomTabsServiceConnection)
+            unbindService(mCustomTabsServiceConnection as ServiceConnection)
             mCustomTabsServiceConnection = null
         }
     }

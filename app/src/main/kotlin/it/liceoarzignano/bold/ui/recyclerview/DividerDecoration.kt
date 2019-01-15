@@ -5,22 +5,24 @@ import android.graphics.Canvas
 import android.graphics.PorterDuff
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.RecyclerView
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import it.liceoarzignano.bold.R
 
 class DividerDecoration(private val mContext: Context) : RecyclerView.ItemDecoration() {
-    private val mDivider: Drawable?
+    private lateinit var mDivider: Drawable
 
     init {
         val typed = mContext.obtainStyledAttributes(
                 intArrayOf(android.R.attr.listDivider))
-        mDivider = typed.getDrawable(0)
+        typed.getDrawable(0)?.run {
+            mDivider = this
+        }
         typed.recycle()
     }
 
-    override fun onDrawOver(canvas: Canvas, parent: RecyclerView, state: RecyclerView.State?) {
+    override fun onDrawOver(canvas: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         val left = parent.paddingLeft
         val right = parent.width - parent.paddingRight
 
@@ -28,9 +30,9 @@ class DividerDecoration(private val mContext: Context) : RecyclerView.ItemDecora
         for (i in 0 until size) {
             val child = parent.getChildAt(i)
             val params = child
-                    .layoutParams as RecyclerView.LayoutParams
+                    .layoutParams as androidx.recyclerview.widget.RecyclerView.LayoutParams
             val top = child.bottom + params.bottomMargin
-            val bottom = top + mDivider!!.intrinsicHeight
+            val bottom = top + mDivider.intrinsicHeight
             mDivider.setBounds(left, top, right, bottom)
             mDivider.setColorFilter(ContextCompat.getColor(mContext,
                     R.color.list_header), PorterDuff.Mode.SRC_ATOP)
@@ -39,6 +41,6 @@ class DividerDecoration(private val mContext: Context) : RecyclerView.ItemDecora
     }
 
     override fun getItemOffsets(out: Rect, view: View, parent: RecyclerView,
-                                state: RecyclerView.State?) =
-            out.set(0, 0, 0, mDivider!!.intrinsicHeight)
+                                state: RecyclerView.State) =
+            out.set(0, 0, 0, mDivider.intrinsicHeight)
 }

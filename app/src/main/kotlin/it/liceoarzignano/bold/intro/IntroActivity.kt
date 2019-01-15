@@ -2,33 +2,29 @@ package it.liceoarzignano.bold.intro
 
 import android.os.Bundle
 import android.os.Handler
-import android.support.v4.view.ViewPager
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.AppCompatButton
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
 import com.google.InkPageIndicator
-import com.google.android.gms.safetynet.SafetyNet
 import it.liceoarzignano.bold.BuildConfig
 import it.liceoarzignano.bold.R
 import it.liceoarzignano.bold.safe.mod.Encryption
 import it.liceoarzignano.bold.settings.AppPrefs
 import it.liceoarzignano.bold.utils.SystemUtils
 import it.liceoarzignano.bold.utils.UiUtils
-import java.io.ByteArrayOutputStream
-import java.security.SecureRandom
 
 class IntroActivity : AppCompatActivity() {
-    lateinit private var mTitle: TextView
-    lateinit private var mMessage: TextView
-    lateinit private var mStep1: LinearLayout
-    lateinit private var mStep2: LinearLayout
-    lateinit private var mImageAnimation: ImageView
-    lateinit private var mRetryButton: AppCompatButton
-    lateinit private var mSelectorPager: ViewPager
-    lateinit private var mIndicator: InkPageIndicator
+    private lateinit var mTitle: TextView
+    private lateinit var mMessage: TextView
+    private lateinit var mStep1: LinearLayout
+    private lateinit var mStep2: LinearLayout
+    private lateinit var mImageAnimation: ImageView
+    private lateinit var mRetryButton: AppCompatButton
+    private lateinit var mSelectorPager: androidx.viewpager.widget.ViewPager
+    private lateinit var mIndicator: InkPageIndicator
 
     private var mAnimThread: Thread? = null
     private var isWorking = false
@@ -46,10 +42,10 @@ class IntroActivity : AppCompatActivity() {
         mSelectorPager = findViewById(R.id.intro_selector)
         mIndicator = findViewById(R.id.intro_indicator)
 
-        mRetryButton.setOnClickListener({ _ -> step1() })
+        mRetryButton.setOnClickListener { step1() }
         val adapter = SelectorPagerAdapter(supportFragmentManager)
         mSelectorPager.adapter = adapter
-        mSelectorPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+        mSelectorPager.addOnPageChangeListener(object : androidx.viewpager.widget.ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) = Unit
             override fun onPageScrolled(position: Int, positionOffset: Float,
                                         positionOffsetPixels: Int) = Unit
@@ -99,26 +95,7 @@ class IntroActivity : AppCompatActivity() {
             }, 500)
         }
 
-        // Don't run SafetyNet test on devices without GMS
-        if (SystemUtils.hasNoGMS(baseContext)) {
-            postDeviceCheck(Encryption.validateResponse(baseContext, null, BuildConfig.DEBUG))
-            return
-        }
-
-        // Safety net + integrity check
-        val nonce = System.currentTimeMillis().toString()
-        val oStream = ByteArrayOutputStream()
-        val randBytes = ByteArray(24)
-        SecureRandom().nextBytes(randBytes)
-        oStream.write(randBytes)
-        oStream.write(nonce.toByteArray())
-
-        SafetyNet.getClient(this)
-                .attest(oStream.toByteArray(), SystemUtils.getSafetyNetApiKey(baseContext))
-                .addOnCompleteListener { task ->
-                    postDeviceCheck(Encryption.validateResponse(baseContext, task.result.jwsResult,
-                            BuildConfig.DEBUG))
-                }
+        postDeviceCheck(Encryption.validateResponse(baseContext, null, BuildConfig.DEBUG))
     }
 
     private fun step2() =

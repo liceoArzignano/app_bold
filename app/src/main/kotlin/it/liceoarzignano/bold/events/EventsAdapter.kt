@@ -1,7 +1,6 @@
 package it.liceoarzignano.bold.events
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -56,7 +55,7 @@ internal class EventsAdapter(private var mEvents: List<Event>, private val mCont
         notifyDataChanged()
     }
 
-    internal inner class EventHolder(private val mView: View) : RecyclerView.ViewHolder(mView) {
+    internal inner class EventHolder(private val mView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(mView) {
         private val mTitle: TextView = mView.findViewById(R.id.row_event_title)
         private val mValue: TextView = mView.findViewById(R.id.row_event_value)
         private val mTag: TextView = mView.findViewById(R.id.row_event_tag)
@@ -70,7 +69,7 @@ internal class EventsAdapter(private var mEvents: List<Event>, private val mCont
             }
 
             mTag.text = ContentUtils.eventCategoryToString(mContext, event.category)
-            mView.setOnClickListener { _ ->
+            mView.setOnClickListener {
                 mValue.maxLines =
                         if (mValue.maxLines == 1)
                             Integer.MAX_VALUE
@@ -78,7 +77,7 @@ internal class EventsAdapter(private var mEvents: List<Event>, private val mCont
                             1
                 HelpToast(mContext, HelpToast.KEY_EVENT_LONG_PRESS)
             }
-            mView.setOnLongClickListener { _ ->
+            mView.setOnLongClickListener {
                 (mContext as EventListActivity).eventActions(event)
             }
         }

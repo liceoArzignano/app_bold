@@ -29,11 +29,11 @@ class BoldInstanceIdService : FirebaseInstanceIdService() {
     }
 
     companion object {
-        private val ADDR1_TOPIC = "Scientifico"
-        private val ADDR2_TOPIC = "ScApplicate"
-        private val ADDR3_TOPIC = "Linguistico"
-        private val ADDR4_TOPIC = "ScUmane"
-        private val ADDR5_TOPIC = "Economico"
-        private val ADDR6_TOPIC = "Docente"
+        private const val ADDR1_TOPIC = "Scientifico"
+        private const val ADDR2_TOPIC = "ScApplicate"
+        private const val ADDR3_TOPIC = "Linguistico"
+        private const val ADDR4_TOPIC = "ScUmane"
+        private const val ADDR5_TOPIC = "Economico"
+        private const val ADDR6_TOPIC = "Docente"
     }
 }

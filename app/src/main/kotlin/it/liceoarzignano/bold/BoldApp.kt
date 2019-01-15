@@ -3,7 +3,7 @@ package it.liceoarzignano.bold
 import android.app.Application
 import android.os.Build
 import android.os.StrictMode
-import android.support.v7.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatDelegate
 import com.google.firebase.messaging.FirebaseMessaging
 import it.liceoarzignano.bold.settings.AppPrefs
 import it.liceoarzignano.bold.utils.SystemUtils

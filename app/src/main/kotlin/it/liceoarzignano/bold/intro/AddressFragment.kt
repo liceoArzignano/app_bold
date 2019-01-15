@@ -3,30 +3,28 @@ package it.liceoarzignano.bold.intro
 import android.annotation.TargetApi
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.AppCompatButton
-import android.support.v7.widget.CardView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatButton
 import it.liceoarzignano.bold.MainActivity
 import it.liceoarzignano.bold.R
 import it.liceoarzignano.bold.settings.AppPrefs
 import it.liceoarzignano.bold.utils.SystemUtils
 import it.liceoarzignano.bold.utils.UiUtils
 
-class AddressFragment : Fragment() {
-    lateinit private var mCard: CardView
-    lateinit private var mIcon: ImageView
-    lateinit private var mTitle: TextView
-    lateinit private var mButton: AppCompatButton
+class AddressFragment : androidx.fragment.app.Fragment() {
+    private lateinit var mCard: androidx.cardview.widget.CardView
+    private lateinit var mIcon: ImageView
+    private lateinit var mTitle: TextView
+    private lateinit var mButton: AppCompatButton
     var mPosition: Int = 0
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = inflater!!.inflate(R.layout.item_benefits_address, container, false)
+        val view = inflater.inflate(R.layout.item_benefits_address, container, false)
         if (view == null) {
             return view
         }
@@ -54,7 +52,7 @@ class AddressFragment : Fragment() {
             else -> R.string.pref_address_teacher
         })
 
-        mButton.setOnClickListener({ _ -> setAddress() })
+        mButton.setOnClickListener { setAddress() }
 
         // Elevate the first card to match on-swipe behaivour
         if (SystemUtils.isNotLegacy && mPosition == 0) {
@@ -64,6 +62,7 @@ class AddressFragment : Fragment() {
     }
 
     private fun setAddress() {
+        val context = context ?: return
         val prefs = AppPrefs(context)
         val isTeacher = mPosition == 5
         prefs.set(AppPrefs.KEY_IS_TEACHER, isTeacher)
@@ -71,7 +70,7 @@ class AddressFragment : Fragment() {
         prefs.set(AppPrefs.KEY_INTRO_SCREEN, true)
         prefs.set(AppPrefs.KEY_INTRO_VERSION, "0")
         context.startActivity(Intent(activity, MainActivity::class.java))
-        activity.finish()
+        activity?.finish()
     }
 
     @TargetApi(21)

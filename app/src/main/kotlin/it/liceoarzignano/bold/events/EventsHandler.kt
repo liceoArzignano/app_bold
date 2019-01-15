@@ -43,7 +43,7 @@ private constructor(context: Context) : DBHandler<Event>(context, DB_NAME, DB_VE
     override fun get(id: Long): Event? {
         val db = readableDatabase
         val cursor = db.rawQuery("SELECT * FROM $tableName  WHERE " +
-                "${DBHandler.Companion.KEY_ID} = ?", arrayOf(id.toString()))
+                "${DBHandler.KEY_ID} = ?", arrayOf(id.toString()))
 
         var event: Event? = null
         if (cursor.moveToFirst()) {
@@ -66,7 +66,7 @@ private constructor(context: Context) : DBHandler<Event>(context, DB_NAME, DB_VE
         values.put(KEY_CATEGORY, item.category)
 
         if (withId) {
-            values.put(DBHandler.Companion.KEY_ID, item.id)
+            values.put(DBHandler.KEY_ID, item.id)
         }
 
         return values
@@ -115,26 +115,26 @@ private constructor(context: Context) : DBHandler<Event>(context, DB_NAME, DB_VE
         }
 
     fun getByQuery(query: String?): List<Event> {
-        val list = all
+        var list = all
 
         if (query != null) {
-            list.removeIf { it ->
+            list = list.filter {
                 val title = it.title.toLowerCase()
                 val date = Time(it.date).toString().toLowerCase()
-                !title.contains(query.toLowerCase()) && !date.contains(query.toLowerCase())
-            }
+                title.contains(query.toLowerCase()) || date.contains(query.toLowerCase())
+            }.toMutableList()
         }
 
         return list
     }
 
     companion object {
-        private val DB_NAME = "EventDatabase.db"
-        private val DB_VERSION = 1
-        private val KEY_TITLE = "title"
-        private val KEY_DATE = "date"
-        private val KEY_DESCRIPTION = "description"
-        private val KEY_CATEGORY = "category"
+        private const val DB_NAME = "EventDatabase.db"
+        private const val DB_VERSION = 1
+        private const val KEY_TITLE = "title"
+        private const val KEY_DATE = "date"
+        private const val KEY_DESCRIPTION = "description"
+        private const val KEY_CATEGORY = "category"
 
         // Singleton
         @Volatile private var INSTANCE: EventsHandler? = null

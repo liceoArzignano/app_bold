@@ -1,15 +1,13 @@
 package it.liceoarzignano.bold.home
 
 import android.content.Context
-import android.support.v7.widget.CardView
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import android.widget.TextView
-
+import androidx.recyclerview.widget.RecyclerView
 import it.liceoarzignano.bold.R
 
 class HomeAdapter(private val mContext: Context, private val mObjects: List<HomeCard>,
@@ -32,14 +30,14 @@ class HomeAdapter(private val mContext: Context, private val mObjects: List<Home
 
     override fun getItemCount(): Int = mObjects.size
 
-    override fun onViewDetachedFromWindow(homeHolder: HomeHolder?) {
+    override fun onViewDetachedFromWindow(homeHolder: HomeHolder) {
         super.onViewDetachedFromWindow(homeHolder)
-        homeHolder!!.itemView.clearAnimation()
+        homeHolder.itemView.clearAnimation()
     }
 
-    class HomeHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class HomeHolder(view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
         private val mNameView: TextView = view.findViewById(R.id.home_item_name)
-        private val mCardView: CardView = view.findViewById(R.id.home_item_card)
+        private val mCardView: androidx.cardview.widget.CardView = view.findViewById(R.id.home_item_card)
         private val mLayouts = arrayOf<LinearLayout>(
                 view.findViewById(R.id.home_item_layout_0),
                 view.findViewById(R.id.home_item_layout_1),
@@ -72,7 +70,7 @@ class HomeAdapter(private val mContext: Context, private val mObjects: List<Home
                 }
             }
             mNameView.text = name
-            mCardView.setOnClickListener({ obj.doClickAction(it) })
+            mCardView.setOnClickListener { obj.doClickAction(it) }
         }
     }
 }

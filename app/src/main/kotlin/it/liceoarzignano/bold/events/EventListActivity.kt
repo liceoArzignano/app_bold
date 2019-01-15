@@ -3,17 +3,16 @@ package it.liceoarzignano.bold.events
 import android.app.SearchManager
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.CoordinatorLayout
-import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.SearchView
-import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.Toolbar
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import it.liceoarzignano.bold.R
 import it.liceoarzignano.bold.editor.EditorActivity
 import it.liceoarzignano.bold.ui.ActionsDialog
@@ -24,12 +23,12 @@ import it.liceoarzignano.bold.utils.Time
 
 
 class EventListActivity : AppCompatActivity() {
-    lateinit private var mCoordinator: CoordinatorLayout
-    lateinit private var mEmptyLayout: LinearLayout
-    lateinit private var mEmptyText: TextView
+    private lateinit var mCoordinator: androidx.coordinatorlayout.widget.CoordinatorLayout
+    private lateinit var mEmptyLayout: LinearLayout
+    private lateinit var mEmptyText: TextView
 
-    lateinit private var mAdapter: EventsAdapter
-    lateinit private var mEventsHandler: EventsHandler
+    private lateinit var mAdapter: EventsAdapter
+    private lateinit var mEventsHandler: EventsHandler
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +37,7 @@ class EventListActivity : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         toolbar.setNavigationIcon(R.drawable.ic_toolbar_back)
-        toolbar.setNavigationOnClickListener { _ -> finish() }
+        toolbar.setNavigationOnClickListener { finish() }
 
         mCoordinator = findViewById(R.id.coordinator_layout)
         val eventList = findViewById<RecyclerViewExt>(R.id.event_list)
@@ -46,7 +45,7 @@ class EventListActivity : AppCompatActivity() {
         mEmptyText = findViewById(R.id.events_empty_text)
 
         val fab = findViewById<FloatingActionButton>(R.id.fab)
-        fab.setOnClickListener { _ ->
+        fab.setOnClickListener {
             val intent = Intent(this, EditorActivity::class.java)
             intent.putExtra(EditorActivity.EXTRA_IS_MARK, false)
             startActivity(intent)

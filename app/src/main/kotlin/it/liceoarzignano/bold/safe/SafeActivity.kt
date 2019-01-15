@@ -4,9 +4,6 @@ import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Handler
-import android.support.design.widget.FloatingActionButton
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -16,7 +13,10 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.afollestad.materialdialogs.MaterialDialog
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import it.liceoarzignano.bold.BuildConfig
 import it.liceoarzignano.bold.R
 import it.liceoarzignano.bold.safe.mod.Encryption
@@ -27,19 +27,19 @@ import java.security.GeneralSecurityException
 
 class SafeActivity : AppCompatActivity() {
 
-    lateinit private var mLoadingLayout: LinearLayout
-    lateinit private var mContentLayout: View
-    lateinit private var mLoadingImage: ImageView
-    lateinit private var mLoadingText: TextView
-    lateinit private var mUserEdit: EditText
-    lateinit private var mRegEdit: EditText
-    lateinit private var mPcEdit: EditText
-    lateinit private var mInternetEdit: EditText
-    lateinit private var mFab: FloatingActionButton
+    private lateinit var mLoadingLayout: LinearLayout
+    private lateinit var mContentLayout: View
+    private lateinit var mLoadingImage: ImageView
+    private lateinit var mLoadingText: TextView
+    private lateinit var mUserEdit: EditText
+    private lateinit var mRegEdit: EditText
+    private lateinit var mPcEdit: EditText
+    private lateinit var mInternetEdit: EditText
+    private lateinit var mFab: FloatingActionButton
     private var mMenu: Menu? = null
     private var mSecretKeys: Encryption.SecretKeys? = null
 
-    lateinit private var mPrefs: AppPrefs
+    private lateinit var mPrefs: AppPrefs
     private var mCrUserName: String? = null
     private var mCrReg: String? = null
     private var mCrPc: String? = null
@@ -66,7 +66,7 @@ class SafeActivity : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         toolbar.setNavigationIcon(R.drawable.ic_toolbar_back)
-        toolbar.setNavigationOnClickListener { _ -> finish() }
+        toolbar.setNavigationOnClickListener { finish() }
 
         mPrefs = AppPrefs(baseContext)
 
@@ -83,7 +83,7 @@ class SafeActivity : AppCompatActivity() {
         mLoadingLayout.visibility = View.VISIBLE
         isWorking = true
 
-        mFab.setOnClickListener { _ -> Handler().postDelayed({ quitActivity() }, 1000) }
+        mFab.setOnClickListener { Handler().postDelayed({ quitActivity() }, 1000) }
         prepareDevice()
     }
 
@@ -109,7 +109,7 @@ class SafeActivity : AppCompatActivity() {
             mInternetEdit.setText("")
             mPcEdit.setText("")
             mRegEdit.setText("")
-            mFab.visibility = View.GONE
+            mFab.hide()
             mContentLayout.visibility = View.GONE
             mLoadingLayout.visibility = View.VISIBLE
             mMenu!!.findItem(R.id.action_reset).isVisible = false
@@ -298,14 +298,12 @@ class SafeActivity : AppCompatActivity() {
 
     private fun prepareDevice() {
         // There's no need of doing a SafetyNet test now, just check app integrity
-        if (mPrefs.get(AppPrefs.KEY_SAFE_PASSED) &&
-                Encryption.validateResponse(this, null, BuildConfig.DEBUG) == 0) {
+        if (Encryption.validateResponse(this, null, BuildConfig.DEBUG) == 0) {
             mLoadingText.setText(R.string.safe_first_load)
             Handler().postDelayed({
                 mWorkingTask.execute()
             }, 100)
         } else {
-            mPrefs.set(AppPrefs.KEY_SAFE_PASSED, false)
             mLoadingText.setText(R.string.safe_error_security)
         }
     }
@@ -347,6 +345,6 @@ class SafeActivity : AppCompatActivity() {
     }
 
     companion object {
-        private val TAG = "SafeActivity"
+        private const val TAG = "SafeActivity"
     }
 }

@@ -42,9 +42,8 @@
     <!-- Updated Dialog -->
     <string name="dialog_updated_title">L\'app \u00E8 stata aggiornata!</string>
     <string name="dialog_updated_content">
-         \u2022 Nuovo: aggiornata interfaccia utente.\n
-        \u2022 Nuovo: assistente migrazione nuovo anno scolastico.\n
-        \u2022 Nuovo: supporto Android 8.0.\n
+        \u2022 Nuovo: supporto Android 9.\n
+        \u2022 I backup non sono piu supportati.\n
         \u2022 Miglioramenti performance.\n
         \u2022 Bug fix.
     </string>

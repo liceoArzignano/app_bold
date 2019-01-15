@@ -3,15 +3,14 @@ package it.liceoarzignano.bold.editor
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.os.Handler
-import android.support.design.widget.CoordinatorLayout
-import android.support.design.widget.Snackbar
-import android.support.design.widget.TextInputLayout
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.text.SpannableStringBuilder
 import android.view.*
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.afollestad.materialdialogs.MaterialDialog
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputLayout
 import it.liceoarzignano.bold.R
 import it.liceoarzignano.bold.events.Event
 import it.liceoarzignano.bold.events.EventsHandler
@@ -23,24 +22,24 @@ import it.liceoarzignano.bold.utils.Time
 import java.util.*
 
 class EditorActivity : AppCompatActivity() {
-    lateinit private var mCoordinator: CoordinatorLayout
-    lateinit private var mTitleLayout: RelativeLayout
-    lateinit private var mTitleText: EditText
-    lateinit private var mInputTitle: TextInputLayout
-    lateinit private var mSubjectLayout: RelativeLayout
-    lateinit private var mSubjectView: EditText
-    lateinit private var mNotesText: EditText
-    lateinit private var mCategoryLayout: RelativeLayout
-    lateinit private var mCategorySpinner: Spinner
-    lateinit private var mValueLayout: RelativeLayout
-    lateinit private var mValueView: EditText
-    lateinit private var mDateView: EditText
+    private lateinit var mCoordinator: androidx.coordinatorlayout.widget.CoordinatorLayout
+    private lateinit var mTitleLayout: RelativeLayout
+    private lateinit var mTitleText: EditText
+    private lateinit var mInputTitle: TextInputLayout
+    private lateinit var mSubjectLayout: RelativeLayout
+    private lateinit var mSubjectView: EditText
+    private lateinit var mNotesText: EditText
+    private lateinit var mCategoryLayout: RelativeLayout
+    private lateinit var mCategorySpinner: Spinner
+    private lateinit var mValueLayout: RelativeLayout
+    private lateinit var mValueView: EditText
+    private lateinit var mDateView: EditText
 
-    lateinit private var mTime: Time
-    lateinit private var mDateSetListener: DatePickerDialog.OnDateSetListener
-    lateinit private var mMarksHandler: MarksHandler
-    lateinit private var mEventsHandler: EventsHandler
-    lateinit private var mPrefs: AppPrefs
+    private lateinit var mTime: Time
+    private lateinit var mDateSetListener: DatePickerDialog.OnDateSetListener
+    private lateinit var mMarksHandler: MarksHandler
+    private lateinit var mEventsHandler: EventsHandler
+    private lateinit var mPrefs: AppPrefs
 
     private var mId = 0L
     private var mIsEdit = false
@@ -69,7 +68,7 @@ class EditorActivity : AppCompatActivity() {
                     if (mIsEdit) R.string.editor_update_event else R.string.editor_new_event)
         setSupportActionBar(toolbar)
         toolbar.setNavigationIcon(R.drawable.ic_remove)
-        toolbar.setNavigationOnClickListener { _ -> askQuit() }
+        toolbar.setNavigationOnClickListener { askQuit() }
 
         mCoordinator = findViewById(R.id.coordinator_layout)
         mTitleLayout = findViewById(R.id.editor_title_layout)
@@ -104,7 +103,7 @@ class EditorActivity : AppCompatActivity() {
             mTime = Time(year, month, dayOfMonth)
             mDateView.text = SpannableStringBuilder(mTime.toString())
         }
-        mDateView.setOnClickListener { _ -> showDatePicker() }
+        mDateView.setOnClickListener { showDatePicker() }
         mDateView.text = SpannableStringBuilder(mTime.toString())
 
         mSubjectView.keyListener = null
@@ -150,7 +149,7 @@ class EditorActivity : AppCompatActivity() {
 
         val list: MutableList<CharSequence> = arrayListOf()
         items.forEach { list.add(it) }
-        mSubjectView.setOnClickListener { _ ->
+        mSubjectView.setOnClickListener {
             MaterialDialog.Builder(this)
                     .title(R.string.editor_hint_subject)
                     .items(list)
@@ -161,7 +160,7 @@ class EditorActivity : AppCompatActivity() {
         }
 
 
-        mValueView.setOnClickListener { _ ->
+        mValueView.setOnClickListener {
             MaterialDialog.Builder(this)
                     .title(R.string.editor_dialog_mark_title)
                     .customView(valuePickerView, false)
@@ -331,8 +330,8 @@ class EditorActivity : AppCompatActivity() {
     }
 
     companion object {
-        val EXTRA_ID = "extra_id"
-        val EXTRA_IS_MARK = "extra_is_mark"
-        val EXTRA_IS_NEWS = "extra_is_news"
+        const val EXTRA_ID = "extra_id"
+        const val EXTRA_IS_MARK = "extra_is_mark"
+        const val EXTRA_IS_NEWS = "extra_is_news"
     }
 }

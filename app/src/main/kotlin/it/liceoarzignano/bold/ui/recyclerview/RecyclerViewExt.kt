@@ -1,16 +1,15 @@
 package it.liceoarzignano.bold.ui.recyclerview
 
 import android.content.Context
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import it.liceoarzignano.bold.R
 import it.liceoarzignano.bold.utils.UiUtils
 
 class RecyclerViewExt : RecyclerView {
-    private var mItemTouchListener: RecyclerView.OnItemTouchListener? = null
+    private lateinit var mItemTouchListener: RecyclerView.OnItemTouchListener
 
     constructor(context: Context) : super(context) {
         setup(context, null)
@@ -24,8 +23,8 @@ class RecyclerViewExt : RecyclerView {
         setup(context, attrs)
     }
 
-    override fun addOnItemTouchListener(listener: RecyclerView.OnItemTouchListener) {
-        if (mItemTouchListener != null) {
+    override fun addOnItemTouchListener(listener: androidx.recyclerview.widget.RecyclerView.OnItemTouchListener) {
+        if (::mItemTouchListener.isInitialized) {
             removeOnItemTouchListener(mItemTouchListener)
         }
         mItemTouchListener = listener
@@ -34,7 +33,7 @@ class RecyclerViewExt : RecyclerView {
     }
 
     private fun setup(context: Context, attrs: AttributeSet?) {
-        itemAnimator = DefaultItemAnimator()
+        itemAnimator = androidx.recyclerview.widget.DefaultItemAnimator()
         if (attrs == null) {
             return
         }
@@ -45,7 +44,7 @@ class RecyclerViewExt : RecyclerView {
         layoutManager = try {
             when {
                 array.getBoolean(R.styleable.RecyclerViewExt_horizontalMode, false) ->
-                    LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+                    LinearLayoutManager(context, HORIZONTAL, false)
                 UiUtils.isPhone(context) ->
                     LinearLayoutManager(context)
                 else ->
